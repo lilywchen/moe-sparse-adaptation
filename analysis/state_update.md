@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 19:38 EDT
+Last verified: 2026-07-31 19:52 EDT
 
 ## Scientific question
 
@@ -13,21 +13,23 @@ gain or failure?
 
 The study is in Stage 0. The frozen 36-cell factorial has not started. All six RxRx1 seed-0 shared-
 HPO candidates have completed and passed strict validation under execution commit `26ad7fa`.
-Two Camelyon17 candidates are valid, giving `8/12` formal results overall; three Camelyon17 workers
-remain active and the launcher retains the remaining queue.
+Three Camelyon17 candidates are valid, giving `9/12` formal results overall. All three remaining
+Camelyon17 candidates are active; the last missing shard was dry-run and launched on an idle GPU.
 
-RxRx1 remains behind a substrate competence gate. Two of four bounded DINOv2 rescue diagnostics
-are strictly valid; the interaction arm is in post-training evaluation and the official-style
-preprocessing arm is training. Six H100s are active across those two Rx jobs, three Camelyon17
-workers, and the canonical control. Two H100s are idle because no additional rescue arm is licensed.
-The OOD-test subset remains unavailable.
+The RxRx1 DINOv2 competence gate is resolved as a failure. All four bounded rescue diagnostics are
+strictly valid, and the best reaches only 35.7% of the canonical control's best-so-far OOD-val
+accuracy, below the predeclared 50% abandonment threshold. DINOv2 is excluded from RxRx1 MoE work.
+The recommended replacement candidate is microscopy-pretrained Cell-DINO Cell Painting ViT-S/8;
+selecting and qualifying it is now the only RxRx1 design decision. The OOD-test subset remains
+unavailable.
 
 ## Decision-grade findings
 
-No MoE-versus-dense performance finding is decision-grade yet. The RxRx1 grid is complete and can
-be ranked, but its sanity gate remains open because all six models occupy an inadequate accuracy
-regime. There is not yet a valid basis for freezing an RxRx1 recipe, selecting a Camelyon17 recipe,
-comparing MoE with dense controls, or making a mechanism claim.
+No MoE-versus-dense performance finding is decision-grade yet. The decision-grade Stage-0 result is
+that natural-image DINOv2 is not a competent RxRx1 substrate under the complete predeclared rescue
+set and must not consume the factorial budget. There is not yet a valid basis for freezing an
+RxRx1 replacement recipe, selecting a Camelyon17 recipe, comparing MoE with dense controls, or
+making a mechanism claim.
 
 The following protocol facts are verified:
 
@@ -82,17 +84,20 @@ The rescue set is fixed relative to the best DINOv2 anchor `(lr=1e-4, LLRD=0.85)
 All rescue arms are diagnostic-only and cannot enter the formal HPO ranking. The official-style
 implementation passed 3 focused tests and 75/75 full-suite tests before launch.
 
-Two rescue results are now valid:
+All rescue results are now valid:
 
 | Run | OOD-val accuracy | seen-environment accuracy | worst-environment val | Status |
 |---|---:|---:|---:|---|
 | `rxdiag_no_rrc` | 0.015425 | 0.045134 | 0.001218 | valid diagnostic |
 | `rxdiag_uniform_lr` | 0.013294 | 0.036738 | 0.000812 | valid diagnostic |
+| `rxdiag_no_rrc_uniform_lr` | 0.018571 | 0.052300 | 0.002029 | valid diagnostic |
+| `rxdiag_wilds_uniform_lr` | 0.055003 | 0.105289 | 0.010146 | valid diagnostic |
 
 Relative to the fixed anchor (0.014816 OOD-val, 0.038043 seen), removing crop gives only a small
-gain and uniform layer learning rates alone are worse. Neither reaches even 20% of the canonical
-control on both metrics, so neither can independently satisfy the frozen competence gate. The gate
-remains open until the interaction and official-style arms are valid.
+gain, uniform layer learning rates alone are worse, and their interaction remains weak. Official-
+style preprocessing is materially better, establishing a real preprocessing mismatch, but its
+0.055003 OOD-val accuracy is only 35.7% of the canonical control's best-so-far 0.154151. This
+triggers the frozen below-50% abandonment rule on OOD validation alone.
 
 ## Current scientific interpretation
 
@@ -121,15 +126,19 @@ only above 80% of the canonical control on both OOD-val and ID-test accuracy, ab
 automatically below 50% on either, and requires one explicit decision in between. This prevents
 the strength of DINOv2's reputation from turning into unlimited tuning.
 
-The first two rescue results weaken both the cropping-only and LLRD-only explanations. The combined
-arm may still reveal an interaction, and the official-style arm remains the strongest remaining
-preprocessing test: at epoch 23 its training loss was 4.3387 versus 5.4145 at the combined arm's
-epoch 29. That loss difference is provisional optimization evidence only; validation accuracy can
-still remain poor.
+The complete rescue set resolves the leading alternatives. Cropping and LLRD were not the primary
+failure. Official RxRx1 normalization and augmentation semantics explain a substantial fraction of
+the gap, but not enough to make natural-image DINOv2 a competent experimental instrument. The most
+plausible remaining explanation is representation-domain mismatch: the pretrained features are
+strong for natural images yet poorly aligned with subtle fluorescence phenotypes. This is a
+substrate result, not evidence for or against MoE.
 
 ## Implications for experimental design
 
-- Record the formal RxRx1 ranking, but do not replicate or freeze it until the sanity gate resolves.
+- Preserve the formal RxRx1 DINOv2 ranking as diagnostic history, but do not replicate or use it.
+- Keep the factorial unchanged while replacing only the failed RxRx1 substrate. Recompute exact
+  dense/MoE parameter matching for the replacement architecture and re-run the dense competence
+  gate before any RxRx1 router calibration.
 - Do not change factorial factors, levels, losses, or selection rules in response to this diagnostic.
 - Camelyon17 may advance independently when its six valid seed-0 candidates complete; it need not
   wait for the RxRx1 diagnosis.
@@ -138,7 +147,7 @@ still remain poor.
 
 ## Next decisions
 
-1. Complete and validate all four rescue arms against the fixed anchor and canonical control.
-2. Apply the frozen 80%/50% competence gate; do not add tuning.
-3. Complete and rank Camelyon17 Phase A independently.
-4. Freeze shared recipes and calibration values before launching any Stage-1 factorial cells.
+1. Decide whether to qualify Cell-DINO Cell Painting ViT-S/8 as the RxRx1 replacement substrate.
+2. Complete and rank Camelyon17 Phase A independently; all three remaining cells are active.
+3. If Cell-DINO is approved, implement one bounded clean dense competence screen before any MoE.
+4. Freeze competent recipes and calibration values before launching any Stage-1 factorial cells.

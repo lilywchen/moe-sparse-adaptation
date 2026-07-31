@@ -7,6 +7,12 @@ training for two pressure conditions and for analysis, which may not hold in eve
 Adversarial invariance can also remove task-relevant variation when environment and label are
 statistically coupled.
 
+The dense-substrate gate may select different pretrained ViTs for microscopy and histopathology.
+Consequently, architectural effects are identified within each dataset against its matched dense
+control; cross-dataset agreement is evidence of replication across regimes, while differences
+cannot be attributed to acquisition modality alone. We prefer this limitation to running a common
+but floor-performing backbone that would make the MoE comparison uninterpretable.
+
 The broader value is an auditable way to decide whether conditional capacity is appropriate for
 heterogeneous scientific adaptation. The design separates added capacity, routing, and invariance;
 the diagnostics reveal when experts follow nuisance; and negative results define when a simpler

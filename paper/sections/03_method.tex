@@ -1,10 +1,13 @@
 \section{Controlled sparse adaptation}
 
 \subsection{Pretrained substrate and upcycling}
-We fully fine-tune DINOv2 ViT-S/14 for supervised classification. In each intervention, exactly one
-transformer FFN is replaced. An MoE contains eight copies of the pretrained FFN and a top-1 router;
-because every expert initially computes the same function, the MoE exactly matches the pretrained
-network at initialization. We place the converted block at early, middle, or late depth.
+We fully fine-tune a dataset-qualified pretrained ViT for supervised classification. Substrate
+qualification is a Stage-0 gate: a candidate must reach a predeclared fraction of a canonical
+validation-only sanity control before any MoE experiment is licensed. In each intervention,
+exactly one transformer FFN is replaced. An MoE contains eight copies of the pretrained FFN and a
+top-1 router; because every expert initially computes the same function, the MoE exactly matches
+the qualified pretrained network at initialization. We place the converted block at early, middle,
+or late depth. Exact parameter matching is recomputed separately for each qualified architecture.
 
 \subsection{Total-parameter-matched dense control}
 The primary dense comparator is one wider FFN at the same depth. Its integer hidden width is chosen

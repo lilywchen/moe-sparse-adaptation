@@ -785,7 +785,7 @@
         </div>
         <div class="meta-row">
           <span class="meta-label">Backbone</span>
-          <span class="meta-value">DINOv2 ViT-S/14</span>
+          <span class="meta-value">Dataset-qualified pretrained ViT</span>
         </div>
         <div class="meta-row">
           <span class="meta-label">Data</span>
@@ -809,6 +809,16 @@
         acquisition environments, is a fixed parameter budget better allocated as shared
         dense capacity or sparse input-conditional capacity?
       </p>
+    </section>
+
+    <section class="note" aria-label="Current substrate-qualification result">
+      <strong>Current gate result.</strong> Natural-image DINOv2 is a competent substrate for
+      Camelyon17 but has been excluded from the RxRx1 factorial: the best bounded rescue reached
+      5.50% OOD-validation accuracy versus 15.42% for the canonical RxRx1 sanity control (35.7%).
+      Official-style microscopy preprocessing improved DINOv2 substantially, but not enough to
+      clear the preregistered 50% competence floor. RxRx1 therefore requires a microscopy-pretrained
+      ViT before any MoE comparison; Cell-DINO ViT-S/8 is the leading replacement candidate.
+      The OOD test remains unopened.
     </section>
 
     <div class="layout">
@@ -875,18 +885,18 @@
           <div class="section-kicker">Experimental setting</div>
           <h2>Isolate the moment of scientific adaptation</h2>
           <p class="lede">
-            DINOv2 has not previously learned from the target scientific dataset. Dense and
-            sparse models encounter the scientific domain for the first time during the same
-            supervised fine-tuning stage.
+            Each dataset first passes a dense-substrate competence gate. Dense and sparse models
+            then start from the same frozen, competent pretrained checkpoint and encounter the
+            target dataset during the same supervised fine-tuning stage.
           </p>
 
           <div class="flow" aria-label="Dense and MoE adaptation branches">
             <div class="flow-node">
               <span class="label">Common start</span>
-              <h3>Pretrained DINOv2</h3>
+              <h3>Qualified pretrained ViT</h3>
               <p>
-                Identical encoder checkpoint, target classification head initialization,
-                preprocessing, data order, and seed.
+                One dataset-level checkpoint is frozen after dense validation. Both branches use
+                identical preprocessing, target-head initialization, data order, and seed.
               </p>
             </div>
             <div class="flow-arrow" aria-hidden="true">→</div>
@@ -1164,7 +1174,7 @@
 
           <h3>Fixed throughout the core study</h3>
           <div class="lock-grid">
-            <div class="lock">DINOv2 ViT-S/14<small>One pretrained substrate</small></div>
+            <div class="lock">Qualified ViT substrate<small>Frozen within each dataset</small></div>
             <div class="lock">One MoE block<small>No depth/capacity confound</small></div>
             <div class="lock">Eight experts<small>Constant stored capacity</small></div>
             <div class="lock">Top-1 routing<small>Sparse active compute</small></div>
@@ -1464,9 +1474,10 @@
           <div class="timeline">
             <article class="stage">
               <div class="stage-index">Stage 0</div>
-              <h3>Make the comparison executable and auditable</h3>
+              <h3>Qualify the substrate and make the comparison auditable</h3>
               <p>
-                Implement the dense-wide and MoE branches, then verify all invariants before
+                First verify that dense full fine-tuning reaches a competent non-floor regime.
+                Then implement the dense-wide and MoE branches and verify all invariants before
                 starting HPO.
               </p>
               <ul>
@@ -1475,6 +1486,7 @@
                 <li>Top-1 active expert count, routing unit, and chosen placement are correct.</li>
                 <li>RxRx1 and Camelyon use the intended transforms and identical input resolution.</li>
                 <li>All run IDs serialize every factor, loss policy, seed, and split.</li>
+                <li>A substrate that fails the frozen dense competence gate is excluded before MoE.</li>
               </ul>
               <details>
                 <summary>Known implementation deltas in the current starter</summary>
@@ -1813,7 +1825,7 @@
               <h3>Core paper</h3>
               <ul>
                 <li>Two real scientific acquisition-shift datasets</li>
-                <li>Full fine-tuning from the same DINOv2 checkpoint</li>
+                <li>Full fine-tuning from one frozen, competent ViT checkpoint per dataset</li>
                 <li>Fixed total parameter budget</li>
                 <li>12 architectures × three pressure policies</li>
                 <li>Depth-matched dense-wide controls</li>

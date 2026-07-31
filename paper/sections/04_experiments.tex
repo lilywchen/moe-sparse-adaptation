@@ -38,6 +38,19 @@ coefficient per dataset. No cell receives its own search. Stage 1 completes the 
 evaluating OOD test. Stage 2 runs predeclared mechanism controls. Stage 3 evaluates a fixed
 confirmatory set with fresh seeds and is the first stage allowed to access OOD test.
 
+\subsection{Stage-0 substrate qualification}
+Natural-image DINOv2 ViT-S/14 was the initial candidate on both datasets
+\citep{oquab2023dinov2}. On RxRx1, a clean six-cell dense screen remained near floor, so a bounded
+predeclared rescue tested removal of random-resized cropping, removal of layer-wise learning-rate
+decay, their interaction, and official RxRx1 preprocessing. The best rescue used official
+preprocessing and reached 5.50\% OOD-validation and 10.53\% seen-environment accuracy. A canonical
+WILDS ResNet-50 sanity control reached 15.42\% best-so-far OOD-validation accuracy without
+constructing OOD test. The rescue therefore achieved 35.7\% of the control, below the frozen 50\%
+abandonment threshold. We exclude DINOv2 from the RxRx1 factorial and will qualify a microscopy-
+pretrained ViT before running RxRx1 MoE cells. This is a substrate-validity decision, not an MoE
+result. Camelyon17 qualification remains in progress. All reported Stage-0 selection uses OOD
+validation, and OOD test remains untouched.
+
 \subsection{Metrics and inference}
 We report OOD accuracy, worst-environment accuracy, in-distribution accuracy, and the ID--OOD gap.
 The primary contrast is the within-seed, within-placement difference between MoE and matched

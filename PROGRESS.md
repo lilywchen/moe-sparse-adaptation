@@ -135,3 +135,43 @@ Next: validate the combined and official-style RxRx1 JSONs as soon as they appea
 frozen 80%/50% competence gate over all four arms. Independently finish and rank the six Camelyon17
 candidates. No OOD-test access, RxRx1 replication, MoE launch, or additional rescue tuning is
 licensed before those gates.
+
+## 2026-07-31 19:52 EDT gate resolution and acceleration
+
+All four bounded RxRx1 rescue arms are now strictly valid. The remaining two results are:
+
+- `rxdiag_no_rrc_uniform_lr`: OOD-val 0.018571, seen-environment 0.052300,
+  worst-environment val 0.002029, clean commit `26ad7fa`.
+- `rxdiag_wilds_uniform_lr`: OOD-val 0.055003, seen-environment 0.105289,
+  worst-environment val 0.010146, clean isolated commit `1da67a5`, code-equivalent to GitHub
+  `aa8d0cf` for the official-style transform.
+
+Both files pass parseability, finite-metric, exact seed/config/run identity, clean-provenance,
+21,628,800-parameter, `selection_split=ood_val`, and `test_evaluated=false` checks. No OOD-test
+value was constructed or consumed.
+
+Official-style preprocessing is the clear best rescue and demonstrates that the original
+normalization/augmentation mismatch was consequential. It still does not qualify the substrate.
+The canonical validation-only WILDS control reached best-so-far OOD-val accuracy 0.154151 at epoch
+47; the best DINOv2 rescue is 35.7% of that value. Because the predeclared rule abandons DINOv2 when
+either gate metric remains below 50%, and a best-so-far validation maximum cannot decrease, the
+RxRx1 DINOv2 competence gate is decisively failed without waiting for OOD test or further tuning.
+Natural-image DINOv2 is frozen as excluded for RxRx1. No RxRx1 replication, router calibration,
+MoE cell, or mechanism analysis will be run on it.
+
+The recommended replacement candidate is Cell-DINO Cell Painting ViT-S/8: it is microscopy-
+pretrained, close in scale to the current small ViT, and structurally compatible with FFN upcycling.
+This is a recommendation, not a silently frozen design change. It requires one explicit backbone
+decision and then a bounded dense competence screen before RxRx1 rejoins the factorial.
+
+Formal Camelyon17 coverage increased to 3/6 at clean commit `26ad7fa`. The new valid candidate
+`camelyon17_original_ep10_s0_hpoA_lr3e-04_llrd0.70` reached 0.800080 OOD-val and 0.987604
+seen-environment accuracy. The three remaining candidates are all now active: the previously
+running `1e-4/0.85` and `3e-5/0.70` cells plus `3e-4/0.85`, which was dry-run as the sole pending
+shard and launched on container 2874 GPU0. The new job was independently verified at 98% GPU
+utilization with the exact process identity, fresh persistent log, W&B run `fwab3bqs`, clean
+`26ad7fa` checkout, and explicit OOD-test withholding.
+
+Current critical path: finish and rank Camelyon17 Phase A while the user decides whether to qualify
+Cell-DINO for RxRx1. The remaining authorized GPU work is running; idle GPUs are not filled with
+unapproved backbone experiments or additional DINOv2 tuning.

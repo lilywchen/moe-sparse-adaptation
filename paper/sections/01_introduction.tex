@@ -13,11 +13,12 @@ a new environment appears.
 Existing comparisons cannot answer which explanation is correct if an MoE is simply larger than
 its dense baseline, if architecture and loss are tuned sequentially on the test domain, or if only
 the winning configuration is analyzed. We therefore treat conditional capacity as the object of a
-controlled characterization. Starting from one pretrained DINOv2 encoder
-\citep{oquab2023dinov2}, we change exactly one
-feed-forward block and hold the total parameter budget fixed to the nearest realizable dense width.
-We then vary four interpretable decisions as a full factorial: placement, routing unit, router
-geometry, and training pressure.
+controlled characterization. We first require a pretrained transformer to demonstrate competent
+dense full fine-tuning on each dataset; a powerful natural-image model is not assumed to transfer
+to a scientific modality merely because it is a foundation model. For each qualified substrate, we
+change exactly one feed-forward block and hold the total parameter budget fixed to the nearest
+realizable dense width. We then vary four interpretable decisions as a full factorial: placement,
+routing unit, router geometry, and training pressure.
 
 Our central question is: \emph{when adapting a pretrained vision model to scientific images
 collected across acquisition environments, when does sparse conditional capacity improve

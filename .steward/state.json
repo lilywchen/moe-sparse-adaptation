@@ -1,17 +1,18 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_two_rxrx1_rescue_results_and_second_camelyon17_result",
-  "last_action_at": "2026-07-31T19:38:00-04:00",
+  "last_action": "abandon_dinov2_for_rxrx1_and_launch_final_camelyon17_candidate",
+  "last_action_at": "2026-07-31T19:52:00-04:00",
   "last_verified_commit": "26ad7fa",
-  "valid_results": 8,
+  "valid_results": 9,
   "expected_results": 12,
-  "active_gpu_workers": 6,
-  "valid_rxrx1_rescue_results": 2,
+  "active_gpu_workers": 4,
+  "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
-  "rxrx1_sanity_status": "running_healthy",
+  "rxrx1_sanity_status": "dinov2_failed_competence_gate",
+  "rxrx1_backbone_status": "decision_required_cell_dino_cp_vits8_recommended",
   "last_synced_commit": "240b39d",
   "overleaf_build_status": "pass_0_errors_1_warning",
-  "next_gate": "validate_combined_and_official_style_rxrx1_rescue_arms_then_apply_80_50_dinov2_competence_gate; complete_camelyon17_phase_a_independently"
+  "next_gate": "user_decision_on_cell_dino_rxrx1_qualification; complete_and_rank_camelyon17_phase_a"
 }

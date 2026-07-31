@@ -23,8 +23,15 @@ design choices that govern any gain, and tests what the learned routing relies o
 
 ## Candidate substrate and datasets
 
-- DINOv2 ViT-S/14, full supervised fine-tuning, conditional on passing the Stage-0 dense-substrate
-  competence gate below. The MoE factorial must not be run on a floor-performing dense substrate.
+- Every dataset uses a pretrained ViT that first passes the Stage-0 dense-substrate competence
+  gate. The MoE factorial must not be run on a floor-performing dense substrate.
+- Natural-image DINOv2 ViT-S/14 remains the Camelyon17 candidate. It is disqualified for RxRx1:
+  the complete bounded rescue reached only 35.7% of the canonical control's best-so-far OOD-val
+  accuracy, triggering the predeclared below-50% stopping rule.
+- The recommended RxRx1 replacement candidate is Cell-DINO Cell Painting ViT-S/8, a microscopy-
+  pretrained transformer with a similar small-backbone scale and an FFN structure compatible with
+  the same conditional-capacity intervention. It must pass a fresh, bounded dense competence screen
+  before any RxRx1 MoE work; it is not yet frozen or launched.
 - RxRx1: microscopy perturbation classification; acquisition environment = experiment.
 - Camelyon17: histopathology tumor classification; acquisition environment = hospital.
 - Exactly one FFN block is converted in every capacity intervention.
@@ -87,6 +94,9 @@ sanity control. Retain DINOv2 automatically only if it reaches at least 80% of t
 OOD-validation and ID-test accuracy; abandon it automatically if it remains below 50% of the
 control on either metric. The intermediate zone requires one explicit backbone decision. This is
 a substrate qualification rule, not a leaderboard comparison, and OOD test remains unavailable.
+This gate is now resolved: official-style preprocessing was the best rescue at 0.0550 OOD-val and
+0.1053 seen-environment accuracy, but it is only 35.7% of the canonical control's 0.1542 best-so-far
+OOD-val accuracy. Natural-image DINOv2 is therefore excluded from the RxRx1 factorial.
 
 Then tune one router temperature per dataset × geometry, one load-balancing weight per dataset,
 and one output-invariance weight per dataset. Do not tune per cell. Freeze these values before
