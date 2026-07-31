@@ -1,8 +1,13 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "launch_common_commit_phase_a_revalidation",
-  "last_action_at": "2026-07-31T17:35:21-04:00",
+  "last_action": "launch_canonical_rxrx1_erm_sanity_retry_and_create_traceable_scientific_artifacts",
+  "last_action_at": "2026-07-31T18:12:54-04:00",
   "last_verified_commit": "26ad7fa",
-  "next_gate": "validate_and_rank_12_common_commit_phase_a_results"
+  "valid_results": 0,
+  "expected_results": 12,
+  "active_gpu_workers": 8,
+  "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
+  "rxrx1_sanity_status": "running_healthy",
+  "next_gate": "validate_per_dataset_phase_a_results_and_resolve_rxrx1_sanity"
 }
