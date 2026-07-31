@@ -9,5 +9,7 @@
   "active_gpu_workers": 6,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "running_healthy",
+  "last_synced_commit": "5f8310c",
+  "overleaf_build_status": "pass_0_errors_1_warning_2_info",
   "next_gate": "complete_and_validate_rxrx1_phase_a_then_resolve_rxrx1_sanity; complete_camelyon17_phase_a_independently"
 }

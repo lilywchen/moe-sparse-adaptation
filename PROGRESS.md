@@ -2,8 +2,9 @@
 
 Last verified: 2026-07-31 18:24 EDT on SciServer.
 
-Research-state synchronization: GitHub commit `8c6bdff` was pulled into the linked Overleaf
-project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with no fatal alert.
+Research-state synchronization: GitHub commit `5f8310c` was pulled into the linked Overleaf
+project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with 0 errors, one
+pre-existing package warning, and two nonfatal typesetting notices.
 
 ## Protocol state
 
