@@ -25,7 +25,7 @@ Anything outside `/home/idies/workspace/Storage/` may disappear with the contain
 ## Launch
 
 ```bash
-export MOE_RESULTS=/home/idies/workspace/Storage/lchen5/persistent/RESULTS/moe-sparse-adaptation
+export MOE_RESULTS=/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results
 python scripts/sweep_ccas.py --dry-run
 python scripts/sweep_ccas.py --gpus 0,1 --max-concurrent 2
 ```
@@ -34,11 +34,15 @@ The sweep is idempotent. Prefer `tmux` when available. The current GPU image doe
 so launch with `nohup`, redirect to the persistent `logs/` directory, and save the launcher PID
 there. Never rely on a browser terminal remaining connected.
 
-## Scheduled check permissions
+## Scheduled research steward
 
-The scheduled Codex task may read the SciServer page, terminal output, process list, logs, result
-counts, and repository status; summarize progress; and run the read-only aggregator.
+The scheduled Codex task is an executor governed by `STEWARD.md`, not a read-only checker. It may
+inspect remote state, diagnose and fix bounded operational defects, add regression tests, update
+the progress/analysis/manuscript state, restart one missing idempotent candidate after a verified
+transient failure, and launch the next predeclared phase once every stage gate passes.
 
-It must not enter credentials, expose secrets, replace CUDA/PyTorch, delete results, cancel jobs,
-launch a new sweep, force-push, or merge branches. If a run is stalled or a protocol guard fails,
-it should report the exact evidence and stop for review.
+If the expected job is healthy, it emits only a compact heartbeat and does not relaunch or disturb
+it. If the job has finished, it owns the handoff through validation, aggregation, state updates,
+and the next valid launch. It must never enter credentials, expose secrets, replace CUDA/PyTorch,
+delete results, cancel healthy jobs, touch another project's resources, force-push, alter the
+scientific protocol, inspect OOD test early, or retry a repeated failure without review.

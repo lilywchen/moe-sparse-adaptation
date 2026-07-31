@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "classification": "ACTIONABLE",
+  "last_action": "research_steward_bootstrap",
+  "last_action_at": "2026-07-31T13:30:39-04:00",
+  "last_verified_commit": "03167d1",
+  "next_gate": "monitor_stage0_phase_a"
+}

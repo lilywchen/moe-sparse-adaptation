@@ -10,7 +10,7 @@ Last verified: 2026-07-31 on SciServer, commit `fa81281`.
 - [x] SciServer Python tests pass (38/38).
 - [x] Local paper build passes (4-page draft).
 - [x] Private GitHub remote created and `main` pushed.
-- [ ] Overleaf project connected.
+- [x] Overleaf project connected to `lilywchen/moe-sparse-adaptation`; `paper/main.tex` compiles.
 - [x] SciServer repository connected in persistent storage and environment smoke-tested.
 - [x] Real RxRx1 token/cosine MoE forward+backward smoke test passed on H100.
 - [x] Real Camelyon17 image/linear MoE forward+backward smoke test passed on H100.
@@ -19,7 +19,7 @@ Last verified: 2026-07-31 on SciServer, commit `fa81281`.
 - [ ] HF token write scope corrected and upload verified.
 - [ ] Shared hyperparameters selected without OOD-test access.
 - [ ] Stage 1 launched.
-- [x] Two-hour read-only SciServer progress automation created.
+- [x] Hourly autonomous research steward created; execution contract is in `STEWARD.md`.
 
 ## Latest run status
 
