@@ -9,11 +9,12 @@ Last verified: 2026-07-31 local bootstrap.
 - [x] Exact function-preserving dense initialization implemented.
 - [x] Local Python tests pass (36/36).
 - [x] Local paper build passes (4-page draft).
-- [ ] GitHub remote created and `main` pushed.
+- [x] Private GitHub remote created and `main` pushed.
 - [ ] Overleaf project connected.
 - [ ] SciServer repository connected and environment smoke-tested.
 - [ ] Shared hyperparameters selected without OOD-test access.
 - [ ] Stage 1 launched.
+- [x] Two-hour read-only SciServer progress automation created.
 
 ## Latest run status
 
@@ -21,5 +22,5 @@ No runs launched from this fresh repository.
 
 ## Next safe action
 
-Publish the verified initial commit, then perform a read-only SciServer connection check before
-any compute is launched.
+Sign in to Overleaf and SciServer in the open in-app browser tabs, import the GitHub repository into
+Overleaf, and perform the SciServer environment smoke test before any compute is launched.
