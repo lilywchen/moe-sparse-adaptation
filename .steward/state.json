@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "ACTIONABLE",
-  "last_action": "overleaf_sync_verified",
-  "last_action_at": "2026-07-31T13:33:01-04:00",
+  "last_action": "hf_write_and_backfill_verified",
+  "last_action_at": "2026-07-31T14:25:45-04:00",
   "last_verified_commit": "a2733da",
   "next_gate": "monitor_stage0_phase_a"
 }

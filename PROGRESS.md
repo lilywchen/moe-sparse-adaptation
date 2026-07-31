@@ -19,7 +19,8 @@ project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with
 - [x] Real Camelyon17 image/linear MoE forward+backward smoke test passed on H100.
 - [x] W&B persistent authentication and live logging verified.
 - [x] Private HF results dataset created; read authentication works.
-- [ ] HF token write scope corrected and upload verified.
+- [x] HF token has repository-scoped write access; SciServer identity/upload checks pass and all
+  eight completed Phase-A JSONs were backfilled to `lilywchen/moe-sparse-adaptation-results`.
 - [ ] Shared hyperparameters selected without OOD-test access.
 - [ ] Stage 1 launched.
 - [x] Hourly autonomous research steward created; execution contract is in `STEWARD.md`.
