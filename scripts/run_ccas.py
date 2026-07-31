@@ -153,6 +153,21 @@ def main():
     adversary = (SiteAdversary(model.dim, int(cfg["sites"]["K"])).to(device)
                  if pressure == "output" else None)
 
+    # Start tracking before optimization so long SciServer runs expose live progress. Tracking is
+    # deliberately non-fatal: the persistent JSON/JSONL files remain the source of truth.
+    wandb_run = None
+    if os.environ.get("WANDB_API_KEY") or os.environ.get("WANDB_MODE") == "offline":
+        try:
+            import wandb
+            wandb_run = wandb.init(
+                project=os.environ.get("WANDB_PROJECT", "ccas"),
+                entity=os.environ.get("WANDB_ENTITY"), name=rid,
+                group=f"{cfg['dataset']}_{cap.variant}", job_type="train",
+                config={**cfg, "capacity": cap.as_dict()}, reinit=True,
+            )
+        except Exception as e:
+            print(f"[wandb] live tracking unavailable: {e}", flush=True)
+
     # ---- protocol assertions (recorded, and fatal if violated) ----
     protocol = {}
     ffn_only = cap.ffn_block_params - cap.router_params
@@ -209,6 +224,12 @@ def main():
                "adversary": run_adv / max(nb, 1),
                "lr": opt.param_groups[-1]["lr"], "t": round(time.time() - t0, 1)}
         logf.write(json.dumps(rec) + "\n"); logf.flush()
+        if wandb_run is not None:
+            try:
+                wandb_run.log({f"train/{k}": v for k, v in rec.items() if k != "epoch"},
+                              step=ep)
+            except Exception as e:
+                print(f"[wandb] epoch log skipped: {e}", flush=True)
         print(f"[{rid}] ep{ep} loss {rec['loss']:.4f} aux {rec['aux']:.4f} "
               f"adv {rec['adversary']:.4f}", flush=True)
 
@@ -314,14 +335,11 @@ def main():
           f"test {_test_str}  -> {out_json}")
 
     # ---- optional experiment trackers (never fatal) ----
-    if os.environ.get("WANDB_API_KEY") or os.environ.get("WANDB_MODE") == "offline":
+    if wandb_run is not None:
         try:
-            import wandb
-            wandb.init(project=os.environ.get("WANDB_PROJECT", "ccas"),
-                       entity=os.environ.get("WANDB_ENTITY"), name=rid,
-                       group=f"{cfg['dataset']}_{cap.variant}", config=cfg, reinit=True)
-            wandb.log({k: v for k, v in result.items() if isinstance(v, (int, float))})
-            wandb.finish()
+            wandb_run.log({f"final/{k}": v for k, v in result.items()
+                           if isinstance(v, (int, float))}, step=epochs)
+            wandb_run.finish()
         except Exception as e:
             print(f"[wandb] skipped: {e}")
     if os.environ.get("HF_TOKEN") and os.environ.get("CCAS_HF_REPO"):
