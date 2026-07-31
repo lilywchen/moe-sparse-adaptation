@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from moe_shift.capacity.naming import run_id_from
+from moe_shift.utils import gpulease
 from moe_shift.utils.config import apply_overrides, load_config
 
 
@@ -69,26 +70,32 @@ def main():
             print(f"  {rid}: lr={lr:g} llrd={llrd:g}")
         return
 
-    slots = [x.strip() for x in args.gpus.split(",")][:args.max_concurrent]
+    # GPUs are leased GLOBALLY (see moe_shift/utils/gpulease.py), not divided up locally.
+    # --max-concurrent is only this launcher's own courtesy limit; the lease is what stops two
+    # `--shard` launchers from putting four jobs on two GPUs and OOM-killing the dataloaders.
+    slots = [x.strip() for x in args.gpus.split(",")]
     running = {}
     while pending or running:
-        for si, gpu in enumerate(slots):
-            if si in running or not pending:
-                continue
+        while pending and len(running) < args.max_concurrent:
+            gpu = gpulease.acquire_any(slots)
+            if gpu is None:                            # every GPU is busy, ours or not
+                break
             cfg_path, ov, rid, _, _ = pending.pop(0)
             env = dict(os.environ, CUDA_VISIBLE_DEVICES=gpu)
             log = open(out / f"{rid}.log", "a")
             cmd = [sys.executable, "scripts/run_ccas.py", "--config", cfg_path,
                    "--results-dir", str(out), "--override", *ov]
-            running[si] = (subprocess.Popen(cmd, env=env, stdout=log,
-                                            stderr=subprocess.STDOUT), rid, log)
-            print(f"[start] gpu={gpu} {rid}", flush=True)
-        for si in list(running):
-            proc, rid, log = running[si]
+            proc = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT)
+            gpulease.adopt(gpu, proc.pid)              # lease now tracks the job, not us
+            running[gpu] = (proc, rid, log)
+            print(f"[start] gpu={gpu} pid={proc.pid} {rid}", flush=True)
+        for gpu in list(running):
+            proc, rid, log = running[gpu]
             if proc.poll() is not None:
                 log.close()
+                gpulease.release(gpu, pid=proc.pid)
                 print(f"[exit] {rid} rc={proc.returncode}", flush=True)
-                del running[si]
+                del running[gpu]
         time.sleep(10)
 
 

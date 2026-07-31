@@ -172,6 +172,45 @@ def test_cluster_bootstrap_weights_environments_by_size():
 
 
 # ------------------------------------------------------------------ audits
+# ------------------------------------------- per-environment breakdown (the '-1' collapse)
+def test_sentinel_only_env_breakdown_is_an_error(tmp_path):
+    """The exact regression: OOD runs bucketing every image into site -1."""
+    _write(tmp_path, acc_selection=0.3, per_env_val={"-1": 9854}, per_env_n_val={"-1": 9854},
+           run_id="rxrx1_moe_collapsed_s0")
+    msgs = agg.env_breakdown_audit(agg.load(tmp_path))
+    assert any(m.startswith("ERROR") and "-1" in m for m in msgs), msgs
+
+
+def test_real_multi_env_breakdown_is_silent(tmp_path):
+    _write(tmp_path, acc_selection=0.3,
+           per_env_val={"33": 0.31, "34": 0.29, "35": 0.30},
+           per_env_n_val={"33": 3000, "34": 3400, "35": 3454},
+           run_id="rxrx1_moe_ok_s0")
+    assert agg.env_breakdown_audit(agg.load(tmp_path)) == []
+
+
+def test_single_real_env_is_a_warning_not_an_error(tmp_path):
+    """Camelyon17's OOD val is one hospital: legitimate, but the bootstrap degenerates."""
+    _write(tmp_path, dataset="camelyon17", acc_selection=0.93,
+           per_env_val={"1": 0.93}, per_env_n_val={"1": 34904},
+           run_id="camelyon17_moe_onehosp_s0")
+    msgs = agg.env_breakdown_audit(agg.load(tmp_path))
+    assert len(msgs) == 1 and msgs[0].startswith("WARNING"), msgs
+
+
+def test_env_audit_reaches_the_printed_report(tmp_path):
+    """A collapsed breakdown must be visible in the report, not just in the helper."""
+    make_grid(tmp_path)
+    _write(tmp_path, acc_selection=0.3, per_env_val={"-1": 100}, per_env_n_val={"-1": 100},
+           run_id="rxrx1_moe_collapsed_s0")
+    assert "single sentinel bucket" in agg.build_report(agg.load(tmp_path))
+
+
+def test_cluster_bootstrap_is_nan_on_the_collapsed_breakdown():
+    """Why the collapse matters: the plan's per-run uncertainty cannot be computed from it."""
+    assert np.isnan(agg.cluster_bootstrap_env({-1: 0.3}, {-1: 9854})["mean"])
+
+
 def test_budget_violation_is_caught(tmp_path):
     _write(tmp_path, variant="moe", seed=0, acc_selection=0.3,
            total_params=30_000_000, run_id="m0")

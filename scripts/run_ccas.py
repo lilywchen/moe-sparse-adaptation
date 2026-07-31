@@ -68,7 +68,7 @@ def build_optimizer(model, cfg, adversary=None):
 
 @torch.no_grad()
 def evaluate(model, loader, device):
-    """-> (acc, worst_env_acc, per_env_acc, per_env_n).
+    """-> (acc, worst_env_acc, per_env_acc, per_env_n), bucketed by RAW environment id.
 
     `per_env_n` is required, not cosmetic: the plan's uncertainty is a CLUSTER bootstrap over
     experiments / hospitals, which cannot be reconstructed from per-environment accuracies alone.
@@ -77,7 +77,12 @@ def evaluate(model, loader, device):
     ok = tot = 0
     per_env_ok, per_env_tot = {}, {}
     for batch in loader:
-        x, y, s = batch[0].to(device), batch[1].to(device), batch[2]
+        x, y = batch[0].to(device), batch[1].to(device)
+        # Bucket by the RAW environment id (batch[3]) when the loader provides one. batch[2] is
+        # the TRAIN-remapped site index, which is -1 for every row of an OOD split -- keying on it
+        # collapsed per_env to a single '-1' bucket and made worst_env_* equal to overall accuracy.
+        # The 3-tuple fallback is for the injected-nuisance loaders, where site IS the environment.
+        s = batch[3] if len(batch) > 3 else batch[2]
         pred = model(x).argmax(1)
         c = (pred == y)
         ok += c.sum().item(); tot += y.numel()

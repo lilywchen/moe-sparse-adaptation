@@ -18,6 +18,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from moe_shift.capacity.naming import run_id_from
+
+from moe_shift.utils import gpulease
 from moe_shift.utils.config import apply_overrides, load_config
 
 PLACEMENTS = ["early", "middle", "late"]
@@ -113,20 +115,30 @@ def main():
             print(f"    ... and {len(todo)-40} more")
         return
 
-    slots = [g.strip() for g in args.gpus.split(",")][: args.max_concurrent]
-    print(f"CCAS: {len(todo)} pending, {len(slots)} slots -> {RESULTS}", flush=True)
+    # One lease per physical GPU, held across ALL launcher processes (see gpulease.py). Stage 1 is
+    # 168 cells and is normally sharded; without the lease each shard enforced --max-concurrent
+    # against its own copy of --gpus, so N shards ran 2N jobs and the host cgroup OOM-killed the
+    # dataloader workers. --max-concurrent survives as this launcher's own ceiling.
+    slots = [g.strip() for g in args.gpus.split(",")]
+    print(f"CCAS: {len(todo)} pending, {len(slots)} GPUs, "
+          f"max {args.max_concurrent} here -> {RESULTS}", flush=True)
     running = {}
     while todo or running:
-        for si, gpu in enumerate(slots):
-            if si not in running and todo:
-                lab, cfg_path, ov, rid, dset, seed = todo.pop(0)
-                running[si] = (launch(cfg_path, ov, rid, gpu), rid)
-                print(f"[start] slot{si} gpu{gpu} {rid}", flush=True)
-        for si in list(running):
-            p, rid = running[si]
+        while todo and len(running) < args.max_concurrent:
+            gpu = gpulease.acquire_any(slots)
+            if gpu is None:
+                break
+            lab, cfg_path, ov, rid, dset, seed = todo.pop(0)
+            p = launch(cfg_path, ov, rid, gpu)
+            gpulease.adopt(gpu, p.pid)
+            running[gpu] = (p, rid)
+            print(f"[start] gpu{gpu} pid={p.pid} {rid}", flush=True)
+        for gpu in list(running):
+            p, rid = running[gpu]
             if p.poll() is not None:
-                print(f"[exit ] slot{si} {rid} rc={p.returncode}", flush=True)
-                del running[si]
+                gpulease.release(gpu, pid=p.pid)
+                print(f"[exit ] gpu{gpu} {rid} rc={p.returncode}", flush=True)
+                del running[gpu]
         time.sleep(10)
     print("CCAS sweep complete")
     subprocess.run([sys.executable, "scripts/aggregate_ccas.py"], env=dict(os.environ, MOE_RESULTS=str(RESULTS)))

@@ -11,7 +11,9 @@ WILDS 'official' split (domain = experiment, 51 experiments across 4 cell types)
     id_test   -> held-out IMAGES from the SAME seen experiments   -> test_within + audit
     test      -> OOD experiments (UNSEEN batches)                 -> test_heldout (the headline)
 
-Loader contract (matches run_experiment.py + audit/*): each batch yields (x, y, site) where
+Loader contract (matches run_experiment.py + audit/*): each batch yields (x, y, site, env).
+`env` is the RAW experiment id, defined on every split, and is what per-environment accuracy
+is bucketed by. `site` is the train-remapped index used by the adversary and the audits, where
 `site` is a CONTIGUOUS train-experiment index in 0..K-1 (so the DANN site-adversary and
 routing-MI work unchanged). OOD images get site=-1 (unseen; never audited). This function
 SETS cfg["sites"]["K"] to the number of train experiments so the adversary and the
@@ -47,7 +49,20 @@ def _rxrx1_transform(img_size, train, rrc=False):
 
 
 class _SiteView(Dataset):
-    """Adapt a WILDS subset -> (x, y, site_int), site = remapped experiment index (or -1 if unseen)."""
+    """Adapt a WILDS subset -> (x, y, site_int, env_int).
+
+    TWO domain fields, deliberately distinct. Conflating them was a real bug: per-environment
+    accuracy used to be bucketed by `site`, and on an OOD split every environment is unseen, so
+    every row hashed to the single `-1` bucket. `worst_env_*` then came out identically equal to
+    overall accuracy, and PLAN.md's cluster bootstrap over environments silently degenerated to a
+    point estimate.
+
+    site : train-contiguous index in 0..K-1, or -1 for an environment never seen in training.
+           The DANN adversary, the routing-MI audit and the leakage chance level (1/K) all need
+           this index space, so the -1 sentinel stays exactly as it was.
+    env  : the RAW acquisition-environment id (experiment / hospital) from the WILDS metadata.
+           Well defined on every split, and the only correct key for per-environment reporting.
+    """
     def __init__(self, subset, exp_col, remap):
         self.subset = subset
         self.exp_col = exp_col
@@ -59,7 +74,7 @@ class _SiteView(Dataset):
     def __getitem__(self, i):
         x, y, meta = self.subset[i]              # WILDS: (image, label, metadata_row)
         raw = int(meta[self.exp_col])
-        return x, int(y), int(self.remap.get(raw, -1))
+        return x, int(y), int(self.remap.get(raw, -1)), raw
 
 
 def make_rxrx1_loaders(cfg):
@@ -104,7 +119,8 @@ def make_rxrx1_val_loader(cfg):
     OOD val, report on OOD test, so the test set is never used to make decisions. Returned
     separately from the 4 core loaders so the dispatcher / injected-nuisance path are unchanged.
     Returns a DataLoader, or None if the dataset has no 'val' split. Sites are remapped exactly
-    like the other loaders (val experiments are unseen -> site=-1; accuracy ignores site anyway).
+    like the other loaders (val experiments are unseen -> site=-1), but the 4th tuple element
+    carries the RAW experiment id, which is what per-environment accuracy is bucketed by.
     """
     from wilds import get_dataset
 

@@ -3,7 +3,8 @@
 Same study as RxRx1, different acquisition: nuisance = HOSPITAL (5 medical centres; H&E stain colour
 + scanner differ), label = tumour vs normal (binary). Identical (x, y, site) contract — `site` is a
 contiguous train-hospital index 0..K-1 (OOD hospitals -> -1), so the DANN adversary, routing-MI, and
-leakage probes all work unchanged. WILDS 'official' split:
+leakage probes all work unchanged; the 4th tuple element `env` is the raw hospital id, which is
+what per-environment accuracy is bucketed by (an OOD split has no seen sites, only real envs). WILDS 'official' split:
     train   -> seen hospitals                         -> train
     id_val  -> held-out patches, SEEN hospitals       -> test_within + audit
     test    -> OOD hospital (unseen)                  -> test_heldout (the headline)

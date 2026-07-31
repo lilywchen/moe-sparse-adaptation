@@ -303,6 +303,45 @@ def leakage_audit(df, stage3):
     return msgs
 
 
+def env_breakdown_audit(df):
+    """Catch the per-environment breakdown collapsing to a single bucket.
+
+    PLAN.md's uncertainty on a single run is a CLUSTER BOOTSTRAP OVER ENVIRONMENTS. That estimator
+    needs >= 2 environments; with one bucket it silently returns NaN and `worst_env_*` becomes
+    identically equal to overall accuracy — a vacuous metric that still prints like a real one.
+
+    Historically this happened for a specific reason worth naming: per-environment accuracy was
+    keyed on the TRAIN-remapped site index, which is the sentinel -1 for every row of an OOD split.
+    Every OOD run therefore reported `{-1: n}`. The loaders now emit the raw environment id as a
+    4th tuple element; this audit exists so a regression cannot pass unnoticed again.
+    """
+    msgs = []
+    for col in ("per_env_val", "per_env_heldout"):
+        if col not in df.columns:
+            continue
+        sentinel, single = [], []
+        for rid, d in zip(df.get("run_id", df.index), df[col]):
+            if not isinstance(d, dict) or not d:
+                continue
+            keys = {str(k) for k in d}
+            if keys == {"-1"}:
+                sentinel.append(rid)
+            elif len(keys) < 2:
+                single.append(rid)
+        if sentinel:
+            msgs.append(
+                f"ERROR: {len(sentinel)} runs report `{col}` as the single sentinel bucket "
+                f"'-1' (e.g. {sentinel[0]}). The environment id never reached evaluate(), so "
+                f"worst-environment accuracy is vacuous and the cluster bootstrap over "
+                f"environments cannot be computed. These runs must be re-evaluated.")
+        if single:
+            msgs.append(
+                f"WARNING: {len(single)} runs report a single environment in `{col}` "
+                f"(e.g. {single[0]}); the cluster bootstrap over environments is a point "
+                f"estimate for them.")
+    return msgs
+
+
 # --------------------------------------------------------------------------- report
 def build_report(df, stage3=False):
     out = []
@@ -313,7 +352,7 @@ def build_report(df, stage3=False):
     P(f"Selection metric: `{metric}` (OOD validation). "
       f"{'OOD TEST REVEALED (Stage 3).' if stage3 else 'OOD test withheld (Stage 1/2 gate).'}")
     P("")
-    for m in leakage_audit(df, stage3):
+    for m in leakage_audit(df, stage3) + env_breakdown_audit(df):
         P(f"- {m}")
     P("")
 

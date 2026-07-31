@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 def features_and_site(model, loader, device):
     model.eval()
     feats, sites = [], []
-    for x, _y, site in loader:
+    for x, _y, site, *_ in loader:
         f = model.forward_features(x.to(device))
         feats.append(f.float().cpu().numpy())
         sites.append(np.asarray(site))
@@ -28,7 +28,7 @@ def features_site_label(model, loader, device):
     """One pass -> (features, site, label) so both probes share the SAME frozen features."""
     model.eval()
     feats, sites, labels = [], [], []
-    for x, y, site in loader:
+    for x, y, site, *_ in loader:
         f = model.forward_features(x.to(device))
         feats.append(f.float().cpu().numpy())
         sites.append(np.asarray(site))

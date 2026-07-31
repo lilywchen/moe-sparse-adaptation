@@ -9,7 +9,7 @@ def capture(model, loader, device):
     """Per-image top-1 expert id, site label, AND class label (MoE models only)."""
     model.eval()
     experts, sites, labels = [], [], []
-    for x, y, site in loader:
+    for x, y, site, *_ in loader:
         model(x.to(device))
         experts.append(model.moe_block.top1().numpy())
         sites.append(np.asarray(site))
@@ -23,7 +23,7 @@ def capture_spatial(model, loader, device):
     to each of its tokens (token order is image-major, matching SpatialMoEBlock.forward)."""
     model.eval()
     experts, sites, labels = [], [], []
-    for x, y, site in loader:
+    for x, y, site, *_ in loader:
         model(x.to(device))
         tpi = model.moe_block.tokens_per_image
         experts.append(model.moe_block.top1().numpy())          # [B*tpi]
