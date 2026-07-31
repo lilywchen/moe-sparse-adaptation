@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 19:14 EDT
+Last verified: 2026-07-31 19:38 EDT
 
 ## Scientific question
 
@@ -13,13 +13,14 @@ gain or failure?
 
 The study is in Stage 0. The frozen 36-cell factorial has not started. All six RxRx1 seed-0 shared-
 HPO candidates have completed and passed strict validation under execution commit `26ad7fa`.
-One Camelyon17 candidate is valid, giving `7/12` formal results overall; three Camelyon17 workers
+Two Camelyon17 candidates are valid, giving `8/12` formal results overall; three Camelyon17 workers
 remain active and the launcher retains the remaining queue.
 
-RxRx1 remains behind a substrate competence gate. The canonical WILDS ResNet-50 ERM reproduction
-and four bounded DINOv2 rescue diagnostics are running. The rescue set tests cropping, layer-wise
-decay, their interaction, and official-style RxRx1 preprocessing. All eight allocated H100s are
-occupied by useful Stage-0 work. The OOD-test subset remains unavailable.
+RxRx1 remains behind a substrate competence gate. Two of four bounded DINOv2 rescue diagnostics
+are strictly valid; the interaction arm is in post-training evaluation and the official-style
+preprocessing arm is training. Six H100s are active across those two Rx jobs, three Camelyon17
+workers, and the canonical control. Two H100s are idle because no additional rescue arm is licensed.
+The OOD-test subset remains unavailable.
 
 ## Decision-grade findings
 
@@ -81,6 +82,18 @@ The rescue set is fixed relative to the best DINOv2 anchor `(lr=1e-4, LLRD=0.85)
 All rescue arms are diagnostic-only and cannot enter the formal HPO ranking. The official-style
 implementation passed 3 focused tests and 75/75 full-suite tests before launch.
 
+Two rescue results are now valid:
+
+| Run | OOD-val accuracy | seen-environment accuracy | worst-environment val | Status |
+|---|---:|---:|---:|---|
+| `rxdiag_no_rrc` | 0.015425 | 0.045134 | 0.001218 | valid diagnostic |
+| `rxdiag_uniform_lr` | 0.013294 | 0.036738 | 0.000812 | valid diagnostic |
+
+Relative to the fixed anchor (0.014816 OOD-val, 0.038043 seen), removing crop gives only a small
+gain and uniform layer learning rates alone are worse. Neither reaches even 20% of the canonical
+control on both metrics, so neither can independently satisfy the frozen competence gate. The gate
+remains open until the interaction and official-style arms are valid.
+
 ## Current scientific interpretation
 
 The complete clean-commit RxRx1 grid establishes that the current DINOv2 recipe is not merely
@@ -107,6 +120,12 @@ their interaction, and a domain-specific preprocessing mismatch. DINOv2 is retai
 only above 80% of the canonical control on both OOD-val and ID-test accuracy, abandoned
 automatically below 50% on either, and requires one explicit decision in between. This prevents
 the strength of DINOv2's reputation from turning into unlimited tuning.
+
+The first two rescue results weaken both the cropping-only and LLRD-only explanations. The combined
+arm may still reveal an interaction, and the official-style arm remains the strongest remaining
+preprocessing test: at epoch 23 its training loss was 4.3387 versus 5.4145 at the combined arm's
+epoch 29. That loss difference is provisional optimization evidence only; validation accuracy can
+still remain poor.
 
 ## Implications for experimental design
 

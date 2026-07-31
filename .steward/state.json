@@ -1,15 +1,17 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "prioritize_rxrx1_and_launch_complete_bounded_dinov2_rescue_set",
-  "last_action_at": "2026-07-31T19:14:20-04:00",
+  "last_action": "validate_two_rxrx1_rescue_results_and_second_camelyon17_result",
+  "last_action_at": "2026-07-31T19:38:00-04:00",
   "last_verified_commit": "26ad7fa",
-  "valid_results": 7,
+  "valid_results": 8,
   "expected_results": 12,
-  "active_gpu_workers": 8,
+  "active_gpu_workers": 6,
+  "valid_rxrx1_rescue_results": 2,
+  "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "running_healthy",
   "last_synced_commit": "5f8310c",
   "overleaf_build_status": "pass_0_errors_1_warning_2_info",
-  "next_gate": "validate_four_rxrx1_rescue_arms_and_apply_80_50_dinov2_competence_gate; complete_camelyon17_phase_a_independently"
+  "next_gate": "validate_combined_and_official_style_rxrx1_rescue_arms_then_apply_80_50_dinov2_competence_gate; complete_camelyon17_phase_a_independently"
 }

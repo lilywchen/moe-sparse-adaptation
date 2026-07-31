@@ -101,3 +101,37 @@ automatically if it remains below 50% on either metric; ask for one backbone dec
 zone. Do not add rescue arms. If DINOv2 passes, rerun the small RxRx1 dense recipe screen from one
 clean frozen commit before any MoE factorial work. Continue Camelyon17 independently. Do not access
 OOD test or launch Stage 1 before these gates resolve.
+
+## 2026-07-31 19:38 EDT material update
+
+Two of four bounded RxRx1 rescue arms completed and passed strict validation. Both are clean
+`26ad7fa`, use the exact frozen anchor configuration except for their named intervention, contain
+finite metrics and exact run/config identity, retain 21,628,800 training parameters, record
+`selection_split=ood_val`, and record `test_evaluated=false`.
+
+- `rxdiag_no_rrc`: OOD-val 0.015425, seen-environment 0.045134, worst-environment val 0.001218.
+- `rxdiag_uniform_lr`: OOD-val 0.013294, seen-environment 0.036738, worst-environment val 0.000812.
+
+Removing random-resized crop therefore produces only a small improvement over the failed anchor
+(0.014816 OOD-val, 0.038043 seen), while uniform layer learning rates alone are worse. Both remain
+far below half of the canonical control on both gate metrics and cannot rescue DINOv2 by themselves.
+This is diagnostic rather than a final backbone decision because the combined and official-style
+preprocessing arms remain unfinished.
+
+The combined no-crop/uniform-LR run completed epoch 29 and is alive in its CPU-heavy validation and
+decodability phase; its latest persistent log was 2 minutes old and contained no fatal error. The
+official-style transform run reached epoch 23 with loss 4.3387 and a fresh log under clean isolated
+commit `1da67a5`; this lower training loss is encouraging but is not interpreted as performance.
+Six H100s are active: the combined rescue evaluation, official-style rescue training, three
+Camelyon17 workers, and the canonical RxRx1 control. Two H100s are idle because the completed rescue
+arms freed them and no additional RxRx1 arm is authorized before the frozen competence decision.
+
+A second Camelyon17 candidate also completed and passed the same formal Stage-0 validation checks,
+raising common-commit coverage to 8/12 overall and Camelyon17 coverage to 2/6. The new candidate
+`camelyon17_original_ep10_s0_hpoA_lr3e-05_llrd0.85` reached OOD-val 0.885601 and seen-environment
+accuracy 0.994666. This is promising but the incomplete six-cell grid cannot yet support selection.
+
+Next: validate the combined and official-style RxRx1 JSONs as soon as they appear, then apply the
+frozen 80%/50% competence gate over all four arms. Independently finish and rank the six Camelyon17
+candidates. No OOD-test access, RxRx1 replication, MoE launch, or additional rescue tuning is
+licensed before those gates.
