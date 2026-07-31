@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "classification": "ACTIONABLE",
-  "last_action": "hf_write_and_backfill_verified",
-  "last_action_at": "2026-07-31T14:25:45-04:00",
-  "last_verified_commit": "a2733da",
-  "next_gate": "monitor_stage0_phase_a"
+  "classification": "RUNNING_HEALTHY",
+  "last_action": "launch_common_commit_phase_a_revalidation",
+  "last_action_at": "2026-07-31T17:35:21-04:00",
+  "last_verified_commit": "26ad7fa",
+  "next_gate": "validate_and_rank_12_common_commit_phase_a_results"
 }
