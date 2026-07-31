@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "strictly_validate_four_common_commit_rxrx1_results_and_update_scientific_artifacts",
-  "last_action_at": "2026-07-31T18:24:30-04:00",
+  "last_action": "validate_complete_rxrx1_grid_and_launch_two_single_factor_rescue_diagnostics",
+  "last_action_at": "2026-07-31T18:58:00-04:00",
   "last_verified_commit": "26ad7fa",
-  "valid_results": 4,
+  "valid_results": 7,
   "expected_results": 12,
   "active_gpu_workers": 6,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "running_healthy",
   "last_synced_commit": "5f8310c",
   "overleaf_build_status": "pass_0_errors_1_warning_2_info",
-  "next_gate": "complete_and_validate_rxrx1_phase_a_then_resolve_rxrx1_sanity; complete_camelyon17_phase_a_independently"
+  "next_gate": "complete_and_validate_rxrx1_no_rrc_and_uniform_lr_diagnostics_then_decide_dinov2_go_no_go; complete_camelyon17_phase_a_independently"
 }
