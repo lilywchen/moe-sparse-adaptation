@@ -11,7 +11,7 @@
   "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "running_healthy",
-  "last_synced_commit": "5f8310c",
-  "overleaf_build_status": "pass_0_errors_1_warning_2_info",
+  "last_synced_commit": "240b39d",
+  "overleaf_build_status": "pass_0_errors_1_warning",
   "next_gate": "validate_combined_and_official_style_rxrx1_rescue_arms_then_apply_80_50_dinov2_competence_gate; complete_camelyon17_phase_a_independently"
 }
