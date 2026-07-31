@@ -30,7 +30,6 @@ train:
   warmup_epochs: 5
   llrd: 0.7
   rand_resized_crop: true
-  env_balanced_sampler: true              # same sampler for BOTH balance arms (loss is the only intervention)
 losses:
   balance_w: 1.0e-2
   zloss_w: 1.0e-3

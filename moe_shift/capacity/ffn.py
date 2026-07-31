@@ -47,6 +47,11 @@ class WideFFN(nn.Module):
         d_in, d_hidden, d_out = fc1.in_features, fc1.out_features, fc2.out_features
         self.n_experts, self.sym_break = n_experts, float(sym_break)
         self.act = copy.deepcopy(act)
+        self.drop1 = copy.deepcopy(getattr(mlp, "drop1", nn.Identity()))
+        self.norm = copy.deepcopy(getattr(mlp, "norm", nn.Identity()))
+        self.drop2 = copy.deepcopy(getattr(mlp, "drop2", nn.Identity()))
+        if any(p.numel() for p in self.norm.parameters()):
+            raise TypeError("parameterized hidden normalization is not supported by WideFFN")
 
         # Pick the closest realizable hidden width to the MoE's full block budget, including its
         # router and replicated output biases. This is strictly closer than blindly using E*h.
@@ -85,7 +90,9 @@ class WideFFN(nn.Module):
                 self.fc2.bias.copy_(fc2.bias)
 
     def forward(self, x):
-        return self.fc2(self.act(self.fc1(x)))
+        x = self.drop1(self.act(self.fc1(x)))
+        x = self.norm(x)
+        return self.drop2(self.fc2(x))
 
 
 class MoEFFN(nn.Module):
