@@ -2,6 +2,9 @@
 
 Last verified: 2026-07-31 on SciServer, commit `fa81281`.
 
+Research-state synchronization: GitHub commit `a2733da` was pulled into the linked Overleaf
+project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with no fatal alert.
+
 ## Protocol state
 
 - [x] Scientific question and three analyses frozen in `PLAN.md`.
