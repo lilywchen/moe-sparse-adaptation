@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 18:58 EDT
+Last verified: 2026-07-31 19:14 EDT
 
 ## Scientific question
 
@@ -16,10 +16,10 @@ HPO candidates have completed and passed strict validation under execution commi
 One Camelyon17 candidate is valid, giving `7/12` formal results overall; three Camelyon17 workers
 remain active and the launcher retains the remaining queue.
 
-RxRx1 remains behind a substrate sanity gate. The canonical WILDS ResNet-50 ERM reproduction is at
-epoch 22, and two bounded DINOv2 rescue diagnostics are now running: removing random-resized crop
-and removing layer-wise LR decay, one factor at a time. They use validation/ID evidence only; the
-OOD-test subset remains unavailable.
+RxRx1 remains behind a substrate competence gate. The canonical WILDS ResNet-50 ERM reproduction
+and four bounded DINOv2 rescue diagnostics are running. The rescue set tests cropping, layer-wise
+decay, their interaction, and official-style RxRx1 preprocessing. All eight allocated H100s are
+occupied by useful Stage-0 work. The OOD-test subset remains unavailable.
 
 ## Decision-grade findings
 
@@ -68,9 +68,18 @@ not a contender in the MoE comparison, but it establishes that the current RxRx1
 split plumbing support substantial learning. It strongly shifts the diagnosis away from a broken
 dataset and toward the DINOv2 adaptation substrate.
 
-The two rescue runs isolate leading explanations from the fixed best DINOv2 anchor `(lr=1e-4,
-LLRD=0.85)`: `rxdiag_no_rrc` changes only random-resized cropping, and `rxdiag_uniform_lr` changes
-only LLRD to 1.0. Both are diagnostic-only and cannot enter the formal HPO ranking.
+The rescue set is fixed relative to the best DINOv2 anchor `(lr=1e-4, LLRD=0.85)`:
+
+| Run | Crop | LLRD | Normalization / geometry | Role |
+|---|---|---:|---|---|
+| anchor | random resized | 0.85 | ImageNet / flips | failed reference |
+| `rxdiag_no_rrc` | resize only | 0.85 | ImageNet / flips | crop main effect |
+| `rxdiag_uniform_lr` | random resized | 1.0 | ImageNet / flips | adaptation main effect |
+| `rxdiag_no_rrc_uniform_lr` | resize only | 1.0 | ImageNet / flips | interaction |
+| `rxdiag_wilds_uniform_lr` | resize only | 1.0 | per-image channel standardization / right-angle rotations + horizontal flip | Rx-native preprocessing |
+
+All rescue arms are diagnostic-only and cannot enter the formal HPO ranking. The official-style
+implementation passed 3 focused tests and 75/75 full-suite tests before launch.
 
 ## Current scientific interpretation
 
@@ -92,11 +101,12 @@ Competing explanations remain live:
 4. **Residual implementation mismatch:** less likely now, but still possible if the two pipelines
    differ in a way beyond the intended model/transform/optimization choices.
 
-The canonical curve has resolved the main data-pipeline ambiguity: RxRx1 is learnable here. The two
-single-factor diagnostics now distinguish whether the failure is primarily caused by destructive
-cropping or by suppressing early-layer adaptation. A large rescue from either makes a corrected
-DINOv2 protocol plausible; a null result from both makes backbone replacement the principled next
-move.
+The canonical curve has resolved the main data-pipeline ambiguity: RxRx1 is learnable here. The
+bounded rescue set now distinguishes destructive cropping, suppressed early-layer adaptation,
+their interaction, and a domain-specific preprocessing mismatch. DINOv2 is retained automatically
+only above 80% of the canonical control on both OOD-val and ID-test accuracy, abandoned
+automatically below 50% on either, and requires one explicit decision in between. This prevents
+the strength of DINOv2's reputation from turning into unlimited tuning.
 
 ## Implications for experimental design
 
@@ -109,8 +119,7 @@ move.
 
 ## Next decisions
 
-1. Complete and validate `rxdiag_no_rrc` and `rxdiag_uniform_lr` against the fixed anchor.
-2. If one strongly rescues DINOv2, freeze that correction and repeat the shared recipe screen; if
-   neither does, make an explicit backbone change before spending the Stage-1 budget.
+1. Complete and validate all four rescue arms against the fixed anchor and canonical control.
+2. Apply the frozen 80%/50% competence gate; do not add tuning.
 3. Complete and rank Camelyon17 Phase A independently.
 4. Freeze shared recipes and calibration values before launching any Stage-1 factorial cells.

@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-07-31 18:58 EDT on SciServer.
+Last verified: 2026-07-31 19:14 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `5f8310c` was pulled into the linked Overleaf
 project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with 0 errors, one
@@ -42,8 +42,9 @@ Current allocation and progress:
 
 - container 2875: canonical WILDS RxRx1 ERM sanity reproduction on GPU 0 and one Camelyon17
   Phase-A candidate on GPU 1
-- container 2874: controlled RxRx1 `no random-resized crop` diagnostic on GPU 0; GPU 1 idle
-- container 2862: controlled RxRx1 `uniform layer learning rate` diagnostic on GPU 0; GPU 1 idle
+- container 2874: RxRx1 `no random-resized crop` on GPU 0 and `no crop + uniform layer LR` on GPU 1
+- container 2862: RxRx1 `uniform layer LR` on GPU 0 and `official-style preprocessing + uniform
+  layer LR` on GPU 1
 - container 2859: two Camelyon17 Phase-A candidates on GPUs 0 and 1
 
 All six RxRx1 Phase-A candidates have now completed and passed strict validation (`6/6` RxRx1).
@@ -54,12 +55,12 @@ parameter count (21,628,800). The RxRx1 ranking by the frozen rule is `(1e-4, 0.
 0.85)`, `(1e-4, 0.70)`, `(3e-4, 0.70)`, `(3e-5, 0.85)`, `(3e-5, 0.70)`, but no recipe is frozen
 or replicated because the entire grid remains in a clearly inadequate accuracy regime.
 
-Six H100s are active: three Camelyon17 candidates, the canonical RxRx1 ERM control, and two
-single-factor RxRx1 substrate diagnostics. Two H100s are idle because no additional diagnostic is
-needed before these causal checks return. All formal revalidation work uses `26ad7fa` and the
-persistent root `hpo_revalidation_26ad7fa/`. The two new diagnostics also execute clean commit
-`26ad7fa` but write to the separate diagnostic root `hpo/rxrx1/dense_rescue_26ad7fa/` and cannot
-enter the formal HPO ranking.
+All eight H100s are active: three Camelyon17 candidates, the canonical RxRx1 ERM control, and four
+bounded RxRx1 substrate diagnostics. All formal revalidation work uses `26ad7fa` and the persistent
+root `hpo_revalidation_26ad7fa/`. The no-crop, uniform-LR, and combined diagnostics execute clean
+commit `26ad7fa` under `hpo/rxrx1/dense_rescue_26ad7fa/`. The official-style transform is GitHub
+commit `aa8d0cf`, applied and regression-tested as clean isolated SciServer commit `1da67a5`, under
+`hpo/rxrx1/dense_rescue_1da67a5/`. These are diagnostic and cannot enter the formal HPO ranking.
 
 Both 90-epoch RxRx1 DINOv2 probes completed but remain diagnostic: OOD-validation accuracy was
 0.0140/0.0177 and seen-environment accuracy was 0.0945/0.1042 for LLRD 0.70/0.85. Their files are
@@ -72,12 +73,20 @@ training-set evaluation was 70.7%. This is decisive diagnostic evidence that the
 and split plumbing are learnable in the current environment. It is not a model-selection baseline
 for the MoE factorial and does not use the OOD-test split.
 
-Because the official control learned while every DINOv2 recipe remained weak, two bounded
-single-factor diagnostics were launched from the best formal DINOv2 anchor `(lr=1e-4, LLRD=0.85)`:
-one removes random-resized cropping while holding optimization fixed, and one sets LLRD to 1.0
-while retaining the crop. Both passed config/idempotency/clean-commit/GPU preflight and were
-independently verified on GPU 0 of containers 2874 and 2862 at 99% utilization with the expected
-command identity, fresh persistent logs, and OOD-test blindness.
+Because the official control learned while every DINOv2 recipe remained weak, the bounded rescue
+set now contains four predeclared arms from the `(lr=1e-4, LLRD=0.85)` anchor: remove cropping;
+set LLRD to 1.0; combine both; and use official WILDS RxRx1 transform semantics with uniform LR.
+The latter uses discrete right-angle rotations, horizontal flips, and per-image/per-channel
+standardization, plus the deterministic 224 resize required by DINOv2. The transform change passed
+3 focused tests and the full SciServer suite (75/75). All four jobs passed clean-checkout,
+config/idempotency, persistent-path, test-blindness, and free-GPU checks and were independently
+verified at 99% utilization with expected command identities and advancing logs.
+
+The apparent cross-dataset recipe symmetry was incomplete: LR/LLRD candidates were shared, but
+RxRx1 used 30 epochs/3 warmup epochs and honored random-resized cropping, while Camelyon17 used 10
+epochs/1 warmup epoch and its loader bypassed the crop flag. Dataset-specific recipes are allowed,
+but this difference is now explicit: competence-tune once per dataset, freeze it, and apply it
+identically to every dense and MoE cell within that dataset.
 
 GitHub/local source remains the scientific source of truth. The frozen 36-cell Stage-1 design is
 unchanged; the unreviewed 24-cell alternative from the exploratory SciServer branch remains
@@ -85,10 +94,10 @@ excluded.
 
 ## Next safe action
 
-Continue the six healthy jobs. When the two RxRx1 diagnostics finish, strictly validate them and
-compare each only with the fixed `(1e-4, 0.85)` anchor. If either produces a large recovery, freeze
-the corresponding corrected adaptation recipe and rerun the small shared screen before any MoE
-factorial work. If neither approaches a credible dense regime while the canonical ERM remains
-strong, stop using DINOv2 as the RxRx1 substrate and make an explicit backbone decision rather
-than spending the factorial budget on a floor baseline. Continue and validate Camelyon17 Phase A
-independently. Do not access OOD test or launch Stage 1 before these gates resolve.
+Continue all eight healthy jobs. Strictly validate the four rescue JSONs and compare them with the
+fixed anchor and the final/best canonical validation-only control. Keep DINOv2 automatically only
+if the best rescue reaches at least 80% of canonical OOD-val and ID-test accuracy; abandon it
+automatically if it remains below 50% on either metric; ask for one backbone decision in the middle
+zone. Do not add rescue arms. If DINOv2 passes, rerun the small RxRx1 dense recipe screen from one
+clean frozen commit before any MoE factorial work. Continue Camelyon17 independently. Do not access
+OOD test or launch Stage 1 before these gates resolve.

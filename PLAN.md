@@ -21,9 +21,10 @@ design choices that govern any gain, and tests what the learned routing relies o
    route dependence, acquisition/label information in routes, and acquisition/label decodability
    in final embeddings.
 
-## Fixed substrate and datasets
+## Candidate substrate and datasets
 
-- DINOv2 ViT-S/14, full supervised fine-tuning.
+- DINOv2 ViT-S/14, full supervised fine-tuning, conditional on passing the Stage-0 dense-substrate
+  competence gate below. The MoE factorial must not be run on a floor-performing dense substrate.
 - RxRx1: microscopy perturbation classification; acquisition environment = experiment.
 - Camelyon17: histopathology tumor classification; acquisition environment = hospital.
 - Exactly one FFN block is converted in every capacity intervention.
@@ -68,12 +69,25 @@ for a dense model.
   temperature.
 - Output-invariance runs include the same adversary architecture on both sides; training-total and
   inference-total parameters are reported separately.
-- All factors share the same augmentation, sampler, epochs, optimizer family, LR schedule, layer-
-  wise decay, batch size, and seed.
+- Within each dataset, all factors and their paired dense controls share the same frozen
+  augmentation, sampler, epochs, optimizer family, LR schedule, layer-wise decay, batch size, and
+  seed. Dataset-specific adaptation recipes are allowed because the image modalities and task
+  difficulties differ, but they must be selected before the factorial and may not vary by cell.
 
 ## Hyperparameter protocol
 
-Before the factorial, tune the shared dense full-fine-tuning recipe on inner OOD validation only.
+Before the factorial, tune one dense full-fine-tuning recipe per dataset on inner OOD validation
+only. The original RxRx1 screen is disqualified as a substrate recipe because every candidate is
+in a floor regime. Its bounded rescue set tests removal of random-resized cropping, removal of
+layer-wise decay, their interaction, and official-style RxRx1 preprocessing. Do not add rescue arms
+after observing their outcomes.
+
+For RxRx1, compare the best bounded DINOv2 rescue with the validation-only canonical WILDS ERM
+sanity control. Retain DINOv2 automatically only if it reaches at least 80% of the control's
+OOD-validation and ID-test accuracy; abandon it automatically if it remains below 50% of the
+control on either metric. The intermediate zone requires one explicit backbone decision. This is
+a substrate qualification rule, not a leaderboard comparison, and OOD test remains unavailable.
+
 Then tune one router temperature per dataset × geometry, one load-balancing weight per dataset,
 and one output-invariance weight per dataset. Do not tune per cell. Freeze these values before
 running the 36-cell grid and record all candidates, selection metrics, and compute.
@@ -99,7 +113,8 @@ randomized routes with expert weights fixed.
 
 ## Stage gate
 
-- **Stage 0:** protocol tests, dry run, shared HPO, and budget audit.
+- **Stage 0:** protocol tests, dry run, per-dataset dense-substrate competence and HPO, and budget
+  audit.
 - **Stage 1:** complete 36-cell grid with three seeds, OOD validation only.
 - **Stage 2:** predeclared frozen-router and mechanism controls on finalists and representative
   failures selected without OOD test access.

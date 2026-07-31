@@ -1,6 +1,6 @@
 # Evidence and correctness index
 
-Last verified: 2026-07-31 18:58 EDT
+Last verified: 2026-07-31 19:14 EDT
 
 This file maps every material claim to its run identity, provenance, split policy, validation status,
 and downstream use. `Decision-grade` means eligible for a predeclared scientific decision;
@@ -17,7 +17,7 @@ and downstream use. `Decision-grade` means eligible for a predeclared scientific
 | Canonical WILDS ERM protocol can initialize without OOD-test construction | diagnostic guard | RxRx1 / sanity | `hpo/rxrx1/canonical_erm_dry_6fdfcf1/` | WILDS upstream `4726775` plus compatibility `6fdfcf1` | `evaluate_all_splits=false`; `eval_splits=['id_test']`; no `test_eval.csv` | zero-epoch 0.1% dry-run passed; files limited to train, val, and ID-test | launch gate for canonical reproduction |
 | First canonical ERM launch failed before meaningful training | excluded failure | RxRx1 / sanity | `hpo/rxrx1/canonical_erm_sanity_6fdfcf1/launcher.log`; W&B run `26968hby` | `6fdfcf1` | OOD test not constructed or evaluated | excluded explicitly: missing optional `torch_scatter` during group-metric logging | repair audit only |
 | Canonical WILDS ERM retry demonstrates learnability | diagnostic, decision-relevant sanity evidence | RxRx1 / sanity | `hpo/rxrx1/canonical_erm_sanity_6fb65e5_retry1/`; W&B run `rytuap3l`; epoch-21 rows in `train_eval.csv`, `id_test_eval.csv`, and `val_eval.csv` | WILDS upstream `4726775` plus audited compatibility `6fb65e5` | validation plus ID-test only; OOD test not constructed/evaluated | epoch 21: train evaluation 0.7075, ID-test 0.2458, OOD-val 0.1341; process healthy at epoch 22 with fresh logs/checkpoints | establishes dataset/pipeline learnability and motivates bounded DINOv2 substrate rescue |
-| Two single-factor DINOv2 rescue diagnostics launched | diagnostic only | RxRx1 / sanity | `hpo/rxrx1/dense_rescue_26ad7fa/rxrx1_original_ep30_s0_rxdiag_no_rrc*`; `...rxdiag_uniform_lr*` | clean `26ad7fa3b0baa96fae9dab25417e42a844074636` | configured for `ood_val`; test remains untouched | config/idempotency/GPU preflight passed; expected command identities verified on two separate GPU 0 devices at 99% utilization with fresh persistent logs | isolate cropping versus suppressed early-layer adaptation; cannot enter formal HPO ranking |
+| Complete bounded DINOv2 rescue set launched | diagnostic only | RxRx1 / competence gate | `hpo/rxrx1/dense_rescue_26ad7fa/`: `rxdiag_no_rrc`, `rxdiag_uniform_lr`, `rxdiag_no_rrc_uniform_lr`; `hpo/rxrx1/dense_rescue_1da67a5/`: `rxdiag_wilds_uniform_lr` | first three clean `26ad7fa3b0baa96fae9dab25417e42a844074636`; official transform GitHub `aa8d0cf` applied as clean SciServer `1da67a5` | configured for `ood_val`; OOD test untouched | config/idempotency/GPU preflight passed; official transform has 3 focused and 75/75 full-suite tests; four expected command identities verified at 99% utilization with fresh persistent logs | isolate cropping, early-layer adaptation, their interaction, and Rx-native preprocessing; apply frozen 80%/50% competence gate; cannot enter formal HPO ranking |
 
 ## Exact diagnostic metrics
 
