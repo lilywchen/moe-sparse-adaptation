@@ -4,7 +4,10 @@ Persistent repository:
 `/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation`
 
 Persistent results:
-`/home/idies/workspace/Storage/lchen5/persistent/RESULTS/moe-sparse-adaptation`
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results`
+
+Persistent Stage-0 HPO results:
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/hpo`
 
 Anything outside `/home/idies/workspace/Storage/` may disappear with the container.
 
@@ -27,7 +30,9 @@ python scripts/sweep_ccas.py --dry-run
 python scripts/sweep_ccas.py --gpus 0,1 --max-concurrent 2
 ```
 
-The sweep is idempotent. Launch inside `tmux` so browser or notebook disconnects do not kill it.
+The sweep is idempotent. Prefer `tmux` when available. The current GPU image does not include it,
+so launch with `nohup`, redirect to the persistent `logs/` directory, and save the launcher PID
+there. Never rely on a browser terminal remaining connected.
 
 ## Scheduled check permissions
 
