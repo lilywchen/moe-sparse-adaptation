@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "launch_canonical_rxrx1_erm_sanity_retry_and_create_traceable_scientific_artifacts",
-  "last_action_at": "2026-07-31T18:12:54-04:00",
+  "last_action": "strictly_validate_four_common_commit_rxrx1_results_and_update_scientific_artifacts",
+  "last_action_at": "2026-07-31T18:24:30-04:00",
   "last_verified_commit": "26ad7fa",
-  "valid_results": 0,
+  "valid_results": 4,
   "expected_results": 12,
-  "active_gpu_workers": 8,
+  "active_gpu_workers": 6,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "running_healthy",
-  "next_gate": "validate_per_dataset_phase_a_results_and_resolve_rxrx1_sanity"
+  "next_gate": "complete_and_validate_rxrx1_phase_a_then_resolve_rxrx1_sanity; complete_camelyon17_phase_a_independently"
 }
