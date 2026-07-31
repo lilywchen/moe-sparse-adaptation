@@ -1,0 +1,4 @@
+_base_: ccas_base.yaml
+dataset: rxrx1
+data_root: /home/idies/workspace/Storage/lchen5/persistent/data
+model: {num_classes: 1139}

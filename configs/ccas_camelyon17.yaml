@@ -1,0 +1,5 @@
+_base_: ccas_base.yaml
+dataset: camelyon17
+data_root: /home/idies/workspace/Storage/lchen5/persistent/data
+model: {num_classes: 2}
+train: {epochs: 10}

@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{iclr2026_conference,times}
+\input{math_commands.tex}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{microtype}
+
+\title{When Does Sparse Conditional Capacity Help\\Scientific Image Adaptation Under Acquisition Shift?}
+\author{Anonymous authors}
+
+% Replace the ICLR 2026 style with the official 2027 release when available.
+% Keep \iclrfinalcopy commented for anonymous submission.
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Scientific images are collected across experiments, instruments, and clinical sites whose
+acquisition signatures can change without changing the underlying scientific target. Sparse
+mixture-of-experts (MoE) models offer conditional capacity that could absorb heterogeneous
+adaptation demands, but the same mechanism could instead specialize to acquisition nuisance and
+fail on unseen environments. We ask when sparse conditional capacity improves supervised
+adaptation of a pretrained vision encoder under acquisition shift. We upcycle one feed-forward
+block of DINOv2 ViT-S/14 and compare it with an exactly initialized, total-parameter-matched dense
+block on RxRx1 and Camelyon17. A predeclared $3\times2\times2\times3$ factorial varies placement,
+routing unit, router geometry, and training pressure. Paired experiments separate conditionality
+from parameter count, learned routing from random assignment, and route-level balance from
+embedding-level invariance. Routing, counterfactual, and representation probes then test whether
+successful models allocate capacity to biological content or acquisition environment. The study
+is designed to produce operational guidance even when MoE does not win.
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_question}
+\input{sections/03_method}
+\input{sections/04_experiments}
+\input{sections/05_analysis}
+\input{sections/06_limitations}
+\bibliography{references}
+\bibliographystyle{iclr2026_conference}
+\appendix
+\input{sections/appendix}
+\end{document}

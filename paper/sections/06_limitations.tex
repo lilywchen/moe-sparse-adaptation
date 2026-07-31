@@ -1,0 +1,13 @@
+\section{Limitations and broader relevance}
+
+Two biomedical datasets do not establish a universal law of conditional adaptation. RxRx1 and
+Camelyon17 were chosen because both expose real acquisition environments while differing sharply in
+modality, number of environments, and label structure. Environment metadata is available during
+training for two pressure conditions and for analysis, which may not hold in every deployment.
+Adversarial invariance can also remove task-relevant variation when environment and label are
+statistically coupled.
+
+The broader value is an auditable way to decide whether conditional capacity is appropriate for
+heterogeneous scientific adaptation. The design separates added capacity, routing, and invariance;
+the diagnostics reveal when experts follow nuisance; and negative results define when a simpler
+dense adaptation is preferable.

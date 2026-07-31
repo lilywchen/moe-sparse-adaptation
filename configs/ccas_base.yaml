@@ -1,0 +1,39 @@
+# Conditional Capacity Under Acquisition Shift — shared protocol (Stage 0: frozen).
+# One pretrained substrate, ONE converted block, 8 experts, top-1, original expert width.
+seed: 0
+img_size: 224
+# Stage gate. 1 = grid, 2 = predeclared contrasts, 3 = confirmatory fresh-seed runs.
+# Below 3 the OOD TEST split is NOT evaluated at all; everything (selection, worst-environment,
+# mechanism, route reliance) is measured on the OOD VALIDATION split. See PLAN.md.
+stage: 1
+model:
+  arch: ccas
+  timm_name: vit_small_patch14_dinov2     # DINOv2 ViT-S/14 — the single substrate
+  pretrained: true
+  drop_path: 0.2
+  variant: moe                            # original | dense_wide | moe | moe_frozen
+  placement: middle                       # early | middle | late          (grid factor 1)
+  routing_unit: token                     # image | token                  (grid factor 2)
+  geometry: cosine                        # linear | cosine                (grid factor 3)
+  pressure: canonical                     # canonical | route | output     (grid factor 4)
+  balance: global                         # derived: route -> within_environment, else global
+  n_experts: 8
+  top_k: 1
+  temperature: 0.07
+  sym_break_wide: 0.1                     # exact-preserving unequal Net2Wider output splits
+  sym_break_moe: 0.0                      # router breaks MoE symmetry; keep exact preservation
+train:
+  epochs: 30
+  batch_size: 64
+  num_workers: 8
+  optim: {name: adamw, lr: 1.0e-4, weight_decay: 0.05}
+  warmup_epochs: 5
+  llrd: 0.7
+  rand_resized_crop: true
+  env_balanced_sampler: true              # same sampler for BOTH balance arms (loss is the only intervention)
+losses:
+  balance_w: 1.0e-2
+  zloss_w: 1.0e-3
+  invariance_w: 0.1                       # used only by pressure=output; tune once per dataset
+budget:
+  tolerance_pct: 0.1                      # predeclared, enforced by check_budget

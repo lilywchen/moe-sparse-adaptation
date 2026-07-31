@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moe-sparse-adaptation"
+version = "0.1.0"
+description = "Sparse conditional adaptation under scientific acquisition shift"
+requires-python = ">=3.9"
+# NOTE: torch/torchvision are intentionally OMITTED — the SciServer container
+# provides a CUDA-matched build, and listing them here could trigger a reinstall.
+dependencies = [
+    "numpy<2",          # torch 2.1 was built against NumPy 1.x; 2.x breaks it
+    "scikit-learn",
+    "pandas",
+    "pyyaml",
+    "wilds>=2.0",
+    "timm>=1.0",
+]
+
+[project.optional-dependencies]
+tracking = ["wandb"]
+test = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["moe_shift*"]

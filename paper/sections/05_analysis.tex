@@ -1,0 +1,22 @@
+\section{Mechanistic analysis and result logic}
+
+For every MoE we measure expert usage, assignment entropy, load imbalance, and dead experts. On a
+held-out in-distribution audit set, we estimate acquisition-environment and biological-label
+information in routes using mutual information and cross-validated decoders. We apply identical
+linear probes to final embeddings to measure environment and label decodability.
+
+We also replace learned assignments with seeded random assignments while freezing expert weights.
+The accuracy change measures route reliance: a model can exhibit structured routing without
+requiring that routing for its predictions. We relate conditional gain to route reliance,
+environment decodability, label decodability, and utilization across cells. These are descriptive
+mechanism associations; causal claims are restricted to the controlled architectural and loss
+factors.
+
+A positive matched gain with high route reliance supports useful conditional specialization. A
+gain only against the smaller original encoder indicates capacity, not conditionality. High
+acquisition decodability without matched gain indicates nuisance partitioning. Disagreement
+between RxRx1 and Camelyon17 identifies a regime boundary rather than being averaged away.
+
+\paragraph{Results placeholder.}
+All numerical tables and plots will be generated from stage-gated JSON outputs. No OOD-test value
+will enter the manuscript until the confirmatory configuration set is frozen.

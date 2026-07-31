@@ -1,0 +1,9 @@
+# PyTorch and torchvision come from the CUDA-matched SciServer container.
+# Install this file only after verifying that build.
+numpy<2
+scikit-learn
+pandas
+pyyaml
+wilds>=2.0
+timm>=1.0
+pytest>=8

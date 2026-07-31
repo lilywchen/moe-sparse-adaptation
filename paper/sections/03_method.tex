@@ -1,0 +1,25 @@
+\section{Controlled sparse adaptation}
+
+\subsection{Pretrained substrate and upcycling}
+We fully fine-tune DINOv2 ViT-S/14 for supervised classification. In each intervention, exactly one
+transformer FFN is replaced. An MoE contains eight copies of the pretrained FFN and a top-1 router;
+because every expert initially computes the same function, the MoE exactly matches the pretrained
+network at initialization. We place the converted block at early, middle, or late depth.
+
+\subsection{Total-parameter-matched dense control}
+The primary dense comparator is one wider FFN at the same depth. Its integer hidden width is chosen
+to minimize the total-parameter difference from the full MoE, including router parameters and
+replicated expert biases. We do not add dormant padding parameters. We use an exact Net2Wider
+Net2Wider construction \citep{chen2016net2net}: new hidden units copy source units, while each source unit's outgoing weight is split
+unequally among its copies with coefficients that sum to one. The residual budget difference must
+be below 0.1\%.
+
+\subsection{Routing choices and pressures}
+Image routing pools tokens before making one decision per image; token routing decides per patch.
+Linear and cosine routers contain the same $E\times d$ weight matrix and one temperature scalar.
+The \emph{canonical} condition uses global load balancing and router z-loss. The \emph{route}
+condition computes load balance independently within each acquisition environment. The
+\emph{output} condition retains canonical balancing and adds a gradient-reversal adversary
+\citep{ganin2016domain} that
+predicts training environment from the final embedding. Output invariance is applied identically
+to MoE and dense controls.

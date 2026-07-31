@@ -1,0 +1,45 @@
+\section{Experimental design}
+
+\subsection{Datasets}
+RxRx1 uses experimental batch as acquisition environment and siRNA perturbation as a 1,139-way
+label. Camelyon17 uses hospital as environment and tumor presence as a binary label. We use the
+official WILDS splits \citep{koh2021wilds}. Geometric
+augmentation is shared across methods; photometric augmentation is excluded because it directly
+manipulates the acquisition signal under study.
+
+\subsection{Factorial and controls}
+For each dataset, we run all $3\times2\times2\times3=36$ combinations of placement, routing unit,
+router geometry, and pressure with three paired seeds. Dense-wide controls are run at all three
+placements under canonical and output-invariance training. Route-pressure MoEs use the canonical
+dense control because route-level balancing has no dense analogue.
+
+\begin{table}[t]
+\centering
+\caption{Primary design. Every MoE cell is evaluated on both datasets with paired seeds.}
+\label{tab:design}
+\begin{tabular}{lll}
+\toprule
+Factor & Levels & Count\\
+\midrule
+Placement & early, middle, late & 3\\
+Routing unit & image, token & 2\\
+Router geometry & linear, cosine & 2\\
+Training pressure & canonical, route, output & 3\\
+\midrule
+MoE configurations per dataset & & 36\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hyperparameters and stage gate}
+We first tune one shared dense fine-tuning recipe using OOD validation. We then tune one router
+temperature per dataset and geometry, one balancing coefficient per dataset, and one adversarial
+coefficient per dataset. No cell receives its own search. Stage 1 completes the factorial without
+evaluating OOD test. Stage 2 runs predeclared mechanism controls. Stage 3 evaluates a fixed
+confirmatory set with fresh seeds and is the first stage allowed to access OOD test.
+
+\subsection{Metrics and inference}
+We report OOD accuracy, worst-environment accuracy, in-distribution accuracy, and the ID--OOD gap.
+The primary contrast is the within-seed, within-placement difference between MoE and matched
+dense-wide. A sum-to-zero factorial model estimates main effects and two-way interactions on
+conditional gain. Seed-level paired bootstrap intervals quantify optimization uncertainty.

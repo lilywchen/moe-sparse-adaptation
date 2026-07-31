@@ -1,0 +1,1930 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Conditional Capacity Under Acquisition Shift — ICLR Research Plan</title>
+  <style>
+    :root {
+      --ink: #17211b;
+      --muted: #5e6c62;
+      --paper: #f7f5ef;
+      --panel: #fffdfa;
+      --line: #d8ddd6;
+      --forest: #174f3d;
+      --forest-2: #276b55;
+      --mint: #dcebe3;
+      --lime: #d7ed93;
+      --ochre: #d79e4b;
+      --rose: #b7675f;
+      --blue: #386889;
+      --shadow: 0 18px 50px rgba(37, 54, 43, 0.09);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 2%, rgba(215, 237, 147, 0.25), transparent 26rem),
+        radial-gradient(circle at 92% 15%, rgba(220, 235, 227, 0.8), transparent 34rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.62;
+    }
+
+    a { color: inherit; }
+
+    button {
+      font: inherit;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      border-bottom: 1px solid rgba(216, 221, 214, 0.85);
+      background: rgba(247, 245, 239, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .topbar-inner {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 760;
+      letter-spacing: -0.02em;
+    }
+
+    .mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3px;
+      padding: 5px;
+      border-radius: 9px;
+      background: var(--forest);
+    }
+
+    .mark span {
+      border-radius: 2px;
+      background: var(--lime);
+    }
+
+    .mark span:nth-child(2),
+    .mark span:nth-child(3) { opacity: 0.45; }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 13px;
+      color: var(--forest);
+      background: var(--panel);
+      cursor: pointer;
+      font-weight: 700;
+      transition: 150ms ease;
+    }
+
+    .button:hover {
+      border-color: var(--forest-2);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      padding: 76px 0 48px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.55fr);
+      align-items: end;
+      gap: 44px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 21px;
+      color: var(--forest-2);
+      font-size: 0.76rem;
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: var(--ochre);
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      letter-spacing: -0.035em;
+      line-height: 1.06;
+    }
+
+    h1 {
+      max-width: 920px;
+      font-size: clamp(3rem, 7.4vw, 6.6rem);
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      font-size: clamp(2rem, 4.5vw, 3.7rem);
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 1.55rem;
+    }
+
+    .hero-subtitle {
+      max-width: 830px;
+      margin: 26px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 2vw, 1.35rem);
+      line-height: 1.5;
+    }
+
+    .meta-card {
+      padding: 24px;
+      border: 1px solid rgba(23, 79, 61, 0.16);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 250, 0.78);
+      box-shadow: var(--shadow);
+    }
+
+    .meta-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meta-row:last-child { border-bottom: 0; }
+
+    .meta-label {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      font-weight: 690;
+    }
+
+    .thesis {
+      margin: 16px 0 72px;
+      padding: 34px 38px;
+      border-left: 6px solid var(--lime);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: #f3f6f2;
+      background: var(--forest);
+      box-shadow: var(--shadow);
+    }
+
+    .thesis small {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--lime);
+      font-size: 0.73rem;
+      font-weight: 850;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .thesis p {
+      max-width: 1040px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.45rem, 3.1vw, 2.35rem);
+      line-height: 1.28;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr);
+      align-items: start;
+      gap: 44px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 88px;
+      padding: 18px 0;
+    }
+
+    .toc-title {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.73rem;
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .toc a {
+      display: block;
+      padding: 7px 12px;
+      border-left: 2px solid transparent;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      border-left-color: var(--ochre);
+      color: var(--forest);
+    }
+
+    main section {
+      padding: 28px 0 82px;
+      scroll-margin-top: 88px;
+    }
+
+    .section-kicker {
+      margin-bottom: 12px;
+      color: var(--ochre);
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .lede {
+      max-width: 820px;
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: 1.13rem;
+    }
+
+    .rq-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .rq-card {
+      min-height: 330px;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 8px 24px rgba(37, 54, 43, 0.05);
+    }
+
+    .rq-num {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 34px;
+      border-radius: 50%;
+      color: var(--forest);
+      background: var(--lime);
+      font-weight: 900;
+    }
+
+    .rq-card p {
+      margin: 7px 0 0;
+      color: var(--muted);
+    }
+
+    .rq-tag {
+      margin-top: auto;
+      padding-top: 22px;
+      color: var(--forest-2);
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 20px 22px;
+      border: 1px solid #cbd9cf;
+      border-radius: 15px;
+      background: var(--mint);
+    }
+
+    .callout strong { color: var(--forest); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr;
+      align-items: stretch;
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .flow-node {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .flow-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--forest-2);
+      font-size: 2rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .panel p:last-child,
+    .panel ul:last-child { margin-bottom: 0; }
+
+    .label {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      color: var(--forest);
+      background: var(--mint);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin: 26px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.93rem;
+    }
+
+    th, td {
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--forest);
+      background: #f0f3ed;
+      font-size: 0.74rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td { border-bottom: 0; }
+
+    .primary-row td {
+      background: rgba(215, 237, 147, 0.15);
+    }
+
+    .formula {
+      margin: 22px 0;
+      padding: 18px 20px;
+      overflow-x: auto;
+      border-radius: 14px;
+      color: #f6f7f4;
+      background: #243129;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.95rem;
+    }
+
+    .grid-map {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .factor {
+      min-height: 220px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--forest-2);
+      border-radius: 15px;
+      background: var(--panel);
+    }
+
+    .factor:nth-child(2) { border-top-color: var(--blue); }
+    .factor:nth-child(3) { border-top-color: var(--ochre); }
+
+    .factor-name {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .factor-levels {
+      margin: 8px 0 13px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+
+    .factor p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.91rem;
+    }
+
+    .lock-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .lock {
+      padding: 16px 17px;
+      border-radius: 13px;
+      color: var(--forest);
+      background: #eef2ec;
+      font-weight: 720;
+    }
+
+    .lock small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-weight: 520;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 30px 0 0 12px;
+      padding-left: 38px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      bottom: 5px;
+      left: 6px;
+      width: 2px;
+      background: var(--line);
+    }
+
+    .stage {
+      position: relative;
+      margin-bottom: 34px;
+      padding: 23px 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      top: 28px;
+      left: -40px;
+      width: 13px;
+      height: 13px;
+      border: 4px solid var(--paper);
+      border-radius: 50%;
+      background: var(--forest-2);
+      box-shadow: 0 0 0 2px var(--forest-2);
+    }
+
+    .stage-index {
+      margin-bottom: 7px;
+      color: var(--ochre);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .stage h3 { font-size: 1.35rem; }
+
+    .stage p,
+    .stage ul { color: var(--muted); }
+
+    ul {
+      padding-left: 1.25rem;
+    }
+
+    li { margin: 5px 0; }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .analysis-card {
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .analysis-card .number {
+      color: var(--ochre);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .analysis-card h3 {
+      margin-top: 12px;
+      font-size: 1.35rem;
+    }
+
+    .analysis-card p,
+    .analysis-card ul {
+      color: var(--muted);
+    }
+
+    .interpretation td:first-child {
+      width: 43%;
+      color: var(--forest);
+      font-weight: 730;
+    }
+
+    details {
+      margin: 12px 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    summary {
+      padding: 16px 18px;
+      cursor: pointer;
+      color: var(--forest);
+      font-weight: 760;
+    }
+
+    details > div {
+      padding: 0 18px 18px;
+      color: var(--muted);
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .keep, .cut {
+      padding: 24px;
+      border-radius: var(--radius);
+    }
+
+    .keep {
+      border: 1px solid #bdd1c3;
+      background: var(--mint);
+    }
+
+    .cut {
+      border: 1px solid #dfc7c3;
+      background: #f7e9e6;
+    }
+
+    .keep h3 { color: var(--forest); }
+    .cut h3 { color: #814841; }
+
+    .claim {
+      padding: 30px;
+      border-radius: var(--radius);
+      color: white;
+      background: linear-gradient(135deg, var(--forest), #243f34);
+    }
+
+    .claim p {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      line-height: 1.4;
+    }
+
+    .claim small {
+      display: block;
+      margin-top: 16px;
+      color: #bfd4c6;
+      font-family: Inter, ui-sans-serif, sans-serif;
+      font-size: 0.85rem;
+    }
+
+    footer {
+      margin-top: 35px;
+      padding: 42px 0 60px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc { display: none; }
+
+      .rq-grid,
+      .grid-map {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero { padding-top: 56px; }
+    }
+
+    @media (max-width: 680px) {
+      .shell { width: min(100% - 24px, 1180px); }
+      .brand-text { display: none; }
+      .hero { gap: 24px; }
+      .thesis { padding: 26px 24px; }
+      .rq-grid,
+      .grid-map,
+      .lock-grid,
+      .split,
+      .analysis-grid,
+      .scope-grid {
+        grid-template-columns: 1fr;
+      }
+      .flow { grid-template-columns: 1fr; }
+      .flow-arrow { transform: rotate(90deg); }
+      .footer-grid { flex-direction: column; }
+      th, td { padding: 12px; }
+    }
+
+    @media print {
+      :root {
+        --paper: #ffffff;
+        --panel: #ffffff;
+      }
+
+      body {
+        background: white;
+        font-size: 10.5pt;
+      }
+
+      .topbar,
+      .toc,
+      .actions { display: none !important; }
+
+      .shell { width: 100%; }
+      .hero { padding: 18mm 0 10mm; }
+      h1 { font-size: 40pt; }
+      h2 { font-size: 25pt; }
+      .layout { display: block; }
+      main section { padding: 8mm 0; }
+      .rq-card,
+      .panel,
+      .analysis-card,
+      .stage,
+      .table-wrap,
+      .factor,
+      .meta-card {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+      .thesis, .claim {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+      a { text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-text">MoE × Scientific Acquisition Shift</span>
+      </div>
+      <div class="actions">
+        <button class="button" id="copy-thesis" type="button">Copy thesis</button>
+        <button class="button" type="button" onclick="window.print()">Print / save PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">ICLR research plan · current synthesis</div>
+        <h1>Conditional capacity under acquisition shift</h1>
+        <p class="hero-subtitle">
+          A fixed-parameter, function-preserving study of sparse upcycling during full
+          adaptation of pretrained vision encoders to scientific imagery.
+        </p>
+      </div>
+      <aside class="meta-card" aria-label="Study at a glance">
+        <div class="meta-row">
+          <span class="meta-label">Setting</span>
+          <span class="meta-value">Full supervised fine-tuning</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Backbone</span>
+          <span class="meta-value">DINOv2 ViT-S/14</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Data</span>
+          <span class="meta-value">RxRx1 + Camelyon17</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Core grid</span>
+          <span class="meta-value">36 MoE configurations</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Scope</span>
+          <span class="meta-value">Real acquisition shifts; no synthetic arm</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="thesis" aria-label="Overarching question">
+      <small>Overarching scientific question</small>
+      <p id="thesis-text">
+        When adapting a pretrained vision model to scientific images collected across
+        acquisition environments, is a fixed parameter budget better allocated as shared
+        dense capacity or sparse input-conditional capacity?
+      </p>
+    </section>
+
+    <div class="layout">
+      <nav class="toc" aria-label="Document sections">
+        <div class="toc-title">Contents</div>
+        <a href="#questions">Three questions</a>
+        <a href="#setting">Clean setting</a>
+        <a href="#fairness">Fair comparison</a>
+        <a href="#grid">Core grid</a>
+        <a href="#datasets">Two datasets</a>
+        <a href="#tuning">Tuning protocol</a>
+        <a href="#ordering">Experimental order</a>
+        <a href="#analysis">Mechanism analysis</a>
+        <a href="#interpretation">Interpretation</a>
+        <a href="#scope">Scope control</a>
+        <a href="#contribution">ICLR contribution</a>
+      </nav>
+
+      <main>
+        <section id="questions">
+          <div class="section-kicker">The paper spine</div>
+          <h2>Three questions, in inferential order</h2>
+          <p class="lede">
+            The paper is not a list of architectural ablations. It moves from effect, to
+            design principle, to mechanism.
+          </p>
+
+          <div class="rq-grid">
+            <article class="rq-card">
+              <div class="rq-num">1</div>
+              <h3>Shared or conditional capacity?</h3>
+              <p>
+                At a fixed total parameter budget, does sparse conditional allocation improve
+                generalization to unseen acquisition environments during full scientific
+                fine-tuning?
+              </p>
+              <div class="rq-tag">Outcome</div>
+            </article>
+
+            <article class="rq-card">
+              <div class="rq-num">2</div>
+              <h3>Which inductive biases matter?</h3>
+              <p>
+                How do representation depth, routing scale, and router geometry govern whether
+                conditional capacity succeeds or fails?
+              </p>
+              <div class="rq-tag">Systematic design</div>
+            </article>
+
+            <article class="rq-card">
+              <div class="rq-num">3</div>
+              <h3>What does useful routing learn?</h3>
+              <p>
+                Does successful routing organize around transferable scientific content,
+                acquisition variation that can be corrected, or training-batch identity that
+                fails to generalize?
+              </p>
+              <div class="rq-tag">Mechanism</div>
+            </article>
+          </div>
+        </section>
+
+        <section id="setting">
+          <div class="section-kicker">Experimental setting</div>
+          <h2>Isolate the moment of scientific adaptation</h2>
+          <p class="lede">
+            DINOv2 has not previously learned from the target scientific dataset. Dense and
+            sparse models encounter the scientific domain for the first time during the same
+            supervised fine-tuning stage.
+          </p>
+
+          <div class="flow" aria-label="Dense and MoE adaptation branches">
+            <div class="flow-node">
+              <span class="label">Common start</span>
+              <h3>Pretrained DINOv2</h3>
+              <p>
+                Identical encoder checkpoint, target classification head initialization,
+                preprocessing, data order, and seed.
+              </p>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-node">
+              <span class="label">Two branches</span>
+              <h3>Dense-wide or upcycled MoE</h3>
+              <p>
+                Convert the selected FFN before exposure to scientific training data, then
+                fully fine-tune every parameter with pooled ERM.
+              </p>
+            </div>
+          </div>
+
+          <div class="split">
+            <article class="panel">
+              <h3>What “full fine-tuning” means</h3>
+              <ul>
+                <li>All encoder and task-head parameters are trainable.</li>
+                <li>Training uses standard supervised cross-entropy.</li>
+                <li>Training examples pool the observed acquisition environments.</li>
+                <li>Batch or hospital identity is not used by the core model.</li>
+                <li>OOD validation selects recipes; OOD test remains untouched.</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>What this is not</h3>
+              <ul>
+                <li>Not linear probing or parameter-efficient fine-tuning.</li>
+                <li>Not dense scientific fine-tuning followed by later upcycling.</li>
+                <li>Not unsupervised adaptation to the held-out test environment.</li>
+                <li>Not a batch-correction preprocessing paper.</li>
+                <li>Not a general domain-generalization leaderboard study.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="fairness">
+          <div class="section-kicker">Resource control</div>
+          <h2>Fix the capacity budget—and name the remaining tradeoff</h2>
+          <p class="lede">
+            No single dense model can simultaneously match an MoE’s stored parameters and its
+            sparse active computation. The primary experiment fixes total trainable parameters;
+            active compute is reported as a second resource axis.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Total parameters</th>
+                  <th>Active FFN compute</th>
+                  <th>What it identifies</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="primary-row">
+                  <td><strong>Dense-wide</strong></td>
+                  <td>Fixed budget P*</td>
+                  <td>All widened units</td>
+                  <td>Primary fixed-total-parameter comparator</td>
+                </tr>
+                <tr class="primary-row">
+                  <td><strong>Learned top-1 MoE</strong></td>
+                  <td>Fixed budget P*</td>
+                  <td>One expert per decision</td>
+                  <td>Conditional allocation of the same capacity</td>
+                </tr>
+                <tr>
+                  <td><strong>Frozen-router MoE</strong></td>
+                  <td>Same MoE architecture</td>
+                  <td>Same as learned MoE</td>
+                  <td>Whether learned assignments add value</td>
+                </tr>
+                <tr>
+                  <td><strong>Original dense</strong></td>
+                  <td>Lower total P₀</td>
+                  <td>Approximately MoE-active</td>
+                  <td>Secondary accuracy–compute reference</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="formula">conditional gain = OOD(learned MoE) − OOD(depth-matched dense-wide)</div>
+          <div class="formula">routing gain = OOD(learned MoE) − OOD(frozen-router MoE)</div>
+
+          <h3>Function-preserving initialization</h3>
+          <p>
+            Every expert begins as a copy of the pretrained FFN. The widened dense FFN contains
+            repeated copies whose output projection averages their contributions. Dense-wide,
+            learned MoE, and frozen-router MoE therefore compute the same function at
+            initialization.
+          </p>
+          <div class="formula">W₁(wide) = [W₁; … ; W₁] &nbsp;&nbsp; and &nbsp;&nbsp; W₂(wide) = [W₂, … , W₂] / E</div>
+
+          <div class="callout">
+            <strong>Exact accounting rule.</strong> Choose the closest realizable dense width
+            after counting the router, predeclare a tolerance below 0.1%, report exact counts,
+            and do not pad either model with unused parameters.
+          </div>
+
+          <details>
+            <summary>Optimization fairness</summary>
+            <div>
+              Report a matched-recipe comparison with identical optimization settings, plus an
+              equal-search-budget comparison in which dense-wide and MoE receive the same small
+              learning-rate search. Use paired seeds and identical data order wherever possible.
+            </div>
+          </details>
+        </section>
+
+        <section id="grid">
+          <div class="section-kicker">Systematic experiment</div>
+          <h2>A joint grid: architecture × location of invariance pressure</h2>
+          <p class="lede">
+            Do not first select an architecture and only then ask whether the loss changes the
+            result. That ordering assumes the effects are separable. Instead, cross the 12 simple
+            architectures with three predeclared training policies during development.
+          </p>
+
+          <div class="grid-map">
+            <article class="factor">
+              <div class="factor-name">Placement</div>
+              <div class="factor-levels">Early<br />Middle<br />Late</div>
+              <p>
+                Controls which mixture of acquisition and task information is available, and how
+                much shared computation remains after routing.
+              </p>
+            </article>
+            <article class="factor">
+              <div class="factor-name">Routing unit</div>
+              <div class="factor-levels">Image<br />Token</div>
+              <p>
+                Tests whether conditionality should operate at the scale of global acquisition
+                appearance or local scientific content.
+              </p>
+            </article>
+            <article class="factor">
+              <div class="factor-name">Router geometry</div>
+              <div class="factor-levels">Linear<br />Cosine</div>
+              <p>
+                Tests whether feature magnitude—potentially driven by staining or intensity—
+                should influence expert assignment.
+              </p>
+            </article>
+          </div>
+
+          <div class="formula">architecture: 3 placements × 2 routing units × 2 router geometries = 12 cells</div>
+
+          <h3>Why the comparisons are non-obvious</h3>
+          <div class="split">
+            <article class="panel">
+              <span class="label">Image routing</span>
+              <p>
+                Global stain, scanner, illumination, or experiment appearance may call for a
+                global calibration expert. Yet the same mechanism may memorize known batches and
+                fail on an unseen environment.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="label">Token routing</span>
+              <p>
+                Local routing can specialize on cells and tissue structures, but it may fragment
+                globally coherent acquisition variation and creates many more routing decisions.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="label">Early routing</span>
+              <p>
+                Early features expose acquisition appearance directly. This can create a shortcut,
+                or enable early conditional correction followed by shared recombination.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="label">Middle routing</span>
+              <p>
+                Middle layers may be the first point where acquisition and task structure are both
+                separable, while enough shared computation remains to integrate expert outputs.
+              </p>
+            </article>
+            <article class="panel">
+              <span class="label">Late routing</span>
+              <p>
+                Late features contain more task structure, but little shared computation remains
+                to reconcile expert-specific representations before prediction.
+              </p>
+            </article>
+          </div>
+
+          <h3 style="margin-top: 32px;">Parameter-matched router geometry</h3>
+          <p>
+            Linear and cosine routers must share the same E × d weight matrix and temperature.
+            Cosine routing normalizes the input and router rows; it does not receive an additional
+            learned projection.
+          </p>
+          <div class="formula">linear: rₑ(x) = wₑᵀx / τ &nbsp;&nbsp;&nbsp; cosine: rₑ(x) = ⟨wₑ/‖wₑ‖, x/‖x‖⟩ / τ</div>
+          <div class="callout">
+            <strong>Batch-effect intuition, with an important caveat.</strong> Linear routing can
+            use feature magnitude and permit high-norm router rows to dominate; cosine routing
+            turns the router into angular prototype matching. This may reduce norm-driven batch
+            partitioning, but the ViT sends LayerNorm-normalized features into its FFN, so cosine
+            routing is not automatically batch invariant. The study must measure whether feature
+            norm, acquisition intensity, or feature direction actually predicts the routes.
+          </div>
+
+          <h3>Pressure location is a three-level scientific factor</h3>
+          <p>
+            The question is not simply whether to “remove batch.” It is where acquisition
+            information may be useful and where it becomes harmful. Compare three mutually
+            interpretable policies across every architecture cell:
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Policy</th>
+                  <th>Route objective</th>
+                  <th>Final embedding</th>
+                  <th>Scientific hypothesis</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Canonical</strong></td>
+                  <td>Global load balancing</td>
+                  <td>No explicit invariance</td>
+                  <td>Ordinary conditional adaptation can decide how to use acquisition information.</td>
+                </tr>
+                <tr>
+                  <td><strong>Route-level</strong></td>
+                  <td>Within-environment load balancing</td>
+                  <td>No explicit invariance</td>
+                  <td>Preventing an environment from monopolizing experts improves transferable routing.</td>
+                </tr>
+                <tr>
+                  <td><strong>Output-level</strong></td>
+                  <td>Global load balancing</td>
+                  <td>Batch-adversarial final representation</td>
+                  <td>Routes may use acquisition context internally, but predictions benefit when it is removed downstream.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula">12 architectures × 3 pressure policies = 36 MoE configurations per dataset</div>
+          <div class="formula">canonical MoE: L = L_task + λ_z L_z + λ_lb L_global-balance</div>
+          <div class="formula">route-level: replace L_global-balance with L_within-environment</div>
+          <div class="formula">output-level: L_canonical + λ_inv L_batch-adversarial(final embedding)</div>
+          <div class="formula">L(within-environment) = mean over e of L_balance({ soft routes i : environment(i) = e })</div>
+          <p>
+            The router z-loss is a fixed numerical-stability term, not a scientific factor.
+            Here “environment” means the acquisition batch or hospital, not the stochastic
+            minibatch. Within-environment balancing replaces global balancing rather than stacking on top of it.
+            The combined route-level + output-level policy is not in the primary grid: it answers
+            an interaction question beyond the clean “where should pressure act?” comparison.
+          </p>
+          <div class="callout">
+            <strong>Fairness controls.</strong> Estimate the within-environment objective with an
+            environment-balanced sampler or per-environment moving usage statistics. Use that same
+            sampler for the canonical arm. Apply the same output-invariance objective to the
+            depth-matched dense-wide model. The adversary is a training-only linear head with fixed
+            capacity and schedule. Count its parameters and compute separately; the inference
+            parameter budget remains P*.
+          </div>
+          <details>
+            <summary>Where the combined and no-load-balancing conditions go</summary>
+            <div>
+              Run no-LBL only as a collapse diagnostic on a preregistered design-cover subset. If
+              both route-level and output-level policies improve the same architecture family,
+              test their combination on that same subset. Neither condition participates in
+              primary factor-effect claims.
+            </div>
+          </details>
+
+          <h3>Fixed throughout the core study</h3>
+          <div class="lock-grid">
+            <div class="lock">DINOv2 ViT-S/14<small>One pretrained substrate</small></div>
+            <div class="lock">One MoE block<small>No depth/capacity confound</small></div>
+            <div class="lock">Eight experts<small>Constant stored capacity</small></div>
+            <div class="lock">Top-1 routing<small>Sparse active compute</small></div>
+            <div class="lock">Original expert width<small>Pretrained FFN copies</small></div>
+            <div class="lock">Three pressure policies<small>Crossed with every architecture</small></div>
+          </div>
+
+          <div class="callout">
+            <strong>Why middle depth belongs in the grid.</strong> Useful conditionality may be
+            non-monotonic: early layers expose acquisition appearance, late layers expose task
+            structure, and an intermediate block may be the first point where both are separable
+            while enough shared computation remains to recombine expert outputs.
+          </div>
+        </section>
+
+        <section id="datasets">
+          <div class="section-kicker">Empirical scope</div>
+          <h2>Two co-primary datasets, two acquisition regimes</h2>
+          <p class="lede">
+            Run the entire 36-cell grid on both datasets. Their value comes from complementary
+            acquisition structures—not simply from having many images.
+          </p>
+
+          <div class="split">
+            <article class="panel">
+              <span class="label">RxRx1</span>
+              <h3>Experimental-batch shift</h3>
+              <p>
+                Fine-grained multiclass cellular morphology with many experimental batches.
+                RxRx1 carries the strongest environment-level and mechanistic inference.
+              </p>
+              <ul>
+                <li>Use repeated leave-experiment-out development folds.</li>
+                <li>Bootstrap uncertainty by experiment, not image.</li>
+                <li>Condition batch analyses on perturbation label.</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <span class="label">Camelyon17</span>
+              <h3>Hospital-site shift</h3>
+              <p>
+                Binary tumor classification under staining, scanner, and hospital variation.
+                Camelyon tests whether factor effects cross modality and acquisition regime.
+              </p>
+              <ul>
+                <li>Run the same grid without dataset-specific architecture changes.</li>
+                <li>Aggregate uncertainty by patient or slide, not patch.</li>
+                <li>Treat hospital-level generality as limited by the small site count.</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="callout">
+            <strong>Claim boundary.</strong> The study can establish controlled findings across
+            two scientific imaging settings. It cannot establish universal principles for all
+            scientific foundation-model adaptation.
+          </div>
+
+          <div class="formula">OOD gain ~ placement × routing unit × router geometry × pressure policy × dataset</div>
+          <p>
+            Consistent factor effects support a transferable design principle. Dataset-specific
+            effects remain valuable only when the routing and representation analyses explain
+            why the acquisition regimes behave differently.
+          </p>
+        </section>
+
+        <section id="tuning">
+          <div class="section-kicker">Before the scientific grid</div>
+          <h2>Tune the protocol without tuning away the experiment</h2>
+          <p class="lede">
+            Hyperparameter optimization cannot prove that every cell is globally optimal. The
+            defensible target is narrower: a symmetric search, performed only on development
+            environments, that produces a stable shared recipe before factor comparisons begin.
+          </p>
+
+          <div class="callout">
+            <strong>Core rule.</strong> Hyperparameters may differ by dataset and by loss family,
+            but not by placement, routing unit, or individual architecture cell. Independently
+            tuning all 36 cells would turn search luck into an apparent factor effect.
+          </div>
+
+          <h3>1. Establish three data boundaries</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Boundary</th>
+                  <th>Used for</th>
+                  <th>Never used for</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Inner OOD folds</strong></td>
+                  <td>Optimizer, router temperature, and loss-weight calibration</td>
+                  <td>Headline architecture selection or final claims</td>
+                </tr>
+                <tr>
+                  <td><strong>Official OOD validation</strong></td>
+                  <td>Full factorial comparison, model-family selection, frozen contrasts</td>
+                  <td>Repeated coefficient adjustment after seeing grid results</td>
+                </tr>
+                <tr>
+                  <td><strong>Official OOD test</strong></td>
+                  <td>One confirmatory evaluation of the frozen comparison set</td>
+                  <td>Tuning, debugging, early stopping, or choosing analyses</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Construct inner folds only from official training environments: leave experiments out
+            on RxRx1 and rotate the available training hospitals on Camelyon17. Keep all samples
+            from an experimental batch, patient, or slide on one side of a fold. Because Camelyon
+            has few hospitals, report every fold rather than treating patches as independent
+            replications.
+          </p>
+
+          <h3>2. Use a fixed design-cover calibration panel</h3>
+          <p>
+            Choose the panel before looking at grid results. It should expose the optimizer to
+            dense and sparse models and cover the factor levels without becoming a miniature model
+            search:
+          </p>
+          <div class="lock-grid">
+            <div class="lock">Dense-wide · middle<small>Primary comparator</small></div>
+            <div class="lock">Early · image · linear<small>Acquisition-sensitive extreme</small></div>
+            <div class="lock">Middle · token · linear<small>Local conditionality</small></div>
+            <div class="lock">Middle · image · cosine<small>Angular image routing</small></div>
+            <div class="lock">Late · token · cosine<small>Semantic-routing extreme</small></div>
+            <div class="lock">Canonical pressure<small>Optimizer calibration only</small></div>
+          </div>
+          <p>
+            Select a shared dataset-level recipe by its mean rank across panel members and inner
+            folds; break ties with mean OOD score. Do not select by the best single model. A recipe
+            that helps one cell while destabilizing the others is rejected.
+          </p>
+
+          <h3>3. Tune in three bounded passes</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pass</th>
+                  <th>Search space</th>
+                  <th>Budget and selection rule</th>
+                  <th>What is frozen afterward</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>A. Full fine-tuning</strong></td>
+                  <td>
+                    LR {3×10⁻⁵, 10⁻⁴, 3×10⁻⁴}; weight decay {0.01, 0.05, 0.1};
+                    layer-wise LR decay {0.65, 0.8, 1.0}; drop path {0, 0.1, 0.2};
+                    warmup {5%, 10%}
+                  </td>
+                  <td>
+                    Use 12 predeclared random or low-discrepancy combinations per dataset rather
+                    than the Cartesian product. Screen with one seed on the calibration panel;
+                    rerun the best three recipes with a second seed on every inner fold.
+                  </td>
+                  <td>One optimizer recipe and one maximum training horizon per dataset</td>
+                </tr>
+                <tr>
+                  <td><strong>B. Router calibration</strong></td>
+                  <td>
+                    Temperature τ {0.03, 0.1, 0.3, 1.0}, separately for linear and cosine
+                    geometry; fixed z-loss coefficient
+                  </td>
+                  <td>
+                    Equal trial counts for both geometries. Choose one τ per
+                    geometry × dataset using the MoE members of the same panel.
+                  </td>
+                  <td>Two temperatures per dataset; no placement- or unit-specific τ</td>
+                </tr>
+                <tr>
+                  <td><strong>C. Pressure strength</strong></td>
+                  <td>
+                    Normalized load-balance weight {10⁻³, 10⁻², 10⁻¹};
+                    output-invariance weight {10⁻², 10⁻¹, 1}
+                  </td>
+                  <td>
+                    Equal-size log grids on the same panel. Use a fixed gradient-reversal ramp and
+                    select by task OOD score—not by minimum batch decodability.
+                  </td>
+                  <td>One λ<sub>lb</sub> and one λ<sub>inv</sub> per dataset</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Normalize global and within-environment balancing so that their uniform-routing reference
+            has the same scale. Then reuse the same λ<sub>lb</sub>; otherwise a “location” effect
+            is confounded with unequal regularization strength. Keep batch size, gradient
+            accumulation, scheduler family, augmentations, sampler, precision, and checkpoint rule
+            fixed across every cell.
+          </p>
+          <div class="callout">
+            <strong>Current-recipe anchor.</strong> Include the starter’s existing ViT recipe
+            (AdamW, LR 10⁻⁴, weight decay 0.05, layer-wise decay 0.7, drop path 0.2, geometric
+            random-resized crop) as one of the predeclared trials. Treat the current 90-epoch RxRx1
+            and 10-epoch Camelyon horizons as starting hypotheses, then verify plateauing on inner
+            folds rather than assuming that either is already tuned.
+          </div>
+          <p>
+            Set the maximum horizon once per dataset using the current-recipe dense-wide pilot. If
+            the inner-OOD curve has not plateaued during the final 20% of training, extend the
+            horizon once by 2× and repeat. After that, freeze the horizon and number of optimizer
+            updates for every model. Keep the effective batch size at 64 unless a documented
+            memory limit requires gradient accumulation; token and image routing must still see
+            the same examples and optimizer-step count.
+          </p>
+
+          <details>
+            <summary>Why augmentation is not ordinary HPO here</summary>
+            <div>
+              Color, stain, intensity, and style augmentation directly manipulate the batch
+              effect being studied. Freeze one scientifically reasonable augmentation recipe
+              before the grid. If desired, evaluate a strong photometric or stain augmentation as
+              a separately named robustness baseline; do not silently select it during HPO.
+            </div>
+          </details>
+
+          <h3>4. Define “tuned enough” before launching the grid</h3>
+          <div class="split">
+            <article class="panel">
+              <h3>Required checks</h3>
+              <ul>
+                <li>The winning value is not on a search boundary; otherwise expand once.</li>
+                <li>Neighboring settings give similar rankings, not a single isolated spike.</li>
+                <li>The selected recipe is stable across inner environments and the second seed.</li>
+                <li>Training and OOD-validation curves have plateaued before the horizon.</li>
+                <li>No model family is uniquely unstable under the shared recipe.</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <h3>Failure policy</h3>
+              <ul>
+                <li>Log NaNs, expert collapse, out-of-memory events, and incomplete runs.</li>
+                <li>Use one predeclared retry with the same seed and configuration.</li>
+                <li>Do not replace a failed trial with a new hyperparameter draw.</li>
+                <li>Report failure rates by model family and pressure policy.</li>
+                <li>Expand a range once only when the best value lies at its boundary.</li>
+              </ul>
+            </article>
+          </div>
+
+          <h3>5. Report two fairness tracks</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Track</th>
+                  <th>Purpose</th>
+                  <th>Recipe</th>
+                  <th>Claim it supports</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Controlled factorial</strong></td>
+                  <td>Interpret placement, unit, geometry, and pressure effects</td>
+                  <td>Shared frozen dataset-level hyperparameters</td>
+                  <td>Design principles and interactions</td>
+                </tr>
+                <tr>
+                  <td><strong>Equal-budget finalist audit</strong></td>
+                  <td>Rule out an optimizer recipe that accidentally favors one model</td>
+                  <td>
+                    Selected MoE and matched dense-wide each receive the same small independent
+                    search budget on official OOD validation: eight low-discrepancy LR/decay
+                    trials centered on the shared recipe, with the best two repeated using a
+                    second seed
+                  </td>
+                  <td>Headline best-achievable dense-versus-sparse comparison</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <strong>Do not merge the tracks.</strong> Use the shared-recipe results for the
+            factorial analysis. Use the equally tuned finalist results only for the final
+            performance contrast. Publish every trial and its selection rule.
+          </div>
+        </section>
+
+        <section id="ordering">
+          <div class="section-kicker">Operational sequence</div>
+          <h2>Audit, calibrate, explore, freeze, confirm, explain</h2>
+          <p class="lede">
+            The order is dictated by information access. Anything that sets optimization happens
+            on inner folds; anything that chooses scientific contrasts happens on official OOD
+            validation; the official tests are opened only after every choice is frozen.
+          </p>
+
+          <div class="timeline">
+            <article class="stage">
+              <div class="stage-index">Stage 0</div>
+              <h3>Make the comparison executable and auditable</h3>
+              <p>
+                Implement the dense-wide and MoE branches, then verify all invariants before
+                starting HPO.
+              </p>
+              <ul>
+                <li>Exact trainable and inference parameter counts within the 0.1% tolerance.</li>
+                <li>Dense-wide, learned MoE, and frozen-router outputs match at initialization.</li>
+                <li>Top-1 active expert count, routing unit, and chosen placement are correct.</li>
+                <li>RxRx1 and Camelyon use the intended transforms and identical input resolution.</li>
+                <li>All run IDs serialize every factor, loss policy, seed, and split.</li>
+              </ul>
+              <details>
+                <summary>Known implementation deltas in the current starter</summary>
+                <div>
+                  The current defaults use eight experts with top-2 routing; the study requires
+                  top-1. The current cosine router includes an extra learned projection; replace it
+                  with the same E × d weight matrix used by the linear router. Add the
+                  function-preserving dense-wide comparator and frozen-router mode. Verify that
+                  the Camelyon transform actually respects its configuration flag. Finally, add
+                  explicit run fields for placement, routing unit, geometry, pressure policy,
+                  temperature, all loss weights, parameter counts, and data-split identity.
+                </div>
+              </details>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 1</div>
+              <h3>Calibrate shared hyperparameters on inner OOD folds</h3>
+              <p>
+                Execute the three bounded tuning passes in the previous section. Freeze a
+                dataset-level optimizer recipe, geometry-specific router temperatures, and
+                pressure coefficients. Archive the complete tuning table before running the grid.
+              </p>
+              <ul>
+                <li>No official OOD test access.</li>
+                <li>No per-cell optimizer or loss-weight tuning.</li>
+                <li>Expand a search range at most once, only under the boundary rule.</li>
+              </ul>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 2</div>
+              <h3>Run the joint development grid on both datasets</h3>
+              <p>
+                Train every architecture × pressure cell with three paired seeds on each dataset.
+                Use the same seed to control initialization, data order, and augmentation draws
+                across the relevant dense and MoE comparisons.
+              </p>
+              <ul>
+                <li>MoE grid: 36 × 2 datasets × 3 seeds = 216 runs.</li>
+                <li>Dense-wide: 3 placements × {canonical, output-invariant} × 2 datasets × 3 seeds = 36 runs.</li>
+                <li>Original dense reference: 2 datasets × 3 seeds = 6 runs.</li>
+                <li>Analyze main effects and predeclared two-way interactions, not only the winner.</li>
+              </ul>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 3</div>
+              <h3>Freeze the confirmatory comparison set</h3>
+              <p>
+                Use official OOD validation to select one cross-dataset MoE design, its
+                depth-matched dense-wide model, its frozen-router counterpart, and one matched
+                failure differing in exactly one factor. Select the shared design by mean
+                standardized improvement over its dense comparator across datasets.
+              </p>
+              <div class="formula">selection score = mean over datasets of standardized [OOD(MoE) − OOD(dense-wide)]</div>
+              <p>
+                Record dataset-specific winners descriptively, but do not substitute them for the
+                shared design in the main claim. Freeze all analyses, probe training splits, and
+                counterfactuals now.
+              </p>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 4</div>
+              <h3>Run the equal-budget tuning audit</h3>
+              <p>
+                Give the frozen shared MoE and its dense-wide comparator the same small independent
+                search budget on official OOD validation. Keep the controlled-grid checkpoints;
+                this produces a second, clearly labeled performance track rather than rewriting
+                the factorial study.
+              </p>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 5</div>
+              <h3>Run fresh-seed confirmatory test evaluation</h3>
+              <p>
+                Retrain the frozen comparison set with five fresh paired seeds and evaluate the
+                untouched OOD tests once. Report paired differences and environment-clustered
+                uncertainty, plus ID performance, worst-environment performance, parameters,
+                active FLOPs, throughput, memory, and training cost.
+              </p>
+            </article>
+
+            <article class="stage">
+              <div class="stage-index">Stage 6</div>
+              <h3>Explain success and failure</h3>
+              <p>
+                Compare the selected MoE, frozen-router MoE, depth-matched dense-wide model, and
+                matched failure using routing, layerwise representation, and counterfactual
+                analyses.
+              </p>
+            </article>
+          </div>
+
+          <h3 style="margin-top: 32px;">Run-level checklist</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Before launch</th>
+                  <th>During training</th>
+                  <th>Saved at completion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Code revision; complete config; data-manifest hash; split IDs; seed;
+                    parameter/FLOP audit; initialization-equivalence check
+                  </td>
+                  <td>
+                    Task loss; each auxiliary loss; ID and inner/OOD validation metrics; LR;
+                    gradient norm; route entropy; per-expert usage; NaN/collapse flags
+                  </td>
+                  <td>
+                    Best and final checkpoints; predictions with environment IDs; routing summary;
+                    embeddings at pre/post/final layers; runtime, memory, and throughput
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <strong>Checkpoint rule.</strong> Use the same predeclared OOD-validation metric and
+            evaluation frequency for every model. If checkpointing uses OOD validation, report the
+            final-epoch result as a sensitivity check so that noisier models do not gain an
+            accidental selection advantage.
+          </div>
+
+          <h3>Predeclared estimands and decision rules</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Question</th>
+                  <th>Primary contrast</th>
+                  <th>Uncertainty unit</th>
+                  <th>Decision rule</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Does conditional capacity help?</strong></td>
+                  <td>
+                    Canonical MoE minus depth-matched canonical dense-wide; output-invariant MoE
+                    minus output-invariant dense-wide
+                  </td>
+                  <td>Paired seed; experiment on RxRx1; patient or slide on Camelyon</td>
+                  <td>Cross-dataset standardized mean gain with 95% interval, plus both dataset effects</td>
+                </tr>
+                <tr>
+                  <td><strong>Which factors matter?</strong></td>
+                  <td>All 36 controlled-grid cells under the shared recipe</td>
+                  <td>Seed and acquisition environment</td>
+                  <td>Report main effects and only predeclared two-way interactions</td>
+                </tr>
+                <tr>
+                  <td><strong>Where should pressure act?</strong></td>
+                  <td>Route-level and output-level policies, each versus canonical within the same architecture</td>
+                  <td>Paired seed and environment</td>
+                  <td>Placement × policy, unit × policy, geometry × policy, and policy × dataset</td>
+                </tr>
+                <tr>
+                  <td><strong>Is learned routing necessary?</strong></td>
+                  <td>Learned router minus frozen-router counterpart on the frozen design</td>
+                  <td>Fresh paired seed and environment</td>
+                  <td>Confirmed OOD gain plus performance loss under counterfactual rerouting</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Use the official WILDS metric as each dataset’s primary endpoint. Standardize only when
+            aggregating across datasets; always show the original units. Control multiplicity for
+            pairwise follow-ups, and show every cell even when it is not significant. Do not fit
+            or interpret three- and four-way interactions unless the study is separately powered
+            for them.
+          </p>
+        </section>
+
+        <section id="analysis">
+          <div class="section-kicker">Mechanistic payload</div>
+          <h2>Analyses tied directly to the grid hypotheses</h2>
+          <p class="lede">
+            The mechanism section must explain why one factor combination generalizes and another
+            fails. Attractive embeddings or routing maps alone are insufficient.
+          </p>
+
+          <div class="analysis-grid">
+            <article class="analysis-card">
+              <div class="number">01</div>
+              <h3>Expert utilization</h3>
+              <ul>
+                <li>Effective number of experts</li>
+                <li>Assignment entropy and load imbalance</li>
+                <li>Per-environment expert usage</li>
+                <li>Stability across seeds</li>
+              </ul>
+              <p>
+                Tests whether load balancing creates meaningful specialization or only distributes
+                traffic.
+              </p>
+            </article>
+
+            <article class="analysis-card">
+              <div class="number">02</div>
+              <h3>Conditional route information</h3>
+              <ul>
+                <li>Batch/site information in routes conditional on label</li>
+                <li>Label information in routes conditional on environment</li>
+                <li>Per-image histograms for token routing</li>
+              </ul>
+              <div class="formula">I(routes; batch | label) &nbsp;&nbsp; and &nbsp;&nbsp; I(routes; label | batch)</div>
+            </article>
+
+            <article class="analysis-card">
+              <div class="number">03</div>
+              <h3>Layerwise representation change</h3>
+              <ul>
+                <li>Probe immediately before the modified block</li>
+                <li>Probe immediately after it</li>
+                <li>Probe the final CLS representation</li>
+                <li>Compare against the depth-matched dense-wide model</li>
+              </ul>
+              <p>
+                Localizes whether conditional computation amplifies, redirects, or suppresses
+                acquisition information.
+              </p>
+            </article>
+
+            <article class="analysis-card">
+              <div class="number">04</div>
+              <h3>Router-geometry diagnosis</h3>
+              <ul>
+                <li>Feature norm versus router confidence</li>
+                <li>Image intensity/stain statistics versus assignment</li>
+                <li>Assignment change after feature normalization</li>
+                <li>Linear-versus-cosine OOD contrast</li>
+              </ul>
+              <p>
+                Directly tests whether magnitude-sensitive routing follows acquisition intensity.
+              </p>
+            </article>
+
+            <article class="analysis-card">
+              <div class="number">05</div>
+              <h3>Cross-environment task structure</h3>
+              <ul>
+                <li>Label probe trained on seen environments, tested unseen</li>
+                <li>Within-label cross-environment dispersion</li>
+                <li>Cross-environment nearest-neighbor retrieval</li>
+                <li>Batch decodability conditional on label</li>
+              </ul>
+              <p>
+                Establishes whether the final representation preserves transferable scientific
+                signal.
+              </p>
+            </article>
+
+            <article class="analysis-card">
+              <div class="number">06</div>
+              <h3>Counterfactual rerouting</h3>
+              <p>
+                Keep trained expert weights fixed, replace learned assignments with balanced
+                randomized assignments at evaluation, and measure the OOD loss.
+              </p>
+              <div class="formula">route reliance = OOD(learned routes) − OOD(randomized routes)</div>
+              <p>
+                This tests whether routing decisions causally contribute to the observed gain.
+              </p>
+            </article>
+          </div>
+
+          <div class="callout">
+            <strong>Visualization policy.</strong> Use one PCA panel to illustrate a result already
+            established by conditional probes and cross-environment metrics. UMAP and token maps
+            are supplementary illustrations, not evidence.
+          </div>
+        </section>
+
+        <section id="interpretation">
+          <div class="section-kicker">Result logic</div>
+          <h2>What each possible outcome would mean</h2>
+
+          <div class="table-wrap">
+            <table class="interpretation">
+              <thead>
+                <tr>
+                  <th>Observed result</th>
+                  <th>Scientific interpretation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Learned MoE &gt; dense-wide and frozen router</td>
+                  <td>Learned conditional allocation is useful at a fixed capacity budget.</td>
+                </tr>
+                <tr>
+                  <td>MoE &gt; original dense but ≈ dense-wide</td>
+                  <td>The gain is attributable to added stored capacity, not conditional routing.</td>
+                </tr>
+                <tr>
+                  <td>Learned MoE ≈ frozen router</td>
+                  <td>Sparse expert partitioning may matter, but the learned assignment policy does not.</td>
+                </tr>
+                <tr>
+                  <td>Batch-decodable routes + batch-reduced final embedding + high OOD</td>
+                  <td>Environment-aware internal processing may be conditionally correcting acquisition variation.</td>
+                </tr>
+                <tr>
+                  <td>Batch-decodable routes + batch-decodable final embedding + low OOD</td>
+                  <td>The router has created a batch-memorization channel.</td>
+                </tr>
+                <tr>
+                  <td>Load balancing raises utilization but not OOD</td>
+                  <td>Balanced use is not equivalent to useful specialization.</td>
+                </tr>
+                <tr>
+                  <td>Randomized rerouting leaves performance unchanged</td>
+                  <td>Router behavior is mechanistically incidental to the result.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="scope">
+          <div class="section-kicker">Scope discipline</div>
+          <h2>Keep the study systematic, not sprawling</h2>
+
+          <div class="scope-grid">
+            <article class="keep">
+              <h3>Core paper</h3>
+              <ul>
+                <li>Two real scientific acquisition-shift datasets</li>
+                <li>Full fine-tuning from the same DINOv2 checkpoint</li>
+                <li>Fixed total parameter budget</li>
+                <li>12 architectures × three pressure policies</li>
+                <li>Depth-matched dense-wide controls</li>
+                <li>Frozen-router confirmation</li>
+                <li>Routing and representation mechanism analyses</li>
+              </ul>
+            </article>
+
+            <article class="cut">
+              <h3>Not in the primary grid</h3>
+              <ul>
+                <li>Synthetic batch-strength or correlation sweeps</li>
+                <li>Expert-count and top-k sweeps</li>
+                <li>Multiple MoE-depth budgets</li>
+                <li>Extra router projections or custom routers</li>
+                <li>Expert-specific invariance modules</li>
+                <li>Per-cell optimizer or loss-weight tuning</li>
+                <li>Combined route + output pressure in the full grid</li>
+                <li>Multiple backbone families</li>
+                <li>Specialized CNNs as primary comparators</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="callout">
+            <strong>One permitted targeted follow-up.</strong> If routing becomes batch aware,
+            and both route-level and output-level pressure help on their own, combine them on the
+            preregistered design-cover subset. This tests whether the two mechanisms are additive,
+            redundant, or antagonistic without creating a fourth pressure level across all
+            architectures.
+          </div>
+        </section>
+
+        <section id="contribution">
+          <div class="section-kicker">Community value</div>
+          <h2>What makes this an ICLR paper</h2>
+          <p class="lede">
+            The value is not merely performance on two biological datasets. The study asks how a
+            general-purpose pretrained model should allocate a fixed adaptation budget when the
+            specialist domain contains both scientific signal and strong measurement variation.
+          </p>
+
+          <div class="split">
+            <article class="panel">
+              <h3>Contribution 1</h3>
+              <p>
+                A function-preserving, fixed-total-parameter comparison of dense and sparse
+                scientific adaptation, with active compute reported separately.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Contribution 2</h3>
+              <p>
+                A compact design map identifying how routing depth, spatial scale, and similarity
+                geometry interact with the location of batch-invariance pressure under real
+                acquisition shift.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Contribution 3</h3>
+              <p>
+                A mechanistic account connecting expert assignments, layerwise representation
+                change, and generalization to unseen acquisition environments.
+              </p>
+            </article>
+            <article class="panel">
+              <h3>Success bar</h3>
+              <p>
+                A stable factor-level design principle plus a mechanism. One winning cell with
+                noisy routing visualizations is not enough.
+              </p>
+            </article>
+          </div>
+
+          <div class="claim" style="margin-top: 22px;">
+            <p>
+              The success of sparse adaptation under acquisition shift depends on whether routing
+              operates at the appropriate spatial scale and representation depth, whether its
+              similarity geometry favors transferable structure, and where batch invariance is
+              imposed.
+            </p>
+            <small>
+              Working hypothesis—not a promised result. A controlled negative finding remains
+              meaningful if it identifies a reproducible routing failure mode.
+            </small>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <span>Standalone research brief · no external assets or scripts</span>
+        <span>Prepared from the current MoE × batch-effects planning discussion</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const copyButton = document.getElementById("copy-thesis");
+    copyButton.addEventListener("click", async () => {
+      const text = document.getElementById("thesis-text").textContent.trim().replace(/\s+/g, " ");
+      try {
+        await navigator.clipboard.writeText(text);
+        copyButton.textContent = "Copied";
+        setTimeout(() => { copyButton.textContent = "Copy thesis"; }, 1400);
+      } catch {
+        copyButton.textContent = "Select thesis above";
+        setTimeout(() => { copyButton.textContent = "Copy thesis"; }, 1800);
+      }
+    });
+  </script>
+</body>
+</html>

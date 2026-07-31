@@ -1,0 +1,27 @@
+\section{Introduction}
+
+Models for scientific images are routinely adapted across data collected by different experiments,
+laboratories, scanners, or hospitals. These acquisition environments alter appearance while the
+scientific prediction target remains nominally unchanged. A single dense feed-forward network must
+represent every environment with the same parameters. Sparse mixture-of-experts (MoE) instead
+supplies conditional capacity: each input activates only a subset of a larger parameter pool
+\citep{fedus2022switch}. This
+creates a plausible benefit---different adaptation demands need not interfere---and an equally
+plausible failure---the router may partition data by acquisition nuisance and strand capacity when
+a new environment appears.
+
+Existing comparisons cannot answer which explanation is correct if an MoE is simply larger than
+its dense baseline, if architecture and loss are tuned sequentially on the test domain, or if only
+the winning configuration is analyzed. We therefore treat conditional capacity as the object of a
+controlled characterization. Starting from one pretrained DINOv2 encoder
+\citep{oquab2023dinov2}, we change exactly one
+feed-forward block and hold the total parameter budget fixed to the nearest realizable dense width.
+We then vary four interpretable decisions as a full factorial: placement, routing unit, router
+geometry, and training pressure.
+
+Our central question is: \emph{when adapting a pretrained vision model to scientific images
+collected across acquisition environments, when does sparse conditional capacity improve
+held-out-environment generalization over an equally large dense model?} We study RxRx1 cellular
+microscopy and Camelyon17 histopathology as complementary regimes. The intended contributions are
+an auditable dense--sparse comparison, factor-level design principles across 36 MoE configurations,
+and mechanism analyses that distinguish useful specialization from acquisition nuisance.

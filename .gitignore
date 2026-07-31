@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+build/
+dist/
+
+# Env / secrets — never commit your W&B key
+.env
+.netrc
+
+# Experiment outputs (default MOE_RESULTS lives OUTSIDE the repo, but ignore
+# these in case you point it at the repo)
+results/
+summary.csv
+*.ckpt
+*.pt
+*.pth
+*.log
+
+# Weights & Biases local cache
+wandb/
+
+# Dataset caches (anchored to repo root so it does NOT match moe_shift/data/)
+/data/
+*.tar.gz
+
+# LaTeX build artifacts; manuscript sources under paper/ are tracked.
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+paper/main.pdf
+
+# CCAS run coordination (heartbeat is transient, never committed)
+.ccas_heartbeat.json
+.ccas_run.lock
+RESULTS/
