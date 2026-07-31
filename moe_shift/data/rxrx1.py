@@ -23,13 +23,15 @@ Data download is OFF by default (the dataset is large). Set `download: true` in 
 (or once via the WILDS CLI) and point `data_root` at the WILDS root_dir.
 """
 import numpy as np
+import torch
 import torchvision.transforms as T
+import torchvision.transforms.functional as TF
 from torch.utils.data import DataLoader, Dataset
 
 from .datasets import IMAGENET_MEAN, IMAGENET_STD
 
 
-def _rxrx1_transform(img_size, train, rrc=False):
+def _rxrx1_transform(img_size, train, rrc=False, style="imagenet"):
     """Geometric-only aug (flips/rotations are label-preserving for microscopy); NO photometric —
     colour/contrast jitter would imitate the very batch effect we are studying. Normalize with
     ImageNet stats because both backbones (ResNet-50, ViT-S/16) are ImageNet-pretrained.
@@ -37,6 +39,28 @@ def _rxrx1_transform(img_size, train, rrc=False):
     rrc=True swaps the plain Resize for RandomResizedCrop (random scale/crop, then flips). It's still
     purely geometric — no colour change, so batch-effect-safe — and is a strong ViT regularizer
     against the train-set memorization we see on RxRx1. Eval always uses the plain Resize (no rrc)."""
+    if style == "wilds":
+        # Faithful to the official WILDS RxRx1 semantics: discrete right-angle rotations,
+        # horizontal flip, and per-image/per-channel standardization. DINOv2 requires a fixed
+        # spatial size, so the only addition is a deterministic resize to ``img_size``.
+        def standardize(x: torch.Tensor) -> torch.Tensor:
+            mean = x.mean(dim=(1, 2))
+            std = x.std(dim=(1, 2))
+            std[std == 0.0] = 1.0
+            return TF.normalize(x, mean, std)
+
+        def random_right_angle(x):
+            angle = (0, 90, 180, 270)[int(torch.randint(0, 4, (1,)).item())]
+            return TF.rotate(x, angle) if angle else x
+
+        tf = []
+        if train:
+            tf += [T.Lambda(random_right_angle), T.RandomHorizontalFlip()]
+        tf += [T.Resize((img_size, img_size)), T.ToTensor(), T.Lambda(standardize)]
+        return T.Compose(tf)
+    if style != "imagenet":
+        raise ValueError(f"Unknown RxRx1 transform style: {style!r}")
+
     if train and rrc:
         tf = [T.RandomResizedCrop(img_size, scale=(0.5, 1.0), ratio=(0.75, 1.333)),
               T.RandomHorizontalFlip(), T.RandomVerticalFlip()]
@@ -87,7 +111,9 @@ def make_rxrx1_loaders(cfg):
     exp_col = ds.metadata_fields.index("experiment")    # the domain column
 
     rrc = bool(cfg["train"].get("rand_resized_crop", False))   # ViT regularizer; default off (ResNet unchanged)
-    tf_tr, tf_ev = _rxrx1_transform(img_size, True, rrc), _rxrx1_transform(img_size, False)
+    style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
+    tf_tr = _rxrx1_transform(img_size, True, rrc, style)
+    tf_ev = _rxrx1_transform(img_size, False, False, style)
     train_sub  = ds.get_subset("train",   transform=tf_tr)
     within_sub = ds.get_subset("id_test", transform=tf_ev)    # seen experiments, held-out images
     ood_sub    = ds.get_subset("test",    transform=tf_ev)    # OOD experiments (unseen batches)
@@ -129,7 +155,8 @@ def make_rxrx1_val_loader(cfg):
     if "val" not in getattr(ds, "split_dict", {}):
         return None
     exp_col = ds.metadata_fields.index("experiment")
-    val_sub = ds.get_subset("val", transform=_rxrx1_transform(img_size, False))
+    style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
+    val_sub = ds.get_subset("val", transform=_rxrx1_transform(img_size, False, False, style))
     train_exps = sorted(set(ds.get_subset("train").metadata_array[:, exp_col].tolist()))
     remap = {e: i for i, e in enumerate(train_exps)}
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]
