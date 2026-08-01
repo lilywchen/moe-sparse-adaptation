@@ -142,6 +142,29 @@ triggers the frozen below-50% abandonment rule on OOD validation alone.
 
 ## Current scientific interpretation
 
+### Cell-DINO frozen geometry and current adaptation regime
+
+The full Cell-DINO competence set and a stricter out-of-box representation probe are now complete.
+With every Cell-DINO weight frozen, exact cosine 1-NN reaches 2.52% on ID-test and 1.23% on OOD
+validation; nearest-class-centroid is lower at 1.71% and 0.76%. Thus the pretrained embedding does
+not already organize RxRx1 perturbation classes in a way that either local retrieval or simple
+cross-batch class averaging can recover. In particular, centroid aggregation does not rescue OOD
+performance, so the result does not support the narrow hypothesis that only local neighbours are
+batch-confounded while global class geometry is already correct.
+
+Full fine-tuning helps, but the best bounded arm (`lr=1e-4`) reaches only 14.46% train, 8.59% seen,
+and 4.84% OOD-validation accuracy; `lr=3e-4` is worse at 8.93%, 6.07%, and 3.74%. Because train and
+seen accuracy are both low, this is a representation/optimization competence failure under the
+current recipe. It is not yet evidence that the model specifically confuses unseen batches, and it
+cannot adjudicate the MoE hypothesis.
+
+The main competing explanations are now (a) an unverified mismatch in Cell-DINO channel order or
+normalization, (b) insufficient or inappropriate supervised adaptation relative to the released
+Cell-DINO evaluation protocol, and (c) a genuine mismatch between the checkpoint's learned Cell
+Painting geometry and RxRx1 perturbation discrimination. The first two must be audited in a bounded,
+implementation-faithful diagnosis before concluding (c). No additional MoE architecture sweep is
+scientifically useful until train/seen competence is established.
+
 The complete clean-commit RxRx1 grid establishes that the current DINOv2 recipe is not merely
 poorly tuned within the tested LR/LLRD screen: its best OOD-validation accuracy is 1.48% and its best
 seen-environment accuracy is 4.48%, while the canonical control already reaches 13.4% and 24.6%

@@ -311,3 +311,34 @@ GPU0 after a no-result, no-duplicate, two-idle-GPU preflight. Independent health
 the exact probe process, 70% utilization and 7.1 GiB on GPU0, a fresh persistent log, 33 training
 experiments, and only train/ID-test/OOD-validation sizes. OOD test remains untouched. The output is
 `kill_rxrx1/oob/rxrx1_cell_dino_frozen_oob_readouts_s0.json`.
+
+## 2026-07-31 23:26 EDT Cell-DINO out-of-box and competence diagnostics complete
+
+The first frozen probe embedded 40,576 of 40,612 training examples because the optimization loader
+intentionally drops its final partial batch. That output was preserved as
+`rxrx1_cell_dino_frozen_oob_readouts_s0.partial-40576.json` and excluded. The probe now rebuilds a
+deterministic evaluation loader with `drop_last=false`; a focused regression test covers the exact
+failure. The corrected script is GitHub commit `9f56c99`, has SHA-256
+`26fe7b227823d174efa85ce2c61ff4518baf95303be69c994955b2bd5058dcc6`, embeds all 40,612 training
+images, and passes 3/3 focused plus 83/83 full-suite tests in the isolated SciServer checkout.
+
+The corrected, strictly valid non-parametric result is:
+
+| Frozen readout | ID-test accuracy | OOD-validation accuracy | worst OOD-validation experiment |
+|---|---:|---:|---:|
+| cosine 1-nearest-neighbour | 0.025214 | 0.012279 | 0.004870 |
+| nearest class centroid | 0.017138 | 0.007611 | 0.001623 |
+
+The final full-fine-tuning diagnostic (`lr=3e-4`) also completed and passed every run/config,
+checkpoint, DINOv2-source, finite-metric, split, and test-blindness check. Its train/ID/OOD-val/
+worst-experiment accuracies are `0.089314 / 0.060672 / 0.037447 / 0.011769`, weaker than the valid
+`lr=1e-4` arm (`0.144568 / 0.085935 / 0.048407 / 0.013799`). All three predeclared competence arms
+are now valid. OOD test remains untouched.
+
+This resolves the failure-regime gate as representation/optimization failure under the current
+recipe, not demonstrated batch-transfer failure: training accuracy itself remains only 14.5% in the
+best adapted model, and the frozen embeddings provide only 2.5% ID 1-NN accuracy. The OOD decline is
+real but secondary; the model is not yet competent enough within seen experiments to test whether
+MoE improves unseen-batch transfer. No MoE kill contrast is licensed. The next bounded work is to
+audit Cell-DINO's exact channel order, normalization, official evaluation recipe, and optimization
+budget against its released implementation before deciding whether to retain the checkpoint.
