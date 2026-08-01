@@ -268,3 +268,46 @@ The next gate is to validate both full-fine-tuning JSONs and decide whether Cell
 credible seen-environment result with a measurable OOD-validation gap. Only then is the seed-0
 original versus exact-total-parameter-matched dense-wide versus canonical-MoE kill contrast
 licensed.
+
+## 2026-07-31 23:05 EDT Cell-DINO full fine-tuning `1e-4` validated
+
+The `1e-4` full-fine-tuning result completed and passed the same strict schema, finite-metric,
+run/config/seed, checkpoint/source-provenance, OOD-validation selection, and test-blindness checks.
+Its train, seen-environment, OOD-validation, and worst-experiment accuracies are 14.46%, 8.59%,
+4.84%, and 1.38%. Full adaptation therefore improves materially over the frozen linear probe, but
+the absolute level is still weak. This is provisional until the predeclared `3e-4` arm finishes;
+the competence gate must use both full-fine-tuning results rather than stopping on the first one.
+
+The `3e-4` job remains healthy at epoch 5 with a fresh loss of 6.4795. It is the only active GPU
+worker, so seven of the eight H100s are currently idle. No extra diagnostic or MoE run is licensed
+until this final competence result resolves whether Cell-DINO is a credible dense substrate.
+
+## 2026-07-31 23:15 EDT Frozen out-of-the-box representation probe launched
+
+The user authorized one additional bounded diagnostic to determine whether Cell-DINO already
+organizes RxRx1 morphology usefully before any supervised adaptation. Because Cell-DINO is
+self-supervised and has no 1,139-way RxRx1 head, a literal zero-shot class prediction is undefined.
+The implemented test freezes every model weight and evaluates two deterministic readouts over the
+same embeddings: exact cosine 1-nearest-neighbour and nearest perturbation centroid. The former
+tests local feature retrieval; the latter averages each class across training experiments and is
+less able to exploit batch-local neighbours.
+
+This comparison has a direct batch-effect interpretation. High ID-test but low OOD-validation
+1-NN accuracy would indicate that the embedding space is useful within familiar experiments but
+organized around acquisition context. Low ID and OOD for both readouts would indicate that the
+pretrained representation does not expose the perturbation classes without adaptation. Better
+centroid than 1-NN OOD accuracy would show that averaging across batches suppresses nuisance
+structure even before model training.
+
+The official Cell-DINO paper describes the CP checkpoint as self-supervised on a combined resource
+drawn from five Cell Painting datasets and explicitly names RxRx-series models as future work. We
+therefore found no documented direct RxRx1 pretraining exposure. The domain is intentionally
+similar, but the benchmark labels and RxRx1 images are not documented as pretraining data.
+
+The new probe and two focused regression tests were transferred to an isolated checkout after four
+focused tests and the complete 82-test suite passed. The script SHA-256 is
+`2541cdff100e139222225d5c617965eac54e81bba7ba895ceb7e641287ecd33b`. It launched on container 2874
+GPU0 after a no-result, no-duplicate, two-idle-GPU preflight. Independent health verification found
+the exact probe process, 70% utilization and 7.1 GiB on GPU0, a fresh persistent log, 33 training
+experiments, and only train/ID-test/OOD-validation sizes. OOD test remains untouched. The output is
+`kill_rxrx1/oob/rxrx1_cell_dino_frozen_oob_readouts_s0.json`.

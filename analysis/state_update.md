@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 23:02 EDT
+Last verified: 2026-07-31 23:15 EDT
 
 ## Scientific question
 
@@ -74,6 +74,25 @@ seen-environment accuracy, 2.87% OOD-validation accuracy, and 0.97% worst-experi
 accuracy. This establishes that a frozen linear readout is weak. It does not distinguish a failed
 Cell-DINO substrate from a representation that requires full adaptation, so the two full-fine-
 tuning arms remain the decisive competence evidence.
+
+The `1e-4` full-fine-tuning arm is also strictly valid and reaches 14.46% train, 8.59% seen-
+environment, 4.84% OOD-validation, and 1.38% worst-experiment validation accuracy. The gain over
+the linear probe supports an optimization/adaptation component, but the absolute seen and OOD
+levels remain weak. This remains provisional until the `3e-4` arm finishes; if it does not improve
+substantially, the issue is not merely that the Cell-DINO backbone was frozen.
+
+A frozen non-parametric representation probe is now running. Exact cosine 1-NN and nearest-class-
+centroid readouts answer a sharper question than another trained head. An ID-high/OOD-low 1-NN
+pattern would diagnose experiment-local neighborhoods and therefore a genuine batch-transfer
+failure in the pretrained geometry. A low/low pattern for both readouts would instead diagnose
+weak perturbation encoding. Centroid improvement on OOD validation would indicate that cross-batch
+class averaging removes nuisance structure without changing the backbone.
+
+The pretraining-overlap audit found no documented RxRx1 exposure: the Cell-DINO paper describes a
+five-dataset combined Cell Painting pretraining resource and explicitly leaves RxRx-series work as
+a future direction. Domain-matched self-supervision is therefore an intended advantage, not known
+benchmark-image leakage. This conclusion should be revised if Meta releases a more granular image
+manifest contradicting the paper.
 
 Two 90-epoch DINOv2 RxRx1 probes at learning rate `1e-4` produced:
 
