@@ -297,3 +297,8 @@ six acquisitions without a hand-designed CP5 map materially changes train, seen-
 OOD-validation competence. A Channel-Adaptive win would implicate the fixed stain interface; a tie
 would favor the smaller mapped Cell-DINO substrate; joint failure would reject both bounded
 instruments. No performance conclusion follows from the adapter repair itself.
+
+The post-extraction watcher changes turnaround time, not the scientific design. It can launch only
+the already frozen native CP5 diagnostic pair after the complete selection-split audit passes; any
+missing sample, dirty tree, duplicate process, missing checkpoint, or occupied GPU prevents launch.
+There is still no native-channel performance evidence to interpret.

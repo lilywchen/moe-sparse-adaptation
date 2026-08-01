@@ -466,3 +466,19 @@ the instrument gate would not shorten the decision path. When extraction and
 the strict audit complete, the Cell-DINO frozen/full-FT pair will launch on the two attached H100s.
 The Channel-Adaptive frozen/full-FT pair is additionally blocked on its distinct approved ViT-L/16
 checkpoint at the frozen persistent path; the CP ViT-S/8 checkpoint is not interchangeable.
+
+## 2026-08-01 01:38 EDT zero-idle-handoff launch watcher armed
+
+Native extraction remains healthy and advanced to 639,036/753,319 files at 47:50 elapsed; PID
+`34613` is alive in I/O wait, the count continues to increase, and no fatal error is present. Both
+GPUs in the execution container are idle and the distinct Channel-Adaptive checkpoint is still
+absent.
+
+To avoid losing up to one heartbeat interval after the data becomes complete, a one-shot persistent
+watcher was armed as PID `35763` with log `kill_rxrx1/native_cp5_watcher.log`. It waits for the exact
+extraction PID to exit, then requires a clean tested execution tree, the released Cell-DINO
+checkpoint, a zero-missing train/ID-test/OOD-validation audit, a two-run dry-run manifest, no
+duplicate launcher, and zero GPU compute processes. Only if every gate passes does it launch the
+native CP5 frozen-probe/full-fine-tuning pair on GPUs 0 and 1. The watcher was independently
+verified alive; it has not launched training and has not accessed OOD test. A failed audit or
+occupied GPU stops the chain rather than weakening a gate.
