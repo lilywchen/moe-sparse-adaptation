@@ -76,7 +76,15 @@ def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
         raise ValueError(phase)
 
     rows = []
+    instrument_namespace = None
+    if phase == "instrument":
+        base_cfg = load_config(config)
+        source = str(base_cfg["model"].get("backbone_source", "unknown"))
+        layout = str(base_cfg["train"].get("rxrx1_channel_layout", "unknown"))
+        instrument_namespace = f"{source}_{layout}"
     for tag, overrides in specs:
+        if instrument_namespace is not None:
+            tag = f"{instrument_namespace}_{tag}"
         overrides = [*overrides, f"run_tag={tag}"]
         cfg = apply_overrides(load_config(config), overrides)
         rows.append((tag, overrides, run_id_from(cfg)))
