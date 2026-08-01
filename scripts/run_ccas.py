@@ -9,7 +9,7 @@ against the fixed reference P*, protocol assertions, all metrics, and the enviro
         --override model.variant=moe model.placement=middle model.routing_unit=token \
                    model.geometry=cosine model.pressure=canonical seed=0
 """
-import argparse, json, os, platform, socket, subprocess, sys, time
+import argparse, hashlib, json, math, os, platform, socket, subprocess, sys, time
 from pathlib import Path
 
 import numpy as np
@@ -101,6 +101,67 @@ def atomic_torch_save(payload, path):
     tmp = path.with_name(path.name + ".tmp")
     torch.save(payload, tmp)
     os.replace(tmp, path)
+
+
+def _sha256_file(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_stage1_artifacts(result, milestone_path=None):
+    """Fail closed before publishing any selection-stage artifact externally."""
+    if result.get("selection_split") != "ood_val" or result.get("test_evaluated") is not False:
+        raise ValueError("publish requires selection_split=ood_val and test_evaluated=false")
+    if result.get("acc_heldout") is not None or result.get("worst_env_heldout") is not None:
+        raise ValueError("publish requires all OOD-test metrics to remain null")
+    required = ("acc_selection", "acc_val", "worst_env_val", "acc_within")
+    if any(not math.isfinite(float(result[key])) for key in required):
+        raise ValueError("publish requires finite selection/ID metrics")
+    milestones = []
+    if milestone_path is not None and Path(milestone_path).is_file():
+        with open(milestone_path) as handle:
+            milestones = [json.loads(line) for line in handle if line.strip()]
+        for row in milestones:
+            if row.get("run_id") != result.get("run_id"):
+                raise ValueError("milestone run identity mismatch")
+            if row.get("selection_split") != "ood_val" or row.get("test_evaluated") is not False:
+                raise ValueError("milestone violates OOD-test blindness")
+            for key in ("acc_train", "acc_within", "acc_selection", "worst_env_val"):
+                if not math.isfinite(float(row[key])):
+                    raise ValueError(f"milestone has non-finite {key}")
+    return milestones
+
+
+def publish_hf_run(result, artifact_paths, out_dir):
+    """Upload one validated run folder plus a checksum manifest to the configured HF dataset."""
+    token, repo_id = os.environ.get("HF_TOKEN"), os.environ.get("CCAS_HF_REPO")
+    if not token or not repo_id:
+        return None
+    from huggingface_hub import HfApi
+
+    prefix = os.environ.get("CCAS_HF_PREFIX", "results").strip("/")
+    run_id = result["run_id"]
+    files = [Path(path) for path in artifact_paths if Path(path).is_file()]
+    manifest_path = Path(out_dir) / f"{run_id}.artifact_manifest.json"
+    manifest = {
+        "run_id": run_id, "selection_split": result["selection_split"],
+        "test_evaluated": result["test_evaluated"], "git_sha": result["git_sha"],
+        "files": [{"name": path.name, "bytes": path.stat().st_size,
+                   "sha256": _sha256_file(path)} for path in files],
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2))
+    files.append(manifest_path)
+    api = HfApi(token=token)
+    for path in files:
+        api.upload_file(
+            path_or_fileobj=str(path), path_in_repo=f"{prefix}/{run_id}/{path.name}",
+            repo_id=repo_id, repo_type="dataset",
+        )
+    return {"prefix": f"{prefix}/{run_id}", "manifest": manifest_path.name,
+            "n_files": len(files)}
 
 
 @torch.no_grad()
@@ -205,7 +266,9 @@ def main():
             wandb_run = wandb.init(
                 project=os.environ.get("WANDB_PROJECT", "ccas"),
                 entity=os.environ.get("WANDB_ENTITY"), name=rid,
-                group=f"{cfg['dataset']}_{cap.variant}", job_type="train",
+                group=os.environ.get("WANDB_GROUP", f"{cfg['dataset']}_{cap.variant}"),
+                job_type=os.environ.get("WANDB_JOB_TYPE", "train"),
+                tags=[tag for tag in os.environ.get("WANDB_TAGS", "").split(",") if tag],
                 config={**cfg, "capacity": cap.as_dict()}, reinit=True,
             )
         except Exception as e:
@@ -318,6 +381,15 @@ def main():
                 }, ckpt_path)
                 milestone["checkpoint"] = ckpt_path.name
             milestone_f.write(json.dumps(milestone) + "\n"); milestone_f.flush()
+            if wandb_run is not None:
+                try:
+                    wandb_run.log({
+                        "milestone/train_acc": m_train, "milestone/id_acc": m_id,
+                        "milestone/ood_val_acc": m_val,
+                        "milestone/worst_experiment_val_acc": m_worst_val,
+                    }, step=ep)
+                except Exception as e:
+                    print(f"[wandb] milestone log skipped: {e}", flush=True)
             print(f"[{rid}] milestone ep{epoch_number} train {m_train:.4f} id {m_id:.4f} "
                   f"val {m_val:.4f} worst {m_worst_val:.4f}", flush=True)
 
@@ -420,6 +492,10 @@ def main():
         # ---- provenance ----
         "protocol": protocol, "git_sha": sha, "git_dirty": dirty,
         "backbone_provenance": model.backbone_provenance,
+        "tracking": ({"project": getattr(wandb_run, "project", None),
+                      "group": getattr(wandb_run, "group", None),
+                      "run_id": getattr(wandb_run, "id", None)}
+                     if wandb_run is not None else None),
         "host": socket.gethostname(), "python": platform.python_version(),
         "torch": torch.__version__, "gpu": (torch.cuda.get_device_name(0) if torch.cuda.is_available() else None),
         "wall_seconds": round(time.time() - t0, 1),
@@ -443,11 +519,14 @@ def main():
             print(f"[wandb] skipped: {e}")
     if os.environ.get("HF_TOKEN") and os.environ.get("CCAS_HF_REPO"):
         try:
-            from huggingface_hub import HfApi
-            api = HfApi(token=os.environ["HF_TOKEN"])
-            api.upload_file(path_or_fileobj=str(out_json), path_in_repo=f"results/{rid}.json",
-                            repo_id=os.environ["CCAS_HF_REPO"], repo_type="dataset")
-            print(f"[hf] uploaded results/{rid}.json")
+            validate_stage1_artifacts(result, milestone_path if milestones else None)
+            artifacts = [out_json, log_path]
+            if milestones:
+                artifacts.append(milestone_path)
+            artifacts.extend(sorted(out_dir.glob(f"{rid}.epoch*.pt")))
+            published = publish_hf_run(result, artifacts, out_dir)
+            print(f"[hf] uploaded validated folder {published['prefix']} "
+                  f"({published['n_files']} files)")
         except Exception as e:
             print(f"[hf] skipped: {e}")
 

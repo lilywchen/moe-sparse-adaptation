@@ -34,6 +34,10 @@ RESULT_ROOT = Path(os.environ.get(
     "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/"
     "substrate_rxrx1/cell_dino_cp5",
 ))
+WANDB_GROUP = os.environ.get("MOE_RX_WANDB_GROUP", "rxrx1-cell-dino-hypothesis90-20260801")
+HF_PREFIX = os.environ.get(
+    "MOE_RX_HF_PREFIX", "rxrx1/cell_dino_cp5/hypothesis90_20260801"
+)
 
 
 # Each arm changes a scientific mechanism relative to ``original_anchor``.  These are deliberately
@@ -104,6 +108,7 @@ def main():
     if args.dry_run:
         print(f"RxRx1 hypothesis shard {args.shard_index}/{args.num_shards}: "
               f"{len(rows)} planned, {len(pending)} pending -> {out}")
+        print(f"  W&B group: {WANDB_GROUP}; HF prefix: {HF_PREFIX}")
         for tag, _, rid in rows:
             print(f"  {tag}: {rid}")
         return
@@ -117,6 +122,10 @@ def main():
                 break
             tag, overrides, rid = pending.pop(0)
             env = dict(os.environ, CUDA_VISIBLE_DEVICES=gpu)
+            env["WANDB_GROUP"] = WANDB_GROUP
+            env["WANDB_JOB_TYPE"] = "rxrx1_hypothesis_matrix"
+            env["WANDB_TAGS"] = "rxrx1,cell-dino,hypothesis90,ood-test-blind"
+            env["CCAS_HF_PREFIX"] = HF_PREFIX
             log = open(out / f"{rid}.log", "a")
             cmd = [sys.executable, "scripts/run_ccas.py", "--config", args.config,
                    "--results-dir", str(out), "--override", *overrides]
