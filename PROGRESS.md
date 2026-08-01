@@ -746,6 +746,11 @@ configured under `rxrx1/cell_dino_cp5/hypothesis90_20260801`; no folder has been
 yet. A run folder is pushed only after the final JSON and all milestone/checkpoint artifacts pass
 the exact identity, finite-metric, OOD-test-blindness, and SHA-256 manifest checks.
 
+The 15-minute `moe-sciserver-progress-check` heartbeat is active with the new campaign contract.
+It must inspect all five containers independently, validate and publish completed folders, and may
+advance only through the milestone and epoch-90 gates above; it is explicitly forbidden from
+turning this batch into a hyperparameter sweep.
+
 Next: preserve all ten healthy workers and validate the first 10-epoch milestone files as they
 appear. Those paired train/ID/OOD curves decide whether the former ten-epoch contrast was simply
 undertrained; the 30/60/90 trajectory then separates capacity, routing granularity, routing

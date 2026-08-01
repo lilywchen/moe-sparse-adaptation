@@ -466,3 +466,6 @@ after strict validation. This improves traceability but does not make interim lo
 scientific evidence. The original versus dense-wide versus MoE epoch-90 comparison remains the
 primary efficacy contrast; top-2 has different active compute, and frozen/partial/invariant/
 environment-balanced arms remain diagnostic. OOD test is untouched.
+
+The active 15-minute steward now encodes this exact interpretation and must treat completion as a
+validation/publishing handoff rather than an invitation to add tuning arms.

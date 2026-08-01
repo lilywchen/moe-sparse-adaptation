@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "launch_and_verify_ten_arm_cell_dino_hypothesis90_campaign_with_wandb_and_hf_gates",
-  "last_action_at": "2026-08-01T12:17:00-04:00",
+  "last_action": "activate_updated_fifteen_minute_hypothesis90_research_steward",
+  "last_action_at": "2026-08-01T12:25:00-04:00",
   "last_verified_commit": "d4e80b0",
   "valid_results": 0,
   "expected_results": 10,
@@ -125,8 +125,9 @@
   "hypothesis90_hf_prefix": "rxrx1/cell_dino_cp5/hypothesis90_20260801",
   "hypothesis90_hf_status": "publish_after_each_run_completes_and_passes_strict_validation_none_uploaded_yet",
   "hypothesis90_split_status": "train40612_id40612_ood_val9854_ood_test34432_untouched",
+  "steward_automation_status": "active_15min_hypothesis90_contract_five_container_health_strict_validation_wandb_and_hf_handoff",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
-  "last_synced_commit": "d4e80b0",
+  "last_synced_commit": "63c9be6",
   "overleaf_build_status": "pass_6_pages_0_errors_1_warning_2026-08-01T05:27-04:00",
   "next_gate": "strictly_validate_10_30_60_90_milestones_and_apply_epoch90_moe_minus_dense_wide_gate_without_ood_test_access"
 }
