@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 04:04 EDT
+Last verified: 2026-08-01 04:39 EDT
 
 ## Scientific question
 
@@ -384,3 +384,26 @@ the promised effect-size criterion. OOD test remains sealed.
 The next decision is bounded: validate the learned/randomized-route and frozen-router diagnostics,
 then decide whether the small dense-wide recovery has a coherent routing mechanism worth reporting
 as a negative mechanistic study. No further architecture search is licensed.
+
+## Provisional routing diagnosis and validity repair
+
+The first bounded diagnosis does not yet license a mechanism conclusion. Its performance pattern is
+scientifically suggestive: the learned router reaches 11.42% OOD validation, randomizing its routes
+reduces accuracy by only 0.04 points, and freezing the router instead reaches 11.98%. If reproduced
+cleanly, that combination would strongly disfavor H2: the learned assignments would carry little
+causal predictive value, and learning the router would not outperform a fixed partition.
+
+Two alternative explanations remain. Randomized rerouting could be a weak intervention if experts
+never differentiated meaningfully, or the token router could encode acquisition/biology despite
+predictions being insensitive to those assignments. The intended routing-MI audit distinguishes
+these cases, but it failed because token assignments were paired with image-level labels without
+repetition. Therefore the apparent low route reliance is provisional and the MI/usage evidence is
+absent, not null.
+
+The exact defect is repaired and the same two arms are running once from a clean, tested checkout.
+The final interpretation requires aligned token-label counts, finite routing MI/entropy/usage,
+clean provenance, and reproduction of the learned-versus-frozen/randomized performance ordering.
+If learned routing remains nearly irrelevant, the clean negative story becomes sharper: conditional
+capacity modestly regularizes a harmful dense widening, but the router does not discover reusable
+batch structure. If route reliance or aligned MI changes materially, the competing routing
+explanation remains live. Neither outcome can reopen the failed +5-point efficacy gate.

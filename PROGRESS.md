@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-08-01 04:04 EDT on SciServer.
+Last verified: 2026-08-01 04:39 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -605,3 +605,41 @@ passes 92/92.
 Next: strictly validate both diagnosis JSONs, then measure learned-route reliance and whether a
 trainable router matters relative to the frozen-router control. This can explain the small recovery
 over dense-wide, but it cannot reverse the failed predictive gate or license replication.
+
+## 2026-08-01 04:39 EDT route-audit defect repaired; bounded diagnosis retried once
+
+Classification is `RUNNING_HEALTHY`. The first learned-router and frozen-router diagnosis jobs
+completed and produced two parseable, finite, test-blind JSONs. Their performance and randomized-
+route fields are diagnostic, but the files are excluded from the final mechanism decision for two
+explicit reasons. First, both record `git_dirty=true`: a provenance audit confirmed that the only
+modified files were the unrelated aggregation reporter and its test, while every training and
+mechanism runtime file still matched HEAD `1344e4d`. Second, and decisively, both JSONs report a
+mechanism failure: 10,437,284 token assignments were compared with only 40,612 image-level
+experiment/class labels, so routing mutual information and expert usage were not computed.
+
+The excluded attempt is preserved under `kill_rxrx1/native_cp5/diagnose/`. It offers only a
+provisional signal: the learned MoE reaches OOD validation `0.114167`, and randomizing its routes
+changes accuracy by just `0.000406` (0.04 points); the frozen-router model reaches `0.119850`, 0.57
+points above the learned router, and has 0.63-point randomized-route reliance. This pattern argues
+against strong learned-route dependence, but it is not a final claim because the mechanism audit
+failed and the files lack clean terminal provenance.
+
+The defect was narrow and architectural: token routing emits one assignment per token, while the
+audit supplied one site/class label per image. GitHub commit `5874e17` repeats each image label in
+image-major token order and checks the router-recorded token count. The repair was transferred to a
+new isolated checkout, regression-tested for image and token routing, and frozen as clean SciServer
+commit `ac69d40` (tree `01abac6a9e79ad7bb5b7cd8c97c432bbfda4fab4`). Targeted capacity/routing
+tests pass 21/21 and the complete remote suite passes 93/93.
+
+The same two predeclared diagnostics—not new arms—were dry-run as exactly two pending results in a
+distinct persistent retry root and relaunched once. Container 2875 GPU 0 runs the learned/randomized
+route job (W&B `gm70n7gi`) and GPU 1 runs the frozen-router job (W&B `0jceiq4b`). Fresh health proof
+shows 98%/97% utilization, 8,021/7,995 MiB allocated, live processes, fresh logs, and zero fatal
+matches. Containers 2874, 2862, and 2859 were each inspected separately; all six other GPUs report
+0% utilization, 0 MiB, and no relevant process. They remain idle because this single permitted
+retry is the only work that can resolve the mechanism decision. OOD test remains untouched.
+
+Next: strictly validate the two retry JSONs from clean `ac69d40`, require the routing error to be
+absent and the assignment/label counts to align, then compare learned, randomized, and frozen
+routing. Recurrence of the same failure is a blocker; no further retry, replication, or architecture
+search is licensed.

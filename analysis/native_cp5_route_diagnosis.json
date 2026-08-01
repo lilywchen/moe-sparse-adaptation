@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-01T04:39:00-04:00",
+  "dataset": "rxrx1",
+  "stage": "bounded_route_diagnosis",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "attempt_1": {
+    "status": "excluded_from_final_mechanism_decision_and_retried_once",
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/diagnose",
+    "recorded_git_sha": "1344e4d",
+    "recorded_git_dirty": true,
+    "runtime_provenance_audit": {
+      "head": "1344e4d",
+      "modified_files": ["scripts/aggregate_ccas.py", "tests/test_aggregate.py"],
+      "untracked_files": [],
+      "training_and_mechanism_runtime_files_match_head": true,
+      "reason_dirty": "aggregation-only reporting repair applied after launch"
+    },
+    "learned_router": {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep10_s0_diag_learned_random_route",
+      "wandb_id": "0e0s07va",
+      "acc_train": 0.38734720031545744,
+      "acc_within": 0.26332118585639713,
+      "acc_selection": 0.1141668358027197,
+      "worst_env_val": 0.013798701298701298,
+      "randomized_routes_acc": 0.11376090927542115,
+      "route_reliance": 0.00040592652729855294,
+      "routing_error": "Found input variables with inconsistent numbers of samples: [40612, 10437284]"
+    },
+    "frozen_router": {
+      "run_id": "rxrx1_moe_frozen_middle_token_cosine_canonical_E8k1_ep10_s0_diag_frozen_router",
+      "wandb_id": "8fxyb9ry",
+      "acc_train": 0.3894666798107255,
+      "acc_within": 0.2660051216389245,
+      "acc_selection": 0.11984980718489953,
+      "worst_env_val": 0.015016233766233766,
+      "randomized_routes_acc": 0.11355794601177187,
+      "route_reliance": 0.006291861173127661,
+      "routing_error": "Found input variables with inconsistent numbers of samples: [40612, 10437284]"
+    },
+    "provisional_only": {
+      "frozen_minus_learned_ood_val": 0.00568297138217983,
+      "learned_route_reliance_points": 0.040592652729855294,
+      "frozen_route_reliance_points": 0.6291861173127661,
+      "interpretation": "suggests weak learned-route dependence, but no final mechanism claim is licensed"
+    }
+  },
+  "defect_repair": {
+    "root_cause": "token-level expert assignments were compared with one site/class label per image",
+    "repair": "repeat each image label over its image-major token assignments before routing MI and usage audits",
+    "github_commit": "5874e17",
+    "isolated_sciserver_commit": "ac69d40",
+    "isolated_sciserver_tree": "01abac6a9e79ad7bb5b7cd8c97c432bbfda4fab4",
+    "targeted_tests": "21_passed",
+    "full_tests": "93_passed"
+  },
+  "attempt_2": {
+    "status": "running_healthy",
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/diagnose_routefix_ac69d40/diagnose",
+    "expected_results": 2,
+    "valid_results": 0,
+    "learned_router_wandb_id": "gm70n7gi",
+    "frozen_router_wandb_id": "0jceiq4b",
+    "gpu_health": "container2875_gpu0_98pct_8021MiB_gpu1_97pct_7995MiB_zero_fatal",
+    "launch_checks": [
+      "clean_isolated_commit",
+      "checkpoint_present",
+      "two_run_dry_run_pending",
+      "no_duplicate_process",
+      "both_gpus_idle_before_launch",
+      "empty_distinct_result_root",
+      "selection_split_ood_val",
+      "ood_test_unevaluated"
+    ]
+  }
+}
