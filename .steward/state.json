@@ -76,7 +76,7 @@
   "native_checkpoint_smoke": "pass_6x512x512_to_5x128x128_to_1139_finite_logits",
   "channel_adaptive_adapter_status": "official_bag_of_channels_path_15_focused_90_full_tests_pass",
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
-  "last_synced_commit": "23fdacd",
-  "overleaf_build_status": "pass_0_errors_1_warning",
+  "last_synced_commit": "13b6c30",
+  "overleaf_build_status": "pass_5_pages_0_errors_1_warning_2026-08-01",
   "next_gate": "strictly_validate_three_seed0_kill_results; launch_seeds1_and2_only_if_moe_minus_dense_wide_ood_val_at_least_0.05_and_moe_id_loss_at_most_0.02"
 }
