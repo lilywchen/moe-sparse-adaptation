@@ -518,3 +518,20 @@ benign straggler if its log stops advancing or a fatal trace appears. The larges
 threat is temporary loss of a fresh signed SciServer portal session for direct JSON inspection;
 W&B confirms live progress but cannot substitute for strict persistent-file validation. OOD test
 remains untouched.
+
+## Epoch-30 operational snapshot: possible moderate sparse signal, not yet valid evidence
+
+Every arm has now emitted an epoch-30 W&B milestone. On the rounded log values, canonical token
+top-1 is 18.07% OOD validation versus 15.29% for matched dense-wide (`+2.78` points) while also
+raising ID from 40.48% to 45.75%. Image top-1 is 18.35%, within-experiment-balanced token is 17.70%,
+top-2 is 16.51%, and original is 17.52%. This provisionally weakens the simplest hard-routing
+starvation account because top-1 now exceeds top-2, and it keeps routing granularity and
+experiment-aware balancing alive. It does not pass the predeclared `+5`-point replication gate.
+
+This is not yet scientific evidence. The values are rounded W&B renderings and the SciServer
+session requires reauthentication before the persistent epoch-30 JSON rows can be parsed and
+checked at exact precision. The interpretation would be falsified by strict validation failure or
+by the epoch-60/90 trajectories returning canonical top-1 to dense-wide. Full train accuracy is
+already about 99% for the adapted arms, so remaining changes primarily probe ID generalization and
+batch transfer rather than basic task fit. OOD test remains sealed under the last strictly checked
+configuration, but its null fields must be reverified in the milestone files before consumption.

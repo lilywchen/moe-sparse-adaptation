@@ -834,3 +834,20 @@ arm is the remaining straggler at epoch `27`, with a fresh log. Therefore the ep
 gate remains incomplete and no cross-arm epoch-30 claim is made yet. SciServer `tester6` still
 returns `503` at its execution endpoint, consistent with the previously recorded pending/no-H100
 state; no duplicate or repeated start request was issued. OOD test remains sealed.
+
+### 2026-08-01 14:01 ET — epoch-30 W&B coverage complete; strict gate blocked on SciServer login
+
+All ten signed W&B run logs now contain an epoch-30 milestone and remain `Running` with no rendered
+fatal trace. The rounded operational snapshot is preserved in
+`analysis/hypothesis90_epoch30_wandb_snapshot.json`. Canonical token top-1 is provisionally
+`+2.78` OOD-validation points and `+5.27` ID points versus exact-total-parameter-matched dense-wide;
+image top-1 is `+3.06` OOD points, within-experiment-balanced token is `+2.41`, and top-2 is
+`+1.22`. Original is `+2.23` over dense-wide. These rounded W&B lines suggest the early sparse
+ordering improved after epoch 10, but none reaches the frozen `+5`-point replication trigger and
+none is yet a validated result.
+
+Strict epoch-30 validation is blocked because the SciServer portal session now requires
+reauthentication, so the persistent milestone JSONs cannot be checked for exact precision,
+parseability, identity, parameter counts, `selection_split=ood_val`, `test_evaluated=false`, and
+null OOD-test fields. W&B cannot substitute for those checks. The ten healthy workers continue
+untouched toward epoch 60. `tester6` still returns `503`; no duplicate or repeated start was issued.

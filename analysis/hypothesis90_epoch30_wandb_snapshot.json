@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-01T14:01:00-04:00",
+  "grade": "operational_unvalidated",
+  "source": "signed_wandb_rendered_run_logs",
+  "wandb_group": "rxrx1-cell-dino-hypothesis90-20260801",
+  "execution_commit": "cd783399ab1d4cee2666f1af8dfe3bfd9fc29280",
+  "execution_tree": "ec05b37b9f2ac593e047243c414b114c3a1fb52c",
+  "strict_validation": {
+    "status": "blocked",
+    "reason": "SciServer portal session requires reauthentication before persistent milestone JSONs can be inspected",
+    "required_checks_not_yet_repeated": [
+      "json_parseability",
+      "finite_exact_precision_metrics",
+      "exact_run_config_seed_identity",
+      "parameter_counts",
+      "selection_split_ood_val",
+      "test_evaluated_false",
+      "null_ood_test_fields",
+      "milestone_file_identity"
+    ],
+    "scientific_consumption_allowed": false
+  },
+  "arms": [
+    {"arm": "dense_wide", "wandb_run_id": "0xpwd8mc", "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep90_s0_hypothesis90_dense_wide", "train": 0.9956, "id": 0.4048, "ood_val": 0.1529, "worst_experiment": 0.0158, "latest_epoch": 37},
+    {"arm": "moe_image_top1", "wandb_run_id": "w6sqdgov", "run_id": "rxrx1_moe_middle_image_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_image_top1", "train": 0.9961, "id": 0.4327, "ood_val": 0.1835, "worst_experiment": 0.0183, "latest_epoch": 41},
+    {"arm": "moe_token_top1", "wandb_run_id": "jo0b8ycc", "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_token_top1", "train": 0.9982, "id": 0.4575, "ood_val": 0.1807, "worst_experiment": 0.0114, "latest_epoch": 41},
+    {"arm": "moe_token_top2", "wandb_run_id": "j9yjhagx", "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k2_ep90_s0_hypothesis90_moe_token_top2", "train": 0.9955, "id": 0.4185, "ood_val": 0.1651, "worst_experiment": 0.0110, "latest_epoch": 40},
+    {"arm": "moe_token_within_env", "wandb_run_id": "0crn85p0", "run_id": "rxrx1_moe_middle_token_cosine_route_E8k1_ep90_s0_hypothesis90_moe_token_within_env", "train": 0.9917, "id": 0.4262, "ood_val": 0.1770, "worst_experiment": 0.0134, "latest_epoch": 31},
+    {"arm": "environment_balanced", "wandb_run_id": "kmotbuzn", "run_id": "rxrx1_original_ep90_s0_hypothesis90_environment_balanced", "train": 0.9914, "id": 0.4252, "ood_val": 0.1737, "worst_experiment": 0.0146, "latest_epoch": 40},
+    {"arm": "frozen_linear", "wandb_run_id": "1zwn6qq5", "run_id": "rxrx1_original_ep90_s0_hypothesis90_frozen_linear", "train": 0.1782, "id": 0.0929, "ood_val": 0.0446, "worst_experiment": 0.0073, "latest_epoch": 40},
+    {"arm": "original_anchor", "wandb_run_id": "6zkqodfv", "run_id": "rxrx1_original_ep90_s0_hypothesis90_original_anchor", "train": 0.9945, "id": 0.4353, "ood_val": 0.1752, "worst_experiment": 0.0170, "latest_epoch": 40},
+    {"arm": "output_invariant", "wandb_run_id": "rmsua36b", "run_id": "rxrx1_original_ep90_s0_hypothesis90_output_invariant", "train": 0.9959, "id": 0.4230, "ood_val": 0.1690, "worst_experiment": 0.0138, "latest_epoch": 40},
+    {"arm": "partial_last4", "wandb_run_id": "ixgx0uhr", "run_id": "rxrx1_original_ep90_s0_hypothesis90_partial_last4", "train": 0.9976, "id": 0.4710, "ood_val": 0.1764, "worst_experiment": 0.0175, "latest_epoch": 40}
+  ],
+  "rounded_operational_contrasts": {
+    "moe_token_top1_minus_dense_wide_ood_val": 0.0278,
+    "moe_token_top1_minus_dense_wide_id": 0.0527,
+    "moe_image_top1_minus_dense_wide_ood_val": 0.0306,
+    "moe_token_within_env_minus_dense_wide_ood_val": 0.0241,
+    "moe_token_top2_minus_dense_wide_ood_val": 0.0122,
+    "original_anchor_minus_dense_wide_ood_val": 0.0223
+  },
+  "interpretation": "Complete epoch-30 operational snapshot only. Do not use for a scientific claim or gate decision until exact persistent milestone rows pass strict validation."
+}
