@@ -1,6 +1,6 @@
 # Evidence and correctness index
 
-Last verified: 2026-07-31 19:52 EDT
+Last verified: 2026-07-31 21:31 EDT
 
 This file maps every material claim to its run identity, provenance, split policy, validation status,
 and downstream use. `Decision-grade` means eligible for a predeclared scientific decision;
@@ -19,6 +19,7 @@ and downstream use. `Decision-grade` means eligible for a predeclared scientific
 | Canonical WILDS ERM retry demonstrates learnability | diagnostic, decision-relevant sanity evidence | RxRx1 / sanity | `hpo/rxrx1/canonical_erm_sanity_6fb65e5_retry1/`; W&B run `rytuap3l`; evaluation CSVs through epoch 47 | WILDS upstream `4726775` plus audited compatibility `6fb65e5` | validation plus ID-test only; OOD test not constructed/evaluated | epoch 47 best-so-far OOD-val 0.154151; epoch-21 train/ID-test/OOD-val 0.7075/0.2458/0.1341; exact validation files inspected | establishes dataset learnability and fixed competence reference |
 | Complete bounded DINOv2 rescue fails competence gate | decision-grade substrate exclusion | RxRx1 / competence gate | four JSONs under `hpo/rxrx1/dense_rescue_26ad7fa/` and `hpo/rxrx1/dense_rescue_1da67a5/` | first three clean `26ad7fa3b0baa96fae9dab25417e42a844074636`; official transform GitHub `aa8d0cf` applied as clean SciServer `1da67a5` | all use `selection_split=ood_val`, `test_evaluated=false`; OOD test untouched | 4/4 pass parseability, finite metrics, exact identity/config, clean or code-equivalent provenance, equal 21,628,800 parameters, and split/test guards; best rescue 0.055003 is 35.7% of canonical 0.154151, below frozen 50% gate | excludes natural-image DINOv2 from RxRx1 factorial; licenses replacement-backbone decision, not extra tuning |
 | Final Camelyon17 Phase-A shard launched | pending decision-grade | Camelyon17 / Stage 0 | `camelyon17_original_ep10_s0_hpoA_lr3e-04_llrd0.85`; persistent phase-A log; W&B `fwab3bqs` | clean `26ad7fa3b0baa96fae9dab25417e42a844074636` | selection configured on `ood_val`; startup states test untouched | exact sole-pending shard dry-run; no duplicate/result; GPU0 free; verified process, 98% GPU utilization, fresh log, W&B, clean checkout | completes parallel coverage of all remaining Camelyon17 candidates |
+| Cell-DINO RxRx1 implementation is execution-ready except for the gated checkpoint | validated implementation, no performance evidence | RxRx1 / competence gate | GitHub `db9ebdb`; SciServer checkout `moe-sparse-adaptation-run-db9ebdb-v2`; remote test log `celldino_remote_tests.log` | GitHub tree and isolated SciServer tree both `c537d33ef4db3dc2206c0922a0159b4b19095adc`; SciServer commit `4c1a0ab2`; official DINOv2 `7764ea0` | competence diagnostics are configured for train/ID/OOD validation; `test_evaluated=false` remains mandatory | 80/80 remote tests pass; checkpoint destination checked and missing; no Cell-DINO run launched or metric claimed | licenses checkpoint integrity check and three-run competence screen, not MoE comparison |
 
 ## Exact diagnostic metrics
 

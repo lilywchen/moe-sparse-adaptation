@@ -184,3 +184,37 @@ safely reconciling a concurrent Overleaf file-mode-only commit. Overleaf then pu
 history, reported no remaining GitHub commits, and compiled `paper/main.tex` to five pages with no
 fatal error. The compiled PDF contains the dataset-qualified abstract and the 5.50% RxRx1 rescue
 result. GitHub/local remains the source of truth.
+
+## 2026-07-31 21:31 EDT Cell-DINO qualification implementation
+
+The user approved Meta Cell-DINO as the RxRx1 replacement substrate. The project is now RxRx1-only
+for new scientific work; no new Camelyon17 jobs are licensed, although existing healthy jobs and
+their artifacts are preserved.
+
+The RxRx1 kill-test protocol, Cell-DINO adapter, fixed three-to-five-channel mapping, competence
+launcher, tests, and exact matched-control accounting were pushed to GitHub main at `db9ebdb`.
+Because SciServer cannot authenticate to the private GitHub repository, the exact patch was applied
+to an isolated execution checkout at
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-run-db9ebdb-v2`. Its tree hash
+is `c537d33ef4db3dc2206c0922a0159b4b19095adc`, exactly matching GitHub `db9ebdb`; the resulting
+isolated SciServer commit is `4c1a0ab2b8005c6f1e7910ff5fa90b2b6b26e856`.
+
+The official Meta DINOv2 source was cloned to persistent storage and pinned at
+`7764ea0f912e53c92e82eb78a2a1631e92725fc8`. The complete remote test suite passes: 80/80 tests in
+7.58 seconds, including Cell-DINO chunked-block loading, five-channel input, fixed RxRx1 channel
+mapping, classifier-inclusive parameter accounting, and existing leakage/protocol guards.
+
+No Cell-DINO GPU run has been launched yet. The approved checkpoint is not present at the frozen
+persistent destination
+`models/cell_dino/cell_dino_vits8_pretrain_cp-37d20e9c.pth`. The currently inspected SciServer
+container has two idle H100s and no MoE/Cell-DINO process. The browser-provided signed link could
+not be downloaded automatically without bypassing browser security, so the exact checkpoint file
+must be downloaded or uploaded by the user once. This is the sole blocker to the three-run
+competence diagnostic (frozen linear probe; full fine-tuning at `1e-4`; full fine-tuning at
+`3e-4`). OOD test remains untouched.
+
+The 15-minute research-steward automation was updated to the RxRx1 Cell-DINO diagnosis, competence,
+kill-contrast, replication, mechanism, exact-parameter-fairness, and traceable-reporting protocol.
+Once the checkpoint appears, it is authorized to integrity-check it, dry-run all three diagnostics,
+fill idle GPUs without duplicates, validate train/ID/OOD-validation outputs, and advance to the
+matched dense-wide versus MoE kill contrast only if dense competence is established.

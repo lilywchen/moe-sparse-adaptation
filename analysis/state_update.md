@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 19:52 EDT
+Last verified: 2026-07-31 21:31 EDT
 
 ## Scientific question
 
@@ -10,6 +10,17 @@ generalization over a total-parameter-matched dense model, and which routing cho
 gain or failure?
 
 ## Where the project is
+
+The user approved Cell-DINO Cell Painting ViT-S/8 as the replacement RxRx1 substrate. The exact
+RxRx1-only kill-test implementation is on GitHub commit `db9ebdb` and in a tree-identical isolated
+SciServer checkout (tree `c537d33ef4db3dc2206c0922a0159b4b19095adc`). The official DINOv2
+source is pinned at `7764ea0`, and the complete SciServer test suite passes 80/80 tests.
+
+The next scientific gate is not MoE yet. It is the three-way Cell-DINO failure decomposition:
+frozen-backbone linear probing, full fine-tuning at `1e-4`, and full fine-tuning at `3e-4`, with
+train, seen-environment, OOD-validation, and worst-experiment accuracy. The approved checkpoint is
+not yet present in persistent SciServer storage, so none of these diagnostics has launched. This
+asset transfer is the sole current blocker. No new Camelyon17 work is licensed.
 
 The study is in Stage 0. The frozen 36-cell factorial has not started. All six RxRx1 seed-0 shared-
 HPO candidates have completed and passed strict validation under execution commit `26ad7fa`.
@@ -147,7 +158,11 @@ substrate result, not evidence for or against MoE.
 
 ## Next decisions
 
-1. Decide whether to qualify Cell-DINO Cell Painting ViT-S/8 as the RxRx1 replacement substrate.
-2. Complete and rank Camelyon17 Phase A independently; all three remaining cells are active.
-3. If Cell-DINO is approved, implement one bounded clean dense competence screen before any MoE.
-4. Freeze competent recipes and calibration values before launching any Stage-1 factorial cells.
+1. Place the approved Cell-DINO checkpoint at the frozen persistent destination and verify its
+   checksum/load behavior without revealing the signed URL.
+2. Run the three bounded Cell-DINO competence diagnostics in parallel and determine whether the
+   current failure is representation/optimization, ordinary generalization, or batch transfer.
+3. If dense competence is established, freeze one recipe and run the seed-0 original versus exact
+   total-parameter-matched dense-wide versus canonical-MoE kill contrast.
+4. Replicate only if MoE gains at least 5 absolute OOD-validation points while losing no more than
+   2 ID points; prioritize the 10--15 point effect target.
