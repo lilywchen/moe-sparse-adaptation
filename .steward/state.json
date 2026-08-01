@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "abandon_dinov2_for_rxrx1_and_launch_final_camelyon17_candidate",
-  "last_action_at": "2026-07-31T19:52:00-04:00",
+  "last_action": "sync_rxrx1_backbone_gate_to_github_and_overleaf",
+  "last_action_at": "2026-07-31T20:01:00-04:00",
   "last_verified_commit": "26ad7fa",
   "valid_results": 9,
   "expected_results": 12,
@@ -12,7 +12,7 @@
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "dinov2_failed_competence_gate",
   "rxrx1_backbone_status": "decision_required_cell_dino_cp_vits8_recommended",
-  "last_synced_commit": "240b39d",
+  "last_synced_commit": "23fdacd",
   "overleaf_build_status": "pass_0_errors_1_warning",
   "next_gate": "user_decision_on_cell_dino_rxrx1_qualification; complete_and_rank_camelyon17_phase_a"
 }

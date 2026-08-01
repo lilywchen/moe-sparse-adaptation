@@ -175,3 +175,12 @@ utilization with the exact process identity, fresh persistent log, W&B run `fwab
 Current critical path: finish and rank Camelyon17 Phase A while the user decides whether to qualify
 Cell-DINO for RxRx1. The remaining authorized GPU work is running; idle GPUs are not filled with
 unapproved backbone experiments or additional DINOv2 tuning.
+
+## 2026-07-31 20:01 EDT artifact synchronization
+
+The resolved RxRx1 substrate gate, complete bounded-rescue evidence, dataset-qualified-backbone
+design, and refreshed research-plan HTML were pushed to GitHub through commit `23fdacd` after
+safely reconciling a concurrent Overleaf file-mode-only commit. Overleaf then pulled the verified
+history, reported no remaining GitHub commits, and compiled `paper/main.tex` to five pages with no
+fatal error. The compiled PDF contains the dataset-qualified abstract and the 5.50% RxRx1 rescue
+result. GitHub/local remains the source of truth.
