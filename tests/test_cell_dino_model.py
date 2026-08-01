@@ -46,7 +46,10 @@ class _FakeCellDino(nn.Module):
         tokens = x.mean(dim=(2, 3)).mean(dim=1, keepdim=True).unsqueeze(-1).expand(-1, 5, 32)
         for chunk in self.blocks:
             tokens = chunk(tokens)
-        return {"x_norm_clstoken": tokens[:, 0]}
+        return {
+            "x_norm_clstoken": tokens[:, 0],
+            "x_norm_patchtokens": tokens[:, 1:],
+        }
 
 
 def test_cell_dino_adapter_flattens_chunks_and_extracts_cls(monkeypatch, tmp_path):
@@ -82,3 +85,22 @@ def test_frozen_backbone_leaves_only_classifier_trainable(monkeypatch, tmp_path)
     )
     assert all(not p.requires_grad for p in model.backbone.parameters())
     assert all(p.requires_grad for p in model.fc.parameters())
+
+
+def test_cell_dino_official_feature_pool_concatenates_cls_and_patch_mean(monkeypatch, tmp_path):
+    monkeypatch.setattr(torch.hub, "load", lambda *args, **kwargs: _FakeCellDino())
+    model = CCASModel(
+        num_classes=11, variant="original", backbone_source="cell_dino",
+        hub_repo_dir=tmp_path, pretrained=False, img=128,
+        feature_pool="cls_patch_mean",
+    )
+    x = torch.randn(2, 5, 16, 16)
+    raw = model.backbone.forward_features(x)
+    expected = torch.cat(
+        (raw["x_norm_clstoken"], raw["x_norm_patchtokens"].mean(dim=1)), dim=-1
+    )
+
+    assert model.dim == 64
+    assert model.fc.in_features == 64
+    assert model.backbone_provenance["feature_pool"] == "cls_patch_mean"
+    torch.testing.assert_close(model.forward_features(x), expected)

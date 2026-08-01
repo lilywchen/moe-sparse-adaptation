@@ -90,7 +90,8 @@ Run exactly three Cell-DINO seed-0 diagnostics on OOD validation only:
 3. full fine-tuning, 10 epochs, LR `3e-4`, uniform layer LR.
 
 All use the official-style RxRx1 geometry and per-image/per-channel standardization, 128×128 input,
-the fixed three-to-five channel map, identical sampler/batch size, and no photometric augmentation.
+the fixed three-to-five channel map, the Cell-DINO paper's concatenated class-token plus mean-patch-
+token representation, identical sampler/batch size, and no photometric augmentation.
 The best full-fine-tuning arm is frozen by OOD-val accuracy, breaking ties with worst-experiment
 accuracy. Do not add learning-rate or preprocessing arms after looking at results.
 

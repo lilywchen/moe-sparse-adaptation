@@ -59,9 +59,13 @@ class CCASModel(nn.Module):
                  drop_path=0.2, sym_break_wide=0.1, sym_break_moe=0.0,
                  backbone_source="timm", hub_repo_dir=None, checkpoint_path=None,
                  hub_model="cell_dino_cp_vits8", input_channels=5,
+                 feature_pool="cls",
                  expected_hub_repo_commit=None, freeze_backbone=False, **_ignore):
         super().__init__()
         self.backbone_source = str(backbone_source)
+        self.feature_pool = str(feature_pool)
+        if self.feature_pool not in ("cls", "cls_patch_mean"):
+            raise ValueError(f"unknown feature_pool: {self.feature_pool!r}")
         if self.backbone_source == "timm":
             import timm
             self.backbone = timm.create_model(timm_name, pretrained=pretrained, num_classes=0,
@@ -99,11 +103,12 @@ class CCASModel(nn.Module):
                 "checkpoint_filename": (checkpoint.name if checkpoint is not None else None),
                 "checkpoint_sha256": (_sha256(checkpoint) if checkpoint is not None else None),
                 "input_channels": int(input_channels),
+                "feature_pool": self.feature_pool,
             }
         else:
             raise ValueError(f"unknown model.backbone_source: {self.backbone_source!r}")
 
-        self.dim = self.backbone.num_features
+        self.dim = self.backbone.num_features * (2 if self.feature_pool == "cls_patch_mean" else 1)
         # Plain list on purpose: blocks remain registered only under the backbone, preserving the
         # official checkpoint namespace. convert_block only needs mutable references.
         self.blocks = _actual_blocks(self.backbone)
@@ -132,7 +137,14 @@ class CCASModel(nn.Module):
     def forward_features(self, x):
         f = self.backbone.forward_features(x)
         if isinstance(f, dict):
-            return f["x_norm_clstoken"]
+            cls = f["x_norm_clstoken"]
+            if self.feature_pool == "cls":
+                return cls
+            if "x_norm_patchtokens" not in f:
+                raise KeyError("cls_patch_mean pooling requires x_norm_patchtokens")
+            return torch.cat((cls, f["x_norm_patchtokens"].mean(dim=1)), dim=-1)
+        if self.feature_pool != "cls":
+            raise TypeError("cls_patch_mean pooling requires dictionary backbone features")
         return self.backbone.forward_head(f, pre_logits=True)
 
     def forward(self, x):
@@ -165,5 +177,6 @@ def build_ccas(cfg):
                      checkpoint_path=m.get("checkpoint_path"),
                      hub_model=m.get("hub_model", "cell_dino_cp_vits8"),
                      input_channels=m.get("input_channels", 5),
+                     feature_pool=m.get("feature_pool", "cls"),
                      expected_hub_repo_commit=m.get("expected_hub_repo_commit"),
                      freeze_backbone=m.get("freeze_backbone", False))
