@@ -2,9 +2,10 @@
 
 Last verified: 2026-08-01 04:04 EDT on SciServer.
 
-Research-state synchronization: GitHub commit `13b6c30` was pulled into the linked Overleaf
-project on 2026-08-01; `paper/main.tex` compiled successfully to five pages with 0 errors and one
-pre-existing warning. Overleaf then reported no newer GitHub commit since the merge.
+Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
+gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
+`paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
+Overleaf then reported no newer GitHub commit since the merge.
 
 ## Protocol state
 

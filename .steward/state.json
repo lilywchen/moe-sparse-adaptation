@@ -3,7 +3,7 @@
   "classification": "RUNNING_HEALTHY",
   "last_action": "fail_seed0_replication_gate_repair_aggregation_and_launch_bounded_route_diagnosis",
   "last_action_at": "2026-08-01T04:04:00-04:00",
-  "last_verified_commit": "64e1baf",
+  "last_verified_commit": "75c2e85",
   "valid_results": 9,
   "expected_results": 12,
   "active_gpu_workers": 2,
@@ -90,7 +90,7 @@
   "native_checkpoint_smoke": "pass_6x512x512_to_5x128x128_to_1139_finite_logits",
   "channel_adaptive_adapter_status": "official_bag_of_channels_path_15_focused_90_full_tests_pass",
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
-  "last_synced_commit": "13b6c30",
-  "overleaf_build_status": "pass_5_pages_0_errors_1_warning_2026-08-01",
+  "last_synced_commit": "75c2e85",
+  "overleaf_build_status": "pass_5_pages_0_errors_1_warning_2026-08-01T04:10-04:00",
   "next_gate": "strictly_validate_two_bounded_diagnosis_results_and_interpret_route_reliance; replication_and_architecture_grid_forbidden_by_failed_seed0_gate"
 }
