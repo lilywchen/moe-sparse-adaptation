@@ -25,10 +25,11 @@ def test_null_gate_diagnosis_is_only_frozen_and_random_route_pair():
 
     assert [tag for tag, _, _ in rows] == [
         "diag_learned_random_route", "diag_frozen_router"]
-    assert all("stage2" in rid and "s0" in rid for _, _, rid in rows)
+    assert all("s0" in rid for _, _, rid in rows)
     assert "moe_middle_token_cosine_canonical_E8k1" in rows[0][2]
     assert "moe_frozen_middle_token_cosine_canonical_E8k1" in rows[1][2]
     for _, overrides, _ in rows:
+        assert "stage=2" in overrides
         assert "analysis.run_mechanism=true" in overrides
         assert "train.optim.lr=0.0001" in overrides
         assert "train.epochs=10" in overrides
