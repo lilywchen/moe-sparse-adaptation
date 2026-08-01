@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 22:48 EDT
+Last verified: 2026-07-31 23:02 EDT
 
 ## Scientific question
 
@@ -23,9 +23,9 @@ from `1x5x128x128` input through 12 transformer blocks.
 
 The next scientific gate is not MoE yet. It is the three-way Cell-DINO failure decomposition:
 frozen-backbone linear probing, full fine-tuning at `1e-4`, and full fine-tuning at `3e-4`, with
-train, seen-environment, OOD-validation, and worst-experiment accuracy. The first two jobs are
-healthy on two H100s and the third is queued idempotently behind them. No new Camelyon17 work is
-licensed.
+train, seen-environment, OOD-validation, and worst-experiment accuracy. The linear probe is strictly
+valid, and both full-fine-tuning jobs are healthy on two H100s; none is queued. No new Camelyon17
+work is licensed.
 
 The study is in Stage 0. The frozen 36-cell factorial has not started. All six RxRx1 seed-0 shared-
 HPO candidates have completed and passed strict validation under execution commit `26ad7fa`.
@@ -68,6 +68,12 @@ exact run/config/filename identity, clean common commit `26ad7fa`, `selection_sp
 | 3e-4 | 0.85 | 0.01340 | 0.04481 | 0.00081 | valid |
 
 ## Provisional diagnostics
+
+The frozen Cell-DINO linear probe is strictly valid and reaches 5.83% training accuracy, 4.05%
+seen-environment accuracy, 2.87% OOD-validation accuracy, and 0.97% worst-experiment validation
+accuracy. This establishes that a frozen linear readout is weak. It does not distinguish a failed
+Cell-DINO substrate from a representation that requires full adaptation, so the two full-fine-
+tuning arms remain the decisive competence evidence.
 
 Two 90-epoch DINOv2 RxRx1 probes at learning rate `1e-4` produced:
 
@@ -163,11 +169,10 @@ substrate result, not evidence for or against MoE.
 
 ## Next decisions
 
-1. Place the approved Cell-DINO checkpoint at the frozen persistent destination and verify its
-   checksum/load behavior without revealing the signed URL.
-2. Run the three bounded Cell-DINO competence diagnostics in parallel and determine whether the
-   current failure is representation/optimization, ordinary generalization, or batch transfer.
-3. If dense competence is established, freeze one recipe and run the seed-0 original versus exact
+1. Complete and strictly validate the two active Cell-DINO full-fine-tuning diagnostics, then
+   determine whether the current failure is representation/optimization, ordinary generalization,
+   or batch transfer.
+2. If dense competence is established, freeze one recipe and run the seed-0 original versus exact
    total-parameter-matched dense-wide versus canonical-MoE kill contrast.
-4. Replicate only if MoE gains at least 5 absolute OOD-validation points while losing no more than
+3. Replicate only if MoE gains at least 5 absolute OOD-validation points while losing no more than
    2 ID points; prioritize the 10--15 point effect target.

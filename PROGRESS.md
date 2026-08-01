@@ -248,3 +248,23 @@ These runs are diagnostic rather than performance evidence. The next gate is to 
 JSONs and classify the failure regime from train, seen-environment, OOD-validation, and
 worst-experiment accuracy. The matched dense-wide versus MoE kill contrast remains unlicensed until
 Cell-DINO demonstrates credible dense competence.
+
+## 2026-07-31 23:02 EDT First Cell-DINO diagnostic validated
+
+The frozen-backbone linear probe completed and passed strict validation at the isolated SciServer
+commit `4c1a0ab2` (result provenance records the unique short form `4c1a0ab`). The file is parseable,
+all required metrics are finite, the run/config/seed and Cell-DINO checkpoint identities match, the
+pinned DINOv2 source is `7764ea0`, `selection_split=ood_val`, and `test_evaluated=false`.
+
+Its train, seen-environment, OOD-validation, and worst-experiment accuracies are 5.83%, 4.05%,
+2.87%, and 0.97%. This is diagnostic evidence that a frozen linear readout is insufficient; it is
+not evidence against full fine-tuning or sparse conditional capacity. The launcher immediately
+filled the freed slot with the `3e-4` full-fine-tuning arm. At the fresh health check, the `1e-4`
+and `3e-4` jobs were at epochs 9 and 4 with fresh losses 5.0466 and 6.6335. Both assigned H100s were
+at 99% utilization and approximately 7.9 GiB; all six H100s in the other three containers were
+confirmed idle. No additional competence run is scientifically licensed until these two complete.
+
+The next gate is to validate both full-fine-tuning JSONs and decide whether Cell-DINO establishes a
+credible seen-environment result with a measurable OOD-validation gap. Only then is the seed-0
+original versus exact-total-parameter-matched dense-wide versus canonical-MoE kill contrast
+licensed.
