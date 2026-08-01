@@ -757,3 +757,64 @@ undertrained; the 30/60/90 trajectory then separates capacity, routing granulari
 starvation, representation depth, explicit invariance, and environment imbalance. Only a valid
 epoch-90 MoE-minus-dense-wide gain of at least five OOD points with at most two ID points lost can
 license replication. OOD test remains sealed throughout.
+
+## 2026-08-01 13:07 EDT epoch-10 milestone validated; sixth container queued
+
+Classification is `RUNNING_HEALTHY`. All ten hypothesis90 arms produced exactly one epoch-10
+milestone row. The rows are parseable, finite, exact seed/run/epoch matches, use
+`selection_split=ood_val`, set `test_evaluated=false`, and contain no exclusion. OOD test remains
+untouched. No final result JSON exists, so final-result coverage remains `0/10`; milestone coverage
+is now `10/10` at epoch 10. The original anchor checkpoint exists at the declared persistent path,
+is `269,082,312` bytes, and has SHA-256
+`d175761bce0444b6845a75b69410481d2f6f647bf73ff3a8b60642bbcdb5361`.
+
+The paired interim metrics are:
+
+| Arm | Train | ID | OOD-val | Worst OOD environment |
+|---|---:|---:|---:|---:|
+| original anchor | 0.524793 | 0.335369 | 0.137711 | 0.014610 |
+| matched dense-wide | 0.476390 | 0.295504 | 0.133144 | 0.012987 |
+| canonical token top-1 MoE | 0.473778 | 0.300970 | 0.128983 | 0.015422 |
+| image top-1 MoE | 0.459730 | 0.288757 | 0.128679 | 0.011364 |
+| within-experiment-balanced token MoE | 0.474616 | 0.301438 | 0.128374 | 0.015828 |
+| token top-2 MoE | 0.517892 | 0.315892 | 0.136290 | 0.014610 |
+| frozen linear | 0.095303 | 0.062642 | 0.033590 | 0.007711 |
+| last-four-block adaptation | 0.527775 | 0.345120 | 0.127765 | 0.016640 |
+| output invariance | 0.476513 | 0.312814 | 0.125837 | 0.012581 |
+| environment-balanced classification | 0.363836 | 0.252659 | 0.115182 | 0.012987 |
+
+This is diagnostic and provisional. Canonical top-1 MoE is `0.416` percentage points below
+dense-wide on OOD validation, while top-2 is `0.315` points above dense-wide but uses unmatched
+active compute and remains `0.142` points below original. The original anchor therefore still leads
+the fair efficacy family at this milestone. Frozen linear remains near floor, showing that the
+checkpoint is not immediately linearly separable for this task. Last-four adaptation has the best
+ID accuracy but not OOD accuracy, which is compatible with representation-depth effects that do
+not yet improve transfer. These trajectories could still change materially by epochs 30/60/90;
+they do not pass or fail the frozen epoch-90 gate.
+
+All five assigned containers were inspected separately through fresh terminal signatures. Their
+ten direct workers are alive and mapped to the expected persistent logs; GPU memory is allocated
+to every arm, fatal scans are clear, and the latest recorded epochs range from 14 to 19. Host
+`88e600c3...` returned three zero-utilization samples, but both processes consumed CPU and their
+logs advanced through epoch 19 within seconds, so the shard is healthy rather than stalled. The
+other hosts showed active GPU samples up to 100%. Portal status for all five is `Running`.
+
+The user-authorized sixth 2-H100 container was created as `tester6` (container `2893`, external ref
+`8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9`) with the same persistent/scratch/data mounts. Its start
+request reached the scheduler, but the authoritative container state remains `Pending` because no
+eligible H100 pair is currently available: three nodes report insufficient GPU capacity, two are
+unschedulable, and the rest fail the node selector. No duplicate container or repeated start was
+issued. The 15-minute steward now checks this exact sixth container every invocation, recreates it
+only if absent, and assigns work only when a scientifically licensed independent arm exists.
+
+W&B identities and the fresh campaign group remain recorded in logs and state, but a direct API
+status query returned `relogin required`; no live W&B state is claimed from that failed query. No
+Hugging Face folder is published because no run is complete. The exact milestone metrics, paths,
+container signatures, checkpoint digest, tracking limitation, and tester6 scheduler state are
+preserved in `analysis/hypothesis90_epoch10_validation.json`.
+
+Next: protect the ten healthy workers and validate the 10 paired epoch-30 milestone rows. That is
+the next point at which the trajectories can distinguish transient undertraining from a stable
+original/dense-wide/MoE ordering. If tester6 becomes `Running` first, verify both GPUs and use it
+only for already licensed decision-relevant work; do not invent a filler sweep. OOD test remains
+sealed.

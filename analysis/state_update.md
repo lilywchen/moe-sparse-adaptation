@@ -469,3 +469,36 @@ environment-balanced arms remain diagnostic. OOD test is untouched.
 
 The active 15-minute steward now encodes this exact interpretation and must treat completion as a
 validation/publishing handoff rather than an invitation to add tuning arms.
+
+## Hypothesis90 epoch-10 trajectory: no sparse-transfer signal yet
+
+All ten epoch-10 milestone rows now pass the predeclared identity, finiteness, split, and
+test-blindness checks. The original anchor leads OOD validation at 13.77%, followed by token top-2
+MoE at 13.63% and matched dense-wide at 13.31%. Canonical token top-1 MoE reaches 12.90%, which is
+0.42 percentage points below dense-wide; image top-1 and within-experiment-balanced routing are
+also below dense-wide. Top-2 is 0.31 points above dense-wide, but that arm activates two experts and
+is not active-compute matched. It is therefore evidence that extra active routing may ease early
+optimization, not evidence for the proposed capacity-controlled robustness effect.
+
+The diagnostics sharpen two substrate hypotheses. Frozen linear remains near floor (3.36% OOD,
+6.26% ID), so out-of-the-box Cell-DINO features are not sufficient for this exact perturbation
+classification protocol. Last-four adaptation gives the strongest ID score (34.51%) but only
+12.78% OOD, whereas full adaptation of the original reaches 33.54% ID and 13.77% OOD. This ordering
+provisionally favors full representation adaptation for transfer and warns that better ID fitting
+does not automatically close the experiment gap. Environment-balanced classification and explicit
+output invariance are not helping by epoch 10.
+
+These are trajectories under a 90-epoch schedule, not reproductions of the earlier completed
+10-epoch recipe: the horizon changes the learning-rate trajectory. Continued undertraining remains
+a live explanation, especially because train accuracy is only 46--53% for most adapted arms and
+worst-experiment accuracy is still about 1--2%. The interpretation would be falsified if the
+epoch-30/60/90 ordering changes and a fair top-1 MoE opens a substantial OOD advantage while
+preserving ID. Until then, the original anchor is the strongest fair instrument and the epoch-90
++5-point gate is unchanged.
+
+Operationally, all ten workers remain healthy at epochs 14--19. A sixth authorized container was
+created but is pending because SciServer cannot currently place another two-H100 pod. Its capacity
+will shorten the critical path only if it becomes runnable and a predeclared independent action is
+licensed; otherwise it must not create an unplanned sweep. The largest current trust limitation is
+that the W&B API requested a fresh login, although exact run identities, persistent logs, milestone
+files, and OOD-test blindness remain locally verifiable.

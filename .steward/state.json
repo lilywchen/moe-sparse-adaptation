@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "activate_updated_fifteen_minute_hypothesis90_research_steward",
-  "last_action_at": "2026-08-01T12:25:00-04:00",
+  "last_action": "validate_hypothesis90_epoch10_and_create_sixth_container_capacity",
+  "last_action_at": "2026-08-01T13:07:00-04:00",
   "last_verified_commit": "d4e80b0",
   "valid_results": 0,
   "expected_results": 10,
   "active_gpu_workers": 10,
   "idle_h100s": 0,
-  "sciserver_resource_map": "host2b741f13_gpus0_1_original_anchor_top2_alive_epoch1; host8cf2b351_gpus0_1_dense_wide_frozen_linear_alive_epoch1; host88e600c3_gpus0_1_token_top1_partial_last4_alive_epoch1; hostd644003b_gpus0_1_image_top1_output_invariant_alive_epoch1; hosta70b09cf_gpus0_1_within_env_moe_environment_balanced_alive_epoch1; all_fatal_scans_clear",
+  "sciserver_resource_map": "host2b741f13_gpus0_1_original_anchor_top2_alive_epoch19; host8cf2b351_gpus0_1_dense_wide_epoch17_frozen_linear_epoch19; host88e600c3_gpus0_1_token_top1_partial_last4_alive_epoch19; hostd644003b_gpus0_1_image_top1_output_invariant_alive_epoch19; hosta70b09cf_gpus0_1_within_env_moe_epoch14_environment_balanced_epoch19; all_fatal_scans_clear; tester6_container2893_pending_no_eligible_h100_pair",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -102,7 +102,7 @@
   "native_checkpoint_smoke": "pass_6x512x512_to_5x128x128_to_1139_finite_logits",
   "channel_adaptive_adapter_status": "official_bag_of_channels_path_15_focused_90_full_tests_pass",
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
-  "hypothesis90_status": "ten_of_ten_workers_healthy_epoch1_complete_zero_final_results",
+  "hypothesis90_status": "ten_of_ten_epoch10_milestones_strictly_valid_workers_healthy_epochs14_to19_zero_final_results",
   "hypothesis90_expected_results": 10,
   "hypothesis90_valid_results": 0,
   "hypothesis90_active_runs": [
@@ -125,9 +125,39 @@
   "hypothesis90_hf_prefix": "rxrx1/cell_dino_cp5/hypothesis90_20260801",
   "hypothesis90_hf_status": "publish_after_each_run_completes_and_passes_strict_validation_none_uploaded_yet",
   "hypothesis90_split_status": "train40612_id40612_ood_val9854_ood_test34432_untouched",
-  "steward_automation_status": "active_15min_hypothesis90_contract_five_container_health_strict_validation_wandb_and_hf_handoff",
+  "hypothesis90_epoch10_milestones": {
+    "valid": 10,
+    "expected": 10,
+    "excluded": 0,
+    "grade": "diagnostic_provisional",
+    "original_anchor": {"acc_train": 0.5247929810725552, "acc_within": 0.33536885649561704, "acc_val": 0.13771057438603612, "worst_env_val": 0.01461038961038961},
+    "dense_wide": {"acc_train": 0.47638998422712936, "acc_within": 0.29550379198266524, "acc_val": 0.13314390095392734, "worst_env_val": 0.012987012987012988},
+    "moe_token_top1": {"acc_train": 0.4737776025236593, "acc_within": 0.3009701566039594, "acc_val": 0.12898315404911712, "worst_env_val": 0.015422077922077922},
+    "moe_token_top2": {"acc_train": 0.5178923501577287, "acc_within": 0.315891854624249, "acc_val": 0.13628983154049118, "worst_env_val": 0.01461038961038961},
+    "top1_minus_dense_wide_acc_val": -0.00416074690481022,
+    "top2_minus_dense_wide_acc_val": 0.003145930586563843,
+    "validation_artifact": "analysis/hypothesis90_epoch10_validation.json"
+  },
+  "hypothesis90_anchor_epoch10_checkpoint": {
+    "path": "substrate_rxrx1/cell_dino_cp5/hypothesis90/rxrx1_original_ep90_s0_hypothesis90_original_anchor.epoch010.pt",
+    "size_bytes": 269082312,
+    "sha256": "d175761bce0444b6845a75b69410481d2f6f647bf73ff3a8b60642bbcdb5361"
+  },
+  "hypothesis90_wandb_live_query_status": "relogin_required_no_live_state_claimed_local_run_ids_and_logs_intact",
+  "sixth_container": {
+    "name": "tester6",
+    "container_id": 2893,
+    "external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
+    "domain": "Interactive 2H100 GPU",
+    "image": "GPU-Essesials",
+    "status": "Pending",
+    "running": false,
+    "scheduler_reason": "three_nodes_insufficient_gpu_two_unschedulable_eleven_node_selector_mismatch_no_preemption_victim",
+    "duplicate_guard": "do_not_recreate_or_repeat_start_while_pending"
+  },
+  "steward_automation_status": "active_15min_hypothesis90_contract_five_active_container_health_tester6_capacity_check_strict_validation_wandb_and_hf_handoff",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "63c9be6",
   "overleaf_build_status": "pass_6_pages_0_errors_1_warning_2026-08-01T05:27-04:00",
-  "next_gate": "strictly_validate_10_30_60_90_milestones_and_apply_epoch90_moe_minus_dense_wide_gate_without_ood_test_access"
+  "next_gate": "strictly_validate_epoch30_milestones_then_60_90_and_apply_epoch90_moe_minus_dense_wide_gate_without_ood_test_access"
 }

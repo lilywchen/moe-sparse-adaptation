@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-01T13:07:00-04:00",
+  "classification": "RUNNING_HEALTHY",
+  "campaign": "rxrx1-cell-dino-hypothesis90-20260801",
+  "stage": "epoch10_diagnostic_milestone",
+  "grade": "diagnostic_provisional",
+  "execution_commit": "cd783399ab1d4cee2666f1af8dfe3bfd9fc29280",
+  "execution_tree": "ec05b37b9f2ac593e047243c414b114c3a1fb52c",
+  "persistent_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/hypothesis90",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_status": "untouched",
+  "validation": {
+    "milestone_files_present": 10,
+    "milestone_files_expected": 10,
+    "parseable": true,
+    "finite_required_metrics": true,
+    "exact_run_seed_epoch_identity": true,
+    "selection_split_exact": true,
+    "test_evaluated_false": true,
+    "excluded_rows": 0,
+    "final_result_jsons_present": 0
+  },
+  "metrics": [
+    {
+      "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep90_s0_hypothesis90_dense_wide",
+      "epoch": 10,
+      "acc_train": 0.47638998422712936,
+      "acc_within": 0.29550379198266524,
+      "acc_val": 0.13314390095392734,
+      "worst_env_val": 0.012987012987012988,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_moe_middle_image_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_image_top1",
+      "epoch": 10,
+      "acc_train": 0.45972988958990535,
+      "acc_within": 0.2887570176302571,
+      "acc_val": 0.12867870915364318,
+      "worst_env_val": 0.011363636363636364,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_token_top1",
+      "epoch": 10,
+      "acc_train": 0.4737776025236593,
+      "acc_within": 0.3009701566039594,
+      "acc_val": 0.12898315404911712,
+      "worst_env_val": 0.015422077922077922,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k2_ep90_s0_hypothesis90_moe_token_top2",
+      "epoch": 10,
+      "acc_train": 0.5178923501577287,
+      "acc_within": 0.315891854624249,
+      "acc_val": 0.13628983154049118,
+      "worst_env_val": 0.01461038961038961,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_moe_middle_token_cosine_route_E8k1_ep90_s0_hypothesis90_moe_token_within_env",
+      "epoch": 10,
+      "acc_train": 0.4746155362776025,
+      "acc_within": 0.3014379986210972,
+      "acc_val": 0.12837426425816928,
+      "worst_env_val": 0.015827922077922076,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_environment_balanced",
+      "epoch": 10,
+      "acc_train": 0.36383576498422715,
+      "acc_within": 0.25265931251846746,
+      "acc_val": 0.11518165212096611,
+      "worst_env_val": 0.012987012987012988,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_frozen_linear",
+      "epoch": 10,
+      "acc_train": 0.09530264195583596,
+      "acc_within": 0.06264158376834433,
+      "acc_val": 0.03359042013395575,
+      "worst_env_val": 0.007711038961038961,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_original_anchor",
+      "epoch": 10,
+      "acc_train": 0.5247929810725552,
+      "acc_within": 0.33536885649561704,
+      "acc_val": 0.13771057438603612,
+      "worst_env_val": 0.01461038961038961,
+      "checkpoint": "rxrx1_original_ep90_s0_hypothesis90_original_anchor.epoch010.pt"
+    },
+    {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_output_invariant",
+      "epoch": 10,
+      "acc_train": 0.4765132097791798,
+      "acc_within": 0.31281394661676354,
+      "acc_val": 0.12583722346255327,
+      "worst_env_val": 0.012581168831168832,
+      "checkpoint": null
+    },
+    {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_partial_last4",
+      "epoch": 10,
+      "acc_train": 0.5277750394321766,
+      "acc_within": 0.345119669063331,
+      "acc_val": 0.12776537446722144,
+      "worst_env_val": 0.016639610389610388,
+      "checkpoint": null
+    }
+  ],
+  "paired_differences": {
+    "token_top1_minus_dense_wide_acc_val": -0.00416074690481022,
+    "token_top1_minus_dense_wide_acc_within": 0.005466364621294162,
+    "token_top2_minus_dense_wide_acc_val": 0.003145930586563843,
+    "token_top2_minus_dense_wide_acc_within": 0.020388062641583738,
+    "original_minus_dense_wide_acc_val": 0.00456667343210878
+  },
+  "anchor_checkpoint": {
+    "path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/hypothesis90/rxrx1_original_ep90_s0_hypothesis90_original_anchor.epoch010.pt",
+    "size_bytes": 269082312,
+    "sha256": "d175761bce0444b6845a75b69410481d2f6f647bf73ff3a8b60642bbcdb5361"
+  },
+  "active_container_health": [
+    {
+      "external_ref": "2b741f13-8dbe-11f1-a24e-0a580a8201b9",
+      "portal_status": "Running",
+      "gpu_samples": [
+        {"index": 0, "utilization_percent": 56, "memory_mib": 7869},
+        {"index": 1, "utilization_percent": 0, "memory_mib": 8343}
+      ],
+      "processes": [263, 264],
+      "arms": ["original_anchor", "moe_token_top2"]
+    },
+    {
+      "external_ref": "8cf2b351-8cfc-11f1-a24e-0a580a8201b9",
+      "portal_status": "Running",
+      "gpu_samples": [
+        {"index": 0, "utilization_percent": 100, "memory_mib": 16007},
+        {"index": 1, "utilization_percent": 34, "memory_mib": 1969}
+      ],
+      "processes": [59589, 59590],
+      "arms": ["dense_wide", "frozen_linear"]
+    },
+    {
+      "external_ref": "88e600c3-8cfc-11f1-a24e-0a580a8201b9",
+      "portal_status": "Running",
+      "gpu_samples": [
+        {"index": 0, "utilization_percent": 0, "memory_mib": 8075},
+        {"index": 1, "utilization_percent": 0, "memory_mib": 3961}
+      ],
+      "processes": [20009, 20010],
+      "arms": ["moe_token_top1", "partial_last4"],
+      "health_note": "three utilization samples were zero, but both workers were alive with 41.2%/25.0% CPU, logs advanced through epoch 19 within 35 seconds, and fatal scan was clear"
+    },
+    {
+      "external_ref": "d644003b-8ba9-11f1-a24e-0a580a8201b9",
+      "portal_status": "Running",
+      "gpu_samples": [
+        {"index": 0, "utilization_percent": 96, "memory_mib": 8071},
+        {"index": 1, "utilization_percent": 0, "memory_mib": 7877}
+      ],
+      "processes": [17224, 17225],
+      "arms": ["moe_image_top1", "output_invariant"]
+    },
+    {
+      "external_ref": "a70b09cf-8ba9-11f1-a24e-0a580a8201b9",
+      "portal_status": "Running",
+      "gpu_samples": [
+        {"index": 0, "utilization_percent": 99, "memory_mib": 8071},
+        {"index": 1, "utilization_percent": 28, "memory_mib": 7869}
+      ],
+      "processes": [9875, 9876],
+      "arms": ["moe_token_within_env", "environment_balanced"]
+    }
+  ],
+  "latest_epoch_snapshot": {
+    "dense_wide": 17,
+    "moe_image_top1": 19,
+    "moe_token_top1": 19,
+    "moe_token_top2": 19,
+    "moe_token_within_env": 14,
+    "environment_balanced": 19,
+    "frozen_linear": 19,
+    "original_anchor": 19,
+    "output_invariant": 19,
+    "partial_last4": 19
+  },
+  "fatal_matches": 0,
+  "wandb": {
+    "group": "rxrx1-cell-dino-hypothesis90-20260801",
+    "configured_run_ids": ["6zkqodfv", "0xpwd8mc", "j0b8ycc", "w6sqdgov", "0crn85p0", "j9yjhagx", "1zwn6qq5", "ixgx0uhr", "rmsua36b", "kmotbuzn"],
+    "fresh_api_query": "relogin_required",
+    "interpretation": "tracking identities remain present in logs and state, but live API state was not claimed"
+  },
+  "hf": {
+    "prefix": "rxrx1/cell_dino_cp5/hypothesis90_20260801",
+    "uploaded_folders": 0,
+    "reason": "no run has completed or produced a final validated result"
+  },
+  "sixth_container": {
+    "name": "tester6",
+    "container_id": 2893,
+    "external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
+    "domain": "Interactive 2H100 GPU",
+    "image": "GPU-Essesials",
+    "status": "Pending",
+    "running": false,
+    "scheduler_reason": "0/16 nodes available: 11 node affinity/selector mismatch, 2 unschedulable, 3 insufficient nvidia.com/gpu; no useful preemption victim",
+    "duplicate_start_or_container_created": false
+  },
+  "interpretation": "At epoch 10 the original anchor leads OOD validation. Exact-total-parameter-matched token top-1 MoE is 0.416 percentage points below dense-wide; token top-2 is 0.315 points above dense-wide but is not active-compute matched and remains 0.142 points below original. Frozen linear remains near floor, while partial last-four adaptation has the strongest ID accuracy but not OOD accuracy. This milestone is compatible with continued undertraining and weak benefit from extra active routing, but it does not support the predeclared sparse-transfer effect. Epoch 30 is the next scientific milestone.",
+  "largest_threat": "single-seed interim trajectories under a 90-epoch schedule are not final outcomes, and the W&B API requires relogin even though local run identities and logs are intact"
+}
