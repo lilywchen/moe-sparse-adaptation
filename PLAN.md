@@ -31,10 +31,23 @@ diagnostics only and cannot substitute for predictive competence.
 
 Natural-image DINOv2 is permanently excluded from RxRx1: its complete bounded rescue peaked at
 5.50% OOD-val and 10.53% ID accuracy, only 35.7% of the canonical ResNet control's 15.42% OOD-val.
-The candidate substrate is Cell-DINO Cell-Painting ViT-S/8. WILDS provides nuclei, ER, and actin;
-these are mapped without learned parameters into the five pretrained slots as
-`[DNA=nuclei, ER=ER, RNA=0, AGP=actin, Mito=0]`. This fixed mapping is shared by every comparison
-and is recorded as a validity limitation.
+The first Cell-DINO instrument is also excluded: even after correcting the published downstream
+pooling, the WILDS three-channel composite mapped as
+`[DNA=nuclei, ER=ER, RNA=0, AGP=actin, Mito=0]` reaches only 17.76% train, 11.16% ID, and 5.93%
+OOD-validation accuracy. It fails the frozen competence boundary and cannot license an MoE test.
+
+The remaining bounded instrument comparison uses the official six grayscale RxRx1 acquisitions:
+
+1. **Cell-DINO CP ViT-S/8 with a biologically matched fixed map:**
+   `[DNA=w1, ER=w2, RNA=w4, AGP=mean(w3,w6), Mito=w5]`. RxRx1 records actin and Golgi separately;
+   Cell Painting acquires both in AGP, so their fixed mean is formed before per-channel
+   standardization. No learned adapter is introduced.
+2. **Meta Channel-Adaptive DINO ViT-L/16 on native `w1..w6`:** the released Bag-of-Channels model
+   consumes all six channels directly, avoiding the mapping assumption.
+
+These are instrument diagnostics, not a backbone leaderboard. Meta authorship is not evidence of
+fitness by itself; competence on train, ID, and OOD validation decides which substrate can support
+the sparse-capacity question.
 
 ## Technical hypotheses
 
@@ -83,21 +96,23 @@ predeclared mechanism. A one-seed 1–2 point difference is not a result.
 
 ### Stage 0A — substrate competence and failure decomposition
 
-Run exactly three Cell-DINO seed-0 diagnostics on OOD validation only:
+For each of the two native-channel instruments, run exactly one paired seed-0 diagnostic on OOD
+validation only:
 
 1. frozen backbone + linear head, 5 epochs, LR `1e-3`;
-2. full fine-tuning, 10 epochs, LR `1e-4`, uniform layer LR;
-3. full fine-tuning, 10 epochs, LR `3e-4`, uniform layer LR.
+2. full fine-tuning, 10 epochs, LR `1e-4`, uniform layer LR.
 
-All use the official-style RxRx1 geometry and per-image/per-channel standardization, 128×128 input,
-the fixed three-to-five channel map, the Cell-DINO paper's concatenated class-token plus mean-patch-
-token representation, identical sampler/batch size, and no photometric augmentation.
-The best full-fine-tuning arm is frozen by OOD-val accuracy, breaking ties with worst-experiment
-accuracy. Do not add learning-rate or preprocessing arms after looking at results.
+Both use official-style RxRx1 geometry, per-image/per-channel standardization, the same WILDS
+train/ID/OOD-validation split, no photometric augmentation, and the published
+class-token-plus-mean-patch-token representation. Cell-DINO uses 128×128 input and the frozen CP5
+map above; Channel-Adaptive DINO uses 224×224 and native six-channel input. Do not add learning-rate
+or preprocessing arms after looking at results.
 
 Competence requires a clearly learned perturbation task: the full-fine-tuned model must improve
-materially over the frozen probe, show nontrivial ID accuracy, and reach the canonical ResNet sanity
-range on OOD validation. If it does not, stop: this is not yet a conditional-capacity experiment.
+materially over its frozen probe, show nontrivial ID accuracy, and reach the canonical ResNet sanity
+range on OOD validation. If neither does, stop: this is not yet a conditional-capacity experiment.
+If both qualify, choose the stronger OOD-validation instrument, breaking ties with worst-experiment
+accuracy; this choice precedes and cannot be revisited by the MoE comparison.
 
 ### Stage 0B — the kill comparison
 

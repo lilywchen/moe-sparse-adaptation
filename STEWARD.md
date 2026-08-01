@@ -17,11 +17,12 @@ not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 
 
 1. Preserve any healthy jobs already running, including legacy Camelyon17 jobs, but schedule no
    successor Camelyon17 work.
-2. Put the approved Cell-DINO ViT-S/8 checkpoint and pinned public DINOv2 code in persistent
-   storage; record checksum/commit without exposing the signed download URL.
-3. Test the adapter, channel map, parameter matching, dry-run, persistent outputs, and OOD-test
-   guard from one clean execution commit.
-4. Launch all three Stage-0A competence diagnostics on idle GPUs.
+2. Preserve the failed three-channel Cell-DINO result as a validated instrument exclusion. Download
+   and audit the official six-channel RxRx1 archive in persistent storage without touching OOD test.
+3. Test the fixed native-six-to-CP5 map and the Channel-Adaptive DINO native-six interface from one
+   clean execution tree. Record archive/model checksums and code identity without exposing URLs.
+4. Launch the frozen-probe/full-fine-tuning pair for Cell-DINO CP5 and Channel-Adaptive DINO on idle
+   GPUs as soon as each approved checkpoint and the complete selection-split pixels are present.
 5. Strictly validate results and classify the observed failure as representation/optimization,
    ordinary ID generalization, or batch-transfer failure using train/ID/OOD-val evidence.
 6. If competent, freeze one recipe and launch the original/dense-wide/MoE seed-0 kill comparison.

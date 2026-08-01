@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 23:15 EDT
+Last verified: 2026-08-01 00:31 EDT
 
 ## Scientific question
 
@@ -238,3 +238,34 @@ substrate result, not evidence for or against MoE.
    total-parameter-matched dense-wide versus canonical-MoE kill contrast.
 3. Replicate only if MoE gains at least 5 absolute OOD-validation points while losing no more than
    2 ID points; prioritize the 10--15 point effect target.
+
+## Current native-channel interpretation
+
+The official-pooling rerun resolves the zero-filled WILDS composite instrument as a failure. Its
+best full-fine-tuned arm learns more than the frozen probe but remains weak at 17.76% train, 11.16%
+seen, and 5.93% OOD validation. This does **not** yet say that RxRx1 is too OOD for Cell-DINO. The
+failed input omits RNA and mitochondria entirely and represents only actin in a pretrained AGP slot
+that normally combines actin and Golgi. Representation/optimization failure remains the correct
+classification; batch confusion is not established.
+
+The native six-channel experiment cleanly separates two competing explanations:
+
+1. **Missing-stain/interface mismatch.** If biologically mapped native Cell-DINO sharply raises
+   train and ID accuracy, the RGB/WILDS proxy—not the checkpoint—was the dominant failure.
+2. **Need for channel-set adaptation.** If native CP5 remains weak but Channel-Adaptive DINO is
+   competent, forcing six acquisitions into a fixed five-stain interface is the dominant problem.
+3. **Task/substrate mismatch.** If both remain weak, neither microscopy pretraining scheme exposes
+   the 1,139 perturbations under the bounded adaptation budget; an MoE experiment would still be
+   invalid, regardless of model reputation.
+
+The mapping is biologically defensible rather than arbitrary: Hoechst→DNA, ConA→ER, Syto14→RNA,
+MitoTracker→Mito, and Phalloidin+WGA→AGP. Averaging the two AGP components before per-channel
+standardization is equivalent to summing up to scale and approximates their joint Cell-Painting
+acquisition. Channel-Adaptive DINO is the necessary mapping-free control. The comparison is an
+instrument qualification, not a claim that one backbone architecture is generally superior.
+
+The highest-value next evidence is the paired frozen/full-fine-tuned result for each instrument.
+A large train/ID recovery with a remaining OOD gap would finally enter the genuine batch-transfer
+regime and license the matched dense-wide versus MoE kill contrast. Failure of both instruments is
+also informative: it falsifies the current experimental instrument before expensive sparse-model
+work and prevents a misleading negative MoE conclusion.

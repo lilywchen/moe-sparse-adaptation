@@ -33,7 +33,18 @@ RESULT_ROOT = Path(os.environ.get(
 
 
 def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
-    if phase == "competence":
+    if phase == "instrument":
+        # Minimal representation-vs-adaptation pair used to qualify a new channel interface.
+        specs = [
+            ("instrument_linear_probe", ["model.variant=original", "model.freeze_backbone=true",
+                                          "train.epochs=5", "train.warmup_epochs=0",
+                                          "train.optim.lr=1.0e-3", "train.llrd=1.0", "seed=0"]),
+            ("instrument_full_ft_lr1e-4", ["model.variant=original",
+                                            "model.freeze_backbone=false",
+                                            "train.epochs=10", "train.optim.lr=1.0e-4",
+                                            "train.llrd=1.0", "seed=0"]),
+        ]
+    elif phase == "competence":
         specs = [
             ("linear_probe", ["model.variant=original", "model.freeze_backbone=true",
                               "train.epochs=5", "train.warmup_epochs=0",
@@ -74,7 +85,8 @@ def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", choices=("competence", "kill", "replicate"), required=True)
+    ap.add_argument(
+        "--phase", choices=("instrument", "competence", "kill", "replicate"), required=True)
     ap.add_argument("--config", default=CONFIG)
     ap.add_argument("--result-root", default=None)
     ap.add_argument("--gpus", default=os.environ.get("CUDA_VISIBLE_DEVICES", "0,1"))

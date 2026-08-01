@@ -385,3 +385,37 @@ At the fresh health check, full fine-tuning at `1e-4` had reached epoch 4 and `3
 with advancing persistent logs and both assigned GPUs at 100% utilization with about 7.9 GiB each.
 No fatal error was present. Two H100s are active and six authorized H100s are idle because no
 additional pre-gate arm is scientifically licensed. OOD test remains untouched.
+
+## 2026-08-01 00:31 EDT native-channel instrument pivot
+
+The corrected official-pooling competence set is complete and strictly valid. The best arm is
+full fine-tuning at `1e-4`, with train/seen/OOD-validation/worst-experiment accuracies of
+`0.177642 / 0.111642 / 0.059265 / 0.012581`. The `3e-4` arm reaches
+`0.065507 / 0.050650 / 0.031967 / 0.009740`; the frozen probe reaches
+`0.075168 / 0.046070 / 0.030343 / 0.008523`. Every result has clean SciServer commit `f57743d`,
+the expected checkpoint and DINOv2 source, official `cls_patch_mean` pooling,
+`selection_split=ood_val`, and `test_evaluated=false`.
+
+The best corrected instrument reaches only 38.4% of the canonical OOD-validation reference and
+45.4% of its seen-environment reference. It therefore fails the frozen competence boundary. This
+is decision-grade evidence against the *three-channel WILDS composite to zero-filled CP5
+interface*, not against Cell-DINO on native stains and not against MoE. The MoE kill comparison
+remains unlicensed.
+
+The user authorized the minimal native-channel diagnosis. The official 49,039,640,485-byte RxRx1
+archive downloaded to persistent storage and is being extracted by four disjoint cell-type
+workers. No GPU is occupied while data preparation runs. The frozen two-instrument design is:
+
+| Instrument | Pixel interface | Seed-0 diagnostic pair | Status |
+|---|---|---|---|
+| Cell-DINO CP ViT-S/8 | `[w1,w2,w4,mean(w3,w6),w5]` = `[DNA,ER,RNA,AGP,Mito]` | frozen probe + full FT `1e-4` | queued after complete train/ID/val audit |
+| Channel-Adaptive DINO ViT-L/16 | native `w1..w6` Bag-of-Channels | frozen probe + full FT `1e-4` | code ready; approved checkpoint file absent |
+
+GitHub commits `505f360` and `c01d7c6` implement the native loader, joint-channel geometry,
+biological mapping, Channel-Adaptive DINO adapter/config, and parameterized idempotent launcher.
+The isolated SciServer execution commit is `8624481`, tree
+`343003803975f40260975ea32c763c389c11a8da`. Thirteen focused tests and the full 88-test suite pass.
+OOD test was neither constructed nor evaluated. The next automatic action is to finish extraction,
+run the strict selection-split coverage/image audit, smoke the real checkpoint on native tensors,
+dry-run the two Cell-DINO shards, and launch them on both idle H100s. The Channel-Adaptive pair can
+launch immediately after its separately approved checkpoint appears at the frozen persistent path.
