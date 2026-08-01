@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 05:14 EDT
+Last verified: 2026-08-01 12:17 EDT
 
 ## Scientific question
 
@@ -432,4 +432,37 @@ and shows no evidence that a learned router discovered reusable batch structure.
 may regularize an over-wide comparator or create weak random subspaces; single-seed variation also
 remains possible. H1 is not established because the stopped campaign did not license a deeper
 gradient-conflict study. The predeclared negative gate is complete and no further architecture,
-mechanism, replication, or OOD-test experiment is licensed.
+mechanism, replication, or OOD-test experiment is licensed under that completed protocol.
+
+## Authorized substrate-strength hypothesis campaign
+
+The user has opened a new bounded question rather than retroactively changing the completed kill
+gate. The strongest local positive control is now the completed canonical WILDS ResNet trajectory:
+19.51% OOD validation at epoch 82, with 35.62% ID and 99.99% train accuracy. Native CP5 Cell-DINO at
+ten epochs was meaningfully learned but below that reference. The live issue is therefore whether
+Cell-DINO was under-adapted, whether the original sparse intervention was technically mismatched to
+the batch failure, or whether the remaining gap is not addressable by conditional capacity.
+
+The ten live arms are a hypothesis matrix, not a tuning sweep. A single 90-epoch original anchor
+with 10/30/60/90 checkpoints tests duration without duplicating four training budgets. Dense-wide
+and canonical MoE retest conditional versus shared capacity at sufficient duration. Image routing
+tests whether experiment-level acquisition context is diluted by token routing; within-experiment
+load balancing tests whether global balancing suppressed batch specialization; top-2 tests whether
+hard top-1 assignment starved expert learning. Frozen and last-four-block adaptation test linear
+separability versus catastrophic forgetting/optimization depth. Experiment-adversarial output
+invariance and environment-balanced loss test two non-MoE explanations for the ID--OOD gap.
+
+All ten workers have completed epoch 1 under one clean tested execution tree and one native CP5
+data/split family. This is operational evidence only. No new predictive comparison is valid until a
+milestone file passes strict identity, finiteness, coverage, provenance, and test-blindness checks.
+The most important competing explanations remain: (1) ten epochs underfit all transformer-based
+arms; (2) routing granularity or load-balance pressure prevented specialization; (3) shared
+representation adaptation, not conditional FFN capacity, dominates; or (4) the observed gap is an
+ordinary hard-domain generalization problem. The milestone trajectories were chosen because each
+of these explanations predicts a different ordering, not merely a different scalar learning rate.
+
+The campaign uses a fresh W&B group and will publish each completed folder to Hugging Face only
+after strict validation. This improves traceability but does not make interim losses or W&B status
+scientific evidence. The original versus dense-wide versus MoE epoch-90 comparison remains the
+primary efficacy contrast; top-2 has different active compute, and frozen/partial/invariant/
+environment-balanced arms remain diagnostic. OOD test is untouched.

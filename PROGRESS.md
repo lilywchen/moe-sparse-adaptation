@@ -1,6 +1,7 @@
 # Progress ledger
 
-Last verified: 2026-08-01 05:27 EDT on SciServer, GitHub, and Overleaf.
+Last verified: 2026-08-01 12:17 EDT on SciServer and GitHub. The paper has not been changed for the
+new campaign because no new performance milestone is valid yet.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -695,3 +696,59 @@ were never licensed. All eight H100s are idle with no relevant process. The mapp
 Channel-Adaptive checkpoint remains unavailable but is not required for the completed matched
 Cell-DINO decision. Further compute now requires a new scientific question or an explicit protocol
 decision from the user.
+
+## 2026-08-01 12:17 EDT substrate-strength hypothesis campaign launched
+
+Classification is `RUNNING_HEALTHY`. The user authorized a new question after the completed
+ten-epoch kill campaign: determine whether longer benchmark-strength adaptation and a small set of
+mechanistically distinct interventions can expose a stronger Cell-DINO signal before deciding the
+fate of sparse capacity. This does not relabel the earlier negative result. The canonical WILDS
+ResNet positive control has now completed its 90-epoch trajectory and peaks at OOD-validation
+accuracy `0.195149` at epoch 82, with ID accuracy `0.356249` and train accuracy `0.999877`. It is a
+diagnostic reference, not a selectable Cell-DINO arm.
+
+The user explicitly rejected a ten-cell optimizer sweep. The replacement is the exact ten-arm,
+seed-0, 90-epoch hypothesis matrix frozen in `PLAN.md`: original anchor; matched dense-wide;
+canonical token top-1 MoE; image top-1 MoE; within-experiment-balanced token MoE; token top-2 MoE;
+frozen linear probe; last-four-block adaptation; experiment-adversarial output invariance; and
+environment-balanced classification. Every arm uses the same native CP5 pixels, data order,
+optimizer/schedule, and OOD-validation selection policy except for its named intervention. All
+runs record metrics at epochs 10/30/60/90; only the original anchor saves checkpoints at those
+milestones. This prevents four duplicate epoch-budget runs and spends the parallelism on competing
+technical explanations.
+
+The execution implementation is GitHub `d4e80b0`. Its code-equivalent clean SciServer checkout is
+commit `cd783399ab1d4cee2666f1af8dfe3bfd9fc29280`, tree
+`ec05b37b9f2ac593e047243c414b114c3a1fb52c`; five focused tests and the complete 99-test remote
+suite pass. Five disjoint two-GPU shards launched exactly two arms apiece under the persistent root
+`substrate_rxrx1/cell_dino_cp5/hypothesis90/` and launcher logs
+`logs/hypothesis90_20260801/shard{0..4}.launcher.log`. The resource map is:
+
+- host `2b741f13...`: original anchor and token top-2 MoE;
+- host `8cf2b351...`: matched dense-wide and frozen linear probe;
+- host `88e600c3...`: canonical token top-1 MoE and last-four-block adaptation;
+- host `d644003b...`: image top-1 MoE and output-invariant adaptation;
+- host `a70b09cf...`: within-experiment-balanced token MoE and environment-balanced adaptation.
+
+All ten direct workers remain alive after more than five minutes, all ten H100s hold the expected
+model memory, and every arm has written an epoch-1 training record. Per-shard fatal scans are clear.
+Every worker reports the same 33 training experiments and exact selection coverage: train `40,612`,
+ID-test `40,612`, OOD-validation `9,854`; OOD test `34,432` is recorded as untouched and is not
+evaluated. Therefore current coverage is `0/10` strictly valid final results, `10/10` active, and
+zero queued or idle H100s. Epoch-1 losses are optimization-health evidence only and are not
+interpreted scientifically.
+
+All runs are isolated in the fresh W&B group `rxrx1-cell-dino-hypothesis90-20260801`, with job type
+`rxrx1_hypothesis_matrix` and test-blind tags. The ten W&B run IDs are `6zkqodfv`, `0xpwd8mc`,
+`j0b8ycc`, `w6sqdgov`, `0crn85p0`, `j9yjhagx`, `1zwn6qq5`, `ixgx0uhr`, `rmsua36b`, and `kmotbuzn`,
+mapped one-to-one to the arm identities in their persistent logs. Strict Hugging Face publishing is
+configured under `rxrx1/cell_dino_cp5/hypothesis90_20260801`; no folder has been claimed uploaded
+yet. A run folder is pushed only after the final JSON and all milestone/checkpoint artifacts pass
+the exact identity, finite-metric, OOD-test-blindness, and SHA-256 manifest checks.
+
+Next: preserve all ten healthy workers and validate the first 10-epoch milestone files as they
+appear. Those paired train/ID/OOD curves decide whether the former ten-epoch contrast was simply
+undertrained; the 30/60/90 trajectory then separates capacity, routing granularity, routing
+starvation, representation depth, explicit invariance, and environment imbalance. Only a valid
+epoch-90 MoE-minus-dense-wide gain of at least five OOD points with at most two ID points lost can
+license replication. OOD test remains sealed throughout.
