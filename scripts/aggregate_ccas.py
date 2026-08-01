@@ -147,6 +147,11 @@ def factorial_fit(df, y="conditional_gain", factors=FACTORS, interactions=True):
         blocks[f] = (M, lv)
         cols.append(M)
         names += [f"{f}[{l}]" for l in lv[:-1]]
+    # An intercept-only fit is a mean contrast, not a factorial effect.  Returning it as an
+    # ``effects`` table for a seed-0 kill comparison is scientifically misleading because no
+    # design factor varied.  The paired table already reports that contrast directly.
+    if not blocks:
+        return pd.DataFrame()
     if interactions:
         fs = list(blocks)
         for i in range(len(fs)):

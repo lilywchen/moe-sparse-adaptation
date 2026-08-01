@@ -261,3 +261,12 @@ def test_report_runs_end_to_end_on_a_full_grid(tmp_path):
     rep = agg.build_report(agg.load(tmp_path), stage3=False)
     for section in ["Coverage", "conditional_gain", "Factor effects", "budget audit"]:
         assert section in rep
+
+
+def test_factorial_fit_rejects_intercept_only_kill_contrast(tmp_path):
+    _write(tmp_path, variant="dense_wide", seed=0, acc_selection=0.30, run_id="w0")
+    _write(tmp_path, variant="moe", seed=0, acc_selection=0.32, run_id="m0")
+    moe, _ = agg.paired_contrasts(agg.load(tmp_path))
+
+    assert not moe.empty
+    assert agg.factorial_fit(moe, "conditional_gain").empty
