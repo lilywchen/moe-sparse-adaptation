@@ -1,6 +1,6 @@
 # Evidence and correctness index
 
-Last verified: 2026-08-01 05:14 EDT
+Last verified: 2026-08-01 05:27 EDT
 
 This file maps every material claim to its run identity, provenance, split policy, validation status,
 and downstream use. `Decision-grade` means eligible for a predeclared scientific decision;

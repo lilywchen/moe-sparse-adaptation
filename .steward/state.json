@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "classification": "ACTIONABLE",
-  "last_action": "strictly_validate_clean_route_diagnosis_and_close_negative_H2_gate",
-  "last_action_at": "2026-08-01T05:14:00-04:00",
-  "last_verified_commit": "ac69d40",
+  "classification": "COMPLETE",
+  "last_action": "sync_verified_negative_mechanism_milestone_and_complete_frozen_kill_campaign",
+  "last_action_at": "2026-08-01T05:27:00-04:00",
+  "last_verified_commit": "48bf7b9",
   "valid_results": 9,
   "expected_results": 12,
   "active_gpu_workers": 0,
@@ -102,7 +102,7 @@
   "native_checkpoint_smoke": "pass_6x512x512_to_5x128x128_to_1139_finite_logits",
   "channel_adaptive_adapter_status": "official_bag_of_channels_path_15_focused_90_full_tests_pass",
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
-  "last_synced_commit": "75c2e85",
-  "overleaf_build_status": "pass_5_pages_0_errors_1_warning_2026-08-01T04:10-04:00",
-  "next_gate": "persist_verified_negative_mechanism_milestone_in_paper_github_and_overleaf; no_additional_gpu_experiment_licensed"
+  "last_synced_commit": "48bf7b9",
+  "overleaf_build_status": "pass_6_pages_0_errors_1_warning_2026-08-01T05:27-04:00",
+  "next_gate": "complete_wait_for_new_user_scientific_question_or_explicit_protocol_decision"
 }

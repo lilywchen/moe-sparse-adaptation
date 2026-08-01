@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-08-01 05:14 EDT on SciServer.
+Last verified: 2026-08-01 05:27 EDT on SciServer, GitHub, and Overleaf.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -678,3 +678,20 @@ OOD test remains untouched.
 
 Next: persist this verified milestone in the paper and synchronized repositories. No additional
 GPU experiment is licensed by the completed negative gate.
+
+## 2026-08-01 05:27 EDT verified negative milestone synchronized; kill campaign complete
+
+Classification is `COMPLETE` for the frozen RxRx1 kill-test campaign. GitHub commit `48bf7b9`
+contains the two strictly valid clean diagnosis results, final H2 interpretation, updated evidence
+maps, and manuscript route-control table. The linked Overleaf project pulled that commit and then
+reported no newer GitHub commit since the merge. `paper/main.tex` compiled to six pages with zero
+errors and one unchanged underfull-page warning; local fatal-error compilation and rendered-page
+inspection also pass.
+
+All licensed work is resolved: native Cell-DINO competence passed; the exact matched seed-0 kill
+contrast failed the +5-point replication trigger; the sole bounded learned/randomized/frozen route
+diagnosis completed cleanly; seeds 1/2, folds, a grid, deeper mechanism work, and OOD-test access
+were never licensed. All eight H100s are idle with no relevant process. The mapping-free
+Channel-Adaptive checkpoint remains unavailable but is not required for the completed matched
+Cell-DINO decision. Further compute now requires a new scientific question or an explicit protocol
+decision from the user.
