@@ -1,58 +1,65 @@
 \section{Experimental design}
 
-\subsection{Datasets}
-RxRx1 uses experimental batch as acquisition environment and siRNA perturbation as a 1,139-way
-label. Camelyon17 uses hospital as environment and tumor presence as a binary label. We use the
-official WILDS splits \citep{koh2021wilds}. Geometric
-augmentation is shared across methods; photometric augmentation is excluded because it directly
-manipulates the acquisition signal under study.
+\subsection{RxRx1 acquisition shift}
+RxRx1 contains 1,139 siRNA perturbations repeated across fluorescence-microscopy experiments. We
+use the official WILDS split \citep{koh2021wilds}: 33 training experiments, held-out images from
+those experiments for ID evaluation, four complete experiments for OOD validation, and 14
+experiments reserved for one confirmatory OOD-test evaluation. Geometric augmentation is shared
+across methods. Photometric augmentation is excluded because it directly manipulates the
+acquisition signal under study.
 
-\subsection{Factorial and controls}
-For each dataset, we run all $3\times2\times2\times3=36$ combinations of placement, routing unit,
-router geometry, and pressure with three paired seeds. Dense-wide controls are run at all three
-placements under canonical and output-invariance training. Route-pressure MoEs use the canonical
-dense control because route-level balancing has no dense analogue.
+\subsection{Stage-0 instrument qualification}
+Low OOD accuracy is uninterpretable if the dense model cannot learn the perturbation task. We
+therefore record train, ID, OOD-validation, and worst-experiment accuracy before any sparse model.
+Natural-image DINOv2 ViT-S/14 failed a bounded rescue: its best official-preprocessing arm reached
+5.50\% OOD-validation and 10.53\% ID accuracy, versus 15.42\% and 24.58\% for a validation-only
+canonical WILDS ResNet-50 sanity reference. It was excluded before MoE experiments.
 
-\begin{table}[t]
-\centering
-\caption{Primary design. Every MoE cell is evaluated on both datasets with paired seeds.}
-\label{tab:design}
-\begin{tabular}{lll}
-\toprule
-Factor & Levels & Count\\
-\midrule
-Placement & early, middle, late & 3\\
-Routing unit & image, token & 2\\
-Router geometry & linear, cosine & 2\\
-Training pressure & canonical, route, output & 3\\
-\midrule
-MoE configurations per dataset & & 36\\
-\bottomrule
-\end{tabular}
-\end{table}
+We next evaluated the released Cell-DINO CP ViT-S/8 using the WILDS three-channel composite mapped
+to five pretrained slots with RNA and mitochondria zero-filled. After correcting the published
+downstream representation to concatenate the normalized class token and mean normalized patch
+token, the best full-fine-tuned arm reaches 17.76\% train, 11.16\% ID, 5.93\% OOD-validation, and
+1.26\% worst-experiment accuracy. All values are from OOD-validation selection with OOD test
+untouched. This instrument also fails the frozen competence boundary; it is not an MoE result.
 
-\subsection{Hyperparameters and stage gate}
-We first tune one shared dense fine-tuning recipe using OOD validation. We then tune one router
-temperature per dataset and geometry, one balancing coefficient per dataset, and one adversarial
-coefficient per dataset. No cell receives its own search. Stage 1 completes the factorial without
-evaluating OOD test. Stage 2 runs predeclared mechanism controls. Stage 3 evaluates a fixed
-confirmatory set with fresh seeds and is the first stage allowed to access OOD test.
+The final bounded qualification uses the official six grayscale acquisitions. We compare two
+interfaces, each with a frozen five-epoch linear probe and a ten-epoch full fine-tuning run at
+$10^{-4}$:
+\begin{enumerate}
+  \item Cell-DINO CP ViT-S/8 with the fixed biological map
+  $[w1,w2,w4,\operatorname{mean}(w3,w6),w5]$ to DNA, ER, RNA, AGP, and mitochondria;
+  \item Channel-Adaptive DINO ViT-L/16 on native $w1\ldots w6$ using its Bag-of-Channels input.
+\end{enumerate}
+The first map reflects the Cell Painting acquisition in which phalloidin (actin) and WGA
+(Golgi/plasma membrane) share the AGP channel. The second is a mapping-free control. These are
+instrument diagnostics rather than a backbone leaderboard.
 
-\subsection{Stage-0 substrate qualification}
-Natural-image DINOv2 ViT-S/14 was the initial candidate on both datasets
-\citep{oquab2023dinov2}. On RxRx1, a clean six-cell dense screen remained near floor, so a bounded
-predeclared rescue tested removal of random-resized cropping, removal of layer-wise learning-rate
-decay, their interaction, and official RxRx1 preprocessing. The best rescue used official
-preprocessing and reached 5.50\% OOD-validation and 10.53\% seen-environment accuracy. A canonical
-WILDS ResNet-50 sanity control reached 15.42\% best-so-far OOD-validation accuracy without
-constructing OOD test. The rescue therefore achieved 35.7\% of the control, below the frozen 50\%
-abandonment threshold. We exclude DINOv2 from the RxRx1 factorial and will qualify a microscopy-
-pretrained ViT before running RxRx1 MoE cells. This is a substrate-validity decision, not an MoE
-result. Camelyon17 qualification remains in progress. All reported Stage-0 selection uses OOD
-validation, and OOD test remains untouched.
+\subsection{Seed-0 matched kill comparison}
+Only a competent substrate licenses three seed-0 runs: the original encoder, one middle-block
+dense-wide model, and one middle-block learned MoE with eight experts, top-1 token routing, a
+cosine router, and global load balancing. Dense-wide and MoE have the same total parameter count
+within 0.1\%, the same data order, optimizer, schedule, training steps, classifier, and validation
+calls. We also report active parameters, throughput, memory, ID accuracy, and the ID--OOD gap.
+
+The primary estimand is
+\[
+  \Delta_{\mathrm{conditional}} =
+  \operatorname{Acc}_{\mathrm{OOD\mbox{-}val}}(\mathrm{MoE})-
+  \operatorname{Acc}_{\mathrm{OOD\mbox{-}val}}(\mathrm{dense\mbox{-}wide}).
+\]
+If seed-0 gain is at least five percentage points with at most a two-point ID loss, we immediately
+run paired seeds 1 and 2. Otherwise no architecture grid is launched. A replicated 10--15 point
+gain is the target; a smaller gain requires consistent per-experiment effects and mechanism
+evidence.
+
+\subsection{Expansion and confirmatory gate}
+Only after replication do we construct multiple cell-type-stratified held-out-experiment folds and
+a fixed 4/8/16/32-training-experiment curve. These tests ask whether conditional gain increases
+with batch heterogeneity. Architecture and analysis are then frozen before fresh confirmatory seeds
+and the first OOD-test evaluation.
 
 \subsection{Metrics and inference}
-We report OOD accuracy, worst-environment accuracy, in-distribution accuracy, and the ID--OOD gap.
-The primary contrast is the within-seed, within-placement difference between MoE and matched
-dense-wide. A sum-to-zero factorial model estimates main effects and two-way interactions on
-conditional gain. Seed-level paired bootstrap intervals quantify optimization uncertainty.
+We report OOD-validation accuracy, worst-experiment accuracy, ID accuracy, training accuracy, and
+the ID--OOD gap. Paired per-experiment differences and a cluster bootstrap over experiments quantify
+uncertainty. Gradient-conflict and routing analyses are interpreted only after a valid matched
+predictive contrast.

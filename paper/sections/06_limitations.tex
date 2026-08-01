@@ -1,19 +1,20 @@
 \section{Limitations and broader relevance}
 
-Two biomedical datasets do not establish a universal law of conditional adaptation. RxRx1 and
-Camelyon17 were chosen because both expose real acquisition environments while differing sharply in
-modality, number of environments, and label structure. Environment metadata is available during
-training for two pressure conditions and for analysis, which may not hold in every deployment.
-Adversarial invariance can also remove task-relevant variation when environment and label are
-statistically coupled.
+One cellular-microscopy benchmark does not establish a universal law of conditional adaptation.
+RxRx1 is unusually useful mechanistically because the same perturbations repeat across many
+experiments, but conclusions may not transfer to histopathology, radiology, or other acquisition
+processes. Environment metadata is available for analysis and balancing, which may not hold in
+every deployment.
 
-The dense-substrate gate may select different pretrained ViTs for microscopy and histopathology.
-Consequently, architectural effects are identified within each dataset against its matched dense
-control; cross-dataset agreement is evidence of replication across regimes, while differences
-cannot be attributed to acquisition modality alone. We prefer this limitation to running a common
-but floor-performing backbone that would make the MoE comparison uninterpretable.
+The substrate gate can only qualify the released checkpoints and bounded interfaces tested here.
+The fixed six-to-five Cell-DINO map is biologically motivated, but merging separately acquired
+actin and Golgi channels cannot exactly reproduce a simultaneous Cell Painting acquisition.
+Channel-Adaptive DINO avoids that mapping but differs in architecture and parameter count, so the
+qualification comparison is not a general backbone ranking. The eventual MoE claim is identified
+only within the selected substrate against its exact matched dense control.
 
-The broader value is an auditable way to decide whether conditional capacity is appropriate for
-heterogeneous scientific adaptation. The design separates added capacity, routing, and invariance;
-the diagnostics reveal when experts follow nuisance; and negative results define when a simpler
-dense adaptation is preferable.
+The broader value is an auditable decision about whether conditional capacity is appropriate for
+heterogeneous scientific adaptation. A positive result must survive parameter matching,
+replication, held-out-experiment folds, and route counterfactuals. A negative result is useful only
+after the dense substrate learns the task and the hypothesized gradient conflict is actually
+measured; otherwise it is merely an instrument failure.

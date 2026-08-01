@@ -6,8 +6,9 @@ qualification is a Stage-0 gate: a candidate must reach a predeclared fraction o
 validation-only sanity control before any MoE experiment is licensed. In each intervention,
 exactly one transformer FFN is replaced. An MoE contains eight copies of the pretrained FFN and a
 top-1 router; because every expert initially computes the same function, the MoE exactly matches
-the qualified pretrained network at initialization. We place the converted block at early, middle,
-or late depth. Exact parameter matching is recomputed separately for each qualified architecture.
+the qualified pretrained network at initialization. The kill comparison converts one middle
+block; placement is not tuned before the primary effect is established. Exact parameter matching
+is recomputed for the qualified architecture.
 
 \subsection{Total-parameter-matched dense control}
 The primary dense comparator is one wider FFN at the same depth. Its integer hidden width is chosen
@@ -17,12 +18,9 @@ Net2Wider construction \citep{chen2016net2net}: new hidden units copy source uni
 unequally among its copies with coefficients that sum to one. The residual budget difference must
 be below 0.1\%.
 
-\subsection{Routing choices and pressures}
-Image routing pools tokens before making one decision per image; token routing decides per patch.
-Linear and cosine routers contain the same $E\times d$ weight matrix and one temperature scalar.
-The \emph{canonical} condition uses global load balancing and router z-loss. The \emph{route}
-condition computes load balance independently within each acquisition environment. The
-\emph{output} condition retains canonical balancing and adds a gradient-reversal adversary
-\citep{ganin2016domain} that
-predicts training environment from the final embedding. Output invariance is applied identically
-to MoE and dense controls.
+\subsection{Canonical router and mechanism controls}
+The kill model uses top-1 token routing with a cosine router, one learned temperature, global load
+balancing, and router z-loss. This specification is fixed before looking at the matched result. A
+frozen router and a post-training randomized router are mechanism controls rather than alternative
+configurations. Broader placement, routing-unit, or invariance comparisons are licensed only after
+a replicated predictive effect.

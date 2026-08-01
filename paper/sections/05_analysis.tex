@@ -8,14 +8,15 @@ linear probes to final embeddings to measure environment and label decodability.
 We also replace learned assignments with seeded random assignments while freezing expert weights.
 The accuracy change measures route reliance: a model can exhibit structured routing without
 requiring that routing for its predictions. We relate conditional gain to route reliance,
-environment decodability, label decodability, and utilization across cells. These are descriptive
-mechanism associations; causal claims are restricted to the controlled architectural and loss
-factors.
+environment decodability, label decodability, gradient conflict, and utilization across held-out
+experiments. These are descriptive mechanism associations; causal claims are restricted to the
+matched architectural contrast.
 
 A positive matched gain with high route reliance supports useful conditional specialization. A
 gain only against the smaller original encoder indicates capacity, not conditionality. High
-acquisition decodability without matched gain indicates nuisance partitioning. Disagreement
-between RxRx1 and Camelyon17 identifies a regime boundary rather than being averaged away.
+acquisition decodability without matched gain indicates nuisance partitioning. If gradients
+conflict but matched conditional gain remains absent across the held-out-experiment folds, then
+sparse routing does not solve the interference mechanism proposed here.
 
 \paragraph{Results placeholder.}
 All numerical tables and plots will be generated from stage-gated JSON outputs. No OOD-test value

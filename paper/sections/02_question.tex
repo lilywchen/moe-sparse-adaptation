@@ -1,19 +1,21 @@
 \section{Scientific hypotheses}
 
-\paragraph{H1: Conditional gain is not explained by parameter count.}
-For a fixed total parameter budget, a learned top-1 MoE improves OOD performance only when routing
-reduces interference among adaptation demands. The primary estimand is the paired difference
-between MoE and a depth-matched dense-wide model, not MoE versus the original smaller encoder.
+\paragraph{H1: dense adaptation exhibits cross-batch gradient interference.}
+For the same perturbation objective, gradients contributed by different training experiments are
+less aligned at the converted FFN than gradients sampled within an experiment. A dense FFN must
+average these conflicting updates; top-1 experts can give compatible examples partially separate
+update paths. We measure experiment-stratified gradient cosine, norm, and conflict rate before and
+after routing. The hypothesis is falsified if gradients are already aligned or MoE does not reduce
+within-path conflict.
 
-\paragraph{H2: Useful conditionality depends jointly on what can be routed and where.}
-Image-level routing can exploit global acquisition context, whereas token-level routing can assign
-local morphology independently of global appearance. Early layers retain low-level acquisition
-statistics; later layers are closer to task semantics. We therefore expect routing unit and
-placement to interact rather than admit an unconditional best choice.
+\paragraph{H2: useful routes represent reusable structure rather than experiment identity.}
+Routes may be batch-decodable because acquisition is visible, but they should not collapse into one
+expert per training experiment. Useful assignments should recur across experiments, remain stable
+under geometric augmentation, and retain balanced usage on held-out experiments. Frozen and
+post-training randomized routers test whether structured routes are actually required.
 
-\paragraph{H3: Router geometry and training pressure determine whether specialization follows
-nuisance.}
-Linear routing can use feature magnitude, which may encode staining, intensity, or contrast;
-cosine routing removes this degree of freedom. Within-environment balancing constrains marginal
-expert usage but does not remove environment information. Output-level adversarial training
-directly discourages environment-decodable final embeddings.
+\paragraph{H3: conditional gain is robustness, not parameter count.}
+The primary estimand is the paired OOD-validation difference between MoE and an exact
+total-parameter-matched dense-wide FFN. A credible gain also improves worst-experiment accuracy and
+the ID--OOD gap while preserving ID accuracy. A gain only over the smaller original encoder is a
+capacity result, not evidence for conditional computation.

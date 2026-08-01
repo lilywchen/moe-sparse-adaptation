@@ -13,16 +13,16 @@ a new environment appears.
 Existing comparisons cannot answer which explanation is correct if an MoE is simply larger than
 its dense baseline, if architecture and loss are tuned sequentially on the test domain, or if only
 the winning configuration is analyzed. We therefore treat conditional capacity as the object of a
-controlled characterization. We first require a pretrained transformer to demonstrate competent
-dense full fine-tuning on each dataset; a powerful natural-image model is not assumed to transfer
-to a scientific modality merely because it is a foundation model. For each qualified substrate, we
-change exactly one feed-forward block and hold the total parameter budget fixed to the nearest
-realizable dense width. We then vary four interpretable decisions as a full factorial: placement,
-routing unit, router geometry, and training pressure.
+controlled kill test. We first require a pretrained transformer to demonstrate competent dense
+full fine-tuning; a powerful model is not assumed to transfer merely because it is a foundation
+model. We then change exactly one middle feed-forward block and hold the total parameter budget
+fixed to the nearest realizable dense width. Only a seed-0 matched gain licenses replication or a
+broader architectural study.
 
 Our central question is: \emph{when adapting a pretrained vision model to scientific images
 collected across acquisition environments, when does sparse conditional capacity improve
 held-out-environment generalization over an equally large dense model?} We study RxRx1 cellular
-microscopy and Camelyon17 histopathology as complementary regimes. The intended contributions are
-an auditable dense--sparse comparison, factor-level design principles across 36 MoE configurations,
-and mechanism analyses that distinguish useful specialization from acquisition nuisance.
+microscopy, where 1,139 perturbations repeat across experimental batches and the official split
+holds out complete experiments. The intended contributions are an auditable dense--sparse
+comparison, a direct gradient-interference test, and mechanism analyses that distinguish reusable
+conditional structure from acquisition nuisance.
