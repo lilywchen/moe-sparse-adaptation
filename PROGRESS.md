@@ -907,3 +907,25 @@ Nine allocated worker GPUs are now idle inside the existing containers, but repl
 licensed by the rounded result and no speculative work was launched. SciServer reauthentication
 is still required for strict result/checkpoint validation and Hugging Face publication. `tester6`
 continues to return `503`; OOD test remains sealed.
+
+### 2026-08-01 17:02 ET — hypothesis90 matrix 10/10 finished operationally; strict gate blocked
+
+Within-experiment-balanced token routing finished cleanly, so all ten W&B runs now report
+`Finished`, each has an epoch-90 milestone, and no rendered fatal trace appears. The completed
+rounded snapshot is in `analysis/hypothesis90_final_wandb_snapshot.json`. No worker remains active;
+the ten allocated H100s are idle, but the predeclared performance threshold does not license
+replication or mechanism work and no speculative launch was made.
+
+The controlling canonical comparison remains token top-1 `20.22%` versus exact-total-parameter-
+matched dense-wide `18.50%`: `+1.72` OOD-validation points, below the `+5` replication trigger,
+with ID `+3.22` but worst-experiment `-0.08` points. Within-experiment routing is the highest
+average OOD arm at `20.46%`, but it is only `+1.96` over dense-wide and its worst-experiment score
+is `1.38%`, substantially below dense-wide's `1.70%`. Original (`20.09%`) and image top-1
+(`20.13%`) remain effectively tied with canonical routing. Operationally, longer training rescued
+the substrate but did not produce a large or tail-robust sparse advantage.
+
+This is still not the formal gate decision. SciServer reauthentication is required to validate all
+ten exact result JSONs, milestones, parameter counts, `selection_split=ood_val`,
+`test_evaluated=false`, null OOD-test fields, logs, and anchor checkpoints; only then can manifests
+be created and valid folders uploaded to Hugging Face. `tester6` remains unavailable with `503`.
+OOD test remains sealed, and there are zero scientific exclusions.

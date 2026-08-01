@@ -589,3 +589,23 @@ epoch 79, and SciServer reauthentication is required to validate exact result JS
 counts, split/test-blindness fields, checkpoints, and exclusions. The result would be falsified by
 exact-file mismatch or a materially different validated ordering. No replication or mechanism
 campaign is licensed from this operational snapshot; OOD test remains sealed.
+
+## Complete epoch-90 operational matrix: substrate rescued, sparse gate likely negative
+
+All ten W&B runs are finished. Canonical token top-1 remains only `+1.72` OOD-validation points
+above exact-total-parameter-matched dense-wide, below the `+5` replication trigger. It preserves
+ID but is `0.08` points worse on worst-experiment accuracy. Thus the core performance pattern is a
+small average gain without tail-robustness evidence.
+
+Within-experiment routing finishes highest on average OOD validation at 20.46%, only 0.24 points
+above canonical token routing and 1.96 above dense-wide. Its worst-experiment accuracy falls to
+1.38%, 0.32 points below dense-wide. Original and image routing are within 0.13 and 0.09 points of
+canonical token routing, respectively, while last-four adaptation and environment balancing are
+also close. The complete rounded matrix therefore supports a stronger substrate after 90 epochs,
+but not a large, uniquely sparse, or worst-experiment-robust effect.
+
+This is a provisional operational interpretation, not decision-grade evidence. Exact SciServer
+files remain inaccessible until the user reauthenticates; the formal negative gate, zero-exclusion
+ledger, SHA-256 manifests, and Hugging Face publication must wait for strict validation. No seed
+replication or mechanistic campaign is licensed unless validated exact values unexpectedly cross
+the predeclared threshold. OOD test remains sealed.
