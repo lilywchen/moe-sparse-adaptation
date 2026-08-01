@@ -1,22 +1,30 @@
 {
   "schema_version": 1,
-  "classification": "BLOCKED",
-  "last_action": "prepare_and_verify_cell_dino_rxrx1_execution",
-  "last_action_at": "2026-07-31T21:31:00-04:00",
+  "classification": "RUNNING_HEALTHY",
+  "last_action": "recover_validate_and_launch_cell_dino_competence",
+  "last_action_at": "2026-07-31T22:48:00-04:00",
   "last_verified_commit": "db9ebdb",
   "valid_results": 9,
   "expected_results": 12,
-  "active_gpu_workers": null,
+  "active_gpu_workers": 2,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "dinov2_failed_competence_gate",
-  "rxrx1_backbone_status": "cell_dino_approved_checkpoint_missing",
+  "rxrx1_backbone_status": "cell_dino_competence_running",
   "cell_dino_expected_diagnostics": 3,
   "cell_dino_valid_diagnostics": 0,
   "cell_dino_sciserver_tree": "c537d33ef4db3dc2206c0922a0159b4b19095adc",
+  "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
   "cell_dino_remote_tests": "80_passed",
+  "cell_dino_active_runs": [
+    "rxrx1_original_ep5_s0_linear_probe",
+    "rxrx1_original_ep10_s0_full_ft_lr1e-4"
+  ],
+  "cell_dino_queued_runs": [
+    "rxrx1_original_ep10_s0_full_ft_lr3e-4"
+  ],
   "last_synced_commit": "23fdacd",
   "overleaf_build_status": "pass_0_errors_1_warning",
-  "next_gate": "approved_checkpoint_present_and_integrity_valid_then_launch_three_cell_dino_competence_diagnostics"
+  "next_gate": "validate_three_cell_dino_competence_results_and_classify_failure_regime"
 }

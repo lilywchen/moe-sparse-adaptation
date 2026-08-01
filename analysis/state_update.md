@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-07-31 21:31 EDT
+Last verified: 2026-07-31 22:48 EDT
 
 ## Scientific question
 
@@ -16,11 +16,16 @@ RxRx1-only kill-test implementation is on GitHub commit `db9ebdb` and in a tree-
 SciServer checkout (tree `c537d33ef4db3dc2206c0922a0159b4b19095adc`). The official DINOv2
 source is pinned at `7764ea0`, and the complete SciServer test suite passes 80/80 tests.
 
+The checkpoint is now reconstructed and strictly load-validated at the frozen persistent path. Its
+86,164,384 bytes hash to `37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a`,
+matching the hash prefix in Meta's filename. A real-checkpoint model smoke produces `1x1139` logits
+from `1x5x128x128` input through 12 transformer blocks.
+
 The next scientific gate is not MoE yet. It is the three-way Cell-DINO failure decomposition:
 frozen-backbone linear probing, full fine-tuning at `1e-4`, and full fine-tuning at `3e-4`, with
-train, seen-environment, OOD-validation, and worst-experiment accuracy. The approved checkpoint is
-not yet present in persistent SciServer storage, so none of these diagnostics has launched. This
-asset transfer is the sole current blocker. No new Camelyon17 work is licensed.
+train, seen-environment, OOD-validation, and worst-experiment accuracy. The first two jobs are
+healthy on two H100s and the third is queued idempotently behind them. No new Camelyon17 work is
+licensed.
 
 The study is in Stage 0. The frozen 36-cell factorial has not started. All six RxRx1 seed-0 shared-
 HPO candidates have completed and passed strict validation under execution commit `26ad7fa`.

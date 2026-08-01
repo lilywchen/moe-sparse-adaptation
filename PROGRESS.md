@@ -218,3 +218,33 @@ kill-contrast, replication, mechanism, exact-parameter-fairness, and traceable-r
 Once the checkpoint appears, it is authorized to integrity-check it, dry-run all three diagnostics,
 fill idle GPUs without duplicates, validate train/ID/OOD-validation outputs, and advance to the
 matched dense-wide versus MoE kill contrast only if dense competence is established.
+
+## 2026-07-31 22:48 EDT Cell-DINO checkpoint recovery and competence launch
+
+The approved Cell-DINO CP ViT-S/8 upload arrived in two consecutive SciServer pieces: a
+48,234,496-byte prefix with the PyTorch ZIP header and a 37,929,888-byte suffix. Neither fragment
+loaded alone. They were concatenated non-destructively into the frozen checkpoint destination,
+producing an 86,164,384-byte file with SHA-256
+`37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a`. The digest begins with the
+`37d20e9c` identifier in Meta's approved filename. `torch.load(..., weights_only=True)` succeeds and
+exposes the expected DINOv2 state-dict keys.
+
+An end-to-end model smoke test then loaded the checkpoint through the pinned official repository,
+flattened 12 actual transformer blocks, accepted a `1x5x128x128` tensor, and produced logits of
+shape `1x1139`. The original model has 21,964,787 total parameters, and its recorded checkpoint
+hash matches the verified digest. The complete remote suite had already passed 80/80 tests.
+
+The competence launcher dry-run reported exactly three pending diagnostics and no existing result:
+the five-epoch frozen linear probe, ten-epoch full fine-tuning at `1e-4`, and ten-epoch full
+fine-tuning at `3e-4`. Both GPUs in the inspected container were idle and no duplicate Cell-DINO
+worker existed. The launcher started the first two jobs on GPUs 0 and 1 and retained the `3e-4`
+job in its idempotent queue. Independent health verification found the two direct workers alive,
+both H100s at 99% utilization (about 2.0 and 7.9 GiB respectively), fresh persistent logs, and live
+W&B runs `lvyxc7my` (linear probe) and `y82kwuxm` (full fine-tuning `1e-4`). Dataset initialization
+records 33 training experiments and only train, ID-test, and OOD-validation sizes; the OOD test is
+explicitly untouched.
+
+These runs are diagnostic rather than performance evidence. The next gate is to validate all three
+JSONs and classify the failure regime from train, seen-environment, OOD-validation, and
+worst-experiment accuracy. The matched dense-wide versus MoE kill contrast remains unlicensed until
+Cell-DINO demonstrates credible dense competence.
