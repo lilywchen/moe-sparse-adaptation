@@ -460,9 +460,9 @@ interpretation.
 The resumed native archive extraction remains healthy as PID `34613`: 544,697 files were present
 after 23:45 elapsed, up from 484,778 at the previous fresh signature, with no fatal error. The
 archive contains 753,319 files, so the complete train/ID-test/OOD-validation audit is still pending
-and no native run is licensed yet. Both H100s in the currently attached container are idle; the
-other authorized kernels are not attached to this authenticated browser session. Filling GPUs with
-duplicate seeds before the instrument gate would not shorten the decision path. When extraction and
+and no native run is licensed yet. All four running SciServer containers were inspected directly:
+all eight H100s are idle and no MoE/RxRx1 worker is present. Filling GPUs with duplicate seeds before
+the instrument gate would not shorten the decision path. When extraction and
 the strict audit complete, the Cell-DINO frozen/full-FT pair will launch on the two attached H100s.
 The Channel-Adaptive frozen/full-FT pair is additionally blocked on its distinct approved ViT-L/16
 checkpoint at the frozen persistent path; the CP ViT-S/8 checkpoint is not interchangeable.

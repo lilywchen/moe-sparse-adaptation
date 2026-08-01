@@ -7,6 +7,8 @@
   "valid_results": 9,
   "expected_results": 12,
   "active_gpu_workers": 0,
+  "idle_h100s": 8,
+  "sciserver_resource_map": "containers_2875_2874_2862_2859_all_two_h100s_idle_no_moe_workers",
   "active_data_prep_workers": 1,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
