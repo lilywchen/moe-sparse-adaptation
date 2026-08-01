@@ -144,6 +144,20 @@ triggers the frozen below-50% abandonment rule on OOD validation alone.
 
 ### Cell-DINO frozen geometry and current adaptation regime
 
+**Qualification is reopened under one implementation-faithful correction.** The initial runs used
+only the CLS token, whereas the Cell-DINO paper's downstream representation concatenates the
+normalized CLS token with the mean of normalized last-block patch tokens. This is not post-hoc
+hyperparameter tuning: the data, optimizer, schedule, seeds, learning rates, and selection policy
+remain fixed while the representation changes from 384 to 768 dimensions. The CLS-only results
+remain valid diagnostics but are superseded for the final instrument decision.
+
+The exact three-arm competence set is now running with official pooling. If the correction raises
+train and seen-environment accuracy substantially, it isolates the readout mismatch as a real defect.
+If it does not, the strongest remaining explanation is the input mismatch: the WILDS view supplies
+three channels to a five-channel checkpoint, leaving two pretrained stain slots permanently zero.
+That outcome would support using the original multichannel RxRx1 data or a channel-compatible
+microscopy substrate, not further unbounded tuning.
+
 The full Cell-DINO competence set and a stricter out-of-box representation probe are now complete.
 With every Cell-DINO weight frozen, exact cosine 1-NN reaches 2.52% on ID-test and 1.23% on OOD
 validation; nearest-class-centroid is lower at 1.71% and 0.76%. Thus the pretrained embedding does
@@ -211,9 +225,8 @@ substrate result, not evidence for or against MoE.
 
 ## Next decisions
 
-1. Complete and strictly validate the two active Cell-DINO full-fine-tuning diagnostics, then
-   determine whether the current failure is representation/optimization, ordinary generalization,
-   or batch transfer.
+1. Complete and strictly validate the three official-pooling Cell-DINO competence arms, then apply
+   the instrument threshold to the corrected representation.
 2. If dense competence is established, freeze one recipe and run the seed-0 original versus exact
    total-parameter-matched dense-wide versus canonical-MoE kill contrast.
 3. Replicate only if MoE gains at least 5 absolute OOD-validation points while losing no more than

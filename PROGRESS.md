@@ -342,3 +342,28 @@ real but secondary; the model is not yet competent enough within seen experiment
 MoE improves unseen-batch transfer. No MoE kill contrast is licensed. The next bounded work is to
 audit Cell-DINO's exact channel order, normalization, official evaluation recipe, and optimization
 budget against its released implementation before deciding whether to retain the checkpoint.
+
+## 2026-07-31 23:44 EDT Official Cell-DINO representation repaired and rerun
+
+The implementation audit found a genuine representation mismatch, not a new tunable
+hyperparameter. The Cell-DINO paper specifies a downstream representation formed by concatenating
+the normalized class token with the mean of the normalized last-block patch tokens. Our initial
+wrapper classified from the class token alone. The earlier results remain valid for that CLS-only
+instrument, but they are superseded for Cell-DINO qualification.
+
+GitHub commit `04986fe` implements and records `cls_patch_mean`. The isolated SciServer checkout is
+the code-equivalent commit `f57743d` with tree
+`289390c317910c0a1f8839832405c80f32b5ac3e`. All 84 tests pass there. A real-checkpoint smoke test
+maps a `2 x 5 x 128 x 128` input to a `2 x 768` representation and `2 x 1139` logits, with a
+768-input classifier and checkpoint/source/pooling provenance recorded.
+
+The same three competence arms were relaunched without overwriting the earlier outputs, under
+`kill_rxrx1/official_pool/competence/`. The frozen linear probe is healthy on container 2874 GPU 0
+and has reached epoch 2; the `1e-4` and `3e-4` full-fine-tuning arms are healthy on the second
+container's GPUs 0 and 1. Three H100s are active and five are idle because no additional pre-gate
+arm is licensed. OOD test remains untouched.
+
+The instrument decision is reopened only for this exact correction. The old best still fails. If
+the official pooled representation remains weak, the main remaining limitation is the three-to-five
+channel mapping, which permanently zeros two pretrained stain slots; that would motivate changing
+the data representation or substrate rather than opening an unconstrained recipe sweep.
