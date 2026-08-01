@@ -1,5 +1,45 @@
 # RxRx1 sparse-adaptation kill test
 
+## Authorized protocol revision — substrate-strength signal ladder (2026-08-01)
+
+The completed ten-epoch kill campaign remains a valid negative result for its exact recipe; it is
+not retroactively reinterpreted. The user has authorized a new bounded question before deciding
+whether Cell-DINO is strong enough for a definitive architecture test:
+
+**Can benchmark-strength supervised adaptation bring native-CP5 Cell-DINO close enough to the
+completed local RxRx1 reference that a new sparse-capacity contrast has adequate power?**
+
+The local canonical WILDS ResNet run completed 90 epochs and peaks at 19.5149% OOD-validation
+accuracy at epoch 82, with 35.6249% ID accuracy and 99.9877% train accuracy. This is the local
+positive control; the external leaderboard remains context rather than a selection split.
+
+The first adaptive batch is exactly ten seed-0, 30-epoch Cell-DINO arms, run in parallel from one
+tested tree. All hold the CP5 mapping, official RxRx1 preprocessing, data order, classifier,
+selection split, and test blindness fixed. The anchor is AdamW LR `1e-4`, weight decay `0.05`,
+uniform layer LR, batch 64, drop path `0.1`, and three warmup epochs. Single interventions are:
+
+1. LR `3e-5`;
+2. LR `6e-5`;
+3. anchor LR `1e-4`;
+4. LR `2e-4`;
+5. layer LR decay `0.85`;
+6. layer LR decay `0.95`;
+7. weight decay `0.01`;
+8. weight decay `0.10`;
+9. drop path `0.0`;
+10. batch 128 with linearly scaled LR `2e-4`.
+
+Rank by OOD-validation accuracy, breaking ties with worst-experiment then ID accuracy. The next
+batch may extend only the top two recipes to 90 epochs. Replication is licensed only if the best
+90-epoch recipe reaches at least 18% OOD validation and 30% ID without a worst-experiment
+regression. A result below 16% OOD validation after both extensions rejects this Cell-DINO
+adaptation family for the main efficacy claim. Values in between license one documented backbone
+decision, not an unconstrained sweep.
+
+The already-tested native-six Channel-Adaptive DINO pair remains an independent instrument arm,
+licensed immediately after its distinct ViT-L/16 checkpoint passes integrity and load smoke. It
+must not be simulated with the Cell-DINO ViT-S/8 checkpoint. OOD test remains sealed throughout.
+
 ## One scientific question
 
 **Can sparse conditional computation make a microscopy-pretrained model substantially more robust

@@ -15,6 +15,14 @@ not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 
 
 ## Priority order
 
+The steward now operates as an **adaptive signal ladder**. At every result handoff it identifies
+the leading live explanations, spends the next bounded batch on experiments that discriminate
+between them, and records the stopping/extension rule before launch. A completed negative gate
+does not forbid a newly user-authorized scientific question, but previous results are never
+relabelled after the fact. Idle authorized GPUs must be filled with independent licensed arms,
+validation, or preparation that can change the next decision; they must not be filled with
+duplicates or post-hoc variants.
+
 1. Preserve any healthy jobs already running, including legacy Camelyon17 jobs, but schedule no
    successor Camelyon17 work.
 2. Preserve the failed three-channel Cell-DINO result as a validated instrument exclusion. Download
@@ -28,6 +36,11 @@ not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 
 6. If competent, freeze one recipe and launch the original/dense-wide/MoE seed-0 kill comparison.
 7. If the replication trigger passes, launch only paired dense-wide/MoE seeds 1–2. If it fails,
    launch only the frozen/random-route diagnosis; never compensate with a broad sweep.
+8. For the authorized substrate-strength revision, run the exact ten-arm 30-epoch Cell-DINO
+   screen in `PLAN.md` across five disjoint two-GPU shards. Strictly rank all ten before extending
+   only the top two to 90 epochs. Launch the Channel-Adaptive pair as soon as its distinct approved
+   checkpoint passes smoke; until then, keep its slots productive with screen arms rather than
+   duplicating or fabricating the missing instrument.
 
 ## Execution rules
 
@@ -42,6 +55,9 @@ not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 
   the same failure once; a recurrence is blocked.
 - Never expose secrets, signed URLs, or credentials; alter environments/drivers; allocate new paid
   compute; delete results; disturb other projects; force-push; or evaluate OOD test early.
+- Never classify a pass as `RUNNING_HEALTHY` merely because one job is alive while another
+  authorized GPU is idle and a decision-relevant independent arm is ready. Surface and fill that
+  gap in the same handoff.
 
 ## Progress communication
 
