@@ -18,6 +18,28 @@ acquisition decodability without matched gain indicates nuisance partitioning. I
 conflict but matched conditional gain remains absent across the held-out-experiment folds, then
 sparse routing does not solve the interference mechanism proposed here.
 
-\paragraph{Results placeholder.}
-All numerical tables and plots will be generated from stage-gated JSON outputs. No OOD-test value
-will enter the manuscript until the confirmatory configuration set is frozen.
+\paragraph{Substrate qualification.}
+Table~\ref{tab:native-competence} reports the predeclared native-stain Cell-DINO qualification.
+Full fine-tuning recovers substantial task signal relative to a frozen linear readout, but its
+performance drops by 14.80 points from seen experiments to OOD validation. The substrate is thus
+competent enough to test conditional capacity, and the intended failure regime is batch transfer
+rather than a floor representation. This result does not establish the proposed mechanism: the
+same gap could arise from ordinary overfitting or acquisition variation that routing cannot fix.
+
+\begin{table}[t]
+  \centering
+  \caption{Native-stain Cell-DINO qualification on RxRx1 (\%). OOD test is untouched.}
+  \label{tab:native-competence}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Adaptation & Train & ID & OOD-val & Worst experiment \\
+    \midrule
+    Frozen backbone + linear head & 10.62 & 7.64 & 4.42 & 0.81 \\
+    Full fine-tuning & 39.00 & 27.09 & 12.29 & 1.42 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The seed-0 original, exact-total-parameter-matched dense-wide, and canonical-MoE comparison is in
+progress. Numerical MoE claims and all OOD-test values remain withheld until their corresponding
+stage gates pass.

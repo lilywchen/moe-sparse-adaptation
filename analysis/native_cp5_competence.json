@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-01T03:14:00-04:00",
+  "dataset": "rxrx1",
+  "stage": "native_cp5_competence",
+  "grade": "decision-grade instrument qualification; not a MoE result",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "tested_sciserver_commit_short": "7365eac",
+  "tested_sciserver_tree": "4f551c7f701c69392f8ff4950b34b523a31de54c",
+  "dinov2_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+  "checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
+  "mapping": "[w1,w2,w4,mean(w3,w6),w5]",
+  "feature_pool": "cls_patch_mean",
+  "runs": {
+    "frozen_linear_probe": {
+      "run_id": "rxrx1_original_ep5_s0_cell_dino_cell_dino_native_cp5_instrument_linear_probe",
+      "wandb_run_id": "1sfzdw4j",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/instrument/rxrx1_original_ep5_s0_cell_dino_cell_dino_native_cp5_instrument_linear_probe.json",
+      "result_sha256_prefix": "c612bc8c05d6",
+      "epochs": 5,
+      "head_lr": 0.001,
+      "backbone_frozen": true,
+      "acc_train": 0.106245,
+      "acc_within": 0.076406,
+      "acc_selection": 0.044246,
+      "worst_env_val": 0.008117,
+      "wall_time_seconds": 919.2
+    },
+    "full_fine_tune": {
+      "run_id": "rxrx1_original_ep10_s0_cell_dino_cell_dino_native_cp5_instrument_full_ft_lr1e-4",
+      "wandb_run_id": "7rdhcisv",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/instrument/rxrx1_original_ep10_s0_cell_dino_cell_dino_native_cp5_instrument_full_ft_lr1e-4.json",
+      "result_sha256_prefix": "452548dc4a",
+      "epochs": 10,
+      "learning_rate": 0.0001,
+      "backbone_frozen": false,
+      "acc_train": 0.390009,
+      "acc_within": 0.270930,
+      "acc_selection": 0.122894,
+      "worst_env_val": 0.014205,
+      "id_to_ood_gap": 0.148036,
+      "wall_time_seconds": 1562.3
+    }
+  },
+  "canonical_reference": {
+    "best_ood_val": 0.154151,
+    "epoch21_id": 0.2458,
+    "epoch21_ood_val": 0.1341,
+    "full_ft_fraction_best_ood": 0.7972,
+    "full_ft_fraction_epoch21_id": 1.1022,
+    "full_ft_fraction_epoch21_ood": 0.9164
+  },
+  "decision": "pass_dense_competence_and_establish_batch_transfer_regime",
+  "next_gate": "validate original, dense-wide, and MoE seed-0 kill results; replicate only if MoE-minus-dense-wide OOD-val is at least 0.05 and MoE ID loss is at most 0.02"
+}

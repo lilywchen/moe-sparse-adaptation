@@ -22,17 +22,29 @@ token, the best full-fine-tuned arm reaches 17.76\% train, 11.16\% ID, 5.93\% OO
 1.26\% worst-experiment accuracy. All values are from OOD-validation selection with OOD test
 untouched. This instrument also fails the frozen competence boundary; it is not an MoE result.
 
-The final bounded qualification uses the official six grayscale acquisitions. We compare two
-interfaces, each with a frozen five-epoch linear probe and a ten-epoch full fine-tuning run at
-$10^{-4}$:
+The final bounded qualification uses the official six grayscale acquisitions. For Cell-DINO we
+compare a frozen five-epoch linear probe with ten-epoch full fine-tuning at $10^{-4}$ using the
+fixed biological map
+$[w1,w2,w4,\operatorname{mean}(w3,w6),w5]$ to DNA, ER, RNA, AGP, and mitochondria.
+The frozen model reaches 10.62\% train, 7.64\% ID, and 4.42\% OOD-validation accuracy; full
+fine-tuning reaches 39.00\%, 27.09\%, and 12.29\%, respectively. Full adaptation is therefore in
+the canonical WILDS sanity range while leaving a 14.80-point ID--OOD gap. This establishes a
+competent batch-transfer instrument and licenses the matched kill comparison; it is not evidence
+that MoE helps.
+
+We retain Channel-Adaptive DINO ViT-L/16 on native $w1\ldots w6$ using its Bag-of-Channels input as
+a mapping-free instrument diagnostic once its distinct approved checkpoint is available. It is
+not required for the matched Cell-DINO contrast. The fixed map reflects the Cell Painting
+acquisition in which phalloidin (actin) and WGA (Golgi/plasma membrane) share the AGP channel.
+All qualification values use OOD-validation selection and leave OOD test untouched.
+
+The bounded native interfaces are therefore:
 \begin{enumerate}
   \item Cell-DINO CP ViT-S/8 with the fixed biological map
   $[w1,w2,w4,\operatorname{mean}(w3,w6),w5]$ to DNA, ER, RNA, AGP, and mitochondria;
   \item Channel-Adaptive DINO ViT-L/16 on native $w1\ldots w6$ using its Bag-of-Channels input.
 \end{enumerate}
-The first map reflects the Cell Painting acquisition in which phalloidin (actin) and WGA
-(Golgi/plasma membrane) share the AGP channel. The second is a mapping-free control. These are
-instrument diagnostics rather than a backbone leaderboard.
+The second is a mapping-free diagnostic rather than a backbone leaderboard.
 
 \subsection{Seed-0 matched kill comparison}
 Only a competent substrate licenses three seed-0 runs: the original encoder, one middle-block

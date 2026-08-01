@@ -1,20 +1,20 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_native_audit_and_launch_cp5_competence_pair",
-  "last_action_at": "2026-08-01T02:33:00-04:00",
-  "last_verified_commit": "4f94e7e",
+  "last_action": "validate_native_cp5_competence_and_launch_seed0_kill_contrast",
+  "last_action_at": "2026-08-01T03:14:00-04:00",
+  "last_verified_commit": "68aada8",
   "valid_results": 9,
   "expected_results": 12,
-  "active_gpu_workers": 2,
-  "idle_h100s": 6,
-  "sciserver_resource_map": "native_execution_container_gpu0_linear_probe_gpu1_full_ft; six_other_authorized_h100s_idle_pending_competence_or_channel_adaptive_checkpoint",
+  "active_gpu_workers": 3,
+  "idle_h100s": 5,
+  "sciserver_resource_map": "container2875_gpu0_dense_wide_gpu1_moe; container2874_gpu0_original; five_other_authorized_h100s_idle_pending_seed0_kill_gate_or_channel_adaptive_checkpoint",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "dinov2_failed_competence_gate",
-  "rxrx1_backbone_status": "native_cp5_competence_pair_active",
+  "rxrx1_backbone_status": "native_cp5_competence_pass_batch_transfer_regime",
   "cell_dino_expected_diagnostics": 3,
   "cell_dino_valid_diagnostics": 3,
   "cell_dino_legacy_cls_only_valid_diagnostics": 3,
@@ -22,13 +22,24 @@
   "cell_dino_sciserver_tree": "289390c317910c0a1f8839832405c80f32b5ac3e",
   "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
   "cell_dino_remote_tests": "90_passed_native_execution_tree_with_channel_adaptive_regression",
-  "cell_dino_active_runs": [
-    "native_cp5/instrument_linear_probe_pid36861_wandb_1sfzdw4j",
-    "native_cp5/instrument_full_ft_lr1e-4_pid36862_wandb_7rdhcisv"
-  ],
+  "cell_dino_active_runs": [],
   "cell_dino_queued_runs": [],
   "native_cp5_expected_results": 2,
-  "native_cp5_valid_results": 0,
+  "native_cp5_valid_results": 2,
+  "native_cp5_competence_decision": "pass_dense_competence_and_establish_batch_transfer_regime",
+  "native_cp5_metrics": {
+    "linear_probe": {"acc_train": 0.106245, "acc_within": 0.076406, "acc_selection": 0.044246, "worst_env_val": 0.008117},
+    "full_ft_lr1e-4": {"acc_train": 0.390009, "acc_within": 0.270930, "acc_selection": 0.122894, "worst_env_val": 0.014205, "id_to_ood_gap": 0.148036}
+  },
+  "kill_expected_results": 3,
+  "kill_valid_results": 0,
+  "kill_active_runs": [
+    "container2874_gpu0_original_wandb_8l3xts1p",
+    "container2875_gpu0_dense_wide_wandb_g9ucrbln",
+    "container2875_gpu1_moe_wandb_u6s1sms3"
+  ],
+  "kill_parameter_budget": {"original": 22402163, "dense_wide": 30675834, "moe": 30676212, "dense_wide_moe_mismatch_percent": 0.001232},
+  "kill_excluded_failures": ["original_first_launch_rejected_before_model_start_by_global_gpu_lease_after_two_jupyter_workspaces_resolved_to_container2875; retried_once_on_container2874_gpu0"],
   "cell_dino_official_pool_metrics": {
     "linear_probe": {
       "acc_train": 0.07516758678078865,
@@ -67,5 +78,5 @@
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
   "last_synced_commit": "23fdacd",
   "overleaf_build_status": "pass_0_errors_1_warning",
-  "next_gate": "strictly_validate_two_native_cp5_results_and_classify_train_id_ood_failure_regime; launch_matched_kill_contrast_only_if_competent; launch_channel_adaptive_pair_when_checkpoint_present"
+  "next_gate": "strictly_validate_three_seed0_kill_results; launch_seeds1_and2_only_if_moe_minus_dense_wide_ood_val_at_least_0.05_and_moe_id_loss_at_most_0.02"
 }

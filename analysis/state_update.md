@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 02:33 EDT
+Last verified: 2026-08-01 03:14 EDT
 
 ## Scientific question
 
@@ -325,3 +325,31 @@ MoE and dense-wide models have not been launched. Their exact total-parameter ma
 paired seed, and ID-preservation checks remain frozen for the next gate. Six H100s are intentionally
 idle because extra diagnostic arms cannot resolve the current decision, while Channel-Adaptive DINO
 remains blocked on its distinct approved ViT-L/16 checkpoint.
+
+## Native competence decision and active kill contrast
+
+The native CP5 result changes the scientific diagnosis. Full fine-tuning reaches 39.00% train,
+27.09% ID, and 12.29% OOD-validation accuracy, whereas the frozen probe reaches 10.62%, 7.64%,
+and 4.42%. Adaptation therefore recovers substantial task signal, and the full model is in the
+canonical WILDS sanity range. The remaining 14.80-point ID--OOD gap is now the primary phenomenon:
+the model can recognize perturbations from seen experiments but transfers much less reliably to
+four unseen experiments. This is decision-grade instrument qualification and establishes the
+batch-transfer regime; it is not yet a sparse-model result.
+
+The main live explanations are now sharper. Dense shared FFNs may suffer experiment-stratified
+gradient interference; alternatively, the gap may be ordinary overfitting or an acquisition shift
+that conditional routing cannot repair. The active seed-0 contrast distinguishes useful conditional
+capacity from ordinary capacity by comparing MoE directly with an almost exactly total-parameter-
+matched dense-wide model. A MoE improvement only over the smaller original model would not support
+conditional specialization.
+
+The worst held-out experiment remains near floor at 1.42%, so average OOD validation could conceal
+strong experiment heterogeneity. A positive result must therefore preserve ID accuracy and improve
+the per-experiment distribution, not merely the mean. Conversely, a null MoE-minus-dense-wide
+contrast is informative: under a competent microscopy substrate and a controlled batch-transfer
+gap, sparse conditional capacity alone would not solve the failure.
+
+The three matched seed-0 jobs are active. No interpretation is licensed from their early losses.
+The next decision is mechanical: validate all three JSONs, compute MoE minus dense-wide OOD-val and
+the MoE ID difference, and replicate only for at least +5.0 OOD points with no more than -2.0 ID
+points. OOD test remains sealed.

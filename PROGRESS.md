@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-08-01 02:33 EDT on SciServer.
+Last verified: 2026-08-01 03:14 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `5f8310c` was pulled into the linked Overleaf
 project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with 0 errors, one
@@ -512,3 +512,43 @@ competence result. The next automatic action is strict validation of each comple
 train/ID/OOD-validation failure-regime classification. A competent native dense instrument licenses
 the frozen original versus exact-total-parameter-matched dense-wide versus canonical-MoE kill
 contrast; a floor result stops that launch and diagnoses the instrument instead.
+
+## 2026-08-01 03:14 EDT native competence passes and kill contrast launches
+
+Classification is `RUNNING_HEALTHY`. Both native CP5 competence JSONs completed and passed strict
+parseability, finite-metric, filename/run/config/seed, clean-tree, checkpoint/source, parameter,
+split, and test-blindness checks. The frozen linear probe reaches train/ID/OOD-validation/worst-
+experiment accuracies of `0.106245 / 0.076406 / 0.044246 / 0.008117`. Full fine-tuning at
+`1e-4` reaches `0.390009 / 0.270930 / 0.122894 / 0.014205`. Relative to the frozen probe, full
+adaptation gains 28.38 train points, 19.45 ID points, and 7.86 OOD-validation points.
+
+The full-fine-tuned model reaches 79.72% of the canonical WILDS control's best validation accuracy
+(`0.122894 / 0.154151`), 91.64% of its epoch-21 validation accuracy, and 110.22% of its recorded
+epoch-21 ID accuracy. This passes the frozen dense-competence rule: the model is learnable and in
+the canonical sanity range. The failure regime is therefore genuine batch transfer rather than a
+floor substrate: train is 39.00%, ID is 27.09%, and OOD validation is 12.29%, a 14.80-point
+ID--OOD gap. The 1.42% worst-experiment score additionally shows severe held-out-experiment
+heterogeneity. These are decision-grade instrument-qualification findings, not evidence that MoE
+helps.
+
+The real Cell-DINO parameter audit instantiates 22,402,163 parameters for the original model,
+30,675,834 for dense-wide, and 30,676,212 for MoE. Dense-wide and MoE differ by only 0.001232%,
+within the frozen 0.1% tolerance; their active FFN parameters are 9,455,239 and 1,184,641,
+respectively. The three seed-0 kill shards dry-ran as the only pending runs with the same native
+data, checkpoint, seed, optimizer, schedule, ten-epoch budget, and `1e-4` learning rate.
+
+Three H100 workers are active. Container 2875 GPU 0 runs
+`rxrx1_dense_wide_middle_canonical_E8_ep10_s0_kill_dense_wide` (W&B `g9ucrbln`), and GPU 1 runs
+`rxrx1_moe_middle_token_cosine_canonical_E8k1_ep10_s0_kill_moe` (W&B `u6s1sms3`); both have fresh
+epoch-1 logs, high utilization, and no fatal error. The first original-arm launch attempted a
+second Jupyter workspace that mapped to the same physical container; the global GPU lease correctly
+rejected it before model or W&B start. This excluded orchestration failure was retried once on
+freshly inspected container 2874 GPU 0. The retry, `rxrx1_original_ep10_s0_kill_original` (W&B
+`8l3xts1p`), has a live process, GPU allocation, and fresh W&B start with no result yet. The other
+five H100s are idle because extra seeds are forbidden until the seed-0 gate and the distinct
+Channel-Adaptive checkpoint is still absent.
+
+OOD test remains untouched. The next automatic action is to strictly validate all three kill JSONs
+and compute the predeclared conditional gain, MoE OOD-validation minus dense-wide OOD-validation.
+Seeds 1 and 2 launch only if that gain is at least five absolute points and MoE loses no more than
+two ID points; otherwise the architecture grid stops and the negative contrast is analyzed.
