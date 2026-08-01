@@ -740,7 +740,7 @@ interpreted scientifically.
 
 All runs are isolated in the fresh W&B group `rxrx1-cell-dino-hypothesis90-20260801`, with job type
 `rxrx1_hypothesis_matrix` and test-blind tags. The ten W&B run IDs are `6zkqodfv`, `0xpwd8mc`,
-`j0b8ycc`, `w6sqdgov`, `0crn85p0`, `j9yjhagx`, `1zwn6qq5`, `ixgx0uhr`, `rmsua36b`, and `kmotbuzn`,
+`jo0b8ycc`, `w6sqdgov`, `0crn85p0`, `j9yjhagx`, `1zwn6qq5`, `ixgx0uhr`, `rmsua36b`, and `kmotbuzn`,
 mapped one-to-one to the arm identities in their persistent logs. Strict Hugging Face publishing is
 configured under `rxrx1/cell_dino_cp5/hypothesis90_20260801`; no folder has been claimed uploaded
 yet. A run folder is pushed only after the final JSON and all milestone/checkpoint artifacts pass
@@ -818,3 +818,19 @@ the next point at which the trajectories can distinguish transient undertraining
 original/dense-wide/MoE ordering. If tester6 becomes `Running` first, verify both GPUs and use it
 only for already licensed decision-relevant work; do not invent a filler sweep. OOD test remains
 sealed.
+
+### 2026-08-01 13:46 ET — W&B provenance repaired; epoch-30 gate is 9/10
+
+A signed W&B table audit corrected one transcription defect in the campaign provenance: the
+canonical token-top-1 run ID is `jo0b8ycc` (letter `o`, then zero), not `j0b8ycc`. The corrected
+identity is now consistent across the operational ledger, evidence index, machine state, and the
+epoch-10 validation artifact. No metric or scientific interpretation changed.
+
+Fresh W&B run pages show all ten hypothesis90 runs in `Running` state with no rendered fatal
+trace. Nine arms have reached or passed epoch 30: dense-wide `30`, image-top-1 `34`, canonical
+token-top-1 `34`, token-top-2 `33`, environment-balanced `34`, frozen-linear `34`, original
+anchor `33`, output-invariant `33`, and last-four-block `33`. The within-experiment-balanced token
+arm is the remaining straggler at epoch `27`, with a fresh log. Therefore the epoch-30 scientific
+gate remains incomplete and no cross-arm epoch-30 claim is made yet. SciServer `tester6` still
+returns `503` at its execution endpoint, consistent with the previously recorded pending/no-H100
+state; no duplicate or repeated start request was issued. OOD test remains sealed.

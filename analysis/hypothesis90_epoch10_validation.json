@@ -194,7 +194,7 @@
   "fatal_matches": 0,
   "wandb": {
     "group": "rxrx1-cell-dino-hypothesis90-20260801",
-    "configured_run_ids": ["6zkqodfv", "0xpwd8mc", "j0b8ycc", "w6sqdgov", "0crn85p0", "j9yjhagx", "1zwn6qq5", "ixgx0uhr", "rmsua36b", "kmotbuzn"],
+    "configured_run_ids": ["6zkqodfv", "0xpwd8mc", "jo0b8ycc", "w6sqdgov", "0crn85p0", "j9yjhagx", "1zwn6qq5", "ixgx0uhr", "rmsua36b", "kmotbuzn"],
     "fresh_api_query": "relogin_required",
     "interpretation": "tracking identities remain present in logs and state, but live API state was not claimed"
   },

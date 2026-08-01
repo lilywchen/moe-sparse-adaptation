@@ -502,3 +502,19 @@ will shorten the critical path only if it becomes runnable and a predeclared ind
 licensed; otherwise it must not create an unplanned sweep. The largest current trust limitation is
 that the W&B API requested a fresh login, although exact run identities, persistent logs, milestone
 files, and OOD-test blindness remain locally verifiable.
+
+## Hypothesis90 pre-epoch-30 handoff: nine arms across, one straggler
+
+Fresh signed W&B pages now resolve every campaign run and repair a provenance-only transcription:
+the canonical token-top-1 run is `jo0b8ycc`, not `j0b8ycc`. Nine arms have crossed epoch 30 and
+remain running without a rendered fatal trace; the within-experiment-balanced token arm is healthy
+but slower at epoch 27. This is operational evidence only. The paired epoch-30 interpretation stays
+closed until all ten persistent milestone rows can be parsed and checked for exact identity,
+finiteness, `selection_split=ood_val`, and `test_evaluated=false`.
+
+The delayed within-experiment-balanced arm is not a scientific exclusion. Its slower wall time is
+compatible with the additional per-environment routing bookkeeping and would be falsified as a
+benign straggler if its log stops advancing or a fatal trace appears. The largest immediate trust
+threat is temporary loss of a fresh signed SciServer portal session for direct JSON inspection;
+W&B confirms live progress but cannot substitute for strict persistent-file validation. OOD test
+remains untouched.
