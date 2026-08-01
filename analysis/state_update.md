@@ -269,3 +269,23 @@ A large train/ID recovery with a remaining OOD gap would finally enter the genui
 regime and license the matched dense-wide versus MoE kill contrast. Failure of both instruments is
 also informative: it falsifies the current experimental instrument before expensive sparse-model
 work and prevents a misleading negative MoE conclusion.
+
+## Native preflight interpretation
+
+The biologically mapped Cell-DINO interface is now executable with the released checkpoint. A real
+six-channel sample maps to the expected five CP slots and produces finite 1,139-class logits with
+the paper-specified pooled feature. This removes implementation incompatibility from the leading
+explanations, but it is not yet evidence of representation quality: the competence result still
+requires full selection-split coverage and the paired frozen/full-fine-tuning runs.
+
+The incomplete first channel audit is explicitly non-scientific. Missing paths were present in the
+official archive but had not yet been extracted, so no claim about stain availability, experiment
+coverage, or model performance may consume that report. A skip-existing extraction is completing
+the same immutable archive before the audit is rerun.
+
+Channel-Adaptive DINO is valuable because its Bag-of-Channels encoder processes the six acquisitions
+as a set of independently encoded channels rather than forcing them into a fixed five-slot stem. If
+it succeeds where mapped Cell-DINO fails, the clean interpretation is an input-interface/channel-set
+problem, not generic microscopy pretraining quality. If both succeed similarly, the fixed map was
+sufficient and the smaller Cell-DINO substrate is preferable for the matched MoE kill test. If both
+fail, the bounded adaptation regime is not a competent RxRx1 instrument and MoE remains untested.

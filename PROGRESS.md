@@ -419,3 +419,28 @@ OOD test was neither constructed nor evaluated. The next automatic action is to 
 run the strict selection-split coverage/image audit, smoke the real checkpoint on native tensors,
 dry-run the two Cell-DINO shards, and launch them on both idle H100s. The Channel-Adaptive pair can
 launch immediately after its separately approved checkpoint appears at the frozen persistent path.
+
+## 2026-08-01 00:56 EDT native data and checkpoint preflight
+
+The first selection-split audit correctly refused to pass because the initial parallel extraction
+had produced only 293,748 of the archive's 753,319 files. This is an orchestration defect, not a
+scientific or mapping result: the supposedly missing experiment and channel paths were verified to
+exist inside the intact 49,039,640,485-byte archive, and persistent storage has ample free space.
+A single skip-existing extraction is now running as PID `34613`; it preserves completed files and
+is filling the remaining archive deterministically. The partial audit is excluded from all model
+decisions and will be rerun from scratch before launch. OOD test remains unevaluated.
+
+The native Cell-DINO interface passed an independent real-checkpoint smoke on the isolated clean
+execution tree: a six-channel `6 x 512 x 512` raw sample was mapped to the frozen
+`[w1,w2,w4,mean(w3,w6),w5]` CP5 tensor at `5 x 128 x 128`, loaded with the released checkpoint and
+official `cls_patch_mean` feature, and produced finite `1 x 1139` logits on an idle H100. The
+latest isolated execution identity is SciServer commit `510bccf`, tree
+`88e356a061d8dc1dbaa61a98bb889d90518d3b51`; 89/89 tests pass and dry-run manifests have distinct
+Cell-DINO and Channel-Adaptive run namespaces. The Cell-DINO linear/full-FT pair remains queued
+until the complete train/ID-test/OOD-validation channel audit passes. The native-six
+Channel-Adaptive pair remains blocked only on its distinct approved ViT-L/16 checkpoint; the
+existing CP ViT-S/8 checkpoint cannot substitute for it.
+
+The manuscript was refocused from the former broad factorial narrative to the RxRx1 competence,
+matched-capacity kill contrast, and mechanism sequence. It compiles with fatal errors enabled and
+was pushed to GitHub as commit `48f28dd`.
