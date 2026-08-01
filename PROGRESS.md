@@ -851,3 +851,24 @@ reauthentication, so the persistent milestone JSONs cannot be checked for exact 
 parseability, identity, parameter counts, `selection_split=ood_val`, `test_evaluated=false`, and
 null OOD-test fields. W&B cannot substitute for those checks. The ten healthy workers continue
 untouched toward epoch 60. `tester6` still returns `503`; no duplicate or repeated start was issued.
+
+### 2026-08-01 15:31 ET — epoch-60 W&B coverage complete; moderate signal remains unvalidated
+
+All ten signed W&B logs contain epoch-60 milestones and remain `Running` with fresh post-milestone
+progress and no rendered fatal trace. The rounded operational snapshot is preserved in
+`analysis/hypothesis90_epoch60_wandb_snapshot.json`. Canonical token top-1 is provisionally
+`19.68%` OOD validation versus `17.13%` for exact-total-parameter-matched dense-wide, a `+2.55`
+point gain, while ID is `47.16%` versus `43.61%`. The gain is below the frozen `+5`-point
+replication trigger. Worst-experiment accuracy is nearly unchanged (`1.54%` versus `1.50%`).
+
+The nearest alternatives are within-experiment-balanced routing at `19.43%` OOD validation and
+last-four-block adaptation at `19.26%`; original is `18.51%`, image top-1 `18.73%`, and top-2
+`17.97%`. Thus the average OOD signal is persistent but not uniquely attributable to sparse
+routing, and it has not translated into a worst-experiment improvement. Frozen linear remains
+weak at `5.91%` OOD validation. This is a complete operational milestone, not scientific evidence:
+all values are rounded W&B renderings and the epoch-90 gate remains controlling.
+
+Strict validation is still blocked on SciServer portal reauthentication, including exact JSON
+precision, identity, parameter counts, split/test-blindness fields, and the epoch-60 anchor
+checkpoint. The workers continue untouched toward epoch 90. `tester6` still returns `503`; no
+duplicate or repeated start was issued, and OOD test remains sealed.

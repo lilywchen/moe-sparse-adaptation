@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-08-01T15:31:00-04:00",
+  "grade": "operational_unvalidated",
+  "source": "signed_wandb_rendered_run_logs",
+  "wandb_group": "rxrx1-cell-dino-hypothesis90-20260801",
+  "execution_commit": "cd783399ab1d4cee2666f1af8dfe3bfd9fc29280",
+  "execution_tree": "ec05b37b9f2ac593e047243c414b114c3a1fb52c",
+  "strict_validation": {
+    "status": "blocked",
+    "reason": "SciServer portal session requires reauthentication before persistent milestone JSONs can be inspected",
+    "required_checks_not_yet_repeated": [
+      "json_parseability",
+      "finite_exact_precision_metrics",
+      "exact_run_config_seed_identity",
+      "parameter_counts",
+      "selection_split_ood_val",
+      "test_evaluated_false",
+      "null_ood_test_fields",
+      "milestone_file_identity",
+      "anchor_checkpoint_identity"
+    ],
+    "scientific_consumption_allowed": false
+  },
+  "arms": [
+    {"arm": "dense_wide", "wandb_run_id": "0xpwd8mc", "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep90_s0_hypothesis90_dense_wide", "train": 0.9999, "id": 0.4361, "ood_val": 0.1713, "worst_experiment": 0.0150, "latest_epoch": 69},
+    {"arm": "moe_image_top1", "wandb_run_id": "w6sqdgov", "run_id": "rxrx1_moe_middle_image_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_image_top1", "train": 0.9999, "id": 0.4693, "ood_val": 0.1873, "worst_experiment": 0.0162, "latest_epoch": 77},
+    {"arm": "moe_token_top1", "wandb_run_id": "jo0b8ycc", "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_token_top1", "train": 0.9998, "id": 0.4716, "ood_val": 0.1968, "worst_experiment": 0.0154, "latest_epoch": 77},
+    {"arm": "moe_token_top2", "wandb_run_id": "j9yjhagx", "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k2_ep90_s0_hypothesis90_moe_token_top2", "train": 0.9999, "id": 0.4625, "ood_val": 0.1797, "worst_experiment": 0.0154, "latest_epoch": 75},
+    {"arm": "moe_token_within_env", "wandb_run_id": "0crn85p0", "run_id": "rxrx1_moe_middle_token_cosine_route_E8k1_ep90_s0_hypothesis90_moe_token_within_env", "train": 0.9999, "id": 0.4791, "ood_val": 0.1943, "worst_experiment": 0.0150, "latest_epoch": 59},
+    {"arm": "environment_balanced", "wandb_run_id": "kmotbuzn", "run_id": "rxrx1_original_ep90_s0_hypothesis90_environment_balanced", "train": 0.9992, "id": 0.4596, "ood_val": 0.1813, "worst_experiment": 0.0130, "latest_epoch": 76},
+    {"arm": "frozen_linear", "wandb_run_id": "1zwn6qq5", "run_id": "rxrx1_original_ep90_s0_hypothesis90_frozen_linear", "train": 0.2587, "id": 0.1252, "ood_val": 0.0591, "worst_experiment": 0.0049, "latest_epoch": 76},
+    {"arm": "original_anchor", "wandb_run_id": "6zkqodfv", "run_id": "rxrx1_original_ep90_s0_hypothesis90_original_anchor", "train": 0.9999, "id": 0.4890, "ood_val": 0.1851, "worst_experiment": 0.0199, "latest_epoch": 76},
+    {"arm": "output_invariant", "wandb_run_id": "rmsua36b", "run_id": "rxrx1_original_ep90_s0_hypothesis90_output_invariant", "train": 1.0000, "id": 0.4358, "ood_val": 0.1727, "worst_experiment": 0.0130, "latest_epoch": 76},
+    {"arm": "partial_last4", "wandb_run_id": "ixgx0uhr", "run_id": "rxrx1_original_ep90_s0_hypothesis90_partial_last4", "train": 1.0000, "id": 0.5089, "ood_val": 0.1926, "worst_experiment": 0.0183, "latest_epoch": 76}
+  ],
+  "rounded_operational_contrasts": {
+    "moe_token_top1_minus_dense_wide_ood_val": 0.0255,
+    "moe_token_top1_minus_dense_wide_id": 0.0355,
+    "moe_token_top1_minus_dense_wide_worst_experiment": 0.0004,
+    "moe_image_top1_minus_dense_wide_ood_val": 0.0160,
+    "moe_token_within_env_minus_dense_wide_ood_val": 0.0230,
+    "moe_token_top2_minus_dense_wide_ood_val": 0.0084,
+    "original_anchor_minus_dense_wide_ood_val": 0.0138,
+    "partial_last4_minus_dense_wide_ood_val": 0.0213
+  },
+  "interpretation": "Complete epoch-60 operational snapshot only. Canonical token top-1 leads matched dense-wide by 2.55 rounded OOD-validation points with higher ID, but the gain is below the frozen 5-point replication trigger and worst-experiment accuracy is essentially unchanged. Partial last-four adaptation and within-experiment routing are close alternatives, so a routing-specific mechanism is not established. Do not use for a scientific claim or gate decision until exact persistent milestone rows pass strict validation; the formal gate remains epoch 90."
+}

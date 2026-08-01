@@ -535,3 +535,25 @@ by the epoch-60/90 trajectories returning canonical top-1 to dense-wide. Full tr
 already about 99% for the adapted arms, so remaining changes primarily probe ID generalization and
 batch transfer rather than basic task fit. OOD test remains sealed under the last strictly checked
 configuration, but its null fields must be reverified in the milestone files before consumption.
+
+## Epoch-60 operational snapshot: persistent moderate average gain, no tail-robustness lift
+
+All ten arms have now emitted epoch-60 W&B milestones. Canonical token top-1 is 19.68% OOD
+validation against 17.13% for exact-total-parameter-matched dense-wide (`+2.55` points) and has
+higher ID accuracy (47.16% versus 43.61%). This is smaller than the epoch-30 rounded contrast and
+below the frozen `+5`-point replication trigger. More importantly, worst-experiment accuracy is
+essentially tied (1.54% versus 1.50%), so the current average gain is not evidence of improved
+tail robustness.
+
+Routing is not yet the unique explanation. Within-experiment-balanced token routing reaches
+19.43% OOD validation, but last-four-block adaptation reaches 19.26% and the original anchor
+18.51%; the latter also has the strongest worst-experiment score among these arms at 1.99%.
+Top-2 trails top-1, which weakens hard-routing starvation as the dominant failure mode, while the
+strong partial-adaptation arm keeps representation depth/forgetting as a competing explanation.
+The interpretation would be falsified by strict-file mismatch or a materially different epoch-90
+ordering.
+
+This remains operational, not decision-grade. W&B values are rounded and SciServer
+reauthentication is required before checking exact persistent JSONs, parameter fairness fields,
+`selection_split=ood_val`, `test_evaluated=false`, null OOD-test fields, and the anchor checkpoint.
+All ten runs continue healthy; no replication or new sweep is licensed before the epoch-90 gate.

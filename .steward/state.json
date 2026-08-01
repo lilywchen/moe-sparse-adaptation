@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "BLOCKED",
-  "last_action": "capture_complete_epoch30_wandb_snapshot_and_request_sciserver_reauthentication",
-  "last_action_at": "2026-08-01T14:01:00-04:00",
+  "last_action": "capture_complete_epoch60_wandb_snapshot_while_strict_validation_remains_blocked",
+  "last_action_at": "2026-08-01T15:31:00-04:00",
   "last_verified_commit": "d4e80b0",
   "valid_results": 0,
   "expected_results": 10,
@@ -143,18 +143,18 @@
     "size_bytes": 269082312,
     "sha256": "d175761bce0444b6845a75b69410481d2f6f647bf73ff3a8b60642bbcdb5361"
   },
-  "hypothesis90_wandb_live_query_status": "signed_ui_audit_2026-08-01T14:01-04:00_all_ten_running_epoch30_complete_no_rendered_fatal_trace",
+  "hypothesis90_wandb_live_query_status": "signed_ui_audit_2026-08-01T15:31-04:00_all_ten_running_epoch60_complete_no_rendered_fatal_trace",
   "hypothesis90_live_progress": {
-    "dense_wide": 37,
-    "moe_image_top1": 41,
-    "moe_token_top1": 41,
-    "moe_token_top2": 40,
-    "moe_token_within_env": 31,
-    "environment_balanced": 40,
-    "frozen_linear": 40,
-    "original_anchor": 40,
-    "output_invariant": 40,
-    "partial_last4": 40,
+    "dense_wide": 69,
+    "moe_image_top1": 77,
+    "moe_token_top1": 77,
+    "moe_token_top2": 75,
+    "moe_token_within_env": 59,
+    "environment_balanced": 76,
+    "frozen_linear": 76,
+    "original_anchor": 76,
+    "output_invariant": 76,
+    "partial_last4": 76,
     "source": "wandb_run_logs_operational_only_not_strict_milestone_validation"
   },
   "hypothesis90_epoch30_operational_snapshot": {
@@ -164,6 +164,16 @@
     "artifact": "analysis/hypothesis90_epoch30_wandb_snapshot.json",
     "status": "blocked_sciserver_portal_reauthentication_required",
     "rounded_top1_minus_dense_wide_ood_val": 0.0278,
+    "scientific_consumption_allowed": false
+  },
+  "hypothesis90_epoch60_operational_snapshot": {
+    "coverage": 10,
+    "expected": 10,
+    "strictly_validated": 0,
+    "artifact": "analysis/hypothesis90_epoch60_wandb_snapshot.json",
+    "status": "blocked_sciserver_portal_reauthentication_required",
+    "rounded_top1_minus_dense_wide_ood_val": 0.0255,
+    "rounded_top1_minus_dense_wide_worst_experiment": 0.0004,
     "scientific_consumption_allowed": false
   },
   "sixth_container": {
