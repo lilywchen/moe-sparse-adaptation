@@ -444,3 +444,25 @@ existing CP ViT-S/8 checkpoint cannot substitute for it.
 The manuscript was refocused from the former broad factorial narrative to the RxRx1 competence,
 matched-capacity kill contrast, and mechanism sequence. It compiles with fatal errors enabled and
 was pushed to GitHub as commit `48f28dd`.
+
+## 2026-08-01 01:12 EDT Channel-Adaptive comparison preflight
+
+The user confirmed that Channel-Adaptive DINO should remain in the bounded native-channel
+instrument comparison. A correctness audit found that the first adapter implementation did not use
+Meta's official Bag-of-Channels feature route: each acquisition must be encoded independently by
+the shared one-channel ViT and the per-channel CLS (plus optional mean patch) features concatenated.
+GitHub commit `d46f684` repairs that path and adds a regression test. The fix was transferred to the
+isolated SciServer execution tree as clean commit `7365eac2262735e339c74f506296e07f4e47512ce`,
+tree `4f551c7f701c69392f8ff4950b34b523a31de54c`; 15 focused tests and the full 90-test suite pass.
+No Channel-Adaptive metric exists yet, so this changes implementation trust rather than scientific
+interpretation.
+
+The resumed native archive extraction remains healthy as PID `34613`: 544,697 files were present
+after 23:45 elapsed, up from 484,778 at the previous fresh signature, with no fatal error. The
+archive contains 753,319 files, so the complete train/ID-test/OOD-validation audit is still pending
+and no native run is licensed yet. Both H100s in the currently attached container are idle; the
+other authorized kernels are not attached to this authenticated browser session. Filling GPUs with
+duplicate seeds before the instrument gate would not shorten the decision path. When extraction and
+the strict audit complete, the Cell-DINO frozen/full-FT pair will launch on the two attached H100s.
+The Channel-Adaptive frozen/full-FT pair is additionally blocked on its distinct approved ViT-L/16
+checkpoint at the frozen persistent path; the CP ViT-S/8 checkpoint is not interchangeable.

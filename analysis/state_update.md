@@ -289,3 +289,11 @@ it succeeds where mapped Cell-DINO fails, the clean interpretation is an input-i
 problem, not generic microscopy pretraining quality. If both succeed similarly, the fixed map was
 sufficient and the smaller Cell-DINO substrate is preferable for the matched MoE kill test. If both
 fail, the bounded adaptation regime is not a competent RxRx1 instrument and MoE remains untested.
+
+The Channel-Adaptive comparison remains scientifically useful, but only through the official
+Bag-of-Channels feature construction now covered by the tested adapter. It is deliberately an
+instrument diagnosis rather than an extra tuning arm: the comparison asks whether preserving all
+six acquisitions without a hand-designed CP5 map materially changes train, seen-environment, and
+OOD-validation competence. A Channel-Adaptive win would implicate the fixed stain interface; a tie
+would favor the smaller mapped Cell-DINO substrate; joint failure would reject both bounded
+instruments. No performance conclusion follows from the adapter repair itself.
