@@ -67,5 +67,34 @@ stop the predeclared campaign.
 
 The result does not support robustness from conditional capacity beyond ordinary capacity: MoE
 recovers part of the degradation caused by dense widening but does not surpass the original
-substrate. A bounded learned-versus-frozen and randomized-route diagnosis is retained to determine
-whether the small recovery depends on routing. All OOD-test values remain withheld.
+substrate.
+
+The clean bounded routing diagnosis in Table~\ref{tab:route-diagnosis} further disfavors H2. The
+learned router uses all eight experts, but its normalized usage entropy is essentially maximal and
+route mutual information with experiment and perturbation is near zero. Randomizing its routes
+reduces OOD-validation accuracy by only 0.42 points. A router frozen at initialization is 0.19
+points better than the learned router and remains less than one point route-dependent. Learning the
+router therefore does not identify a reusable batch-specialized partition that is necessary for
+the model's predictions.
+
+\begin{table}[t]
+  \centering
+  \scriptsize
+  \caption{Clean seed-0 route diagnosis on OOD validation (accuracy and reliance in percentage
+  points). Both controls use all eight experts. MI denotes the aligned token-route audit.}
+  \label{tab:route-diagnosis}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Router & OOD-val & Random routes & Reliance & Entropy & MI(exp.) & MI(label) \\
+    \midrule
+    Learned & 11.65 & 11.23 & 0.42 & 0.9999 & 0.0051 & 0.0016 \\
+    Frozen & 11.84 & 11.13 & 0.71 & 0.9975 & 0.0098 & 0.0041 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+This mechanism result is diagnostic rather than a population efficacy estimate. It is compatible
+with sparse activation weakly regularizing a harmful dense widening, a fixed random partition
+creating mildly useful subspaces, or single-seed variation. It does not establish the proposed
+cross-batch gradient-interference mechanism, and it cannot reopen the failed replication gate. All
+OOD-test values remain withheld.

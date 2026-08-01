@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-08-01 04:39 EDT on SciServer.
+Last verified: 2026-08-01 05:14 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -643,3 +643,38 @@ Next: strictly validate the two retry JSONs from clean `ac69d40`, require the ro
 absent and the assignment/label counts to align, then compare learned, randomized, and frozen
 routing. Recurrence of the same failure is a blocker; no further retry, replication, or architecture
 search is licensed.
+
+## 2026-08-01 05:14 EDT bounded route diagnosis completes cleanly; H2 not supported
+
+Classification is `ACTIONABLE` for milestone persistence and manuscript synchronization. Both
+single-retry JSONs completed under clean isolated SciServer commit `ac69d40` (tree
+`01abac6a9e79ad7bb5b7cd8c97c432bbfda4fab4`) and pass strict parseability, finiteness,
+filename/run/config/seed, parameter, checkpoint/source, four-environment, split, and test-blindness
+checks. The repaired audit has no `routing_error`; token-level experiment and class labels are
+aligned, all eight experts are observed, and the routing metrics are finite. Both workers exited
+normally, container 2875 GPUs 0/1 returned to 0 MiB, and no fatal log match was found. Containers
+2874, 2862, and 2859 were each inspected separately and all six remaining GPUs are also idle with
+0 MiB and no relevant process.
+
+| Router control | Train | ID | OOD-val | Worst | Randomized-route OOD | Route reliance | Experts | Entropy | MI(experiment) | MI(class) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Learned | 0.386854 | 0.261942 | 0.116501 | 0.014610 | 0.112340 | 0.004161 | 8 | 0.999880 | 0.005104 | 0.001635 |
+| Frozen | 0.389343 | 0.265340 | 0.118429 | 0.015016 | 0.111325 | 0.007104 | 8 | 0.997533 | 0.009765 | 0.004069 |
+
+This is the final bounded mechanism diagnosis, not a new efficacy comparison. Randomizing the
+learned routes changes OOD-validation accuracy by only 0.42 points, the frozen router is 0.19
+points better than the learned router, normalized usage entropy is essentially maximal, and aligned
+route mutual information with experiment and class is near zero. H2 is therefore not supported:
+the canonical learned router does not discover a reusable batch- or biology-specialized partition
+that is necessary for its predictions. A fixed random partition can produce the same or slightly
+better behavior, and even that partition has less than one point of route reliance.
+
+The result sharpens, but does not enlarge, the negative seed-0 kill conclusion. It is compatible
+with sparse activation modestly regularizing a harmful dense widening, random partitioning creating
+weakly useful subspaces, or ordinary single-seed variation. It does not show that learned routing
+solves cross-batch gradient interference; H1 was not established. The frozen +5-point gate still
+forbids seeds 1/2, a router or architecture grid, additional mechanism arms, and OOD-test access.
+OOD test remains untouched.
+
+Next: persist this verified milestone in the paper and synchronized repositories. No additional
+GPU experiment is licensed by the completed negative gate.

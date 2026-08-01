@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "classification": "RUNNING_HEALTHY",
-  "last_action": "exclude_failed_route_audit_repair_token_label_alignment_and_retry_bounded_diagnosis_once",
-  "last_action_at": "2026-08-01T04:39:00-04:00",
-  "last_verified_commit": "5874e17",
+  "classification": "ACTIONABLE",
+  "last_action": "strictly_validate_clean_route_diagnosis_and_close_negative_H2_gate",
+  "last_action_at": "2026-08-01T05:14:00-04:00",
+  "last_verified_commit": "ac69d40",
   "valid_results": 9,
   "expected_results": 12,
-  "active_gpu_workers": 2,
-  "idle_h100s": 6,
-  "sciserver_resource_map": "container2875_gpu0_routefix_learned_wandb_gm70n7gi_98pct_8021MiB_gpu1_routefix_frozen_wandb_0jceiq4b_97pct_7995MiB_zero_fatal; container2874_both_idle_zeroMiB_no_workers; container2862_both_idle_zeroMiB_no_workers; container2859_both_idle_zeroMiB_no_workers",
+  "active_gpu_workers": 0,
+  "idle_h100s": 8,
+  "sciserver_resource_map": "container2875_both_routefix_jobs_complete_both_gpus_idle_zeroMiB_zero_fatal; container2874_both_idle_zeroMiB_no_workers; container2862_both_idle_zeroMiB_no_workers; container2859_both_idle_zeroMiB_no_workers",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -44,7 +44,7 @@
     "moe_minus_dense_wide_worst_env_val": 0.001623
   },
   "diagnosis_expected_results": 2,
-  "diagnosis_valid_results": 0,
+  "diagnosis_valid_results": 2,
   "diagnosis_first_attempt_results": 2,
   "diagnosis_first_attempt_status": "excluded_dirty_terminal_provenance_and_token_image_label_count_routing_error",
   "diagnosis_first_attempt_provisional": {
@@ -53,10 +53,12 @@
     "frozen_acc_selection": 0.11984980718489953,
     "frozen_route_reliance": 0.006291861173127661
   },
-  "diagnosis_active_runs": [
-    "container2875_gpu0_routefix_diag_learned_random_route_wandb_gm70n7gi",
-    "container2875_gpu1_routefix_diag_frozen_router_wandb_0jceiq4b"
-  ],
+  "diagnosis_active_runs": [],
+  "diagnosis_final_decision": "H2_not_supported_learned_router_nearly_diffuse_low_information_low_reliance_and_not_better_than_frozen",
+  "diagnosis_final_metrics": {
+    "learned": {"acc_selection": 0.11650091333468642, "randomized_routes_acc": 0.1123401664298762, "route_reliance": 0.00416074690481022, "experts_used": 8.0, "routing_entropy": 0.9998803580468757, "routing_mi_site": 0.005104152669169021, "routing_mi_class": 0.0016350630056765375},
+    "frozen": {"acc_selection": 0.11842906433935457, "randomized_routes_acc": 0.11132535011162979, "route_reliance": 0.0071037142277247806, "experts_used": 8.0, "routing_entropy": 0.9975330843540811, "routing_mi_site": 0.0097645892030252, "routing_mi_class": 0.004069050818817558}
+  },
   "diagnosis_sciserver_commit": "ac69d40",
   "diagnosis_sciserver_tree": "01abac6a9e79ad7bb5b7cd8c97c432bbfda4fab4",
   "diagnosis_github_fix_commit": "5874e17",
@@ -102,5 +104,5 @@
   "channel_adaptive_checkpoint_status": "awaiting_distinct_approved_vitl16_checkpoint_file",
   "last_synced_commit": "75c2e85",
   "overleaf_build_status": "pass_5_pages_0_errors_1_warning_2026-08-01T04:10-04:00",
-  "next_gate": "strictly_validate_two_clean_ac69d40_retry_results_with_aligned_token_labels_and_no_routing_error; recurrence_blocks; replication_and_grid_remain_forbidden"
+  "next_gate": "persist_verified_negative_mechanism_milestone_in_paper_github_and_overleaf; no_additional_gpu_experiment_licensed"
 }

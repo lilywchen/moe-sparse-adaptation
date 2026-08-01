@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-01T04:39:00-04:00",
+  "updated_at": "2026-08-01T05:14:00-04:00",
   "dataset": "rxrx1",
   "stage": "bounded_route_diagnosis",
   "selection_split": "ood_val",
@@ -56,13 +56,13 @@
     "full_tests": "93_passed"
   },
   "attempt_2": {
-    "status": "running_healthy",
+    "status": "complete_strictly_valid_final_bounded_diagnosis",
     "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/diagnose_routefix_ac69d40/diagnose",
     "expected_results": 2,
-    "valid_results": 0,
+    "valid_results": 2,
     "learned_router_wandb_id": "gm70n7gi",
     "frozen_router_wandb_id": "0jceiq4b",
-    "gpu_health": "container2875_gpu0_98pct_8021MiB_gpu1_97pct_7995MiB_zero_fatal",
+    "gpu_health": "completed_container2875_gpus0_1_idle_zeroMiB_zero_fatal",
     "launch_checks": [
       "clean_isolated_commit",
       "checkpoint_present",
@@ -72,6 +72,53 @@
       "empty_distinct_result_root",
       "selection_split_ood_val",
       "ood_test_unevaluated"
-    ]
-  }
+    ],
+    "strict_validation": [
+      "parseable_finite_exact_filename_run_config_seed",
+      "clean_sciserver_commit_ac69d40",
+      "exact_parameter_accounting",
+      "released_checkpoint_and_dinov2_source_identity",
+      "four_ood_validation_experiments_with_positive_counts",
+      "selection_split_ood_val",
+      "test_evaluated_false_and_all_heldout_test_fields_null",
+      "routing_error_absent",
+      "aligned_token_level_routing_metrics_finite"
+    ],
+    "learned_router": {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep10_s0_diag_learned_random_route",
+      "wandb_id": "gm70n7gi",
+      "acc_train": 0.3868542981072555,
+      "acc_within": 0.26194228306904366,
+      "acc_selection": 0.11650091333468642,
+      "worst_env_val": 0.01461038961038961,
+      "randomized_routes_acc": 0.1123401664298762,
+      "route_reliance": 0.00416074690481022,
+      "experts_used": 8.0,
+      "routing_entropy": 0.9998803580468757,
+      "routing_mi_site": 0.005104152669169021,
+      "routing_mi_class": 0.0016350630056765375
+    },
+    "frozen_router": {
+      "run_id": "rxrx1_moe_frozen_middle_token_cosine_canonical_E8k1_ep10_s0_diag_frozen_router",
+      "wandb_id": "0jceiq4b",
+      "acc_train": 0.38934345425867506,
+      "acc_within": 0.2653402935093076,
+      "acc_selection": 0.11842906433935457,
+      "worst_env_val": 0.015016233766233766,
+      "randomized_routes_acc": 0.11132535011162979,
+      "route_reliance": 0.0071037142277247806,
+      "experts_used": 8.0,
+      "routing_entropy": 0.9975330843540811,
+      "routing_mi_site": 0.0097645892030252,
+      "routing_mi_class": 0.004069050818817558
+    },
+    "comparison": {
+      "frozen_minus_learned_ood_val": 0.00192815100466815,
+      "learned_route_reliance_points": 0.416074690481022,
+      "frozen_route_reliance_points": 0.7103714227724781,
+      "decision": "H2_not_supported_learned_router_is_not_required_and_does_not_outperform_frozen_partition",
+      "scope": "one_seed_bounded_mechanism_diagnosis_does_not_reopen_failed_predictive_gate"
+    }
+  },
+  "final_interpretation": "All experts are active but routing is nearly maximally diffuse, aligned experiment and class mutual information is near zero, randomizing learned routes costs only 0.42 accuracy points, and the frozen router is 0.19 points better on OOD validation. The canonical MoE's small recovery over harmful dense widening is therefore not supported by evidence of learned reusable batch specialization. H1 gradient interference is not established, and the failed efficacy gate forbids additional mechanism or architecture search."
 }

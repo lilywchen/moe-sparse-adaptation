@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 04:39 EDT
+Last verified: 2026-08-01 05:14 EDT
 
 ## Scientific question
 
@@ -407,3 +407,29 @@ If learned routing remains nearly irrelevant, the clean negative story becomes s
 capacity modestly regularizes a harmful dense widening, but the router does not discover reusable
 batch structure. If route reliance or aligned MI changes materially, the competing routing
 explanation remains live. Neither outcome can reopen the failed +5-point efficacy gate.
+
+## Final bounded routing diagnosis
+
+The clean retry resolves the mechanism ambiguity in the unfavorable direction for H2. The learned
+router reaches 11.65% OOD validation; replacing its assignments with seeded random routes reduces
+accuracy to 11.23%, a reliance of only 0.42 points. Freezing the router during training reaches
+11.84%, 0.19 points above the learned router, and has 0.71-point randomized-route reliance. Both
+models use all eight experts, but normalized routing entropy is 0.9999 for learned and 0.9975 for
+frozen routing. Aligned route mutual information is very small: experiment/class MI is
+0.0051/0.0016 for learned routing and 0.0098/0.0041 for frozen routing.
+
+These measurements rule out the audit-failure explanation and disfavor reusable learned
+specialization. The router neither concentrates into distinct experts nor carries appreciable
+experiment or perturbation information on the reported audit scale, and learning it does not beat
+a fixed partition. The nonzero randomized-route drops show that experts adapt weakly to their
+partitions, but less than one accuracy point of dependence is not the proposed 10--15-point batch
+robustness mechanism.
+
+The clean scientific conclusion is narrower than “MoE cannot help microscopy.” In this competent
+native-stain Cell-DINO/RxRx1 regime, the canonical middle-block top-1 token MoE recovers only 1.15
+points relative to a parameter-matched dense widening, remains below the smaller original model,
+and shows no evidence that a learned router discovered reusable batch structure. Sparse activation
+may regularize an over-wide comparator or create weak random subspaces; single-seed variation also
+remains possible. H1 is not established because the stopped campaign did not license a deeper
+gradient-conflict study. The predeclared negative gate is complete and no further architecture,
+mechanism, replication, or OOD-test experiment is licensed.
