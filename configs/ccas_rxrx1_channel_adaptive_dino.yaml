@@ -1,7 +1,7 @@
 _base_: ccas_base.yaml
 dataset: rxrx1
 data_root: /home/idies/workspace/Storage/lchen5/persistent/data
-rxrx1_raw_root: /home/idies/workspace/Storage/lchen5/persistent/data/rxrx1_raw
+rxrx1_raw_root: /home/idies/workspace/Storage/lchen5/persistent/data/rxrx1_raw/rxrx1
 img_size: 224
 stage: 1
 model:
@@ -36,4 +36,3 @@ train:
 analysis:
   record_train_accuracy: true
   run_mechanism: false
-
