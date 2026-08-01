@@ -6,7 +6,9 @@ the next scientific decision:
 
   competence: frozen-backbone probe plus two full-fine-tuning learning rates;
   kill:       original reference, total-parameter-matched dense-wide, canonical learned MoE;
-  replicate:  paired dense-wide/MoE seeds 1 and 2 after a seed-0 signal.
+  replicate:  paired dense-wide/MoE seeds 1 and 2 after a seed-0 signal;
+  diagnose:   the predeclared learned/random-route replay and frozen-router control after a null
+              seed-0 kill gate.
 
 Every run is idempotent, selection-only (OOD val), and uses the shared global GPU lease.
 """
@@ -72,6 +74,17 @@ def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
             ]
         specs = [(tag, [*ov, f"train.optim.lr={lr}", f"train.epochs={epochs}"])
                  for tag, ov in specs]
+    elif phase == "diagnose":
+        specs = [
+            ("diag_learned_random_route", ["model.variant=moe", "seed=0", "stage=2",
+                                            "analysis.run_mechanism=true",
+                                            f"train.optim.lr={lr}",
+                                            f"train.epochs={epochs}"]),
+            ("diag_frozen_router", ["model.variant=moe_frozen", "seed=0", "stage=2",
+                                     "analysis.run_mechanism=true",
+                                     f"train.optim.lr={lr}",
+                                     f"train.epochs={epochs}"]),
+        ]
     else:
         raise ValueError(phase)
 
@@ -94,7 +107,8 @@ def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument(
-        "--phase", choices=("instrument", "competence", "kill", "replicate"), required=True)
+        "--phase", choices=("instrument", "competence", "kill", "replicate", "diagnose"),
+        required=True)
     ap.add_argument("--config", default=CONFIG)
     ap.add_argument("--result-root", default=None)
     ap.add_argument("--gpus", default=os.environ.get("CUDA_VISIBLE_DEVICES", "0,1"))
