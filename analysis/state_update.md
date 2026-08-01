@@ -557,3 +557,16 @@ This remains operational, not decision-grade. W&B values are rounded and SciServ
 reauthentication is required before checking exact persistent JSONs, parameter fairness fields,
 `selection_split=ood_val`, `test_evaluated=false`, null OOD-test fields, and the anchor checkpoint.
 All ten runs continue healthy; no replication or new sweep is licensed before the epoch-90 gate.
+
+## Final handoff in progress: eight finished, two healthy stragglers
+
+Eight W&B runs have transitioned to `Finished` and expose epoch-90 milestone lines. Matched
+dense-wide is still running at epoch 87 and within-experiment-balanced routing at epoch 73, both
+with fresh fatal-free logs. The scientific matrix is therefore incomplete and no final contrast
+is consumed, even for the canonical token-top-1/dense-wide pair.
+
+This completion frees most of the allocated worker GPUs, but no independent launch is licensed
+before the full epoch-90 gate. SciServer reauthentication is also required to validate the eight
+result JSONs and checkpoint files before Hugging Face publication. The next meaningful state is
+either a failure requiring narrow repair or `10/10` completed arms followed by strict exact-file
+validation; OOD test remains sealed.

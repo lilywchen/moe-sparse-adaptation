@@ -872,3 +872,18 @@ Strict validation is still blocked on SciServer portal reauthentication, includi
 precision, identity, parameter counts, split/test-blindness fields, and the epoch-60 anchor
 checkpoint. The workers continue untouched toward epoch 90. `tester6` still returns `503`; no
 duplicate or repeated start was issued, and OOD test remains sealed.
+
+### 2026-08-01 16:17 ET — eight final W&B handoffs; two arms still running
+
+Signed W&B pages now mark eight arms `Finished` with epoch-90 milestones: image top-1, canonical
+token top-1, token top-2, environment-balanced classification, frozen linear, original anchor,
+output invariance, and last-four-block adaptation. Matched dense-wide remains healthy at epoch 87
+and within-experiment-balanced token routing remains healthy at epoch 73. Both have fresh logs and
+no rendered fatal trace. This is `8/10` operational final coverage, not a completed comparison;
+no epoch-90 metric is interpreted or used for the gate.
+
+The eight completed workers release capacity inside their existing containers, but no new work is
+licensed before the full epoch-90 gate and the remaining exact validation cannot proceed while the
+SciServer session is unauthenticated. No speculative sweep or duplicate was launched. `tester6`
+still returns `503`, OOD test remains sealed, and no Hugging Face upload is claimed because the
+finished result folders have not passed strict persistent-file validation.
