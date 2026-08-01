@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 03:14 EDT
+Last verified: 2026-08-01 04:04 EDT
 
 ## Scientific question
 
@@ -353,3 +353,34 @@ The three matched seed-0 jobs are active. No interpretation is licensed from the
 The next decision is mechanical: validate all three JSONs, compute MoE minus dense-wide OOD-val and
 the MoE ID difference, and replicate only for at least +5.0 OOD points with no more than -2.0 ID
 points. OOD test remains sealed.
+
+## Seed-0 kill decision: a small conditional recovery, not the target effect
+
+The matched seed-0 contrast is complete and strictly valid. Canonical MoE reaches 11.61% OOD
+validation versus 10.46% for the exact-total-parameter-matched dense-wide model, a +1.15-point
+conditional gain. ID accuracy also rises by 1.98 points and every held-out experiment moves in the
+same direction, so the MoE is not simply trading away seen-environment performance. This is the
+most favorable reading of the result.
+
+The decisive counterevidence is scale and reference ordering. The frozen gate required at least a
++5-point gain, while the smaller original Cell-DINO reaches 12.31% OOD validation and remains 0.70
+points above MoE. Added dense width hurts; conditional routing recovers some of that harm but does
+not surpass the original substrate. The 10--15-point effect that motivated rapid expansion is not
+present in this canonical seed-0 contrast, so seeds 1/2 and the architecture grid are stopped.
+
+Scientifically, H3 is not supported at the target scale: equal total capacity does not make MoE a
+substantially more robust model here. H1 and H2 remain diagnostic possibilities only. The consistent
+per-experiment direction could reflect modest protection from dense gradient interference, but it
+could also reflect optimization differences or regularization induced by sparse activation. The
+active frozen/random-route pair asks whether learned routing actually matters; it cannot turn a
+failed predictive gate into a positive efficacy claim.
+
+The most important remaining threat is single-seed uncertainty. The gate is nevertheless valid
+because its stopping rule was frozen before the result and the observed gain is far below the
+replication threshold. The correct conclusion is not “MoE never helps batch effects”; it is that
+this canonical token-routed middle-FFN intervention does not justify a larger RxRx1 campaign under
+the promised effect-size criterion. OOD test remains sealed.
+
+The next decision is bounded: validate the learned/randomized-route and frozen-router diagnostics,
+then decide whether the small dense-wide recovery has a coherent routing mechanism worth reporting
+as a negative mechanistic study. No further architecture search is licensed.

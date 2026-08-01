@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-08-01 03:14 EDT on SciServer.
+Last verified: 2026-08-01 04:04 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `13b6c30` was pulled into the linked Overleaf
 project on 2026-08-01; `paper/main.tex` compiled successfully to five pages with 0 errors and one
@@ -552,3 +552,55 @@ OOD test remains untouched. The next automatic action is to strictly validate al
 and compute the predeclared conditional gain, MoE OOD-validation minus dense-wide OOD-validation.
 Seeds 1 and 2 launch only if that gain is at least five absolute points and MoE loses no more than
 two ID points; otherwise the architecture grid stops and the negative contrast is analyzed.
+
+## 2026-08-01 04:04 EDT seed-0 kill gate fails; bounded route diagnosis launched
+
+Classification is `RUNNING_HEALTHY`. All three seed-0 kill JSONs completed and passed strict
+parseability, finite-metric, filename/run/config/seed, code/tree, checkpoint/source, parameter,
+per-environment, split, and test-blindness validation. The exact-total-parameter-matched result is:
+
+| Model | Train | ID | OOD-val | Worst experiment | Total parameters | Active FFN parameters |
+|---|---:|---:|---:|---:|---:|---:|
+| Original Cell-DINO | 0.391216 | 0.269896 | 0.123097 | 0.015016 | 22,402,163 | 1,181,568 |
+| Dense-wide | 0.361347 | 0.243647 | 0.104628 | 0.012175 | 30,675,834 | 9,455,239 |
+| Canonical MoE | 0.387224 | 0.263469 | 0.116095 | 0.013799 | 30,676,212 | 1,184,641 |
+
+MoE improves OOD validation over dense-wide by `0.011467` (1.15 points), ID by `0.019822`, and
+worst-experiment accuracy by `0.001623`. It improves all four held-out experiments relative to
+dense-wide, but the smaller original model remains better than MoE by 0.70 OOD-validation points.
+Dense-wide and MoE differ by only 0.001232% in total parameters. The predeclared replication trigger
+requires at least +5.0 OOD-validation points with no more than a 2.0-point ID loss; the observed
+gain therefore **fails the kill gate**. Seeds 1 and 2, router calibration, and an architecture grid
+are not licensed.
+
+This is a decision-grade negative gate at seed 0, not a claim that the true effect is exactly zero.
+It rejects the targeted 10--15-point conditional-capacity effect for this canonical configuration
+strongly enough to stop expansion under the frozen rule. The all-four-experiment direction is a
+useful diagnostic, but its small magnitude and single seed do not establish a general robustness
+benefit. Hypothesis H3 (robustness beyond capacity) is not supported: MoE does not beat the smaller
+original model, and adding dense width is actively harmful here.
+
+The only licensed post-gate computation is the bounded frozen/random-route diagnosis. A clean
+isolated SciServer execution commit `1344e4d` (tree
+`b51a84000aa67cb97f142b084b9b90b7d25b5a2d`) launched two seed-0 Stage-2 diagnostics: the learned
+MoE with randomized-route counterfactual and the same MoE with its router frozen. Both reached
+epoch 3 at the fresh signature. Container 2875 GPUs 0/1 were at 98%/99% utilization with
+8,071/8,045 MiB allocated, fresh persistent train logs, six output/log files, and zero fatal
+matches; W&B runs are `0e0s07va` and `8fxyb9ry`.
+
+Containers 2874, 2862, and 2859 were each inspected separately: all six GPUs report 0% utilization,
+0 MiB allocated, and no relevant training process. They remain safely idle because the failed kill
+gate forbids replication and no additional diagnosis arm is predeclared; filling them with extra
+seeds or speculative sweeps would not change the next decision. The Channel-Adaptive checkpoint is
+still absent. OOD test remains untouched.
+
+The incomplete-grid aggregator was also repaired after it emitted an intercept-only
+`ccas_effects.csv` from the three-arm kill comparison. Factorial effects are now withheld when no
+factor varies; the misleading file is preserved explicitly as
+`ccas_effects.excluded_incomplete_seed0.csv`. The valid `ccas_summary.csv`, `ccas_paired.csv`, and
+`ccas_report.md` remain. The focused aggregate tests pass 23/23 and the complete SciServer suite
+passes 92/92.
+
+Next: strictly validate both diagnosis JSONs, then measure learned-route reliance and whether a
+trainable router matters relative to the frozen-router control. This can explain the small recovery
+over dense-wide, but it cannot reverse the failed predictive gate or license replication.

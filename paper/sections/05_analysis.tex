@@ -40,6 +40,32 @@ same gap could arise from ordinary overfitting or acquisition variation that rou
   \end{tabular}
 \end{table}
 
-The seed-0 original, exact-total-parameter-matched dense-wide, and canonical-MoE comparison is in
-progress. Numerical MoE claims and all OOD-test values remain withheld until their corresponding
-stage gates pass.
+Table~\ref{tab:kill-contrast} reports the predeclared seed-0 kill contrast. Relative to the
+exact-total-parameter-matched dense-wide model, MoE improves OOD-validation accuracy by 1.15 points,
+ID accuracy by 1.98 points, and worst-experiment accuracy by 0.16 points. All four held-out
+experiments move in the same direction. The gain is nevertheless far below the frozen 5-point
+replication trigger, and the smaller original encoder remains 0.70 OOD-validation points better
+than MoE. We therefore stop replication and architecture expansion. This single-seed gate does not
+establish a zero population effect; it rejects the targeted 10--15-point effect strongly enough to
+stop the predeclared campaign.
+
+\begin{table}[t]
+  \centering
+  \caption{Seed-0 native-stain RxRx1 kill contrast (accuracy in \%). Dense-wide and MoE differ by
+  0.001232\% in total parameters. OOD test is untouched.}
+  \label{tab:kill-contrast}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    Model & Params (M) & Active FFN (M) & Train & ID & OOD-val & Worst \\
+    \midrule
+    Original & 22.40 & 1.182 & 39.12 & 26.99 & 12.31 & 1.50 \\
+    Dense-wide & 30.68 & 9.455 & 36.13 & 24.36 & 10.46 & 1.22 \\
+    MoE & 30.68 & 1.185 & 38.72 & 26.35 & 11.61 & 1.38 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The result does not support robustness from conditional capacity beyond ordinary capacity: MoE
+recovers part of the degradation caused by dense widening but does not surpass the original
+substrate. A bounded learned-versus-frozen and randomized-route diagnosis is retained to determine
+whether the small recovery depends on routing. All OOD-test values remain withheld.

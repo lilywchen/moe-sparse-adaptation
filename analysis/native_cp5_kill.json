@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-01T04:04:00-04:00",
+  "dataset": "rxrx1",
+  "stage": "seed0_kill_gate",
+  "grade": "decision_grade_single_seed_gate",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "execution": {
+    "sciserver_commit": "7365eac2262735e339c74f506296e07f4e47512ce",
+    "sciserver_tree": "4f551c7f701c69392f8ff4950b34b523a31de54c",
+    "dinov2_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+    "checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/kill_rxrx1/native_cp5/kill"
+  },
+  "runs": {
+    "original": {
+      "run_id": "rxrx1_original_ep10_s0_kill_original",
+      "result_file": "rxrx1_original_ep10_s0_kill_original.json",
+      "result_sha256_prefix": "ac108db208f2",
+      "wandb_id": "8l3xts1p",
+      "acc_train": 0.391216,
+      "acc_within": 0.269896,
+      "acc_selection": 0.123097,
+      "worst_env_val": 0.015016,
+      "per_env_val": {"27": 0.306006, "42": 0.099432, "49": 0.015016, "7": 0.071893},
+      "total_parameters": 22402163,
+      "active_ffn_parameters": 1181568,
+      "wall_time_seconds": 1616.0
+    },
+    "dense_wide": {
+      "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep10_s0_kill_dense_wide",
+      "result_file": "rxrx1_dense_wide_middle_canonical_E8_ep10_s0_kill_dense_wide.json",
+      "result_sha256_prefix": "0b46d8077786",
+      "wandb_id": "g9ucrbln",
+      "acc_train": 0.361347,
+      "acc_within": 0.243647,
+      "acc_selection": 0.104628,
+      "worst_env_val": 0.012175,
+      "per_env_val": {"27": 0.259334, "42": 0.090097, "49": 0.012175, "7": 0.056864},
+      "total_parameters": 30675834,
+      "active_ffn_parameters": 9455239,
+      "wall_time_seconds": 1764.8
+    },
+    "moe": {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep10_s0_kill_moe",
+      "result_file": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep10_s0_kill_moe.json",
+      "result_sha256_prefix": "73a83120ff4c",
+      "wandb_id": "u6s1sms3",
+      "acc_train": 0.387224,
+      "acc_within": 0.263469,
+      "acc_selection": 0.116095,
+      "worst_env_val": 0.013799,
+      "per_env_val": {"27": 0.281656, "42": 0.096185, "49": 0.013799, "7": 0.072705},
+      "total_parameters": 30676212,
+      "active_ffn_parameters": 1184641,
+      "wall_time_seconds": 1579.3
+    }
+  },
+  "contrasts": {
+    "moe_minus_dense_wide_ood_val": 0.011467,
+    "moe_minus_dense_wide_id": 0.019822,
+    "moe_minus_dense_wide_worst_env_val": 0.001623,
+    "moe_minus_original_ood_val": -0.007002,
+    "moe_minus_original_id": -0.006427,
+    "moe_minus_original_worst_env_val": -0.001217,
+    "dense_wide_moe_parameter_mismatch_percent": 0.001232
+  },
+  "gate": {
+    "replication_trigger_ood_val": 0.05,
+    "maximum_allowed_id_loss": 0.02,
+    "decision": "fail_replication_trigger",
+    "replication_licensed": false,
+    "architecture_grid_licensed": false,
+    "next_action": "bounded_frozen_and_random_route_diagnosis_only"
+  },
+  "validation": {
+    "strictly_valid_results": 3,
+    "expected_results": 3,
+    "checks": [
+      "parseable_json",
+      "finite_required_metrics_and_wall_time",
+      "exact_filename_run_seed_config_identity",
+      "clean_expected_code_provenance",
+      "checkpoint_and_dinov2_identity",
+      "exact_parameter_accounting",
+      "four_finite_ood_validation_environments",
+      "selection_split_ood_val",
+      "test_evaluated_false",
+      "no_ood_test_metric_present"
+    ],
+    "excluded_failures": [
+      "original_first_launch_rejected_before_model_start_by_global_gpu_lease_after_two_jupyter_workspaces_resolved_to_container2875; retried_once_on_container2874_gpu0"
+    ]
+  }
+}
