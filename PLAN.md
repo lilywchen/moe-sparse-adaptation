@@ -13,28 +13,34 @@ The local canonical WILDS ResNet run completed 90 epochs and peaks at 19.5149% O
 accuracy at epoch 82, with 35.6249% ID accuracy and 99.9877% train accuracy. This is the local
 positive control; the external leaderboard remains context rather than a selection split.
 
-The first adaptive batch is exactly ten seed-0, 30-epoch Cell-DINO arms, run in parallel from one
-tested tree. All hold the CP5 mapping, official RxRx1 preprocessing, data order, classifier,
-selection split, and test blindness fixed. The anchor is AdamW LR `1e-4`, weight decay `0.05`,
-uniform layer LR, batch 64, drop path `0.1`, and three warmup epochs. Single interventions are:
+The user rejected a ten-way optimizer screen because it would spend the new parallel capacity on
+knobs rather than explanations. The authorized batch is instead exactly ten seed-0, 90-epoch
+native-CP5 runs from one tested tree. Every run uses AdamW LR `1e-4`, weight decay `0.05`, uniform
+layer LR, batch 64, drop path `0.1`, five warmup epochs, the same data order and preprocessing, and
+OOD-validation-only selection. Metrics are recorded at epochs 10, 30, 60, and 90; the original
+anchor alone saves model checkpoints at all four milestones. Thus epoch dependence is read from
+one trajectory rather than from duplicate budget arms.
 
-1. LR `3e-5`;
-2. LR `6e-5`;
-3. anchor LR `1e-4`;
-4. LR `2e-4`;
-5. layer LR decay `0.85`;
-6. layer LR decay `0.95`;
-7. weight decay `0.01`;
-8. weight decay `0.10`;
-9. drop path `0.0`;
-10. batch 128 with linearly scaled LR `2e-4`.
+The ten independent hypotheses are:
 
-Rank by OOD-validation accuracy, breaking ties with worst-experiment then ID accuracy. The next
-batch may extend only the top two recipes to 90 epochs. Replication is licensed only if the best
-90-epoch recipe reaches at least 18% OOD validation and 30% ID without a worst-experiment
-regression. A result below 16% OOD validation after both extensions rejects this Cell-DINO
-adaptation family for the main efficacy claim. Values in between license one documented backbone
-decision, not an unconstrained sweep.
+1. original Cell-DINO full fine-tuning (anchor);
+2. exact-total-parameter-matched dense-wide capacity;
+3. canonical global token top-1 MoE;
+4. global image top-1 MoE (routing granularity);
+5. token top-1 MoE with within-experiment load balancing (batch specialization pressure);
+6. global token top-2 MoE (router starvation versus active-compute diagnostic);
+7. frozen Cell-DINO plus linear head at LR `1e-3` (representation separability);
+8. classifier plus last four transformer blocks (catastrophic forgetting/optimization depth);
+9. full fine-tuning with an experiment-adversarial feature objective (explicit invariance);
+10. full fine-tuning with equal per-experiment minibatch loss weighting (environment imbalance).
+
+The 10/30/60/90 learning curves first decide whether the original result was simply undertrained.
+At epoch 90, sparse efficacy is judged against dense-wide, not original width: a replicated campaign
+is licensed only if a MoE arm exceeds dense-wide OOD validation by at least 5 absolute points while
+losing at most 2 ID points. Top-2 is explicitly not an active-compute-matched claim. Frozen/partial,
+adversarial, and environment-balanced arms are diagnostic interventions; they identify the failure
+regime and may motivate a separately frozen confirmatory contrast, but cannot be pooled as MoE
+replicates. No additional optimizer sweep is licensed by this batch.
 
 The already-tested native-six Channel-Adaptive DINO pair remains an independent instrument arm,
 licensed immediately after its distinct ViT-L/16 checkpoint passes integrity and load smoke. It

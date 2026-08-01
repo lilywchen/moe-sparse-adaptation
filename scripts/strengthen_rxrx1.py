@@ -1,13 +1,17 @@
 #!/usr/bin/env python
-"""Bounded Cell-DINO substrate-strength screen for RxRx1.
+"""Hypothesis-driven 90-epoch Cell-DINO matrix for RxRx1.
 
-The first ten-epoch native-CP5 run established a learnable batch-transfer regime but remained
-well below the completed local WILDS ResNet reference.  This launcher uses one H100 per arm to
-separate the most plausible optimization explanations before sparse-capacity work is reconsidered.
+The first ten-epoch native-CP5 comparison may have ended before the pretrained transformer was
+fully adapted.  A learning-rate grid would answer that question inefficiently and would say little
+about *why* the model fails.  This matrix therefore runs one shared, benchmark-length schedule and
+spends the parallel arms on distinct explanations: insufficient representation, destructive full
+fine-tuning, explicit environment imbalance, batch invariance, routing granularity, routing
+starvation, and shared versus conditional capacity.
 
-The screen is intentionally finite, seed-0, OOD-validation-only, and shardable across independent
-two-GPU SciServer containers.  Shards are disjoint by construction and the result namespace is
-separate from the completed kill campaign.
+All arms report train/ID/OOD-validation metrics at epochs 10, 30, 60, and 90.  Only the original
+anchor stores all four model checkpoints; the other arms are independent scientific contrasts, not
+duplicate epoch-budget runs.  The matrix is seed-0, OOD-test-blind, finite, and sharded across five
+independent two-GPU containers.
 """
 import argparse
 import os
@@ -32,32 +36,44 @@ RESULT_ROOT = Path(os.environ.get(
 ))
 
 
-# All arms share seed, data, preprocessing, model, 30 epochs, and three warmup epochs.  Each tag
-# names its sole intervention relative to the 1e-4 / wd=.05 / uniform-LR / batch-64 anchor.
+# Each arm changes a scientific mechanism relative to ``original_anchor``.  These are deliberately
+# not optimizer-tuning arms.  The top-2 arm changes active compute and is diagnostic rather than an
+# exact-active-compute comparator; total parameters remain matched to the other MoE models.
 SCREEN_SPECS = [
-    ("lr3e-5", ["train.optim.lr=3.0e-5"]),
-    ("lr6e-5", ["train.optim.lr=6.0e-5"]),
-    ("anchor_lr1e-4", ["train.optim.lr=1.0e-4"]),
-    ("lr2e-4", ["train.optim.lr=2.0e-4"]),
-    ("llrd0.85", ["train.optim.lr=1.0e-4", "train.llrd=0.85"]),
-    ("llrd0.95", ["train.optim.lr=1.0e-4", "train.llrd=0.95"]),
-    ("wd0.01", ["train.optim.lr=1.0e-4", "train.optim.weight_decay=0.01"]),
-    ("wd0.10", ["train.optim.lr=1.0e-4", "train.optim.weight_decay=0.10"]),
-    ("drop_path0", ["train.optim.lr=1.0e-4", "model.drop_path=0.0"]),
-    ("batch128_lr2e-4", ["train.batch_size=128", "train.optim.lr=2.0e-4"]),
+    ("original_anchor", ["model.variant=original",
+                         "train.save_checkpoint_epochs=[10,30,60,90]"]),
+    ("dense_wide", ["model.variant=dense_wide"]),
+    ("moe_token_top1", ["model.variant=moe", "model.routing_unit=token",
+                         "model.pressure=canonical", "model.top_k=1"]),
+    ("moe_image_top1", ["model.variant=moe", "model.routing_unit=image",
+                         "model.pressure=canonical", "model.top_k=1"]),
+    ("moe_token_within_env", ["model.variant=moe", "model.routing_unit=token",
+                               "model.pressure=route", "model.top_k=1"]),
+    ("moe_token_top2", ["model.variant=moe", "model.routing_unit=token",
+                         "model.pressure=canonical", "model.top_k=2"]),
+    ("frozen_linear", ["model.variant=original", "model.freeze_backbone=true",
+                        "train.optim.lr=1.0e-3"]),
+    ("partial_last4", ["model.variant=original", "model.unfreeze_last_n_blocks=4"]),
+    ("output_invariant", ["model.variant=original", "model.pressure=output",
+                           "losses.invariance_w=0.1"]),
+    ("environment_balanced", ["model.variant=original",
+                               "train.objective=environment_balanced"]),
 ]
 
 
 def screen_rows(config=CONFIG):
     rows = []
     common = [
-        "model.variant=original", "model.freeze_backbone=false", "train.epochs=30",
-        "train.warmup_epochs=3", "train.llrd=1.0", "train.batch_size=64",
+        "model.variant=original", "model.freeze_backbone=false",
+        "model.unfreeze_last_n_blocks=0", "model.pressure=canonical", "model.top_k=1",
+        "train.objective=erm", "train.epochs=90", "train.milestone_epochs=[10,30,60,90]",
+        "train.save_checkpoint_epochs=[]", "train.warmup_epochs=5", "train.llrd=1.0",
+        "train.batch_size=64", "train.optim.lr=1.0e-4",
         "train.optim.weight_decay=0.05", "model.drop_path=0.1",
         "analysis.run_mechanism=false", "seed=0",
     ]
     for tag, intervention in SCREEN_SPECS:
-        run_tag = f"strength30_{tag}"
+        run_tag = f"hypothesis90_{tag}"
         overrides = [*common, *intervention, f"run_tag={run_tag}"]
         cfg = apply_overrides(load_config(config), overrides)
         rows.append((tag, overrides, run_id_from(cfg)))
@@ -81,12 +97,12 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    out = Path(args.result_root) if args.result_root else RESULT_ROOT / "screen30"
+    out = Path(args.result_root) if args.result_root else RESULT_ROOT / "hypothesis90"
     out.mkdir(parents=True, exist_ok=True)
     rows = sharded_rows(screen_rows(args.config), args.shard_index, args.num_shards)
     pending = [row for row in rows if not (out / f"{row[2]}.json").exists()]
     if args.dry_run:
-        print(f"RxRx1 strength shard {args.shard_index}/{args.num_shards}: "
+        print(f"RxRx1 hypothesis shard {args.shard_index}/{args.num_shards}: "
               f"{len(rows)} planned, {len(pending)} pending -> {out}")
         for tag, _, rid in rows:
             print(f"  {tag}: {rid}")

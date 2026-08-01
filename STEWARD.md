@@ -36,11 +36,12 @@ duplicates or post-hoc variants.
 6. If competent, freeze one recipe and launch the original/dense-wide/MoE seed-0 kill comparison.
 7. If the replication trigger passes, launch only paired dense-wide/MoE seeds 1–2. If it fails,
    launch only the frozen/random-route diagnosis; never compensate with a broad sweep.
-8. For the authorized substrate-strength revision, run the exact ten-arm 30-epoch Cell-DINO
-   screen in `PLAN.md` across five disjoint two-GPU shards. Strictly rank all ten before extending
-   only the top two to 90 epochs. Launch the Channel-Adaptive pair as soon as its distinct approved
-   checkpoint passes smoke; until then, keep its slots productive with screen arms rather than
-   duplicating or fabricating the missing instrument.
+8. For the authorized substrate-strength revision, run the exact ten-arm, 90-epoch hypothesis
+   matrix in `PLAN.md` across five disjoint two-GPU shards. Read epoch dependence from the shared
+   10/30/60/90 milestones rather than launching separate epoch arms. Interpret capacity, routing,
+   representation depth, explicit invariance, and environment weighting as separate contrasts;
+   do not replace them with optimizer sweeps. Launch the Channel-Adaptive pair as soon as its
+   distinct approved checkpoint passes smoke, and never duplicate or fabricate that instrument.
 
 ## Execution rules
 

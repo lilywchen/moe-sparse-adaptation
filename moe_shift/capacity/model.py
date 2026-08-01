@@ -60,7 +60,8 @@ class CCASModel(nn.Module):
                  backbone_source="timm", hub_repo_dir=None, checkpoint_path=None,
                  hub_model="cell_dino_cp_vits8", input_channels=5,
                  feature_pool="cls",
-                 expected_hub_repo_commit=None, freeze_backbone=False, **_ignore):
+                 expected_hub_repo_commit=None, freeze_backbone=False,
+                 unfreeze_last_n_blocks=0, **_ignore):
         super().__init__()
         self.backbone_source = str(backbone_source)
         self.input_channels = int(input_channels)
@@ -133,11 +134,31 @@ class CCASModel(nn.Module):
             temperature=temperature, sym_break_wide=sym_break_wide, sym_break_moe=sym_break_moe)
 
         self.freeze_backbone = bool(freeze_backbone)
-        if self.freeze_backbone:
-            if variant != "original":
-                raise ValueError("freeze_backbone is a competence diagnostic for variant=original only")
+        self.unfreeze_last_n_blocks = int(unfreeze_last_n_blocks or 0)
+        if self.freeze_backbone and self.unfreeze_last_n_blocks:
+            raise ValueError("freeze_backbone and unfreeze_last_n_blocks are mutually exclusive")
+        if (self.freeze_backbone or self.unfreeze_last_n_blocks) and variant != "original":
+            raise ValueError("backbone freezing diagnostics require variant=original")
+        if self.freeze_backbone or self.unfreeze_last_n_blocks:
+            if self.unfreeze_last_n_blocks < 0 or self.unfreeze_last_n_blocks > len(self.blocks):
+                raise ValueError("unfreeze_last_n_blocks must be between 0 and the backbone depth")
             for p in self.backbone.parameters():
                 p.requires_grad_(False)
+        if self.freeze_backbone:
+            self.backbone_provenance["adaptation"] = "frozen"
+        elif self.unfreeze_last_n_blocks:
+            for block in self.blocks[-self.unfreeze_last_n_blocks:]:
+                for p in block.parameters():
+                    p.requires_grad_(True)
+            # The terminal normalization is part of the adapted representation, not the head.
+            if hasattr(self.backbone, "norm"):
+                for p in self.backbone.norm.parameters():
+                    p.requires_grad_(True)
+            self.backbone_provenance["adaptation"] = (
+                f"last_{self.unfreeze_last_n_blocks}_blocks_plus_norm"
+            )
+        else:
+            self.backbone_provenance["adaptation"] = "full"
 
     # -- environment ids are used ONLY by the within-batch balancing loss, never at inference --
     def set_env(self, env):
@@ -208,4 +229,5 @@ def build_ccas(cfg):
                      input_channels=m.get("input_channels", 5),
                      feature_pool=m.get("feature_pool", "cls"),
                      expected_hub_repo_commit=m.get("expected_hub_repo_commit"),
-                     freeze_backbone=m.get("freeze_backbone", False))
+                     freeze_backbone=m.get("freeze_backbone", False),
+                     unfreeze_last_n_blocks=m.get("unfreeze_last_n_blocks", 0))

@@ -97,6 +97,18 @@ def test_frozen_backbone_leaves_only_classifier_trainable(monkeypatch, tmp_path)
     assert all(p.requires_grad for p in model.fc.parameters())
 
 
+def test_partial_adaptation_unfreezes_only_last_blocks_and_norm(monkeypatch, tmp_path):
+    monkeypatch.setattr(torch.hub, "load", lambda *args, **kwargs: _FakeCellDino())
+    model = CCASModel(
+        num_classes=11, variant="original", backbone_source="cell_dino",
+        hub_repo_dir=tmp_path, pretrained=False, img=128, unfreeze_last_n_blocks=2,
+    )
+    assert all(not p.requires_grad for block in model.blocks[:-2] for p in block.parameters())
+    assert all(p.requires_grad for block in model.blocks[-2:] for p in block.parameters())
+    assert all(p.requires_grad for p in model.fc.parameters())
+    assert model.backbone_provenance["adaptation"] == "last_2_blocks_plus_norm"
+
+
 def test_cell_dino_official_feature_pool_concatenates_cls_and_patch_mean(monkeypatch, tmp_path):
     monkeypatch.setattr(torch.hub, "load", lambda *args, **kwargs: _FakeCellDino())
     model = CCASModel(

@@ -66,6 +66,43 @@ def build_optimizer(model, cfg, adversary=None):
     return torch.optim.AdamW(groups)
 
 
+def classification_objective(logits, labels, environments, objective="erm"):
+    """Return the supervised loss while making environment weighting explicit.
+
+    ``environment_balanced`` gives every experiment represented in the minibatch equal weight,
+    rather than letting experiments with more images dominate the update.  It uses no validation
+    or test information and changes no model capacity.
+    """
+    per_example = F.cross_entropy(logits, labels, reduction="none")
+    if objective == "erm":
+        return per_example.mean()
+    if objective != "environment_balanced":
+        raise ValueError(f"unknown train.objective: {objective!r}")
+    present = torch.unique(environments)
+    if torch.any(present < 0):
+        raise ValueError("environment_balanced training requires non-negative train environments")
+    return torch.stack([per_example[environments == env].mean() for env in present]).mean()
+
+
+def milestone_epochs(cfg):
+    """Validate and return sorted one-indexed milestone/checkpoint epochs."""
+    total = int(cfg["train"]["epochs"])
+    milestones = sorted({int(e) for e in cfg["train"].get("milestone_epochs", [])})
+    checkpoints = sorted({int(e) for e in cfg["train"].get("save_checkpoint_epochs", [])})
+    if any(e < 1 or e > total for e in milestones + checkpoints):
+        raise ValueError("milestone/checkpoint epochs must lie in [1, train.epochs]")
+    if not set(checkpoints).issubset(milestones):
+        raise ValueError("save_checkpoint_epochs must be a subset of milestone_epochs")
+    return milestones, checkpoints
+
+
+def atomic_torch_save(payload, path):
+    path = Path(path)
+    tmp = path.with_name(path.name + ".tmp")
+    torch.save(payload, tmp)
+    os.replace(tmp, path)
+
+
 @torch.no_grad()
 def evaluate(model, loader, device):
     """-> (acc, worst_env_acc, per_env_acc, per_env_n), bucketed by RAW environment id.
@@ -131,6 +168,7 @@ def main():
     args = ap.parse_args()
 
     cfg = apply_overrides(load_config(args.config), args.override)
+    milestones, checkpoint_epochs = milestone_epochs(cfg)
     pressure = cfg["model"].get("pressure", "canonical")
     if pressure not in ("canonical", "route", "output"):
         raise ValueError(f"model.pressure must be canonical|route|output, got {pressure!r}")
@@ -184,6 +222,9 @@ def main():
     protocol["training_pressure"] = pressure
     protocol["route_balance"] = expected_balance
     protocol["output_adversary"] = adversary is not None
+    protocol["classification_objective"] = str(cfg["train"].get("objective", "erm"))
+    protocol["milestone_epochs"] = milestones
+    protocol["checkpoint_epochs"] = checkpoint_epochs
     if cap.variant in ("moe", "moe_frozen"):
         protocol["experts_are_upcycled_copies"] = True
         protocol["router_trainable"] = (cap.variant == "moe")
@@ -204,6 +245,9 @@ def main():
     bw = float(cfg["losses"]["balance_w"]); zw = float(cfg["losses"].get("zloss_w", 0.0))
     log_path = out_dir / f"{rid}.trainlog.jsonl"
     logf = open(log_path, "a")
+    milestone_path = out_dir / f"{rid}.milestones.jsonl"
+    milestone_f = open(milestone_path, "w") if milestones else None
+    objective = str(cfg["train"].get("objective", "erm"))
 
     for ep in range(epochs):
         model.train()
@@ -215,7 +259,7 @@ def main():
             model.set_env(s)                       # used ONLY by within-environment balancing
             feats = model.forward_features(x)
             logits = model.fc(feats)
-            loss = F.cross_entropy(logits, y)
+            loss = classification_objective(logits, y, s, objective)
             aux = model.aux_loss(bw, zw)
             adv = loss.new_zeros(())
             if adversary is not None:
@@ -237,6 +281,45 @@ def main():
                 print(f"[wandb] epoch log skipped: {e}", flush=True)
         print(f"[{rid}] ep{ep} loss {rec['loss']:.4f} aux {rec['aux']:.4f} "
               f"adv {rec['adversary']:.4f}", flush=True)
+
+        epoch_number = ep + 1
+        if epoch_number in milestones:
+            if val_loader is None:
+                raise RuntimeError("milestone evaluation requires a validation split; OOD test fallback is forbidden")
+            # Milestone train evaluation iterates the augmented loader.  Preserve the main-process
+            # RNG so evaluation does not change the subsequent optimization trajectory.
+            cpu_rng = torch.random.get_rng_state()
+            cuda_rng = torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None
+            np_rng = np.random.get_state()
+            try:
+                m_train, m_worst_train, _, _ = evaluate(model, train_loader, device)
+                m_id, m_worst_id, _, _ = evaluate(model, test_within, device)
+                m_val, m_worst_val, m_per_env, m_per_env_n = evaluate(model, val_loader, device)
+            finally:
+                torch.random.set_rng_state(cpu_rng)
+                if cuda_rng is not None:
+                    torch.cuda.set_rng_state_all(cuda_rng)
+                np.random.set_state(np_rng)
+            milestone = {
+                "run_id": rid, "epoch": epoch_number, "seed": cfg["seed"],
+                "acc_train": m_train, "worst_env_train": m_worst_train,
+                "acc_within": m_id, "worst_env_within": m_worst_id,
+                "acc_selection": m_val, "acc_val": m_val, "worst_env_val": m_worst_val,
+                "per_env_val": m_per_env, "per_env_n_val": m_per_env_n,
+                "selection_split": "ood_val", "test_evaluated": False,
+                "classification_objective": objective,
+            }
+            if epoch_number in checkpoint_epochs:
+                ckpt_path = out_dir / f"{rid}.epoch{epoch_number:03d}.pt"
+                atomic_torch_save({
+                    "run_id": rid, "epoch": epoch_number, "config": cfg,
+                    "model": model.state_dict(), "optimizer": opt.state_dict(),
+                    "scheduler": sched.state_dict(), "milestone": milestone,
+                }, ckpt_path)
+                milestone["checkpoint"] = ckpt_path.name
+            milestone_f.write(json.dumps(milestone) + "\n"); milestone_f.flush()
+            print(f"[{rid}] milestone ep{epoch_number} train {m_train:.4f} id {m_id:.4f} "
+                  f"val {m_val:.4f} worst {m_worst_val:.4f}", flush=True)
 
     # ---------------- evaluation ----------------
     # STAGE GATE (PLAN.md): Stage 1 and 2 are decided on the OOD VALIDATION split only. The OOD
@@ -308,6 +391,7 @@ def main():
         "variant": cap.variant, "placement": cap.placement, "routing_unit": cfg["model"]["routing_unit"],
         "geometry": cfg["model"]["geometry"], "pressure": pressure,
         "balance": cfg["model"]["balance"],
+        "classification_objective": objective,
         "n_experts": cfg["model"]["n_experts"], "top_k": cfg["model"]["top_k"],
         # ---- outcomes ----
         # Stage <3: acc_heldout is null BY DESIGN (the OOD test split is not touched).
@@ -343,6 +427,8 @@ def main():
     }
     out_json.write_text(json.dumps(result, indent=2))
     logf.close()
+    if milestone_f is not None:
+        milestone_f.close()
     _test_str = f"{acc_ood:.4f}" if acc_ood is not None else "withheld"
     print(f"[done] {rid}  sel({selection_split}) {acc_sel:.4f}  within {acc_within:.4f}  "
           f"test {_test_str}  -> {out_json}")
