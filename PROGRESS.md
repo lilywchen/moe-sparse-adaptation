@@ -367,3 +367,21 @@ The instrument decision is reopened only for this exact correction. The old best
 the official pooled representation remains weak, the main remaining limitation is the three-to-five
 channel mapping, which permanently zeros two pretrained stain slots; that would motivate changing
 the data representation or substrate rather than opening an unconstrained recipe sweep.
+
+## 2026-07-31 23:47 EDT Official-pooling linear probe validated
+
+The corrected frozen-backbone linear probe completed and passed strict parseability, finite-metric,
+run/config/seed, clean-code, total-parameter, checkpoint/source, feature-pooling, split, and
+test-blindness checks. Its train/seen/OOD-validation/worst-experiment accuracies are
+`0.075168 / 0.046070 / 0.030343 / 0.008523`. Relative to the superseded CLS-only linear probe,
+official pooling changes these by `+0.016882 / +0.005590 / +0.001624 / -0.001218` absolute.
+
+This is a validated diagnostic, not a competence decision. Concatenating the mean patch token adds
+some linearly accessible training and seen-environment signal, but almost no OOD-validation gain;
+the frozen representation remains far below a useful instrument. The two full-fine-tuning arms are
+still the decisive test of whether joint adaptation can exploit the corrected representation.
+
+At the fresh health check, full fine-tuning at `1e-4` had reached epoch 4 and `3e-4` epoch 5, both
+with advancing persistent logs and both assigned GPUs at 100% utilization with about 7.9 GiB each.
+No fatal error was present. Two H100s are active and six authorized H100s are idle because no
+additional pre-gate arm is scientifically licensed. OOD test remains untouched.

@@ -1,26 +1,25 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "repair_official_cell_dino_feature_pool_and_relaunch_competence",
-  "last_action_at": "2026-07-31T23:44:00-04:00",
-  "last_verified_commit": "04986fe",
+  "last_action": "validate_official_pool_linear_probe_and_preserve_full_fine_tuning",
+  "last_action_at": "2026-07-31T23:47:00-04:00",
+  "last_verified_commit": "dbe6a86",
   "valid_results": 9,
   "expected_results": 12,
-  "active_gpu_workers": 3,
+  "active_gpu_workers": 2,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
   "rxrx1_sanity_run": "canonical_erm_sanity_6fb65e5_retry1",
   "rxrx1_sanity_status": "dinov2_failed_competence_gate",
   "rxrx1_backbone_status": "cell_dino_official_pool_competence_running",
   "cell_dino_expected_diagnostics": 3,
-  "cell_dino_valid_diagnostics": 0,
+  "cell_dino_valid_diagnostics": 1,
   "cell_dino_legacy_cls_only_valid_diagnostics": 3,
   "cell_dino_sciserver_commit": "f57743d",
   "cell_dino_sciserver_tree": "289390c317910c0a1f8839832405c80f32b5ac3e",
   "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
   "cell_dino_remote_tests": "84_passed",
   "cell_dino_active_runs": [
-    "official_pool/rxrx1_original_ep5_s0_linear_probe",
     "official_pool/rxrx1_original_ep10_s0_full_ft_lr1e-4",
     "official_pool/rxrx1_original_ep10_s0_full_ft_lr3e-4"
   ],
@@ -33,7 +32,14 @@
     "id_nearest_centroid": 0.017137791961431503,
     "ood_val_nearest_centroid": 0.007611122447997332
   },
+  "cell_dino_official_pool_linear_metrics": {
+    "acc_train": 0.07516758678078865,
+    "acc_within": 0.04607012705604255,
+    "acc_selection": 0.030343007915567283,
+    "worst_env_val": 0.008522727272727272,
+    "worst_env_train": 0.01868399675060926
+  },
   "last_synced_commit": "23fdacd",
   "overleaf_build_status": "pass_0_errors_1_warning",
-  "next_gate": "validate_three_official_pool_cell_dino_competence_results_then_apply_instrument_threshold"
+  "next_gate": "validate_two_official_pool_full_fine_tuning_results_then_apply_instrument_threshold"
 }

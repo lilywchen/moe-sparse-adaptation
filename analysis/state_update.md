@@ -158,6 +158,13 @@ three channels to a five-channel checkpoint, leaving two pretrained stain slots 
 That outcome would support using the original multichannel RxRx1 data or a channel-compatible
 microscopy substrate, not further unbounded tuning.
 
+The official-pooling frozen linear probe is now strictly valid. It reaches 7.52% train, 4.61% seen,
+and 3.03% OOD-validation accuracy, versus 5.83%, 4.05%, and 2.87% for CLS alone. The additional patch
+summary therefore exposes slightly more linearly accessible signal but does not materially improve
+unseen-batch transfer; worst-experiment OOD validation actually changes from 0.97% to 0.85%. This is
+provisional diagnostic evidence only. The two full-fine-tuning arms must complete before deciding
+whether official pooling meaningfully changes dense competence.
+
 The full Cell-DINO competence set and a stricter out-of-box representation probe are now complete.
 With every Cell-DINO weight frozen, exact cosine 1-NN reaches 2.52% on ID-test and 1.23% on OOD
 validation; nearest-class-centroid is lower at 1.71% and 0.76%. Thus the pretrained embedding does
