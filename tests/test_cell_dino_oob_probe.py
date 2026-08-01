@@ -2,6 +2,7 @@ import importlib.util
 from pathlib import Path
 
 import torch
+from torch.utils.data import DataLoader, TensorDataset
 
 
 SPEC = importlib.util.spec_from_file_location(
@@ -42,3 +43,14 @@ def test_centroids_reject_missing_training_classes():
         assert "missing 1 classes" in str(exc)
     else:
         raise AssertionError("missing classes must fail closed")
+
+
+def test_complete_eval_loader_keeps_final_partial_batch():
+    dataset = TensorDataset(torch.arange(5))
+    training_loader = DataLoader(dataset, batch_size=2, shuffle=True, drop_last=True)
+
+    evaluation_loader = PROBE.complete_eval_loader(training_loader)
+
+    observed = torch.cat([batch[0] for batch in evaluation_loader]).tolist()
+    assert observed == [0, 1, 2, 3, 4]
+    assert evaluation_loader.drop_last is False

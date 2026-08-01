@@ -21,6 +21,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import torch.nn.functional as F
+from torch.utils.data import DataLoader
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -38,6 +39,24 @@ def _git_info():
         ["git", "status", "--porcelain"], cwd=ROOT, text=True
     ).strip())
     return sha, dirty
+
+
+def complete_eval_loader(loader):
+    """Rebuild a deterministic loader that includes the final partial batch.
+
+    The training loader intentionally drops its last batch during optimization.  A frozen
+    representation audit should instead embed every available training example.
+    """
+    return DataLoader(
+        loader.dataset,
+        batch_size=loader.batch_size,
+        shuffle=False,
+        num_workers=loader.num_workers,
+        pin_memory=loader.pin_memory,
+        drop_last=False,
+        collate_fn=loader.collate_fn,
+        persistent_workers=loader.persistent_workers,
+    )
 
 
 @torch.inference_mode()
@@ -127,6 +146,7 @@ def main():
     started = time.time()
 
     train_loader, id_loader, _unused_ood_test_loader, _audit_loader = make_loaders(cfg)
+    train_loader = complete_eval_loader(train_loader)
     val_loader = make_val_loader(cfg)
     if val_loader is None:
         raise RuntimeError("RxRx1 OOD-validation split is required")
@@ -159,6 +179,7 @@ def main():
         "git_dirty": dirty,
         "checkpoint_provenance": model.backbone_provenance,
         "n_train_embeddings": int(len(train_f)),
+        "n_train_dataset": int(len(train_loader.dataset)),
         "embedding_dim": int(train_f.shape[1]),
         "metrics": metrics,
         "elapsed_seconds": round(time.time() - started, 1),
