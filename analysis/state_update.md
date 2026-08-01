@@ -570,3 +570,22 @@ before the full epoch-90 gate. SciServer reauthentication is also required to va
 result JSONs and checkpoint files before Hugging Face publication. The next meaningful state is
 either a failure requiring narrow repair or `10/10` completed arms followed by strict exact-file
 validation; OOD test remains sealed.
+
+## Primary epoch-90 pair operationally complete: signal contracts below trigger
+
+Matched dense-wide is now finished, so the primary efficacy pair is available in rounded W&B
+form: canonical token top-1 is 20.22% OOD validation versus 18.50% for dense-wide (`+1.72`
+points). This is below the predeclared `+5` trigger. Token top-1 preserves ID rather than trading it
+away (51.45% versus 48.23%), but its worst-experiment score is slightly lower (1.62% versus 1.70%).
+
+The pattern is not uniquely sparse. Original reaches 20.09% OOD validation, image top-1 20.13%,
+environment balancing 19.99%, and last-four adaptation 19.82%. On these rounded values, canonical
+token routing is only 0.13 points above original and 0.09 above image routing, while several
+noncanonical arms have better worst-experiment scores. This provisionally favors a general
+longer-training/adaptation explanation over a large reusable-routing robustness effect.
+
+The formal conclusion remains closed: within-experiment-balanced routing is still running at
+epoch 79, and SciServer reauthentication is required to validate exact result JSONs, parameter
+counts, split/test-blindness fields, checkpoints, and exclusions. The result would be falsified by
+exact-file mismatch or a materially different validated ordering. No replication or mechanism
+campaign is licensed from this operational snapshot; OOD test remains sealed.

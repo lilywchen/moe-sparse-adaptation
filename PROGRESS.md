@@ -887,3 +887,23 @@ licensed before the full epoch-90 gate and the remaining exact validation cannot
 SciServer session is unauthenticated. No speculative sweep or duplicate was launched. `tester6`
 still returns `503`, OOD test remains sealed, and no Hugging Face upload is claimed because the
 finished result folders have not passed strict persistent-file validation.
+
+### 2026-08-01 16:32 ET — matched dense-wide finished; primary pair operationally below trigger
+
+Matched dense-wide has transitioned to `Finished`, bringing operational final coverage to `9/10`.
+Within-experiment-balanced token routing is the sole remaining arm, healthy at epoch 79 with a
+fresh fatal-free log. The rounded W&B primary-pair snapshot is preserved in
+`analysis/hypothesis90_final_wandb_snapshot.json` but is explicitly barred from formal gate use.
+
+Canonical token top-1 is `20.22%` OOD validation versus `18.50%` for exact-total-parameter-matched
+dense-wide: `+1.72` points, well below the frozen `+5` trigger. ID is higher by `+3.22` points, but
+worst-experiment accuracy is `0.08` points lower. Original (`20.09%`), image top-1 (`20.13%`),
+environment balancing (`19.99%`), and last-four adaptation (`19.82%`) are all close, so the rounded
+ordering does not establish a sparse-routing-specific robustness effect. Because one arm is still
+running and exact persistent files remain inaccessible, this is operational evidence only—not a
+gate decision, exclusion, or paper claim.
+
+Nine allocated worker GPUs are now idle inside the existing containers, but replication is not
+licensed by the rounded result and no speculative work was launched. SciServer reauthentication
+is still required for strict result/checkpoint validation and Hugging Face publication. `tester6`
+continues to return `503`; OOD test remains sealed.
