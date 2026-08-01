@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 00:31 EDT
+Last verified: 2026-08-01 02:33 EDT
 
 ## Scientific question
 
@@ -302,3 +302,26 @@ The post-extraction watcher changes turnaround time, not the scientific design. 
 the already frozen native CP5 diagnostic pair after the complete selection-split audit passes; any
 missing sample, dirty tree, duplicate process, missing checkpoint, or occupied GPU prevents launch.
 There is still no native-channel performance evidence to interpret.
+
+## Native CP5 competence launch interpretation
+
+The complete audit removes incomplete extraction as a live explanation for the native result:
+train, ID-test, and OOD-validation contain 91,078 samples with zero missing six-channel acquisitions.
+The frozen probe and full fine-tune are now running from one tested tree and one fixed biological
+mapping. This is still diagnostic evidence, not a model-selection or MoE result; epoch-0 loss only
+shows that optimization is advancing.
+
+The paired design answers a sharper question than another learning-rate sweep. A weak frozen probe
+with a strong full fine-tune would mean the microscopy checkpoint contains useful but not linearly
+separable structure that joint adaptation can recover. Jointly weak train and ID accuracy would
+implicate the CP5 mapping/substrate or task interface rather than batch transfer. Credible train and
+ID accuracy with a substantially lower OOD-validation and worst-experiment score would finally
+establish the intended batch-transfer failure regime in which conditional capacity is scientifically
+testable. No one of these interpretations is licensed until the corresponding result JSON passes
+strict validation.
+
+The most important remaining validity threat is instrument competence, not parameter fairness: the
+MoE and dense-wide models have not been launched. Their exact total-parameter match, shared recipe,
+paired seed, and ID-preservation checks remain frozen for the next gate. Six H100s are intentionally
+idle because extra diagnostic arms cannot resolve the current decision, while Channel-Adaptive DINO
+remains blocked on its distinct approved ViT-L/16 checkpoint.

@@ -1,6 +1,6 @@
 # Progress ledger
 
-Last verified: 2026-07-31 19:14 EDT on SciServer.
+Last verified: 2026-08-01 02:33 EDT on SciServer.
 
 Research-state synchronization: GitHub commit `5f8310c` was pulled into the linked Overleaf
 project on 2026-07-31; `paper/main.tex` compiled successfully to four pages with 0 errors, one
@@ -482,3 +482,33 @@ duplicate launcher, and zero GPU compute processes. Only if every gate passes do
 native CP5 frozen-probe/full-fine-tuning pair on GPUs 0 and 1. The watcher was independently
 verified alive; it has not launched training and has not accessed OOD test. A failed audit or
 occupied GPU stops the chain rather than weakening a gate.
+
+## 2026-08-01 02:33 EDT native CP5 competence pair launched
+
+Classification is `RUNNING_HEALTHY`. The resumed extraction completed, and the fresh strict native
+audit passed over exactly 91,078 selection samples: 40,612 train, 40,612 ID-test, and 9,854
+OOD-validation samples, each with all six channels present. The 66-file pixel smoke found `L`-mode
+`512 x 512` images. The manifest records `test_evaluated=false`; OOD test was not loaded or scored.
+
+The one-shot watcher successfully ran the audit and two-run dry-run, then stopped at its duplicate
+guard because the guard matched the watcher's own command line. This was a narrow handoff defect,
+not a data, model, or scientific failure. Before launching directly, the steward re-verified the
+clean isolated SciServer commit `7365eac2262735e339c74f506296e07f4e47512ce`, zero active
+Python training processes, two idle GPUs, the frozen two-run manifest, checkpoint presence, and the
+zero-missing audit. No gate was weakened and no duplicate was launched.
+
+Both frozen seed-0 Cell-DINO native instruments are now healthy:
+
+| Run | GPU / PID | Fresh progress | W&B |
+|---|---|---|---|
+| `cell_dino_native_cp5_instrument_linear_probe` | GPU 0 / `36861` | epoch 0 recorded; loss `7.3955`; 1.97 GiB, 70% utilization at the fresh signature | `1sfzdw4j` |
+| `cell_dino_native_cp5_instrument_full_ft_lr1e-4` | GPU 1 / `36862` | epoch 0 recorded; loss `7.2293`; 7.87 GiB, 99% utilization at the fresh signature | `7rdhcisv` |
+
+The initial losses prove only that both training loops are advancing; they are not performance
+evidence. Zero of two native result JSONs exists yet. Two of eight authorized H100s are occupied;
+the other six remain idle because the Channel-Adaptive pair still lacks its distinct approved
+ViT-L/16 checkpoint, and neither extra seeds nor an MoE comparison is licensed before this
+competence result. The next automatic action is strict validation of each completed JSON and the
+train/ID/OOD-validation failure-regime classification. A competent native dense instrument licenses
+the frozen original versus exact-total-parameter-matched dense-wide versus canonical-MoE kill
+contrast; a floor result stops that launch and diagnoses the instrument instead.

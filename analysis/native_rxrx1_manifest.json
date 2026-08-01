@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "raw_root": "/home/idies/workspace/Storage/lchen5/persistent/data/rxrx1_raw/rxrx1",
+  "selection_splits": [
+    "train",
+    "id_test",
+    "val"
+  ],
+  "test_evaluated": false,
+  "channels_per_sample": 6,
+  "total_selection_samples": 91078,
+  "splits": {
+    "train": {
+      "samples": 40612,
+      "samples_missing_any_channel": 0
+    },
+    "id_test": {
+      "samples": 40612,
+      "samples_missing_any_channel": 0
+    },
+    "val": {
+      "samples": 9854,
+      "samples_missing_any_channel": 0
+    }
+  },
+  "missing_examples": [],
+  "smoke": {
+    "files_read": 66,
+    "modes": [
+      "L"
+    ],
+    "sizes": [
+      [
+        512,
+        512
+      ]
+    ],
+    "pixel_digest": "b0cf9712da70e74e822395fdf930290b6d662f3754ebce6a9906f8a1aa74c623"
+  }
+}
