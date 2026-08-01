@@ -31,7 +31,23 @@ from torch.utils.data import DataLoader, Dataset
 from .datasets import IMAGENET_MEAN, IMAGENET_STD
 
 
-def _rxrx1_transform(img_size, train, rrc=False, style="imagenet"):
+def _cell_dino_cp5(x: torch.Tensor) -> torch.Tensor:
+    """Map the three WILDS channels into Cell-DINO's five Cell-Painting slots.
+
+    WILDS exposes nuclei, endoplasmic reticulum, and actin.  The Cell-Painting model was trained
+    with DNA, ER, RNA, AGP, and mitochondria.  We therefore use the homologous slots
+    ``[DNA=nuclei, ER=ER, RNA=0, AGP=actin, Mito=0]``.  With a linear patch embedding this is
+    exactly equivalent to selecting the corresponding three pretrained input kernels; it adds no
+    learned adapter and is held fixed for every dense/MoE comparison.
+    """
+    if x.ndim != 3 or x.shape[0] != 3:
+        raise ValueError(f"cell_dino_cp5 expects a 3-channel CHW tensor, got {tuple(x.shape)}")
+    out = x.new_zeros((5, x.shape[1], x.shape[2]))
+    out[0], out[1], out[3] = x[0], x[1], x[2]
+    return out
+
+
+def _rxrx1_transform(img_size, train, rrc=False, style="imagenet", channel_layout=None):
     """Geometric-only aug (flips/rotations are label-preserving for microscopy); NO photometric —
     colour/contrast jitter would imitate the very batch effect we are studying. Normalize with
     ImageNet stats because both backbones (ResNet-50, ViT-S/16) are ImageNet-pretrained.
@@ -57,9 +73,15 @@ def _rxrx1_transform(img_size, train, rrc=False, style="imagenet"):
         if train:
             tf += [T.Lambda(random_right_angle), T.RandomHorizontalFlip()]
         tf += [T.Resize((img_size, img_size)), T.ToTensor(), T.Lambda(standardize)]
+        if channel_layout == "cell_dino_cp5":
+            tf += [T.Lambda(_cell_dino_cp5)]
+        elif channel_layout not in (None, "native3"):
+            raise ValueError(f"Unknown RxRx1 channel layout: {channel_layout!r}")
         return T.Compose(tf)
     if style != "imagenet":
         raise ValueError(f"Unknown RxRx1 transform style: {style!r}")
+    if channel_layout not in (None, "native3"):
+        raise ValueError("non-native channel layouts require rxrx1_transform=wilds")
 
     if train and rrc:
         tf = [T.RandomResizedCrop(img_size, scale=(0.5, 1.0), ratio=(0.75, 1.333)),
@@ -112,8 +134,9 @@ def make_rxrx1_loaders(cfg):
 
     rrc = bool(cfg["train"].get("rand_resized_crop", False))   # ViT regularizer; default off (ResNet unchanged)
     style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
-    tf_tr = _rxrx1_transform(img_size, True, rrc, style)
-    tf_ev = _rxrx1_transform(img_size, False, False, style)
+    layout = cfg["train"].get("rxrx1_channel_layout")
+    tf_tr = _rxrx1_transform(img_size, True, rrc, style, layout)
+    tf_ev = _rxrx1_transform(img_size, False, False, style, layout)
     train_sub  = ds.get_subset("train",   transform=tf_tr)
     within_sub = ds.get_subset("id_test", transform=tf_ev)    # seen experiments, held-out images
     ood_sub    = ds.get_subset("test",    transform=tf_ev)    # OOD experiments (unseen batches)
@@ -156,7 +179,9 @@ def make_rxrx1_val_loader(cfg):
         return None
     exp_col = ds.metadata_fields.index("experiment")
     style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
-    val_sub = ds.get_subset("val", transform=_rxrx1_transform(img_size, False, False, style))
+    layout = cfg["train"].get("rxrx1_channel_layout")
+    val_sub = ds.get_subset("val", transform=_rxrx1_transform(
+        img_size, False, False, style, layout))
     train_exps = sorted(set(ds.get_subset("train").metadata_array[:, exp_col].tolist()))
     remap = {e: i for i, e in enumerate(train_exps)}
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]

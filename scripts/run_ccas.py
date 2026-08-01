@@ -47,11 +47,11 @@ def build_optimizer(model, cfg, adversary=None):
     llrd = float(t.get("llrd", 0.0) or 0.0)
     base_lr, wd = float(t["optim"]["lr"]), float(t["optim"]["weight_decay"])
     if not (0.0 < llrd < 1.0):
-        params = list(model.parameters())
+        params = [p for p in model.parameters() if p.requires_grad]
         if adversary is not None:
             params += list(adversary.parameters())
         return torch.optim.AdamW(params, lr=base_lr, weight_decay=wd)
-    blocks = list(model.backbone.blocks)
+    blocks = list(model.blocks)
     n = len(blocks)
     groups, seen = [], set()
     for i, blk in enumerate(blocks):                      # deeper blocks get a larger LR
@@ -179,7 +179,7 @@ def main():
     p_star = cap.total_params + (0 if cap.router_params else 0)
     protocol["variant"] = cap.variant
     protocol["block_index"] = cap.block_index
-    protocol["n_blocks"] = len(model.backbone.blocks)
+    protocol["n_blocks"] = len(model.blocks)
     protocol["exactly_one_block_converted"] = True
     protocol["training_pressure"] = pressure
     protocol["route_balance"] = expected_balance
@@ -245,6 +245,10 @@ def main():
     # confirmatory. Below stage 3 we therefore do not even compute test accuracy, and every
     # downstream metric (worst environment, mechanism, route reliance) is computed on OOD val.
     stage = int(cfg.get("stage", 1))
+    if bool(cfg.get("analysis", {}).get("record_train_accuracy", False)):
+        acc_train, worst_train, _, _ = evaluate(model, train_loader, device)
+    else:
+        acc_train = worst_train = None
     acc_within, worst_within, _, _ = evaluate(model, test_within, device)
 
     if val_loader is None:
@@ -272,7 +276,8 @@ def main():
 
     # ---------------- mechanism ----------------
     mech = {}
-    if model.moe_block is not None:
+    run_mechanism = bool(cfg.get("analysis", {}).get("run_mechanism", True))
+    if run_mechanism and model.moe_block is not None:
         try:
             eidx, site, label = audit_routing.capture(model, audit_loader, device)
             mech["routing_mi_site"] = float(audit_routing.routing_mi(eidx, site))
@@ -288,12 +293,13 @@ def main():
                 mech["route_reliance"] = acc_sel - mech["randomized_routes_acc"]
         except Exception as e:
             mech["reroute_error"] = str(e)
-    try:
-        feats, site, label = audit_leak.features_site_label(model, audit_loader, device)
-        mech["site_leakage"] = float(audit_leak.site_leakage(feats, site))
-        mech["class_decodability"] = float(audit_leak.class_decodability(feats, label))
-    except Exception as e:
-        mech["leakage_error"] = str(e)
+    if run_mechanism:
+        try:
+            feats, site, label = audit_leak.features_site_label(model, audit_loader, device)
+            mech["site_leakage"] = float(audit_leak.site_leakage(feats, site))
+            mech["class_decodability"] = float(audit_leak.class_decodability(feats, label))
+        except Exception as e:
+            mech["leakage_error"] = str(e)
 
     sha, dirty = git_info()
     result = {
@@ -313,6 +319,7 @@ def main():
         "acc_heldout": acc_ood, "worst_env_heldout": worst_ood,
         "per_env_heldout": per_env_ood, "per_env_n_heldout": per_env_n_ood,
         "acc_within": acc_within,
+        "acc_train": acc_train, "worst_env_train": worst_train,
         "degradation_gap": (acc_within - acc_sel) if acc_sel is not None else None,
         "degradation_gap_test": (acc_within - acc_ood) if acc_ood is not None else None,
         # ---- resource accounting ----
@@ -328,6 +335,7 @@ def main():
         **mech,
         # ---- provenance ----
         "protocol": protocol, "git_sha": sha, "git_dirty": dirty,
+        "backbone_provenance": model.backbone_provenance,
         "host": socket.gethostname(), "python": platform.python_version(),
         "torch": torch.__version__, "gpu": (torch.cuda.get_device_name(0) if torch.cuda.is_available() else None),
         "wall_seconds": round(time.time() - t0, 1),

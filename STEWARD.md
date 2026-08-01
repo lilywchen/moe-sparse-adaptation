@@ -1,81 +1,69 @@
-# Autonomous research steward contract
+# Autonomous RxRx1 research steward contract
 
-The scheduled steward is an **executor**, not a read-only monitor. Its job is to advance the
-predeclared study from the current durable state to the next verified milestone and eventually to
-a complete analysis and synchronized manuscript.
+The steward executes the RxRx1 kill test in `PLAN.md`; it is not a read-only monitor. It protects
+healthy work but uses every safely idle authorized GPU for the next licensed experiment. It does
+not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 rescue runs.
 
 ## Sources of truth
 
-1. `PLAN.md` defines the scientific protocol and stage gates.
-2. `PROGRESS.md` records the human-readable current state and next safe action.
-3. `.steward/state.json` records the machine-readable heartbeat signature and last action.
-4. `.steward/action_log.jsonl` is the append-only evidence/action ledger.
-5. SciServer's persistent results and logs are authoritative for remote execution state. A PID or
-   W&B run alone is never proof that a job is alive.
+1. `PLAN.md` — frozen scientific sequence and gates.
+2. `PROGRESS.md` — operational ledger and current decision.
+3. `analysis/state_update.md` — living scientific interpretation.
+4. `analysis/evidence_index.md` — claim-to-run correctness map.
+5. `.steward/state.json` and `.steward/action_log.jsonl` — machine state and append-only actions.
+6. Persistent SciServer logs/results — execution evidence. PID or W&B status alone is not health.
 
-When these disagree, investigate and repair the ledger; do not guess.
+## Priority order
 
-## One scheduled invocation
+1. Preserve any healthy jobs already running, including legacy Camelyon17 jobs, but schedule no
+   successor Camelyon17 work.
+2. Put the approved Cell-DINO ViT-S/8 checkpoint and pinned public DINOv2 code in persistent
+   storage; record checksum/commit without exposing the signed download URL.
+3. Test the adapter, channel map, parameter matching, dry-run, persistent outputs, and OOD-test
+   guard from one clean execution commit.
+4. Launch all three Stage-0A competence diagnostics on idle GPUs.
+5. Strictly validate results and classify the observed failure as representation/optimization,
+   ordinary ID generalization, or batch-transfer failure using train/ID/OOD-val evidence.
+6. If competent, freeze one recipe and launch the original/dense-wide/MoE seed-0 kill comparison.
+7. If the replication trigger passes, launch only paired dense-wide/MoE seeds 1–2. If it fails,
+   launch only the frozen/random-route diagnosis; never compensate with a broad sweep.
 
-Each invocation must first classify the project into exactly one state:
+## Execution rules
 
-- **RUNNING_HEALTHY:** the expected MoE launcher/children exist, GPU utilization and recent log or
-  checkpoint progress agree, and there is no fatal error. Emit a compact heartbeat. Do not launch
-  duplicate work, edit code gratuitously, or consume another GPU.
-- **ACTIONABLE:** no healthy expected job is running and the next action is already licensed by
-  `PLAN.md`. Continue doing useful work until a healthy next GPU job is verified running, or—when
-  the next milestone is analytical—until the analysis, progress ledger, manuscript, GitHub, and
-  Overleaf are updated and verified.
-- **BLOCKED:** progress requires credentials, a destructive action, a scientific-design change,
-  additional compute authorization, resolution of a repeated failure, or permission to cross an
-  explicit protocol gate. Preserve state and report the exact evidence and smallest user decision.
-- **COMPLETE:** all authorized stages, analysis, manuscript synthesis, repository synchronization,
-  and verification criteria below are complete. Keep a lightweight completion heartbeat; do not
-  invent more experiments.
+- Before each launch verify exact checkout commit, no duplicate process/result, idle GPU ownership,
+  persistent paths, dry-run, idempotency, budget, config identity, and test blindness.
+- Do not mutate a checkout underneath a running job; create a clean execution checkout at a safe
+  boundary.
+- Strict result validity requires parseability, finite metrics, exact config/seed/run identity,
+  backbone checkpoint SHA, code commit, parameter counts, `selection_split=ood_val`, and
+  `test_evaluated=false` before the confirmatory stage.
+- Fix narrow reversible implementation/orchestration defects with a focused regression test. Retry
+  the same failure once; a recurrence is blocked.
+- Never expose secrets, signed URLs, or credentials; alter environments/drivers; allocate new paid
+  compute; delete results; disturb other projects; force-push; or evaluate OOD test early.
 
-An invocation must not stop after merely observing that a previous job ended. It owns the handoff:
-validate outputs, aggregate them, fix bounded operational problems, update state, and launch the
-next predeclared work when the gates pass.
+## Progress communication
 
-## Work policy
+Notify on a new result, launch, repair, gate transition, interpretation change, artifact/commit
+update, or blocker. Stable no-change 15-minute passes should be quiet; at most one synthesis per
+hour. Every material update answers:
 
-- Prefer the largest safe bounded unit of work that can be verified within one invocation.
-- Fix narrow, reversible implementation or orchestration defects; add a regression test; rerun
-  only missing idempotent work. After the same failure recurs, stop as `BLOCKED` rather than loop.
-- Do not change hypotheses, factors, levels, outcomes, selection rules, fairness constraints, or
-  the OOD-test gate. A scientific change requires the user.
-- Never cancel a healthy job or touch another project's files, processes, W&B runs, or GPUs.
-- Update `.steward/state.json`, append `.steward/action_log.jsonl`, and update `PROGRESS.md` after
-  every material action. Every entry includes timestamp, evidence, action, result, commit, and next
-  gate.
+1. Where the RxRx1 decision stands and how many valid/active/queued runs exist.
+2. What was actually executed since the prior update.
+3. What the evidence says about the three failure modes and H1–H3; label it diagnostic or
+   decision-grade and state a falsifier/alternative explanation.
+4. Why it is trustworthy or not: provenance, split blindness, parameter matching, paired coverage,
+   uncertainty, exclusions, and the largest validity threat.
+5. Which traceable artifacts changed.
+6. The next automatic action and exact gate that licenses it.
 
-## Analysis and paper handoff
+After every material action update the four ledgers atomically. After every milestone regenerate
+only aggregates whose validated inputs changed, update the manuscript with verified evidence,
+run tests/audits, compile with errors fatal, commit/push, and synchronize Overleaf when authenticated.
 
-At every completed experimental milestone:
+## Done
 
-1. Run the stage-appropriate leakage, coverage, budget, pairing, and provenance audits.
-2. Regenerate the stage-gated aggregate artifacts under the persistent results directory.
-3. Update `analysis/state_update.md` with facts only: completed coverage, failures/exclusions,
-   parameter audit, primary paired contrasts, uncertainty, factor effects, mechanism findings,
-   dataset agreement/disagreement, and unresolved limitations. Never expose OOD-test values before
-   the Stage-3 gate.
-4. Update manuscript results/methods/limitations and generated tables or figures. Clearly retain
-   placeholders for evidence that does not yet exist.
-5. Run tests and compile `paper/main.tex` locally. Commit and push the scoped changes to GitHub.
-6. Sync the linked Overleaf project, recompile there, and verify that the linked GitHub commit,
-   selected main document, and PDF build all succeeded. Record verification in `PROGRESS.md`.
-
-Linked Overleaf project:
-`https://www.overleaf.com/project/6a6cdb522d6aa17eed95038d`
-
-## Definition of done
-
-- Every run required by the authorized frozen protocol has a valid, provenance-complete result or
-  a documented exclusion.
-- Required paired controls, seed coverage, budget matching, and stage-gate audits pass.
-- The analysis artifacts and manuscript faithfully report the completed evidence, including null
-  results and cross-dataset disagreement.
-- Tests pass; the manuscript builds locally and on Overleaf.
-- Local `main`, GitHub `main`, the SciServer execution commit, and Overleaf are synchronized to the
-  same reported research state.
-
+The project is complete only when the competent-substrate gate and matched comparison are resolved,
+all licensed replication/mechanism/fold experiments have valid paired results or explicit
+exclusions, the confirmatory OOD test was accessed only after freezing, and the analysis,
+manuscript, GitHub, SciServer, and Overleaf report the same verified state.

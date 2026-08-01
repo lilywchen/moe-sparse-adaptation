@@ -135,7 +135,10 @@ def make_rxrx1_rho_loaders(cfg):
     img_size = cfg.get("img_size") or cfg["model"].get("vit", {}).get("img", 256)
     ds = get_dataset(dataset="rxrx1", root_dir=cfg["data_root"], download=False)
     exp_col = ds.metadata_fields.index("experiment")
-    train_sub = ds.get_subset("train", transform=_rxrx1_transform(img_size, True))
+    style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
+    layout = cfg["train"].get("rxrx1_channel_layout")
+    train_sub = ds.get_subset("train", transform=_rxrx1_transform(
+        img_size, True, bool(cfg["train"].get("rand_resized_crop", False)), style, layout))
 
     raw_exp = train_sub.metadata_array[:, exp_col].numpy()
     train_exps = sorted(set(raw_exp.tolist()))
