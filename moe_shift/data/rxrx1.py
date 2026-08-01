@@ -22,10 +22,13 @@ site-leakage chance level (1/K) are correct.
 Data download is OFF by default (the dataset is large). Set `download: true` in the config
 (or once via the WILDS CLI) and point `data_root` at the WILDS root_dir.
 """
+from pathlib import Path
+
 import numpy as np
 import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF
+from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
 from .datasets import IMAGENET_MEAN, IMAGENET_STD
@@ -45,6 +48,95 @@ def _cell_dino_cp5(x: torch.Tensor) -> torch.Tensor:
     out = x.new_zeros((5, x.shape[1], x.shape[2]))
     out[0], out[1], out[3] = x[0], x[1], x[2]
     return out
+
+
+def _rxrx1_native6_to_cell_dino_cp5(x: torch.Tensor) -> torch.Tensor:
+    """Map native RxRx1 stains into Cell-DINO's five Cell-Painting channels.
+
+    Native RxRx1 stores six grayscale acquisitions in this fixed order:
+    Hoechst/DNA, ConA/ER, Phalloidin/actin, Syto14/RNA,
+    MitoTracker/mitochondria, and WGA/Golgi.  Cell Painting acquires actin and
+    Golgi together in its AGP channel, so we average those two raw acquisitions
+    before per-channel standardization.  The average and sum are equivalent
+    after standardization, while the average keeps values in the input range.
+    """
+    if x.ndim != 3 or x.shape[0] != 6:
+        raise ValueError(f"native6_to_cell_dino_cp5 expects 6-channel CHW, got {tuple(x.shape)}")
+    return torch.stack((x[0], x[1], x[3], 0.5 * (x[2] + x[5]), x[4]), dim=0)
+
+
+def _standardize_channels(x: torch.Tensor) -> torch.Tensor:
+    mean = x.mean(dim=(1, 2), keepdim=True)
+    std = x.std(dim=(1, 2), keepdim=True)
+    return (x - mean) / torch.where(std == 0.0, torch.ones_like(std), std)
+
+
+def _rxrx1_raw_transform(img_size, train, channel_layout):
+    """Transform an already stacked native six-channel RxRx1 tensor.
+
+    Geometric augmentation is sampled once and applied jointly to all stains.
+    There is deliberately no photometric augmentation: intensity and contrast
+    are part of the acquisition-batch shift under study.
+    """
+    if channel_layout not in ("native6", "cell_dino_native_cp5"):
+        raise ValueError(f"unknown native RxRx1 channel layout: {channel_layout!r}")
+
+    def transform(x):
+        if x.ndim != 3 or x.shape[0] != 6:
+            raise ValueError(f"native RxRx1 transform expects 6-channel CHW, got {tuple(x.shape)}")
+        x = x.to(dtype=torch.float32)
+        if train:
+            angle = (0, 90, 180, 270)[int(torch.randint(0, 4, (1,)).item())]
+            if angle:
+                x = TF.rotate(x, angle)
+            if bool(torch.rand(()) < 0.5):
+                x = TF.hflip(x)
+        x = TF.resize(x, [int(img_size), int(img_size)], antialias=True)
+        if channel_layout == "cell_dino_native_cp5":
+            x = _rxrx1_native6_to_cell_dino_cp5(x)
+        return _standardize_channels(x)
+
+    return transform
+
+
+def _native_channel_paths(raw_root, composite_relative_path):
+    """Return the six official PNG paths corresponding to one WILDS composite."""
+    relative = Path(str(composite_relative_path))
+    stem = relative.stem
+    return tuple(Path(raw_root) / relative.parent / f"{stem}_w{i}.png" for i in range(1, 7))
+
+
+class _RawSiteView(Dataset):
+    """Use WILDS labels/splits but read the official six grayscale acquisitions."""
+
+    def __init__(self, subset, exp_col, remap, raw_root, transform):
+        self.subset = subset
+        self.exp_col = int(exp_col)
+        self.remap = remap
+        self.raw_root = Path(raw_root)
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.subset)
+
+    def __getitem__(self, i):
+        global_idx = int(self.subset.indices[i])
+        dataset = self.subset.dataset
+        paths = _native_channel_paths(self.raw_root, dataset._input_array[global_idx])
+        missing = [str(path) for path in paths if not path.is_file()]
+        if missing:
+            raise FileNotFoundError(f"missing native RxRx1 channel(s): {missing[:2]}")
+        channels = []
+        for path in paths:
+            with Image.open(path) as image:
+                channels.append(torch.from_numpy(np.asarray(image, dtype=np.float32).copy()) / 255.0)
+        x = torch.stack(channels, dim=0)
+        if self.transform is not None:
+            x = self.transform(x)
+        meta = dataset.metadata_array[global_idx]
+        raw = int(meta[self.exp_col])
+        y = int(dataset.y_array[global_idx])
+        return x, y, int(self.remap.get(raw, -1)), raw
 
 
 def _rxrx1_transform(img_size, train, rrc=False, style="imagenet", channel_layout=None):
@@ -135,11 +227,22 @@ def make_rxrx1_loaders(cfg):
     rrc = bool(cfg["train"].get("rand_resized_crop", False))   # ViT regularizer; default off (ResNet unchanged)
     style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
     layout = cfg["train"].get("rxrx1_channel_layout")
-    tf_tr = _rxrx1_transform(img_size, True, rrc, style, layout)
-    tf_ev = _rxrx1_transform(img_size, False, False, style, layout)
-    train_sub  = ds.get_subset("train",   transform=tf_tr)
-    within_sub = ds.get_subset("id_test", transform=tf_ev)    # seen experiments, held-out images
-    ood_sub    = ds.get_subset("test",    transform=tf_ev)    # OOD experiments (unseen batches)
+    raw_root = cfg.get("rxrx1_raw_root")
+    if raw_root:
+        if style != "wilds":
+            raise ValueError("native RxRx1 channels require rxrx1_transform=wilds")
+        tf_tr = _rxrx1_raw_transform(img_size, True, layout)
+        tf_ev = _rxrx1_raw_transform(img_size, False, layout)
+        # Transforming is delegated to _RawSiteView so the WILDS RGB composites are never read.
+        train_sub = ds.get_subset("train")
+        within_sub = ds.get_subset("id_test")
+        ood_sub = ds.get_subset("test")
+    else:
+        tf_tr = _rxrx1_transform(img_size, True, rrc, style, layout)
+        tf_ev = _rxrx1_transform(img_size, False, False, style, layout)
+        train_sub = ds.get_subset("train", transform=tf_tr)
+        within_sub = ds.get_subset("id_test", transform=tf_ev)
+        ood_sub = ds.get_subset("test", transform=tf_ev)
 
     # contiguous remap of the TRAIN experiments -> 0..K-1 (vectorized over metadata, no pixel reads)
     train_exps = sorted(set(train_sub.metadata_array[:, exp_col].tolist()))
@@ -152,11 +255,14 @@ def make_rxrx1_loaders(cfg):
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]
     mk = lambda d, sh: DataLoader(d, batch_size=bs, shuffle=sh, num_workers=nw,
                                   pin_memory=True, drop_last=sh, persistent_workers=(nw > 0))
-    within = _SiteView(within_sub, exp_col, remap)
+    view = (lambda subset, transform: _RawSiteView(
+        subset, exp_col, remap, raw_root, transform)) if raw_root else (
+        lambda subset, transform: _SiteView(subset, exp_col, remap))
+    within = view(within_sub, tf_ev)
     return (
-        mk(_SiteView(train_sub, exp_col, remap), True),    # train  (seen experiments)
+        mk(view(train_sub, tf_tr), True),                  # train  (seen experiments)
         mk(within, False),                                 # test_within  (seen, held-out images)
-        mk(_SiteView(ood_sub, exp_col, remap), False),     # test_heldout (OOD experiments)
+        mk(view(ood_sub, tf_ev), False),                   # test_heldout (OOD experiments)
         mk(within, False),                                 # audit: seen experiments, label⟂batch already
     )
 
@@ -180,11 +286,20 @@ def make_rxrx1_val_loader(cfg):
     exp_col = ds.metadata_fields.index("experiment")
     style = str(cfg["train"].get("rxrx1_transform", "imagenet"))
     layout = cfg["train"].get("rxrx1_channel_layout")
-    val_sub = ds.get_subset("val", transform=_rxrx1_transform(
-        img_size, False, False, style, layout))
+    raw_root = cfg.get("rxrx1_raw_root")
+    if raw_root:
+        if style != "wilds":
+            raise ValueError("native RxRx1 channels require rxrx1_transform=wilds")
+        transform = _rxrx1_raw_transform(img_size, False, layout)
+        val_sub = ds.get_subset("val")
+    else:
+        transform = _rxrx1_transform(img_size, False, False, style, layout)
+        val_sub = ds.get_subset("val", transform=transform)
     train_exps = sorted(set(ds.get_subset("train").metadata_array[:, exp_col].tolist()))
     remap = {e: i for i, e in enumerate(train_exps)}
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]
     print(f"[rxrx1] |ood_val|={len(val_sub)} (model/hparam selection; test untouched)")
-    return DataLoader(_SiteView(val_sub, exp_col, remap), batch_size=bs, shuffle=False,
+    view = (_RawSiteView(val_sub, exp_col, remap, raw_root, transform)
+            if raw_root else _SiteView(val_sub, exp_col, remap))
+    return DataLoader(view, batch_size=bs, shuffle=False,
                       num_workers=nw, pin_memory=True, persistent_workers=(nw > 0))

@@ -104,3 +104,26 @@ def test_cell_dino_official_feature_pool_concatenates_cls_and_patch_mean(monkeyp
     assert model.fc.in_features == 64
     assert model.backbone_provenance["feature_pool"] == "cls_patch_mean"
     torch.testing.assert_close(model.forward_features(x), expected)
+
+
+def test_channel_adaptive_dino_loads_native_six_channel_backbone(monkeypatch, tmp_path):
+    checkpoint = tmp_path / "channel_adaptive_dino.pth"
+    checkpoint.write_bytes(b"fake native-channel checkpoint")
+
+    def fake_load(repo, model, **kwargs):
+        assert repo == str(tmp_path.resolve())
+        assert model == "channel_adaptive_dino_vitl16"
+        assert kwargs["pretrained_path"] == str(checkpoint.resolve())
+        assert kwargs["in_channels"] == 6
+        return _FakeCellDino()
+
+    monkeypatch.setattr(torch.hub, "load", fake_load)
+    model = CCASModel(
+        num_classes=11, variant="original", backbone_source="channel_adaptive_dino",
+        hub_repo_dir=tmp_path, checkpoint_path=checkpoint,
+        hub_model="channel_adaptive_dino_vitl16", input_channels=6, img=224,
+        feature_pool="cls_patch_mean",
+    )
+    assert model.backbone_provenance["source"] == "channel_adaptive_dino"
+    assert model.backbone_provenance["input_channels"] == 6
+    assert tuple(model(torch.randn(2, 6, 16, 16)).shape) == (2, 11)

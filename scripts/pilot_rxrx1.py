@@ -32,7 +32,7 @@ RESULT_ROOT = Path(os.environ.get(
 ))
 
 
-def _rows(phase, lr=1.0e-4, epochs=10):
+def _rows(phase, lr=1.0e-4, epochs=10, config=CONFIG):
     if phase == "competence":
         specs = [
             ("linear_probe", ["model.variant=original", "model.freeze_backbone=true",
@@ -67,7 +67,7 @@ def _rows(phase, lr=1.0e-4, epochs=10):
     rows = []
     for tag, overrides in specs:
         overrides = [*overrides, f"run_tag={tag}"]
-        cfg = apply_overrides(load_config(CONFIG), overrides)
+        cfg = apply_overrides(load_config(config), overrides)
         rows.append((tag, overrides, run_id_from(cfg)))
     return rows
 
@@ -75,6 +75,8 @@ def _rows(phase, lr=1.0e-4, epochs=10):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--phase", choices=("competence", "kill", "replicate"), required=True)
+    ap.add_argument("--config", default=CONFIG)
+    ap.add_argument("--result-root", default=None)
     ap.add_argument("--gpus", default=os.environ.get("CUDA_VISIBLE_DEVICES", "0,1"))
     ap.add_argument("--max-concurrent", type=int, default=2)
     ap.add_argument("--lr", type=float, default=1.0e-4,
@@ -84,9 +86,10 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    out = RESULT_ROOT / args.phase
+    result_root = Path(args.result_root) if args.result_root else RESULT_ROOT
+    out = result_root / args.phase
     out.mkdir(parents=True, exist_ok=True)
-    rows = _rows(args.phase, lr=args.lr, epochs=args.epochs)
+    rows = _rows(args.phase, lr=args.lr, epochs=args.epochs, config=args.config)
     pending = [row for row in rows if not (out / f"{row[2]}.json").exists()]
     if args.dry_run:
         print(f"RxRx1 {args.phase}: {len(rows)} planned, {len(pending)} pending -> {out}")
@@ -104,7 +107,7 @@ def main():
             tag, overrides, rid = pending.pop(0)
             env = dict(os.environ, CUDA_VISIBLE_DEVICES=gpu)
             log = open(out / f"{rid}.log", "a")
-            cmd = [sys.executable, "scripts/run_ccas.py", "--config", CONFIG,
+            cmd = [sys.executable, "scripts/run_ccas.py", "--config", args.config,
                    "--results-dir", str(out), "--override", *overrides]
             proc = subprocess.Popen(cmd, env=env, stdout=log, stderr=subprocess.STDOUT)
             gpulease.adopt(gpu, proc.pid)

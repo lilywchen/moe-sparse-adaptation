@@ -1,0 +1,17 @@
+_base_: ccas_rxrx1_cell_dino.yaml
+
+# Labels and WILDS train/ID/OOD-validation splits still come from data_root. Pixels come from
+# the official six-channel archive after extraction under rxrx1_raw_root.
+rxrx1_raw_root: /home/idies/workspace/Storage/lchen5/persistent/data/rxrx1_raw
+img_size: 128
+model:
+  backbone_source: cell_dino
+  hub_model: cell_dino_cp_vits8
+  checkpoint_path: /home/idies/workspace/Storage/lchen5/persistent/models/cell_dino/cell_dino_vits8_pretrain_cp-37d20e9c.pth
+  input_channels: 5
+  feature_pool: cls_patch_mean
+train:
+  rxrx1_transform: wilds
+  # [w1, w2, w4, mean(w3,w6), w5] -> [DNA, ER, RNA, AGP, Mito]
+  rxrx1_channel_layout: cell_dino_native_cp5
+

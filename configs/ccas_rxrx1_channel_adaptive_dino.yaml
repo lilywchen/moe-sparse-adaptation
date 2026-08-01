@@ -1,0 +1,39 @@
+_base_: ccas_base.yaml
+dataset: rxrx1
+data_root: /home/idies/workspace/Storage/lchen5/persistent/data
+rxrx1_raw_root: /home/idies/workspace/Storage/lchen5/persistent/data/rxrx1_raw
+img_size: 224
+stage: 1
+model:
+  num_classes: 1139
+  backbone_source: channel_adaptive_dino
+  hub_model: channel_adaptive_dino_vitl16
+  hub_repo_dir: /home/idies/workspace/Storage/lchen5/persistent/vendor/dinov2
+  expected_hub_repo_commit: 7764ea0f912e53c92e82eb78a2a1631e92725fc8
+  checkpoint_path: /home/idies/workspace/Storage/lchen5/persistent/models/cell_dino/channel_adaptive_dino_vitl16_pretrain.pth
+  input_channels: 6
+  feature_pool: cls_patch_mean
+  pretrained: true
+  drop_path: 0.1
+  variant: original
+  freeze_backbone: false
+  placement: middle
+  routing_unit: token
+  geometry: cosine
+  pressure: canonical
+  n_experts: 8
+  top_k: 1
+train:
+  epochs: 10
+  batch_size: 32
+  num_workers: 8
+  optim: {name: adamw, lr: 1.0e-4, weight_decay: 0.05}
+  warmup_epochs: 1
+  llrd: 1.0
+  rand_resized_crop: false
+  rxrx1_transform: wilds
+  rxrx1_channel_layout: native6
+analysis:
+  record_train_accuracy: true
+  run_mechanism: false
+

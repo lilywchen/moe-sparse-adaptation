@@ -73,32 +73,35 @@ class CCASModel(nn.Module):
             self.backbone_provenance = {
                 "source": "timm", "model": timm_name, "pretrained": bool(pretrained),
             }
-        elif self.backbone_source == "cell_dino":
-            if int(img) != 128:
+        elif self.backbone_source in ("cell_dino", "channel_adaptive_dino"):
+            if self.backbone_source == "cell_dino" and int(img) != 128:
                 raise ValueError("Cell-DINO CP ViT-S/8 competence protocol requires img_size=128")
+            if self.backbone_source == "channel_adaptive_dino" and int(img) != 224:
+                raise ValueError("Channel-Adaptive DINO ViT-L/16 protocol requires img_size=224")
             if not hub_repo_dir:
-                raise ValueError("model.hub_repo_dir is required for Cell-DINO")
+                raise ValueError(f"model.hub_repo_dir is required for {self.backbone_source}")
             repo = Path(hub_repo_dir).expanduser().resolve()
             if not repo.is_dir():
-                raise FileNotFoundError(f"Cell-DINO hub repo not found: {repo}")
+                raise FileNotFoundError(f"DINO hub repo not found: {repo}")
             repo_sha = _git_sha(repo)
             if expected_hub_repo_commit and repo_sha != str(expected_hub_repo_commit):
                 raise RuntimeError(
-                    f"Cell-DINO repo commit mismatch: expected {expected_hub_repo_commit}, got {repo_sha}")
+                    f"DINO repo commit mismatch: expected {expected_hub_repo_commit}, got {repo_sha}")
             checkpoint = None
             if pretrained:
                 if not checkpoint_path:
-                    raise ValueError("model.checkpoint_path is required when Cell-DINO is pretrained")
+                    raise ValueError(
+                        f"model.checkpoint_path is required when {self.backbone_source} is pretrained")
                 checkpoint = Path(checkpoint_path).expanduser().resolve()
                 if not checkpoint.is_file():
-                    raise FileNotFoundError(f"Cell-DINO checkpoint not found: {checkpoint}")
+                    raise FileNotFoundError(f"DINO checkpoint not found: {checkpoint}")
             self.backbone = torch.hub.load(
                 str(repo), hub_model, source="local", pretrained=bool(pretrained),
                 pretrained_path=(str(checkpoint) if checkpoint is not None else None),
                 in_channels=int(input_channels), drop_path_rate=float(drop_path),
             )
             self.backbone_provenance = {
-                "source": "cell_dino", "model": hub_model, "pretrained": bool(pretrained),
+                "source": self.backbone_source, "model": hub_model, "pretrained": bool(pretrained),
                 "hub_repo_commit": repo_sha,
                 "checkpoint_filename": (checkpoint.name if checkpoint is not None else None),
                 "checkpoint_sha256": (_sha256(checkpoint) if checkpoint is not None else None),
