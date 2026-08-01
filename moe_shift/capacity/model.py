@@ -63,6 +63,7 @@ class CCASModel(nn.Module):
                  expected_hub_repo_commit=None, freeze_backbone=False, **_ignore):
         super().__init__()
         self.backbone_source = str(backbone_source)
+        self.input_channels = int(input_channels)
         self.feature_pool = str(feature_pool)
         if self.feature_pool not in ("cls", "cls_patch_mean"):
             raise ValueError(f"unknown feature_pool: {self.feature_pool!r}")
@@ -98,20 +99,26 @@ class CCASModel(nn.Module):
             self.backbone = torch.hub.load(
                 str(repo), hub_model, source="local", pretrained=bool(pretrained),
                 pretrained_path=(str(checkpoint) if checkpoint is not None else None),
-                in_channels=int(input_channels), drop_path_rate=float(drop_path),
+                in_channels=self.input_channels, drop_path_rate=float(drop_path),
             )
             self.backbone_provenance = {
                 "source": self.backbone_source, "model": hub_model, "pretrained": bool(pretrained),
                 "hub_repo_commit": repo_sha,
                 "checkpoint_filename": (checkpoint.name if checkpoint is not None else None),
                 "checkpoint_sha256": (_sha256(checkpoint) if checkpoint is not None else None),
-                "input_channels": int(input_channels),
+                "input_channels": self.input_channels,
                 "feature_pool": self.feature_pool,
             }
         else:
             raise ValueError(f"unknown model.backbone_source: {self.backbone_source!r}")
 
-        self.dim = self.backbone.num_features * (2 if self.feature_pool == "cls_patch_mean" else 1)
+        # DINO-BoC independently encodes each acquisition with one shared 1-channel ViT.  Meta's
+        # evaluation path concatenates the per-channel CLS features, and optionally the per-channel
+        # mean patch features, so the downstream width scales with the number of input channels.
+        channel_factor = self.input_channels if self.backbone_source == "channel_adaptive_dino" else 1
+        self.dim = self.backbone.num_features * channel_factor * (
+            2 if self.feature_pool == "cls_patch_mean" else 1
+        )
         # Plain list on purpose: blocks remain registered only under the backbone, preserving the
         # official checkpoint namespace. convert_block only needs mutable references.
         self.blocks = _actual_blocks(self.backbone)
@@ -138,6 +145,25 @@ class CCASModel(nn.Module):
             self._moe_block.set_env(env)
 
     def forward_features(self, x):
+        if self.backbone_source == "channel_adaptive_dino":
+            # The official Bag-of-Channels route lives in get_intermediate_layers(): it reshapes
+            # BxCxHxW to (B*C)x1xHxW, applies the shared encoder, then restores/concatenates C.
+            # Calling the ordinary forward_features path would incorrectly feed C channels into a
+            # one-channel patch embedding and either fail or silently bypass the intended model.
+            intermediate = self.backbone.get_intermediate_layers(x, n=1)
+            if len(intermediate) != 1 or len(intermediate[-1]) != 2:
+                raise RuntimeError("unexpected Channel-Adaptive DINO intermediate output")
+            patch_tokens, cls_tokens = intermediate[-1]
+            if patch_tokens.ndim != 4 or cls_tokens.ndim != 2:
+                raise RuntimeError(
+                    "Channel-Adaptive DINO must return BxCxNxD patches and Bx(CD) CLS features"
+                )
+            if patch_tokens.shape[0] != x.shape[0] or patch_tokens.shape[1] != self.input_channels:
+                raise RuntimeError("Channel-Adaptive DINO batch/channel restoration mismatch")
+            if self.feature_pool == "cls":
+                return cls_tokens
+            patch_mean = patch_tokens.mean(dim=-2).reshape(patch_tokens.shape[0], -1)
+            return torch.cat((cls_tokens, patch_mean), dim=-1)
         f = self.backbone.forward_features(x)
         if isinstance(f, dict):
             cls = f["x_norm_clstoken"]

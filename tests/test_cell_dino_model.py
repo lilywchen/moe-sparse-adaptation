@@ -52,6 +52,16 @@ class _FakeCellDino(nn.Module):
         }
 
 
+class _FakeChannelAdaptiveDino(_FakeCellDino):
+    def get_intermediate_layers(self, x, n=1):
+        assert n == 1
+        batch, channels, height, width = x.shape
+        raw = self.forward_features(x.reshape(batch * channels, 1, height, width))
+        patches = raw["x_norm_patchtokens"].reshape(batch, channels, -1, self.num_features)
+        cls = raw["x_norm_clstoken"].reshape(batch, channels * self.num_features)
+        return ((patches, cls),)
+
+
 def test_cell_dino_adapter_flattens_chunks_and_extracts_cls(monkeypatch, tmp_path):
     checkpoint = tmp_path / "cell_dino.pth"
     checkpoint.write_bytes(b"fake checkpoint for provenance test")
@@ -115,7 +125,7 @@ def test_channel_adaptive_dino_loads_native_six_channel_backbone(monkeypatch, tm
         assert model == "channel_adaptive_dino_vitl16"
         assert kwargs["pretrained_path"] == str(checkpoint.resolve())
         assert kwargs["in_channels"] == 6
-        return _FakeCellDino()
+        return _FakeChannelAdaptiveDino()
 
     monkeypatch.setattr(torch.hub, "load", fake_load)
     model = CCASModel(
@@ -126,4 +136,20 @@ def test_channel_adaptive_dino_loads_native_six_channel_backbone(monkeypatch, tm
     )
     assert model.backbone_provenance["source"] == "channel_adaptive_dino"
     assert model.backbone_provenance["input_channels"] == 6
+    assert model.dim == 2 * 6 * 32
+    assert model.fc.in_features == 2 * 6 * 32
     assert tuple(model(torch.randn(2, 6, 16, 16)).shape) == (2, 11)
+
+
+def test_channel_adaptive_dino_uses_official_bag_of_channels_features(monkeypatch, tmp_path):
+    backbone = _FakeChannelAdaptiveDino()
+    monkeypatch.setattr(torch.hub, "load", lambda *args, **kwargs: backbone)
+    model = CCASModel(
+        num_classes=11, variant="original", backbone_source="channel_adaptive_dino",
+        hub_repo_dir=tmp_path, pretrained=False, hub_model="channel_adaptive_dino_vitl16",
+        input_channels=6, img=224, feature_pool="cls_patch_mean",
+    )
+    x = torch.randn(2, 6, 16, 16)
+    patches, cls = backbone.get_intermediate_layers(x, n=1)[-1]
+    expected = torch.cat((cls, patches.mean(dim=-2).reshape(2, -1)), dim=-1)
+    torch.testing.assert_close(model.forward_features(x), expected)
