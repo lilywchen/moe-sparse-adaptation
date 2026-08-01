@@ -6,14 +6,35 @@ from sklearn.metrics import normalized_mutual_info_score
 
 @torch.no_grad()
 def capture(model, loader, device):
-    """Per-image top-1 expert id, site label, AND class label (MoE models only)."""
+    """Top-1 expert id and aligned site/class labels for any MoE routing unit.
+
+    Image routing emits one assignment per image. Token routing emits one assignment per token,
+    so the image-level labels must be repeated in image-major order before mutual information is
+    computed. Treating token assignments as image assignments creates unequal sample counts and
+    silently drops the routing diagnostics in ``run_ccas.py``.
+    """
     model.eval()
     experts, sites, labels = [], [], []
     for x, y, site, *_ in loader:
         model(x.to(device))
-        experts.append(model.moe_block.top1().numpy())
-        sites.append(np.asarray(site))
-        labels.append(np.asarray(y))
+        assignment = model.moe_block.top1().numpy()
+        site = np.asarray(site)
+        label = np.asarray(y)
+        if assignment.shape[0] != site.shape[0]:
+            if site.shape[0] == 0 or assignment.shape[0] % site.shape[0] != 0:
+                raise ValueError(
+                    "routing assignments cannot be aligned to image labels: "
+                    f"{assignment.shape[0]} assignments for {site.shape[0]} images")
+            tokens_per_image = assignment.shape[0] // site.shape[0]
+            recorded = (getattr(model.moe_block, "last", None) or {}).get("tokens_per_image")
+            if recorded is not None and int(recorded) != tokens_per_image:
+                raise ValueError(
+                    f"router recorded {recorded} tokens/image but emitted {tokens_per_image}")
+            site = np.repeat(site, tokens_per_image)
+            label = np.repeat(label, tokens_per_image)
+        experts.append(assignment)
+        sites.append(site)
+        labels.append(label)
     return np.concatenate(experts), np.concatenate(sites), np.concatenate(labels)
 
 

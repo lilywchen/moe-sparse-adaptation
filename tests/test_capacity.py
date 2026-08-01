@@ -9,10 +9,12 @@ These assert the two properties the whole comparison rests on:
 """
 import copy
 
+import numpy as np
 import pytest
 import torch
 import torch.nn as nn
 
+from moe_shift.audit.routing import capture
 from moe_shift.capacity import (MoEFFN, Router, WideFFN, budget_delta_pct, check_budget,
                                 convert_block, global_lbl, placement_index, within_batch_lbl)
 
@@ -77,6 +79,26 @@ def test_frozen_router_is_function_preserving_and_has_no_grads(mlp, x):
     assert torch.allclose(moe(x), mlp(x), atol=1e-6)
     assert all(not p.requires_grad for p in moe.router.parameters())
     assert any(p.requires_grad for p in moe.experts.parameters()), "experts must still train"
+
+
+@pytest.mark.parametrize("routing_unit, repeats", [("image", 1), ("token", T)])
+def test_routing_capture_aligns_image_labels_to_assignments(mlp, x, routing_unit, repeats):
+    class AuditModel(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.moe_block = MoEFFN(mlp, n_experts=E, routing_unit=routing_unit)
+
+        def forward(self, batch):
+            return self.moe_block(batch)
+
+    labels = torch.arange(B)
+    sites = torch.arange(B) + 10
+    expert, captured_site, captured_label = capture(
+        AuditModel(), [(x, labels, sites)], torch.device("cpu"))
+
+    assert len(expert) == B * repeats
+    assert np.array_equal(captured_site, np.repeat(sites.numpy(), repeats))
+    assert np.array_equal(captured_label, np.repeat(labels.numpy(), repeats))
 
 
 def test_symbreak_preserves_function_exactly(mlp, x):
