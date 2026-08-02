@@ -841,3 +841,13 @@ Strict JSON, run/seed/epoch/config, finite metric, four-environment, ERM, tracki
 worker was healthy beyond epoch 37, all ten available H100s were assigned, seven tested cells were
 queued, and tester6 remained Pending for the recorded capacity reason. Search multiplicity and
 seed-0 selection remain the largest threats.
+
+## 2026-08-02 00:38 ET — dominated late output cell released
+
+The late image-linear output arm passes strict epoch-10 validation at OOD/ID/worst
+`0.119444/0.293386/0.015422` and is strictly dominated by the validated middle token-cosine
+canonical cell on all frozen triage axes. It was pruned after preservation. The shard scheduler
+refilled GPU 0 on container 2875 with late token-linear route (PID 73667), which acquired 7,997 MiB
+without a duplicate output or process. Coverage is 30/8/1, with 26 pruned, 10 active, six queued,
+37 W&B launches, and no unassigned available H100. This is allocation evidence only; OOD test is
+sealed and exact dense comparisons remain the efficacy gate.

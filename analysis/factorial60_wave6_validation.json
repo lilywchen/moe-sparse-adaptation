@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "strictly_valid_epoch10_prune_and_refill",
+  "campaign": "factorial60_20260801",
+  "validated_at": "2026-08-02T00:38:44-04:00",
+  "run": {
+    "run_id": "rxrx1_moe_late_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+    "milestone_epoch": 10,
+    "seed": 0,
+    "train": 0.44913249211356465,
+    "id": 0.29338619127351523,
+    "ood_val": 0.11944388065760098,
+    "worst_experiment": 0.015422077922077922,
+    "per_environment_ood_val": {
+      "7": 0.07392363931762795,
+      "27": 0.28287337662337664,
+      "42": 0.10551948051948051,
+      "49": 0.015422077922077922
+    },
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "classification_objective": "erm"
+  },
+  "checks": {
+    "parseable_jsonl": true,
+    "exact_run_seed_epoch_identity": true,
+    "finite_required_metrics": true,
+    "four_expected_validation_environments": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "ood_test_metric_fields_absent_or_null": true,
+    "classification_objective_erm": true,
+    "fatal_log_scan_clear": true,
+    "frozen_config_and_tracking_verified": true
+  },
+  "provenance": {
+    "github_source_commit": "bd213dbd7758f456eb822379707627b1998847ff",
+    "sciserver_execution_commit": "b8ece25e05dc675bd6a61e0728879e53130e453e",
+    "execution_tree": "7320d64944c34c9ee832924ee06429491739354f"
+  },
+  "dominance": {
+    "comparator_run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+    "comparator_minus_candidate_ood_val": 0.01207631418713212,
+    "comparator_minus_candidate_id": 0.00977543583177386,
+    "comparator_minus_candidate_worst_experiment": 0.004058441558441559,
+    "strictly_dominated_on_all_frozen_triage_axes": true
+  },
+  "decision": "pruned_after_validation",
+  "refill": {
+    "run_id": "rxrx1_moe_late_token_linear_route_E8k1_ep60_s0_factorial60_20260801",
+    "container_id": 2875,
+    "gpu": 0,
+    "launcher_pid": 73667,
+    "no_duplicate": true,
+    "persistent_output_and_log": true,
+    "gpu_model_memory_mib": 7997,
+    "wandb_run_number_cumulative": 37
+  },
+  "cumulative_state": {
+    "validated_epoch10_milestones": 30,
+    "validated_epoch30_milestones": 8,
+    "validated_epoch60_milestones": 1,
+    "completed_valid_results": 1,
+    "pruned_runs": 26,
+    "active_runs": 10,
+    "queued_tested_runs": 6,
+    "idle_available_h100s": 0
+  },
+  "interpretation": "Late image-linear output routing is dominated at epoch 10 and adds no evidence for a delayed mechanism, so it releases compute under the frozen halving rule.",
+  "largest_threat": "Seed-0 search multiplicity; exact dense efficacy pairs remain pending."
+}

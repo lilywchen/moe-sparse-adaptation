@@ -1255,3 +1255,14 @@ advanced past epoch 37 without a fatal log. It remains licensed to epoch 60 unde
 rule. All ten available H100s remain assigned to ten distinct workers; seven tested arms remain
 queued. `tester6` 2893 is still Pending for the unchanged 11-affinity, 2-unschedulable,
 3-insufficient-GPU reason. OOD test remains sealed.
+
+## 2026-08-02 00:38 EDT factorial60 epoch-10 prune and refill
+
+Late image-linear output routing is strictly valid at epoch 10 but is dominated on OOD validation,
+ID, and worst-experiment accuracy: `0.119444/0.293386/0.015422`. The already validated middle
+token-cosine canonical cell exceeds it by `0.012076/0.009775/0.004058` on those axes. The worker was
+terminated only after its complete row was preserved, and shard 1 immediately refilled GPU 0 with
+the distinct tested late token-linear route arm. Cumulative coverage is 30/8/1, pruning is 26,
+37 W&B runs have launched, 10 workers are active, six tested arms remain queued, and zero available
+H100s are unassigned. All split/test guards remain intact; tester6 remains Pending for the recorded
+capacity reason.
