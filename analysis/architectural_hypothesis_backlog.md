@@ -1,9 +1,10 @@
 # RxRx1 Cell-DINO architectural hypothesis backlog
 
-Status: predeclared exploratory backlog, 2026-08-01 23:39 EDT. This registry extends the active
+Status: predeclared exploratory backlog, updated 2026-08-02 11:47 EDT. This registry extends the active
 factorial60 queue; it does not interrupt healthy workers and does not license OOD-test access.
-The active factorial60 campaign already has 14 tested runnable arms, so its immediate refill queue
-exceeds the 12-arm minimum. The rows below are the next bounded architectural questions to make
+The active campaign has eleven tested runnable arms after the latest refill. Two additional E2
+lower-bracket arms are predeclared below and become runnable only after isolated SciServer tests
+and dry runs, restoring the immediate queue above the 12-arm minimum. The rows below are the next bounded architectural questions to make
 runnable through isolated implementation, regression testing, smoke tests, and exact matched
 controls. A selected seed-0 winner remains exploratory until its configuration is locked and
 replicated unchanged at fresh seeds.
@@ -88,19 +89,21 @@ matched performance comparison.
 
 ## Immediate refill policy
 
-Fourteen nonduplicate arms are now tested and dry-run ready; none displaces a healthy worker:
+Eleven nonduplicate arms remain tested and dry-run ready after three locked confirmations and one
+E4 architecture arm entered service. Two new low-temperature E2 lower-bracket arms are now
+predeclared and await remote licensing; none displaces a healthy worker:
 
-1. four locked 60-epoch confirmation arms for the canonical `balance=0.01,zloss=0.01` sparse
-   survivor and its exact same-placement early dense comparator at fresh seeds 1 and 2;
-2. eight expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
+1. eight expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
    tail-safe versus zero auxiliary pressure; these are active-compute matched and must not be
    described as exact-total-parameter or original-budget matched; and
-3. the two remaining router-temperature cells at temperature `0.2`, zero balance, and zero z-loss.
+2. the three remaining low-temperature E4/E16 pressure cells; and
+3. two new low-temperature E2 pressure arms sharing the completed E8 anchor. E2 is a capacity-
+   starved architecture falsifier: specialization predicts E2 < E4/E8 with both experts alive,
+   while an E2 tie would favor generic regularization over a need for a larger expert bank.
 
-The locked fresh-seed pairs have first refill priority because the seed-0 sparse survivor improves
-OOD validation, ID, and worst-experiment accuracy over its exact early dense comparator, satisfying
-the predeclared smaller-mean-plus-consistent-tail confirmation pathway. Expert-count arms answer
-the next architectural question rather than retuning the selected pair. All 14 inherit the sealed
+The three remaining low-temperature E4/E16 cells have first refill priority, followed by the two
+E2 lower-bracket arms and then the eight broader expert-count cells. Expert-count arms answer the
+next architectural question rather than retuning the selected pair. All arms inherit the sealed
 OOD test, 10/30/60 checkpoints, exact data ordering within each pair, declared W&B groups and HF
 campaign folders, and milestone validation before scientific consumption. The 24 ranked questions
 above remain the hypothesis backlog.

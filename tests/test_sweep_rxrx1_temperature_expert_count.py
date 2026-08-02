@@ -5,10 +5,11 @@ from scripts.sweep_rxrx1_router_aux import sharded_rows
 
 def test_temperature_expert_count_has_complete_unique_budget():
     rows = sweep.cells()
-    assert len(rows) == 4
-    assert len({run_id for _, _, run_id in rows}) == 4
+    assert len(rows) == 6
+    assert len({run_id for _, _, run_id in rows}) == 6
     assert {tag for tag, _, _ in rows} == {
-        "canonical_E4", "canonical_E16", "route_E4", "route_E16"
+        "canonical_E2", "canonical_E4", "canonical_E16",
+        "route_E2", "route_E4", "route_E16",
     }
     assert sweep.WANDB_GROUP == (
         "rxrx1-cell-dino-temperature-expert-count60-20260802"
@@ -41,7 +42,7 @@ def test_temperature_expert_count_locks_geometry_and_varies_only_bounded_fields(
 
 def test_temperature_expert_count_shards_are_disjoint_and_exhaustive():
     rows = sweep.cells()
-    shards = [sharded_rows(rows, index, 4) for index in range(4)]
+    shards = [sharded_rows(rows, index, 6) for index in range(6)]
     flattened = [run_id for shard in shards for _, _, run_id in shard]
     assert len(flattened) == len(rows)
     assert set(flattened) == {run_id for _, _, run_id in rows}

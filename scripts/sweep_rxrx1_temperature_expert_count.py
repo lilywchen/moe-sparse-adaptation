@@ -3,11 +3,12 @@
 
 The seed-0 temperature screen selected canonical pressure with temperature 0.03, zero load-
 balance loss, and router z-loss 0.001.  This bounded architecture screen asks whether that gain
-depends on the size of the available expert bank.  It crosses 4 versus 16 experts with canonical
-versus within-experiment route pressure.  The completed E8 pressure pair is the shared anchor and
-is not duplicated.
+depends on the size of the available expert bank.  It crosses 2, 4, and 16 experts with canonical
+versus within-experiment route pressure.  E2 is the deliberately capacity-starved lower bracket:
+if useful conditional specialization drives the E8 signal, it should underperform E4/E8 while
+still using both experts.  The completed E8 pressure pair is the shared anchor and is not duplicated.
 
-All four jobs are seed-0, top-1, early token-cosine MoEs with the same optimizer, data order,
+All six jobs are seed-0, top-1, early token-cosine MoEs with the same optimizer, data order,
 60-epoch horizon, and 10/30/60 checkpoint policy.  Active expert compute is matched while total
 parameters intentionally vary, so this family supports only an active-compute-matched claim.
 Selection remains OOD validation; OOD test is sealed and every result is exploratory.
@@ -43,7 +44,7 @@ WANDB_TAGS = (
 )
 
 PRESSURES = ("canonical", "route")
-EXPERT_COUNTS = (4, 16)
+EXPERT_COUNTS = (2, 4, 16)
 TEMPERATURE = 3.0e-2
 BALANCE_W = 0.0
 ZLOSS_W = 1.0e-3
