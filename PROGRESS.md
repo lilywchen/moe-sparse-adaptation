@@ -2048,3 +2048,26 @@ so stable sparse specialization is not established. The alternative is seed-0 se
 or ordinary optimization noise. Failure of the locked seed-1/2 E16-minus-E8 mean or tail direction,
 or more than two ID points loss, is the sharp falsifier. This remains active-compute matched,
 multiplicity-exposed, and OOD-test blind.
+
+## 2026-08-02 20:25 EDT — Route E2 reaches its tail gate; matched E4 objective pairs remain tradeoffs
+
+Route-balanced E2 reaches a strict epoch-60 milestone with OOD/ID/worst
+`0.206312/0.526372/0.018669`. Against route E8 this is
+`+0.183/-0.059/+0.244` points, after `-0.071/-0.359/+0.122` at epoch 30. The
+final mean is positive, ID is effectively tied, and the worst-experiment direction is positive at
+both milestones. This satisfies the predeclared smaller-mean consistent-tail clause and licenses a
+locked E2 fresh-seed check sharing the already running/predeclared route-E8 seed anchors. The E2
+worker remains active for mechanism analysis and final-result emission, so its GPU is not yet free.
+
+The matched broader E4 objective comparisons also validate. At canonical epoch 10, tail-safe minus
+zero-auxiliary is `+0.589/-0.404/+0.081` OOD/ID/worst points. At route epoch 30 it is
+`+0.101/-1.135/-0.406`. Both are Pareto tradeoffs, so all four continue under successive halving;
+however, the route tail-safe worst-environment hypothesis currently fails and must recover at
+epoch 60 to remain plausible. No auxiliary objective effect is generalized across pressure.
+
+Source commit `488e77b` adds two locked E2 rows, one per fresh seed, with exact shared E8 comparator
+IDs. The remote source/test hashes match; four focused tests and the full suite pass, both exact
+one-cell dry runs are pending-clean, and indexed execution tree is
+`904aff13f75fec7b3b2a8b5fd7c2ac5b65fc88c4`. These two rows raise the tested ready queue to 16.
+Seed-1 E2 is the exact refill for container2887/GPU1 when worker 37957 and its controller finish;
+until then all ten H100s remain assigned and OOD test remains sealed.

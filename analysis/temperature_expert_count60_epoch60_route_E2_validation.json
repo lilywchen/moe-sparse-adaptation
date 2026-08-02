@@ -1,0 +1,47 @@
+{
+  "campaign": "temperature_expert_count60_20260802",
+  "status": "strict_epoch60_milestone_valid_locked_fresh_seed_E2_confirmation_licensed_final_mechanism_and_result_pending",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "route_E2_epoch60": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s0_temperature_expert_count60_route_E2_20260802",
+    "seed": 0,
+    "train": 1.0,
+    "id": 0.5263715158081356,
+    "ood_val": 0.20631215749949258,
+    "worst_experiment": 0.018668831168831168,
+    "checkpoint_bytes": 283357757,
+    "total_params": 23584500,
+    "active_ffn_params": 1182337
+  },
+  "route_E8_epoch60_anchor": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t3em2_bw0_z1em3_20260802",
+    "id": 0.5269624741455727,
+    "ood_val": 0.20448548812664907,
+    "worst_experiment": 0.016233766233766232
+  },
+  "route_E2_minus_route_E8_points": {
+    "epoch30": {"ood_val": -0.0710371423, "id": -0.3594996553, "worst_experiment": 0.1217532468},
+    "epoch60": {"ood_val": 0.1826669372843509, "id": -0.05909583374371641, "worst_experiment": 0.2435064935064936}
+  },
+  "strict_checks": {
+    "exact_run_seed_epoch_and_live_command_identity": true,
+    "finite_required_metrics": true,
+    "classification_objective_erm": true,
+    "four_expected_ood_validation_environments": [7, 27, 42, 49],
+    "ood_validation_sample_count": 9854,
+    "checkpoint_present": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "ood_test_fields_null": true
+  },
+  "decision": "prepare_locked_route_E2_seed1_seed2_rows_sharing_the_already_predeclared_route_E8_seed_anchors_and_launch_seed1_E2_on_worker_exit",
+  "promotion_basis": "epoch60 mean OOD is positive, ID is effectively tied, and the worst-experiment direction is positive at both epochs30 and60",
+  "interpretation": "route pressure makes the capacity-starved E2 bank a small tail-safe tradeoff rather than a generic capacity benefit",
+  "alternative": "the sub-point mean and tail changes are seed0 selection noise or ordinary optimization variation",
+  "falsifier": "locked fresh-seed E2-minus-E8 comparisons fail to preserve a positive tail direction without more than two ID points loss",
+  "multiplicity": "seed0 architecture survivor selected after prior factorial router auxiliary temperature and expert-count screens",
+  "largest_threat": "very small effect magnitude under extensive multiplicity and no final mechanism result yet"
+}

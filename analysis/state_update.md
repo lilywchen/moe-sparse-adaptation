@@ -1429,6 +1429,21 @@ weak route-pressure-by-bank-size interaction; the alternative is seed-0 selectio
 ordinary optimization noise. Only four of sixteen experts are used, making weak specialization
 the largest mechanism threat. The sharp falsifier is loss of the E16-minus-E8 mean or tail sign
 across locked seeds without acceptable ID retention.
+
+## 2026-08-02 20:25 EDT — Route E2 licenses a shared-anchor check; E4 objectives remain unsettled
+
+Route E2 minus route E8 at epoch 60 is `+0.183/-0.059/+0.244` OOD/ID/worst points, with a
+positive worst-experiment direction already present at epoch 30. It therefore licenses two locked
+fresh-seed E2 rows sharing the route-E8 anchors in the active confirmation family. The registry is
+tested and dry-run ready; seed-1 E2 launches only after worker 37957 finishes its declared final
+mechanism/result work.
+
+Canonical E4 tail-safe minus zero-aux at epoch 10 is `+0.589/-0.404/+0.081`, while route E4 at
+epoch 30 is `+0.101/-1.135/-0.406`. Both pairs are Pareto tradeoffs and continue, but route
+tail-safe currently worsens the metric it was designed to protect. This makes pressure-dependent
+or transient objective effects more plausible than a general tail-safe benefit. The exact
+falsifier is failure of route tail-safe to recover worst-experiment accuracy at epoch 60. Sixteen
+arms are tested-ready, ten H100s remain assigned, and OOD test is sealed.
 ## 2026-08-02 15:45 EDT — Canonical E16 is terminal-negative; canonical E4 remains unpaired
 
 Canonical E16 is below its exact same-pressure E8 anchor at epoch 60 by

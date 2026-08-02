@@ -1,0 +1,36 @@
+{
+  "campaign": "expert_count60_20260802",
+  "status": "strict_canonical_epoch10_and_route_epoch30_paired_objective_milestones_valid_continue_all_four_as_pareto_tradeoffs",
+  "fairness_class": "within_pressure_active_compute_matched_objective_comparisons",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "canonical_E4_epoch10": {
+    "tail_safe": {"ood_val": 0.1350720519585955, "id": 0.3178863390130996, "worst_experiment": 0.015016233766233766, "checkpoint_bytes": 311745867},
+    "zero_aux": {"ood_val": 0.12918611731276639, "id": 0.32192455431892053, "worst_experiment": 0.014204545454545454, "checkpoint_bytes": 311743572},
+    "tail_safe_minus_zero_aux_points": {"ood_val": 0.5885934645829122, "id": -0.4038215305820936, "worst_experiment": 0.0811688311688312},
+    "decision": "continue_both_to_epoch30_pareto_tradeoff"
+  },
+  "route_E4_epoch30": {
+    "tail_safe": {"ood_val": 0.18956768824842704, "id": 0.4523539840441249, "worst_experiment": 0.015827922077922076, "checkpoint_bytes": 311739683},
+    "zero_aux": {"ood_val": 0.18855287193018064, "id": 0.4637053087757313, "worst_experiment": 0.019886363636363636, "checkpoint_bytes": 311737388},
+    "tail_safe_minus_zero_aux_points": {"ood_val": 0.10148163182464032, "id": -1.1351324731606383, "worst_experiment": -0.405844155844156},
+    "decision": "continue_both_to_epoch60_pareto_tradeoff_but_tail_safe_worst_environment_hypothesis_currently_fails"
+  },
+  "strict_checks": {
+    "five_exact_run_seed_epoch_identities": true,
+    "finite_required_metrics": true,
+    "classification_objective_erm": true,
+    "four_expected_ood_validation_environments": [7, 27, 42, 49],
+    "ood_validation_sample_count": 9854,
+    "all_checkpoints_present_over_300MB": true,
+    "fatal_scans_clear": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "ood_test_fields_null": true
+  },
+  "interpretation": "tail-safe auxiliary loss has no stable tail benefit across pressure settings: it is a small aligned canonical epoch10 tradeoff but harms route worst-experiment accuracy at epoch30",
+  "alternative": "the objective effect is transient and may reverse again by epoch60 or reflect optimization noise",
+  "falsifier": "route tail-safe fails to recover worst-experiment accuracy by epoch60 or canonical tail-safe loses its small mean-tail direction at epoch30",
+  "multiplicity": "two paired seed0 objective contrasts after extensive prior architecture and router screens",
+  "largest_threat": "single-seed milestone volatility and incompatible maturity across canonical epoch10 and route epoch30 pairs"
+}
