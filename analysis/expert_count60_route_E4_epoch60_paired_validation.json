@@ -41,8 +41,12 @@
       "checkpoint_bytes": 311737388,
       "worker_pid": 54666,
       "wandb_run_id": "8an4h01j",
-      "final_result_complete": false,
-      "final_result_status": "declared_mechanism_analysis_and_result_emission_in_progress"
+      "experts_used": 4,
+      "routing_entropy": 0.9901196449210069,
+      "route_reliance": 0.0008118530545971336,
+      "final_result_complete": true,
+      "controller_exit_code": 0,
+      "published_manifest_remote_files": 7
     }
   },
   "deltas_points": {
@@ -68,11 +72,12 @@
     "checkpoint_identity_and_size": true,
     "fatal_scan_clear": true,
     "tail_safe_controller_rc0": true,
-    "zero_aux_worker_live_after_validation": true,
+    "zero_aux_controller_rc0_and_final_json_complete": true,
     "selection_split_ood_val": true,
-    "ood_test_blind": true
+    "ood_test_blind": true,
+    "zero_aux_checksum_manifest_and_remote_listing": true
   },
-  "decision": "terminal_no_epoch90_or_fresh_seed_license_for_tail_safe_route_E4_question; preserve_zero_aux_worker_until_declared_final_artifacts_then_refill_with_locked_E32_seed2",
+  "decision": "terminal_no_epoch90_or_fresh_seed_license_for_tail_safe_route_E4_question; locked_E32_seed2_refilled_released_gpu_after_clean_zero_aux_final_exit",
   "interpretation": "The tail-safe auxiliary improves mean OOD and ID slightly at epoch 60 but lowers worst-experiment accuracy at both epoch 30 and epoch 60. It therefore fails the predeclared route-tail protection hypothesis for this exact recipe.",
   "alternative": "The small mean difference is ordinary auxiliary regularization or trajectory noise, not tail-safe routing; near-zero randomized-route reliance supports that alternative.",
   "falsifier": "A routing-specific tail-safety explanation would require a positive, stable worst-experiment difference with non-negligible route reliance and an exact dense objective control; none is present here.",

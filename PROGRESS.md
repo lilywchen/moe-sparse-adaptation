@@ -2193,3 +2193,21 @@ capacity/optimization regularization with unstable tail effects, not useful high
 specialization. Later locked milestones and route-reliance diagnostics are the sharp falsifier.
 Multiplicity is explicit, active-compute and exact-total claims remain separate, and OOD test is
 sealed.
+
+The route-E4 zero-auxiliary controller then exits cleanly (`rc=0`) with a strict final JSON. Its
+mechanism row uses all four experts but has route reliance only `0.00081`, reinforcing the terminal
+negative tail-safety interpretation. Container2874/GPU0 immediately refills with the predeclared
+locked route-E32 seed-2 arm after two focused tests, the prior 130-test suite, an exact one-cell dry
+run, absent result/prune/active artifacts, duplicate-process guard, physical GPU check, declared
+W&B/HF destinations, and sealed-test check pass. Controller 58235 starts worker 58240/W&B
+`e7s5hj5m`; it owns about 8.3 GiB, loads 9,854 OOD-validation samples with test untouched, and its
+initial fatal scan is clear. All eight confirmation rows are now active, the tested ready queue is
+12, and the route-E4 zero-auxiliary seven-file checksum publication is running under a strict
+one-run validator.
+
+The first publisher payload fails syntax compilation before mutation; its single narrow retry is
+compiled before launch and then completes. Route-E4 zero-auxiliary now has one checksum manifest
+and seven remotely listed files: result JSON, run log, milestone stream, three checkpoints, and
+manifest. The verified report is `/home/idies/workspace/hb_publish_route_E4_zero_1735.report.json`.
+This closes artifact traceability only; the terminal negative, multiplicity, fairness, and sealed-
+test conclusions are unchanged.

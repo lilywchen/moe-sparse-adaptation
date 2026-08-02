@@ -1531,3 +1531,16 @@ emit its declared mechanism/final artifacts, so all ten available H100s are stil
 E32 seed 2 is the exact first refill on that clean exit. Seven confirmation rows have valid epoch-10
 milestones, one is queued, 13 arms are ready, backlog is 27, tester6 remains scheduler-Pending, and
 OOD test is sealed.
+
+Route-E4 zero-auxiliary subsequently exits `rc=0` with its strict final result and negligible
+route reliance (`0.00081`). Its released container2874/GPU0 immediately starts locked E32 seed 2
+as controller 58235, worker 58240, W&B `e7s5hj5m`. The exact one-cell dry run, two focused tests,
+prior 130-test suite, result/prune/active and duplicate guards, physical GPU check, persistent
+destinations, and sealed-test checks pass. All eight locked confirmation rows are active, all ten
+available H100s are assigned, 12 arms remain ready, and backlog remains 27. A strict one-run
+checksum publication for the completed route-E4 zero-auxiliary artifacts is active.
+
+The publisher's first encoded payload fails syntax compilation before any manifest or upload. Its
+single narrow retry compiles and completes: route-E4 zero-auxiliary has one checksum manifest and
+seven remotely verified files. Publication changes traceability only; no scientific promotion,
+fairness reclassification, or OOD-test access follows.
