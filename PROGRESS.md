@@ -1102,3 +1102,47 @@ and 11 fail affinity; the single prior start request was not repeated. Next: val
 epoch-10 handoff, apply the same declared pruning rule, and immediately refill every released GPU.
 The first MoE-minus-dense efficacy comparison is licensed only after the exact placement/pressure-
 matched dense control reaches the same milestone.
+
+### 2026-08-01 23:08 ET — second epoch-10 wave and first epoch-30 wave validated; eight leases refilled
+
+Classification is `RUNNING_HEALTHY`. Four additional epoch-10 rows and all six epoch-30 rows from
+the first frontier pass exact run/config/seed/epoch identity, finite train/ID/OOD-validation/worst-
+experiment metrics, four-environment coverage and counts, ERM objective, `selection_split=ood_val`,
+`test_evaluated=false`, absent OOD-test fields, shared commit/tree provenance, tracking identity,
+and fatal-log checks. Cumulative validated coverage is 14 epoch-10 milestones and six epoch-30
+milestones, with 0/43 completed result JSONs. Exact normalized evidence is in
+`analysis/factorial60_wave2_validation.json`.
+
+At epoch 30, early image-linear route reaches `0.200223` OOD validation, `0.475672` ID, and
+`0.019075` worst-experiment accuracy and strictly dominates the other five first-wave survivors
+on all three triage axes. It advances to epoch 60. Middle image-linear output (`0.129186` OOD,
+`0.308923` ID, `0.018263` worst experiment) is the only cell from the new epoch-10 wave that
+remains on the cumulative frontier and advances to epoch 30. Eight dominated cells were stopped
+only after their complete validated milestones; all rows and logs remain preserved. These are
+exploratory allocation decisions, not sparse-efficacy evidence.
+
+All eight released GPUs immediately refilled with distinct next cells, restoring ten direct
+workers across containers 2887/2875/2874/2862/2859. Each container owns two workers; current
+per-GPU model allocations are about 8.0--8.1 GiB, all worker environments report the declared W&B
+group/job/tags, the five fatal scans are empty, and the execution checkout remains clean at
+`b8ece25e05dc675bd6a61e0728879e53130e453e`. Instantaneous GPU utilization varies during CPU-heavy
+evaluation/data phases but no allocated GPU is idle: all ten direct workers are alive with fresh
+logs. Current accounting is 10 active, 21 queued, 12 cumulatively pruned, and 0 idle among the ten
+available H100s; 22 W&B runs have been launched cumulatively. HF publication remains pending
+strict completed-result validation.
+
+The dense baselines are known, not missing. The six controls are early/middle/late crossed with
+canonical/output pressure; route-balanced MoE pairs with same-placement canonical dense. The
+current leader's exact comparator is
+`rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801`. Its new 60-epoch-schedule
+milestone has not emitted yet, so no conditional-gain claim is made; the older validated middle-
+canonical 90-epoch dense trajectory remains context but is not the exact placement/schedule pair.
+This comparator is the highest-priority safe refill once a lease can be reassigned without
+interrupting a healthy pre-milestone worker. Search multiplicity and the pending exact paired
+contrast remain the largest threats.
+
+`tester6` container 2893 remains authoritatively `Pending`: 11 nodes fail affinity, two are
+unschedulable, and three lack the requested GPUs; the prior single start request was not repeated.
+Next: strictly validate the next complete epoch-10 wave, apply the frozen Pareto rule, promote the
+early canonical dense comparator at the next safe refill opportunity, and continue the two current
+frontier arms to their licensed milestones. OOD test remains sealed.

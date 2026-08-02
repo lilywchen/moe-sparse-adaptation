@@ -74,6 +74,8 @@ and downstream use. `Decision-grade` means eligible for a predeclared scientific
 
 ## Validation required before a new claim
 
+| Factorial60 second halving handoff preserves one epoch-30 and one new epoch-10 frontier cell | validated exploratory diagnostic; no sparse efficacy claim | RxRx1 / factorial60 wave two | `analysis/factorial60_wave2_validation.json`; persistent milestone/log streams under `substrate_rxrx1/cell_dino_cp5/factorial60_20260801/` | GitHub source `bd213dbd7758f456eb822379707627b1998847ff`; SciServer execution `b8ece25e05dc675bd6a61e0728879e53130e453e`; tree `7320d64944c34c9ee832924ee06429491739354f` | 14 epoch-10 and six epoch-30 rows pass `selection_split=ood_val`, `test_evaluated=false`, null/absent OOD-test fields, exact four-environment coverage; OOD test sealed | early image-linear route epoch 30 OOD/ID/worst `0.200223/0.475672/0.019075`; middle image-linear output epoch 10 `0.129186/0.308923/0.018263`; eight pruned this handoff, ten active, 21 queued, 0 idle, five fatal scans empty | allocation/pruning only; exact known early-canonical dense comparator must emit on the matched 60-epoch schedule before conditional gain is defined; multiplicity is the largest threat |
+
 For every completed CCAS JSON, verify parseability; finite required metrics; exact dataset, seed,
 run ID, and config identity; total/active parameter fields; `selection_split=ood_val`;
 `test_evaluated=false`; clean common tested commit; and expected manifest membership. Do not count a

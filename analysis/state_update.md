@@ -720,3 +720,30 @@ pressure for the mean/tail tradeoff, but the sharp falsifier is their exact matc
 if those controls close the gap, the apparent advantage is placement/pressure or ordinary capacity,
 not conditional computation. Multiplicity remains the largest threat, and any eventual winner is
 exploratory until locked seeds 1 and 2 replicate it without OOD-test access.
+
+## 2026-08-01 23:08 ET — factorial60 wave-two successive-halving handoff
+
+Four new epoch-10 milestones and six epoch-30 milestones are strictly valid. Cumulative coverage is
+14 valid epoch-10 rows and six valid epoch-30 rows, with no completed result JSON yet. Early
+image-linear route is the sole epoch-30 frontier survivor: OOD validation `0.200223`, ID `0.475672`,
+and worst experiment `0.019075`. It strictly dominates the five other first-wave survivors on all
+three predeclared triage metrics. Middle image-linear output is the sole new epoch-10 survivor at
+OOD `0.129186`, ID `0.308923`, and worst experiment `0.018263`.
+
+Three new epoch-10 cells and five epoch-30 cells were pruned only after complete validated
+milestones. Eight nonduplicate cells immediately refilled the released leases. Ten direct workers
+remain active across five 2-H100 containers, 21 cells remain queued, 12 are cumulatively pruned,
+and zero of the ten available allocations are idle. All live workers use the declared W&B
+group/job/tags; five fatal scans are empty; the isolated execution checkout is clean at
+`b8ece25e05dc675bd6a61e0728879e53130e453e` / tree
+`7320d64944c34c9ee832924ee06429491739354f`. `tester6` remains Pending for the exact recorded
+scheduler-capacity reason after one start request.
+
+The exact dense baselines and their queue locations are known. The present leader pairs with
+`rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801`; its matched 60-epoch-schedule
+milestone is pending, rather than unknown. The older middle-canonical dense trajectory is valid
+context but not an exact replacement because placement and the 60-versus-90-epoch learning-rate
+schedule differ. Therefore the current result is diagnostic/provisional only. Its sharp falsifier
+is the locked early canonical dense contrast: less than +5 absolute OOD points without a consistent
+tail improvement rejects a material sparse effect. Multiplicity remains the largest threat. OOD
+test is sealed.
