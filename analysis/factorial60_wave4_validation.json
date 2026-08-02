@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "status": "strictly_valid_wave4_handoff_and_first_completed_result",
+  "campaign": "factorial60_20260801",
+  "validated_at": "2026-08-02T00:11:05-04:00",
+  "source_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/factorial60_20260801",
+  "provenance": {
+    "github_source_commit": "bd213dbd7758f456eb822379707627b1998847ff",
+    "sciserver_execution_commit": "b8ece25e05dc675bd6a61e0728879e53130e453e",
+    "execution_tree": "7320d64944c34c9ee832924ee06429491739354f",
+    "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
+    "dinov2_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8"
+  },
+  "common_checks": {
+    "parseable_jsonl_and_result_json": true,
+    "exact_run_seed_epoch_identity": true,
+    "unique_run_ids_within_gate": true,
+    "finite_required_metrics": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "completed_result_ood_test_fields_null": true,
+    "four_expected_validation_environments": true,
+    "per_environment_counts": true,
+    "classification_objective_erm": true,
+    "log_fatal_scan_clear": true,
+    "wandb_group_and_launcher_job_tags_verified": true,
+    "clean_execution_commit": true
+  },
+  "parameter_accounting": {
+    "moe_total_parameters": 30676212,
+    "paired_dense_wide_total_parameters": 30675834,
+    "mismatch_parameters": 378,
+    "mismatch_fraction": 0.000012322403361551637,
+    "completed_moe_active_ffn_parameters": 1184641,
+    "completed_moe_ffn_block_parameters": 9455617,
+    "completed_moe_router_parameters": 3073,
+    "fairness_class": "exact_total_parameter_matched",
+    "route_pressure_pairing": "Within-environment route-pressure MoE pairs with the same-placement canonical dense-wide control frozen in PLAN.md."
+  },
+  "new_epoch10": {
+    "validated_runs": 7,
+    "metrics": [
+      {
+        "run_id": "rxrx1_moe_middle_token_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.4600256309148265,
+        "id": 0.3030138875209298,
+        "ood_val": 0.11913943576212706,
+        "worst_experiment": 0.013798701298701298
+      },
+      {
+        "run_id": "rxrx1_moe_late_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.37672515772870663,
+        "id": 0.2492613020782035,
+        "ood_val": 0.10371422772478181,
+        "worst_experiment": 0.007711038961038961
+      },
+      {
+        "run_id": "rxrx1_moe_late_image_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.4542093848580442,
+        "id": 0.2935585541219344,
+        "ood_val": 0.12999797036736352,
+        "worst_experiment": 0.015827922077922076
+      },
+      {
+        "run_id": "rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801",
+        "train": 0.4692921924290221,
+        "id": 0.303604845858367,
+        "ood_val": 0.14450984371828698,
+        "worst_experiment": 0.013392857142857142
+      },
+      {
+        "run_id": "rxrx1_moe_late_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.4665812302839117,
+        "id": 0.3014133753570373,
+        "ood_val": 0.13030241526283742,
+        "worst_experiment": 0.015422077922077922
+      },
+      {
+        "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.4767103706624606,
+        "id": 0.3031616271052891,
+        "ood_val": 0.1315201948447331,
+        "worst_experiment": 0.01948051948051948
+      },
+      {
+        "run_id": "rxrx1_moe_middle_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.43064865930599366,
+        "id": 0.28233034571062743,
+        "ood_val": 0.12360462756241121,
+        "worst_experiment": 0.012581168831168832
+      }
+    ],
+    "continued_runs": [
+      "rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "pruned_runs": [
+      "rxrx1_moe_middle_token_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_image_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_middle_token_linear_output_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "dominance_reference": "The five pruned rows are strictly dominated by the previously validated early image-linear route frontier on OOD validation, ID accuracy, and worst-experiment accuracy."
+  },
+  "new_epoch30": {
+    "validated_runs": 1,
+    "metrics": [
+      {
+        "run_id": "rxrx1_moe_middle_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+        "train": 0.9977819400630915,
+        "id": 0.41731507928691025,
+        "ood_val": 0.16429876192409174,
+        "worst_experiment": 0.014204545454545454
+      }
+    ],
+    "pruned_runs": [
+      "rxrx1_moe_middle_image_linear_output_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "dominated_by": "rxrx1_moe_early_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
+    "dominance": "The already validated epoch-30 comparator is higher on OOD validation, ID accuracy, and worst-experiment accuracy."
+  },
+  "new_epoch60": {
+    "validated_runs": 1,
+    "metrics": [
+      {
+        "run_id": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+        "train": 1.0,
+        "id": 0.5275288092189501,
+        "ood_val": 0.21108179419525067,
+        "worst_experiment": 0.024756493506493508
+      }
+    ],
+    "trajectory_from_epoch30": {
+      "ood_val_delta": 0.01085853460523645,
+      "id_delta": 0.05185659411011526,
+      "worst_experiment_delta": 0.005681818181818184
+    },
+    "decision": "Completed and retained as the current exploratory mean-and-tail frontier; efficacy remains undefined until the exact early-canonical dense comparator emits."
+  },
+  "completed_result": {
+    "run_id": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+    "valid_results": 1,
+    "seed": 0,
+    "stage": 1,
+    "routing": "image_linear_top1_E8_early_within_environment_route_pressure",
+    "selection_environment_count": 4,
+    "selection_example_count": 9854,
+    "heldout_test_metrics": {
+      "acc_heldout": null,
+      "worst_env_heldout": null,
+      "per_env_heldout": null,
+      "per_env_n_heldout": null
+    },
+    "checkpoint": {
+      "name": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801.epoch060.pt",
+      "bytes": 368488165,
+      "sha256": "059df6d74e8376930066120cc5ccfe698329c1d1bd8eab74504e112fd8d42fea"
+    },
+    "artifact_manifest": {
+      "name": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801.artifact_manifest.json",
+      "sha256": "247748013743c3de851e4d6b51fcbd3495950d824a906de1a7c7f2fad9201a990",
+      "declared_files": 4
+    },
+    "hf_publication": {
+      "prefix": "rxrx1/cell_dino_cp5/factorial60_20260801/rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "uploaded_files": 5,
+      "remote_listing_verified": true
+    }
+  },
+  "cumulative_state_after_refill": {
+    "validated_epoch10_milestones": 29,
+    "validated_epoch30_milestones": 7,
+    "validated_epoch60_milestones": 1,
+    "completed_valid_results": 1,
+    "pruned_runs": 25,
+    "active_runs": 10,
+    "queued_tested_runs": 7,
+    "wandb_runs_launched": 36,
+    "idle_available_h100s": 0
+  },
+  "refill": {
+    "released_gpus": 7,
+    "launched_runs": [
+      "rxrx1_moe_late_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_original_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_dense_wide_middle_canonical_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_token_cosine_route_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "health": "All seven released leases started distinct next cells. Five container audits show ten owned workers with allocations or startup reservations and zero unassigned available H100s."
+  },
+  "exact_comparator": {
+    "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
+    "status": "known_and_still_queued_metric_pending",
+    "role": "same-placement exact-total-parameter-matched canonical dense control for the early route-pressure leader"
+  },
+  "interpretation": "Early image-linear route improves from epoch 30 to 60 on mean OOD validation, ID accuracy, and worst-experiment accuracy, so its directional signal was not merely an epoch-30 spike. However, the early output-pressure dense-wide control is already the strongest epoch-10 mean-OOD cell at 0.144510. The evidence therefore favors ordinary dense capacity or pressure effects as a live alternative and does not establish conditional-computation efficacy.",
+  "alternative_explanation": "The current leader may reflect early placement, output/route pressure, ordinary total capacity, or seed-0 selection among many cells rather than reusable conditional routing.",
+  "falsifier": "The locked early-canonical dense control must emit on the same 60-epoch schedule. A sparse claim requires at least +0.05 absolute OOD validation with no more than 0.02 ID loss, or a separately predeclared consistent worst-experiment improvement; otherwise the current leader remains a directional architecture screen only.",
+  "largest_threat": "Search multiplicity and the still-pending exact dense comparator; the completed result is one seed selected from a broad architecture screen."
+}

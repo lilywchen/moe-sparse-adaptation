@@ -1200,3 +1200,36 @@ highest priority. In parallel, implementation work begins with the first 12 next
 the next sweep can start without leaving a future lease idle. OOD test remains sealed; multiplicity
 and failure to separate sparse routing from objective or active-compute effects remain the largest
 scientific threats.
+
+## 2026-08-02 00:11 EDT factorial60 wave-four and first completion
+
+Nine new milestone rows are strictly valid: seven epoch-10, one epoch-30, and the first epoch-60
+row. Cumulative coverage is now 29/7/1 at epochs 10/30/60, with one validated final result. The
+completed early image-linear route arm reaches train/ID/OOD-validation/worst-experiment accuracy
+`1.000000/0.527529/0.211082/0.024756`. From epoch 30 to 60 it improves OOD validation by `0.010859`,
+ID by `0.051857`, and worst experiment by `0.005682`, so the directional signal is not merely an
+epoch-30 spike. This remains exploratory: its exact same-placement canonical dense comparator is
+known but has not emitted.
+
+The new early output-pressure dense-wide control is the strongest epoch-10 mean-OOD cell so far at
+`0.144510`, ahead of every searched MoE epoch-10 row. Middle token-cosine canonical remains on the
+tail frontier at OOD/ID/worst `0.131520/0.303162/0.019481`. Five other new epoch-10 rows and the
+middle image-linear output epoch-30 row are strictly dominated on all frozen triage axes and were
+stopped only after validation. This strengthens ordinary capacity/pressure effects as an
+alternative to conditional routing; it is not yet the exact route-pressure comparison.
+
+The completed result JSON, three milestones, 60-epoch checkpoint, manifest, logs, finite metrics,
+four validation environments/counts, clean `b8ece25e`, `selection_split=ood_val`,
+`test_evaluated=false`, and null held-out-test metrics validate. The 368,488,165-byte checkpoint has
+SHA-256 `059df6d74e8376930066120cc5ccfe698329c1d1bd8eab74504e112fd8d42fea`.
+Five files were uploaded successfully and re-listed under the declared factorial60 HF prefix.
+
+Six dominated live workers plus the completed worker released seven leases. All seven refilled
+immediately with late image-linear route, late image-linear output, original, late token-cosine
+canonical, middle canonical dense-wide, late image-cosine output, and late token-cosine route.
+Ten workers remain active, seven tested cells remain queued, cumulative pruning is 25, 36 W&B runs
+have launched, and none of the ten available H100s is unassigned. `tester6` 2893 remains Pending:
+11 nodes fail affinity, two are unschedulable, and three lack GPUs; the single start request was not
+repeated. OOD test remains sealed. The next gate is the exact early-canonical dense milestone and
+the next validated halving/refill; multiplicity and seed-0 winner selection remain the largest
+threats.

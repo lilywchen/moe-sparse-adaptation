@@ -790,3 +790,33 @@ currently tested runnable refill set. The highest-priority scientific gate is st
 early-canonical dense milestone. Next-family arms become runnable only after isolated
 implementation, parameter/FLOP accounting, focused/full tests, dry-run identity, no-duplicate
 checks, persistent destinations, and OOD-test-blind validation pass.
+
+## 2026-08-02 00:11 ET — factorial60 wave four and first validated final result
+
+Seven new epoch-10 rows, middle image-linear output at epoch 30, and early image-linear route at
+epoch 60 pass strict JSON, identity, finite-metric, four-environment/count, ERM, provenance,
+tracking, fatal-scan, `selection_split=ood_val`, and `test_evaluated=false` checks. The completed
+route arm additionally has all held-out-test metrics null. Cumulative validated coverage is now 29
+epoch-10, seven epoch-30, one epoch-60, and one final result.
+
+Early image-linear route finishes at train/ID/OOD-validation/worst-experiment
+`1.000000/0.527529/0.211082/0.024756`; all three held-out metrics improve from epoch 30. The first
+new dense control, early output pressure, leads the entire epoch-10 screen on mean OOD validation
+at `0.144510`. That is diagnostic evidence that ordinary dense capacity and training pressure can
+explain early apparent sparse advantages. It is not the leader's exact comparator: route-pressure
+MoE still pairs with the queued early-canonical dense arm.
+
+Five new epoch-10 MoE cells are strictly dominated by the existing early image-linear route
+frontier. Middle image-linear output at epoch 30 is strictly dominated by the previously validated
+early token-linear output epoch-30 row. Those six live workers were stopped after preserving their
+rows. The completed worker exited cleanly, and all seven leases immediately started distinct next
+cells. The active set is ten, the tested queue is seven, cumulative pruning is 25, and there are no
+unassigned available H100s. The first completed folder has a four-file SHA-256 manifest plus the
+manifest itself; the five-file HF prefix was uploaded and remotely re-listed.
+
+This remains a multiplicity-exposed seed-0 architecture screen. A sparse efficacy claim is
+falsified unless the early image-linear route arm beats its exact early-canonical dense control on
+the locked 60-epoch schedule by at least five absolute OOD-validation points without losing more
+than two ID points, or produces the separately predeclared consistent worst-experiment gain.
+`tester6` remains Pending for the unchanged 11-affinity, 2-unschedulable, 3-insufficient-GPU
+scheduler reason; no duplicate start was issued. OOD test is sealed.
