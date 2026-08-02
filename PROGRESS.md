@@ -2161,3 +2161,35 @@ under `rxrx1/cell_dino_cp5/temperature_expert_count60_20260802`; route-E4 tail-s
 seven under `rxrx1/cell_dino_cp5/expert_count60_20260802`. The publication report is preserved at
 `/home/idies/workspace/hb_publish_extreme_and_E4_2100.report.json`. This is artifact traceability,
 not new efficacy evidence. All ten available H100s remain assigned and OOD test remains sealed.
+
+## 2026-08-02 17:22 EDT — Locked seed-2 rows reject a stable early tail benefit; route-E4 tail safety fails
+
+Four fresh epoch-10 confirmation rows pass exact run/config/seed/epoch identity, finite metrics,
+ERM, four OOD-validation environments/9,854 samples, checkpoint identity, live-worker and fatal
+scans, active-compute fairness, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test
+checks. Against the same-seed E8 anchor, seed-2 E2 is `+0.203/+0.753/-0.528` and seed-2 E16 is
+`+1.319/+1.147/-0.081` OOD/ID/worst points. E32 seed 1 is
+`+0.690/-0.490/-0.487` against E8 seed 1. All are Pareto tradeoffs and continue unchanged to epoch
+30 under the locked delayed-emergence rule. No row is pruned or promoted. Descriptively across two
+seeds at epoch 10, E2 averages `+0.619/+0.452/+0.101` and E16
+`+0.731/+0.327/-0.325`; these are not population estimates.
+
+The route-E4 zero-auxiliary row also reaches a strict epoch-60 milestone. Tail-safe minus zero-aux
+is `+0.447/+0.303/-0.081` OOD/ID/worst points at epoch 60, after
+`+0.101/-1.135/-0.406` at epoch 30. The predeclared route-tail protection hypothesis therefore
+fails for this exact recipe: its worst-experiment difference is negative at both paired milestones,
+and the completed tail-safe arm has effectively zero randomized-route reliance. The zero-aux worker
+remains live only for declared mechanism analysis and final-result emission; its GPU is not free.
+It receives no epoch-90 or fresh-seed license and will hand off immediately to locked E32 seed 2
+after clean final artifacts.
+
+All ten available H100s remain assigned: 2887 GPU0/1 workers 41687/43493; 2875 GPU0/1
+110491/112826; 2874 GPU0/1 54666/56662; 2862 GPU0/1 57545/56371; and 2859 GPU0/1
+44982/43126. Seven locked confirmation rows now have valid epoch-10 milestones, E32 seed 2 remains
+the sole queued confirmation row, 13 arms remain tested-ready, and backlog remains 27. tester6
+2893 is still Pending for 11 affinity mismatches, two unschedulable nodes, and three insufficient-
+GPU nodes; no duplicate start/create was issued. The most plausible explanation is ordinary
+capacity/optimization regularization with unstable tail effects, not useful high-cardinality sparse
+specialization. Later locked milestones and route-reliance diagnostics are the sharp falsifier.
+Multiplicity is explicit, active-compute and exact-total claims remain separate, and OOD test is
+sealed.

@@ -1512,3 +1512,22 @@ Publication repair passes exact four-run dry validation from code-equivalent tre
 worker 114491 completes successfully. Four manifests and all 28 expected remote files are verified,
 seven per run. This repairs artifact traceability only and does not alter the efficacy
 interpretation. Training remains fully assigned and OOD test remains sealed.
+
+## 2026-08-02 17:22 EDT — Locked epoch-10 bank-size effects are seed-unstable
+
+Seed-2 E2/E8/E16 and seed-1 E32 epoch-10 rows are strict-valid. Same-seed E2-minus-E8 is
+`+0.203/+0.753/-0.528`, E16-minus-E8 is `+1.319/+1.147/-0.081`, and E32-minus-E8 is
+`+0.690/-0.490/-0.487` OOD/ID/worst points. None is all-axis dominated, so all continue unchanged
+to epoch 30 under the locked delayed-emergence rule. Across the two available seeds, E2's early tail
+direction averages only `+0.101` point and E16's averages `-0.325`; this weakens a stable early
+specialization account and favors ordinary regularization or checkpoint noise. The averages are
+descriptive only after a multi-arm seed-0 screen.
+
+Route-E4 tail-safe minus zero-auxiliary is `+0.447/+0.303/-0.081` at epoch 60 and has a negative
+worst-experiment difference at both paired milestones. With effectively zero randomized-route
+reliance in the completed tail-safe arm, the exact route-tail protection hypothesis is terminal-
+negative and receives no longer-horizon or fresh-seed license. The zero-aux worker remains live to
+emit its declared mechanism/final artifacts, so all ten available H100s are still assigned. Locked
+E32 seed 2 is the exact first refill on that clean exit. Seven confirmation rows have valid epoch-10
+milestones, one is queued, 13 arms are ready, backlog is 27, tester6 remains scheduler-Pending, and
+OOD test is sealed.

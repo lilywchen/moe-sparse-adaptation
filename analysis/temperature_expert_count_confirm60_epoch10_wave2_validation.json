@@ -1,0 +1,127 @@
+{
+  "validated_at": "2026-08-02T17:20:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_milestones",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "registry_source_commits": {
+    "route_E8_and_route_E16": "4969659",
+    "route_E2": "488e77b",
+    "route_E32": "21d7bbe"
+  },
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "parameter_counts": {
+    "route_E2": {"total": 23584500, "active_ffn_including_router": 1182337},
+    "route_E8": {"total": 30676212, "active_ffn_including_router": 1184641},
+    "route_E16": {"total": 40131828, "active_ffn_including_router": 1187713},
+    "route_E32": {"total": 59043060, "active_ffn_including_router": 1193857}
+  },
+  "rows": {
+    "route_E2_seed2_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s2_temperature_expert_count_confirm60_route_E2_s2_20260802",
+      "seed": 2,
+      "epoch": 10,
+      "acc_selection": 0.14014613354982747,
+      "acc_within": 0.33770806658130603,
+      "worst_env_val": 0.010146103896103896,
+      "checkpoint_bytes": 283365884,
+      "worker_pid": 56662,
+      "wandb_run_id": "l7vkvk81"
+    },
+    "route_E8_seed2_epoch10_anchor": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s2_temperature_expert_count_confirm60_route_E8_s2_20260802",
+      "seed": 2,
+      "epoch": 10,
+      "acc_selection": 0.1381165009133347,
+      "acc_within": 0.3301733477789816,
+      "worst_env_val": 0.015422077922077922,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 56371,
+      "wandb_run_id": "kkkemsr0"
+    },
+    "route_E16_seed2_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s2_temperature_expert_count_confirm60_route_E16_s2_20260802",
+      "seed": 2,
+      "epoch": 10,
+      "acc_selection": 0.15130911305053785,
+      "acc_within": 0.3416477888308874,
+      "worst_env_val": 0.01461038961038961,
+      "checkpoint_bytes": 482054774,
+      "worker_pid": 112826,
+      "wandb_run_id": "abcjy5pp"
+    },
+    "route_E32_seed1_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s1_temperature_expert_count_confirm60_route_E32_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.14207428455449564,
+      "acc_within": 0.3395548113857973,
+      "worst_env_val": 0.012175324675324676,
+      "checkpoint_bytes": 709126791,
+      "worker_pid": 57545,
+      "wandb_run_id": "6cmjnu32"
+    },
+    "route_E8_seed1_epoch10_anchor": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s1_temperature_expert_count_confirm60_route_E8_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.13517353359042014,
+      "acc_within": 0.34445484093371415,
+      "worst_env_val": 0.017045454545454544,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 44982,
+      "wandb_run_id": "qsbm21cg"
+    }
+  },
+  "deltas_points": {
+    "route_E2_minus_route_E8_seed2_epoch10": {
+      "ood_val": 0.202963263649277,
+      "id": 0.753471880232443,
+      "worst_experiment": -0.5275974025974026
+    },
+    "route_E16_minus_route_E8_seed2_epoch10": {
+      "ood_val": 1.319261213720315,
+      "id": 1.14744410519058,
+      "worst_experiment": -0.0811688311688312
+    },
+    "route_E32_minus_route_E8_seed1_epoch10": {
+      "ood_val": 0.69007509640755,
+      "id": -0.490002954791685,
+      "worst_experiment": -0.4870129870129868
+    }
+  },
+  "two_seed_descriptive_means_points": {
+    "route_E2_minus_route_E8_epoch10": {
+      "ood_val": 0.6190379541303015,
+      "id": 0.4518368954988701,
+      "worst_experiment": 0.1014610389610391
+    },
+    "route_E16_minus_route_E8_epoch10": {
+      "ood_val": 0.7306677491374043,
+      "id": 0.32748941199645335,
+      "worst_experiment": -0.32467532467532467
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "same_seed_shared_E8_anchors": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "all_workers_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_all_locked_rows_to_epoch30_under_predeclared_delayed_emergence_rule_no_pruning_or_promotion",
+  "interpretation": "At locked epoch 10, neither E2 nor E16 has a consistent worst-experiment advantage across seeds, and E32 seed 1 improves mean OOD while losing ID and tail. The expert-bank question remains a set of small Pareto tradeoffs rather than a replicated sparse-specialization result.",
+  "alternative": "The observed directions are checkpoint noise or ordinary capacity regularization; weak or collapsed routing, rather than useful conditional specialization, explains the small differences.",
+  "falsifier": "The architecture explanation is rejected if the same-seed E2, E16, or E32 comparison lacks a consistent mean-or-tail benefit at locked epochs 30 and 60, or if mechanism analysis shows dead or non-reliant routing.",
+  "multiplicity": "These are locked fresh-seed interim rows following a multi-arm seed-0 architecture screen. The two-seed averages are descriptive only, not population estimates or replication claims."
+}

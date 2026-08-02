@@ -1,0 +1,80 @@
+{
+  "validated_at": "2026-08-02T17:22:00-04:00",
+  "campaign": "expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_terminal_pair_zero_aux_final_emission_pending",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "same_route_pressure_E4_active_compute_and_parameters_auxiliary_regularization_only",
+  "parameter_counts": {
+    "total": 25948404,
+    "active_ffn_including_router": 1183105
+  },
+  "rows": {
+    "route_E4_tail_safe_epoch60": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_expert_count60_route_E4_tail_safe_20260802",
+      "seed": 0,
+      "epoch": 60,
+      "balance_w": 0.01,
+      "zloss_w": 0.01,
+      "acc_selection": 0.20925512482240716,
+      "acc_within": 0.5235890869693687,
+      "worst_env_val": 0.015016233766233766,
+      "checkpoint_bytes": 311739683,
+      "wandb_run_id": "63qrbth0",
+      "experts_used": 4,
+      "route_reliance": -0.00020296326364926953,
+      "final_result_complete": true,
+      "published_manifest_remote_files": 7
+    },
+    "route_E4_zero_aux_epoch60": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_expert_count60_route_E4_no_aux_20260802",
+      "seed": 0,
+      "epoch": 60,
+      "balance_w": 0.0,
+      "zloss_w": 0.0,
+      "acc_selection": 0.204789933022123,
+      "acc_within": 0.5205604254900029,
+      "worst_env_val": 0.015827922077922076,
+      "checkpoint_bytes": 311737388,
+      "worker_pid": 54666,
+      "wandb_run_id": "8an4h01j",
+      "final_result_complete": false,
+      "final_result_status": "declared_mechanism_analysis_and_result_emission_in_progress"
+    }
+  },
+  "deltas_points": {
+    "tail_safe_minus_zero_aux_epoch60": {
+      "ood_val": 0.446519180028416,
+      "id": 0.30286614793658,
+      "worst_experiment": -0.081168831168831
+    },
+    "tail_safe_minus_zero_aux_epoch30": {
+      "ood_val": 0.1014816318,
+      "id": -1.1351324732,
+      "worst_experiment": -0.4058441558
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "same_parameter_count_and_data_order": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "tail_safe_controller_rc0": true,
+    "zero_aux_worker_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "terminal_no_epoch90_or_fresh_seed_license_for_tail_safe_route_E4_question; preserve_zero_aux_worker_until_declared_final_artifacts_then_refill_with_locked_E32_seed2",
+  "interpretation": "The tail-safe auxiliary improves mean OOD and ID slightly at epoch 60 but lowers worst-experiment accuracy at both epoch 30 and epoch 60. It therefore fails the predeclared route-tail protection hypothesis for this exact recipe.",
+  "alternative": "The small mean difference is ordinary auxiliary regularization or trajectory noise, not tail-safe routing; near-zero randomized-route reliance supports that alternative.",
+  "falsifier": "A routing-specific tail-safety explanation would require a positive, stable worst-experiment difference with non-negligible route reliance and an exact dense objective control; none is present here.",
+  "multiplicity": "Seed-0 auxiliary comparison after broad architecture and objective searches; no population, exact-total, or routing-specific efficacy claim is licensed."
+}
