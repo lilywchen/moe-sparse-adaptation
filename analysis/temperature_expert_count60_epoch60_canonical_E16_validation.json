@@ -1,0 +1,56 @@
+{
+  "validated_at": "2026-08-02T15:45:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "strict_exploratory_terminal_milestone_no_promotion_final_mechanism_and_result_emission_pending",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "registry_commit": "a97e9062d950fbf6171ceca744aecb94d64a5536",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E16": {"total": 40131828, "active_ffn_including_router": 1187713},
+    "E8": {"total": 30676212, "active_ffn_including_router": 1184641}
+  },
+  "same_pressure_E8_epoch60_anchor": {
+    "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_router_temperature60_canonical_t3em2_bw0_z1em3_20260802",
+    "id": 0.527750418595489,
+    "ood_val": 0.21869291658209863,
+    "worst_experiment": 0.022727272727272728
+  },
+  "row": {
+    "run_id": "rxrx1_moe_early_token_cosine_canonical_E16k1_ep60_s0_temperature_expert_count60_canonical_E16_20260802",
+    "epoch": 60,
+    "seed": 0,
+    "train": 1.0,
+    "id": 0.5248694967004827,
+    "ood_val": 0.20438400649482444,
+    "worst_experiment": 0.020698051948051948,
+    "checkpoint_bytes": 482051839,
+    "minus_same_pressure_E8_points": {"ood_val": -1.4308910087274196, "id": -0.28809218950063276, "worst_experiment": -0.202922077922078}
+  },
+  "trajectory_points": {
+    "epoch30_minus_E8": {"ood_val": -1.3902983560, "id": -3.6196198168, "worst_experiment": 0.1623376623},
+    "epoch60_minus_E8": {"ood_val": -1.4308910087, "id": -0.2880921895, "worst_experiment": -0.2029220779}
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_and_live_command_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true,
+    "final_result_json_pending": true,
+    "mechanism_analysis_process_active": true
+  },
+  "decision": "terminal_horizon_reached_no_epoch90_or_fresh_seed_promotion_allow_predeclared_mechanism_and_result_emission_to_finish_then_immediate_refill",
+  "interpretation": "Canonical E16 is below canonical E8 on mean OOD, ID, and worst experiment at epoch 60. Its epoch-30 tail advantage was transient and reversed, ruling out this canonical bank-size increase as a robust sparse regime.",
+  "alternative": "The seed-0 difference is trajectory noise, but it provides no promotion evidence because every epoch-60 decision axis is worse than the matched anchor.",
+  "sharp_falsifier": "already_met_for_the_epoch30_tail_alternative_by_tail_reversal_at_epoch60",
+  "multiplicity": "one additional seed0 terminal architecture row after prior factorial, auxiliary, temperature, and expert-count screens; no confirmatory claim"
+}

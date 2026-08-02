@@ -1983,3 +1983,30 @@ the bounded remaining explanation: E32 preserves tail tradeoffs and route E64 is
 Loss of either direction at epoch 60 or dead/non-reliant routing is the sharp falsifier. These are
 seed-0 active-compute comparisons after many searched cells, not exact-total or confirmatory evidence. Next refill is the
 broader E16 tail-safe cell, then its exact zero-auxiliary comparator. OOD test remains sealed.
+## 2026-08-02 15:45 EDT — Canonical E16 fails its terminal gate; canonical-E4 reaches epoch 10
+
+Canonical E16's epoch-60 milestone passes exact run/config/seed/epoch and live-command identity,
+finite metrics, ERM, four OOD-validation environments and 9,854 samples, 482,051,839-byte
+checkpoint identity, fatal scan, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test
+checks. Relative to the exact same-pressure E8 epoch-60 anchor it is
+`-1.431/-0.288/-0.203` OOD/ID/worst points. Its epoch-30 tail tradeoff
+(`-1.390/-3.620/+0.162`) reverses by epoch 60 while mean OOD remains lower. This reaches the
+predeclared terminal horizon with no epoch-90 or fresh-seed license. Worker 39109 is still executing
+the predeclared mechanism analysis and final-result emission at high CPU activity with its model
+resident; terminating it now would discard required terminal artifacts. Container2859/GPU0 will be
+refilled immediately when worker 39109/controller 39104 exits.
+
+Broader canonical-E4 tail-safe also passes a strict epoch-10 milestone: train/ID/OOD/worst are
+`0.5052/0.3179/0.1351/0.0150`, with a 311,745,867-byte checkpoint. Its exact canonical-E4
+zero-auxiliary comparator is active but has not reached epoch 10, so this is an unpaired level and
+supports no auxiliary-loss effect claim. It continues unchanged to epoch 30. All ten H100s remain
+assigned, the tested ready queue remains 12, and the backlog remains 27. tester6 2893 is still
+Pending for the unchanged scheduler reason; no duplicate start/create was issued.
+
+This rules out canonical E16 as a robust expert-bank regime at epoch 60 and shows that its earlier
+tail direction was transient. The remaining bank-size explanation is pressure-specific, currently
+carried by route E16/E64 and E32 tail tradeoffs. Seed-0 trajectory noise remains the alternative;
+loss of those pressure-specific directions at epoch 60 or dead/non-reliant routing is the sharp
+falsifier. Multiplicity is explicit and all comparisons here are active-compute, not exact-total.
+Next refill is the first broader E16 tail-safe cell, with its zero-auxiliary comparator immediately
+afterward. OOD test remains sealed.

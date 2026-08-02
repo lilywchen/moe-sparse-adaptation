@@ -1411,3 +1411,18 @@ sharp falsifier. Multiplicity remains high,
 and this active-compute estimand cannot be pooled with the locked exact-total comparison.
 Canonical-E64's released H100 now runs broader canonical-E4 zero-auxiliary as worker 43126/W&B
 `60jcriar`; ten H100s are assigned, 12 arms remain tested-ready, and OOD test remains sealed.
+## 2026-08-02 15:45 EDT — Canonical E16 is terminal-negative; canonical E4 remains unpaired
+
+Canonical E16 is below its exact same-pressure E8 anchor at epoch 60 by
+`-1.431/-0.288/-0.203` OOD/ID/worst points. The small epoch-30 tail advantage reverses, so the
+predeclared tail alternative is falsified for this row and neither epoch 90 nor fresh seeds are
+licensed. Its worker remains active only to complete the declared mechanism analysis and emit the
+final result; the released GPU handoff is automatic on exit.
+
+Canonical-E4 tail-safe reaches a strict epoch-10 level of `0.1351/0.3179/0.0150` OOD/ID/worst.
+The exact canonical-E4 zero-auxiliary comparator is active but not yet at epoch 10, so no auxiliary
+effect is estimated and the arm continues unchanged. The most plausible architecture explanation
+is now pressure-specific bank-size behavior rather than generic capacity. The alternative is
+seed-0 trajectory noise; disappearance of route-E16/E64 or E32 tail directions at epoch 60, or
+dead/non-reliant routing, is the sharp falsifier. Ten H100s remain assigned, 12 tested arms remain
+ready, and OOD test remains sealed.
