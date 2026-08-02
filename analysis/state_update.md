@@ -1394,3 +1394,20 @@ experts. Multiplicity remains high and this active-compute estimand cannot be po
 locked exact-total comparison. Canonical-E2's released H100 now runs broader canonical-E4
 tail-safe as worker 41687/W&B `shgndkjb`; ten H100s are assigned, 13 arms remain ready, and OOD
 test remains sealed.
+## 2026-08-02 15:20 EDT — Route pressure separates the E64 outcomes
+
+At epoch 30, canonical E32 trades `-0.599/+0.234/+0.162` OOD/ID/worst points against canonical
+E8, while route E32 trades `-0.852/-1.108/+0.365` against route E8. Both continue to epoch 60
+only because their tail directions remain Pareto-relevant under the predeclared smaller-mean
+alternative. Canonical E64 trades `-0.233/-2.556/+0.000`, is weakly dominated, and is pruned with
+its checkpoint and milestone stream preserved. Route E64 instead trades
+`+0.589/+0.145/+0.122`, a small aligned advantage, and continues to epoch 60.
+
+This rules out monotone unconditional expert-bank scaling and the exact canonical-E64 recipe
+through epoch 30. The remaining bounded explanation is pressure-specific specialization expressed
+as E32 tail tradeoffs and a small aligned route-E64 effect; the alternative is seed-0 noise or
+transient optimization. Loss of either direction at epoch 60 or dead/non-reliant experts is the
+sharp falsifier. Multiplicity remains high,
+and this active-compute estimand cannot be pooled with the locked exact-total comparison.
+Canonical-E64's released H100 now runs broader canonical-E4 zero-auxiliary as worker 43126/W&B
+`60jcriar`; ten H100s are assigned, 12 arms remain tested-ready, and OOD test remains sealed.

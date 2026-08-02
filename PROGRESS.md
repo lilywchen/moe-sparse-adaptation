@@ -1953,3 +1953,33 @@ route-E2 tail direction remains provisional and pressure-dependent; loss of that
 epoch 60 or collapsed/non-reliant routing is its sharp falsifier. These are seed-0 active-compute
 comparisons after many searched cells, not exact-total or confirmatory evidence. Next refill is
 broader canonical-E4 zero-auxiliary, then the remaining E16 broader cells. OOD test remains sealed.
+## 2026-08-02 15:20 EDT — E32 tradeoffs survive; route pressure separates E64 outcomes
+
+Four new epoch-30 expert-count milestones pass exact run/config/seed/epoch and live-command
+identity, finite metrics, ERM, four OOD-validation environments and 9,854 samples, checkpoint
+identity, fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test checks.
+Canonical E32 minus canonical E8 is `-0.599/+0.234/+0.162` OOD/ID/worst points, and route E32
+minus route E8 is `-0.852/-1.108/+0.365`; both remain Pareto tail tradeoffs and continue unchanged
+to epoch 60 under the predeclared smaller-mean tail alternative. Canonical E64 minus canonical E8
+is `-0.233/-2.556/+0.000`, weakly dominated because mean and ID fall while worst experiment only
+ties. Its 1,163,265,872-byte checkpoint and copied milestone prune record are preserved, worker
+41338 is stopped, and its controller exits. Route E64 instead gives a small aligned
+`+0.589/+0.145/+0.122` OOD/ID/worst advantage over route E8 and continues to epoch 60.
+
+Container2859/GPU1 was immediately refilled with broader canonical-E4 zero-auxiliary. The clean
+`4893c964` checkout, exact shard-5 dry run (one planned, one pending), result/active duplicate
+guards, physical-free-GPU check, persistent destinations, active-compute fairness label, seed/data
+order, checkpoint policy, and sealed-test checks passed. Controller 43121 started worker 43126 and
+W&B `60jcriar`; it owns 8,010 MiB, is syncing in the declared group, reports 9,854 OOD-validation
+samples with test untouched, and has a clear initial fatal scan. All ten available H100s remain
+assigned. Temperature expert-count now has six active and four pruned rows; broader expert-count
+has four active and four queued rows. The tested ready queue is 12, with 27 backlog hypotheses.
+tester6 2893 remains Pending for the unchanged 11-affinity, two-unschedulable,
+three-insufficient-GPU reason; no repeat start/create was issued.
+
+The evidence rules out a monotone unconditional benefit from larger expert banks and specifically
+rules out canonical E64 for this recipe through epoch 30. Pressure-specific specialization is now
+the bounded remaining explanation: E32 preserves tail tradeoffs and route E64 is modestly aligned.
+Loss of either direction at epoch 60 or dead/non-reliant routing is the sharp falsifier. These are
+seed-0 active-compute comparisons after many searched cells, not exact-total or confirmatory evidence. Next refill is the
+broader E16 tail-safe cell, then its exact zero-auxiliary comparator. OOD test remains sealed.

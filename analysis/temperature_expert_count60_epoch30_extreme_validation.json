@@ -1,0 +1,104 @@
+{
+  "validated_at": "2026-08-02T15:20:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_architecture_screen",
+  "coverage": "four_of_four_E32_E64_epoch30_rows",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "registry_commits": {
+    "E32": "2e37f34819e6ddb6b4014bb17b820fe50ff3dc6c",
+    "E64": "09a22aa086181267e4d14e5e343f60451c41a9c1"
+  },
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E32": {"total": 59043060, "active_ffn_including_router": 1193857},
+    "E64": {"total": 96865524, "active_ffn_including_router": 1206145},
+    "E8": {"total": 30676212, "active_ffn_including_router": 1184641}
+  },
+  "shared_E8_anchors": {
+    "canonical_epoch30": {"id": 0.47483502413079876, "ood_val": 0.19474325147148366, "worst_experiment": 0.016639610389610388},
+    "route_epoch30": {"id": 0.4719294789717325, "ood_val": 0.188451390298356, "worst_experiment": 0.0174512987012987}
+  },
+  "rows": {
+    "canonical_E32_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_temperature_expert_count60_canonical_E32_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "train": 0.9985212933753943,
+      "id": 0.47717423421648775,
+      "ood_val": 0.1887558351938299,
+      "worst_experiment": 0.018262987012987012,
+      "checkpoint_bytes": 709123088,
+      "minus_same_pressure_E8_points": {"ood_val": -0.5987416277653757, "id": 0.2339210085688992, "worst_experiment": 0.1623376623376624}
+    },
+    "route_E32_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s0_temperature_expert_count60_route_E32_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "train": 0.9978065851735016,
+      "id": 0.4608490101447848,
+      "ood_val": 0.17992693322508627,
+      "worst_experiment": 0.021103896103896104,
+      "checkpoint_bytes": 709113384,
+      "minus_same_pressure_E8_points": {"ood_val": -0.8524457073269737, "id": -1.1080468826947687, "worst_experiment": 0.3652597402597404}
+    },
+    "canonical_E64_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_temperature_expert_count60_canonical_E64_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "train": 0.997683359621451,
+      "id": 0.44927607603663944,
+      "ood_val": 0.19240917393951695,
+      "worst_experiment": 0.016639610389610388,
+      "checkpoint_bytes": 1163265872,
+      "minus_same_pressure_E8_points": {"ood_val": -0.23340775319667106, "id": -2.555894809415932, "worst_experiment": 0.0}
+    },
+    "route_E64_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E64k1_ep60_s0_temperature_expert_count60_route_E64_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "train": 0.9990141955835962,
+      "id": 0.4733822515512656,
+      "ood_val": 0.1943373249441851,
+      "worst_experiment": 0.018668831168831168,
+      "checkpoint_bytes": 1163252072,
+      "minus_same_pressure_E8_points": {"ood_val": 0.58859346458291, "id": 0.14527725795331358, "worst_experiment": 0.1217532467532468}
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_and_live_command_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_E32": "continue_to_epoch60_pareto_id_and_tail_tradeoff",
+    "route_E32": "continue_to_epoch60_predeclared_tail_tradeoff",
+    "canonical_E64": "pruned_at_epoch30_weakly_dominated_by_same_pressure_E8_mean_and_id_lower_worst_equal",
+    "route_E64": "continue_to_epoch60_small_aligned_mean_id_and_tail_advantage",
+    "preserved_prune_marker": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature_expert_count60_20260802/rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_temperature_expert_count60_canonical_E64_20260802.pruned",
+    "refill": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_expert_count60_canonical_E4_no_aux_20260802",
+      "container_id": 2859,
+      "gpu": 1,
+      "controller_pid": 43121,
+      "worker_pid": 43126,
+      "wandb_run_id": "60jcriar",
+      "wandb_group": "rxrx1-cell-dino-expert-count60-20260802",
+      "hf_prefix": "rxrx1/cell_dino_cp5/expert_count60_20260802"
+    }
+  },
+  "interpretation": "Expert-bank scaling is not monotone without route pressure. E32 retains Pareto tail tradeoffs and route E64 has a small aligned advantage, whereas canonical E64 is weakly dominated by E8 and offers no robust-capacity benefit through epoch 30.",
+  "alternative": "The E32 tail and route-E64 aligned advantages are seed-0 noise or transient optimization rather than stable routing specialization.",
+  "sharp_falsifier": "E32 loses its tail direction or route E64 loses its aligned direction at epoch 60, or mechanism analysis shows dead, unstable, or non-reliant experts.",
+  "multiplicity": "four additional seed0 milestone rows after prior factorial, auxiliary, temperature, and architecture screens; no confirmatory claim"
+}
