@@ -1489,5 +1489,13 @@ The frozen E32 registry at source `21d7bbe` passes six focused and 130 full test
 runs, matching hashes, and code-equivalent tree `fee4c45d00ea38e209a913f69ca9b0db62338b39`.
 Route-E8 seed2, E16 seed2, E2 seed2, and E32 seed1 immediately refill four released GPUs. Seven
 confirmation rows are active and E32 seed2 is queued; all ten available H100s are assigned, 13
-tested arms remain ready, and OOD test remains sealed. Checksum-manifest publication is active and
-not yet claimed complete.
+tested arms remain ready, and OOD test remains sealed. Checksum-manifest publication was attempted
+but is not yet complete.
+
+The first locked seed-1 route-E16 versus route-E8 epoch-10 contrast is strict-valid at
+`+0.142/-0.492/-0.568` OOD/ID/worst points. Because E16 is higher on mean OOD but lower on ID and
+tail, it remains a predeclared Pareto tradeoff and both rows continue to epoch 30. The tail sign does
+not reproduce the seed-0 early direction, so seed instability is now a sharper alternative and the
+evidence remains diagnostic. The publication attempt is no longer active: its one narrow retry
+failed before mutation because the stale persistent-main publisher lacks `publish_hf_run`. A new
+attempt is licensed only from a clean tested checkout with import and manifest-dry-path validation.

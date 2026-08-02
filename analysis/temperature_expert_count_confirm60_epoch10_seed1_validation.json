@@ -1,0 +1,59 @@
+{
+  "validated_at": "2026-08-02T20:56:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_milestone",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "source_registry_commit": "4969659",
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "081bd31e94145fc9cefc033bf1418417ac0f30c7",
+  "rows": {
+    "route_E8_seed1_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s1_temperature_expert_count_confirm60_route_E8_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.13517353359042014,
+      "acc_within": 0.34445484093371415,
+      "worst_env_val": 0.017045454545454544,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 44982,
+      "wandb_run_id": "qsbm21cg"
+    },
+    "route_E16_seed1_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s1_temperature_expert_count_confirm60_route_E16_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.13659427643596508,
+      "acc_within": 0.3395301881217374,
+      "worst_env_val": 0.011363636363636364,
+      "checkpoint_bytes": 482054774,
+      "worker_pid": 110491,
+      "wandb_run_id": "gviobuj4"
+    }
+  },
+  "deltas_points": {
+    "route_E16_minus_route_E8_seed1_epoch10": {
+      "ood_val": 0.14207428455449356,
+      "id": -0.4924652811976733,
+      "worst_experiment": -0.5681818181818181
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "fairness_class": "active_compute_matched_same_pressure_temperature_auxiliary_and_seed",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "both_workers_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_both_to_epoch30_as_predeclared_pareto_tradeoff_E16_higher_mean_but_lower_id_and_tail",
+  "interpretation": "The first locked fresh-seed checkpoint does not reproduce the seed-0 E16 tail direction at epoch 10. It is diagnostic rather than final because delayed emergence was predeclared and E16 is not dominated on every axis.",
+  "multiplicity": "Locked seed1 row after a multi-arm seed0 architecture screen; interim epoch10 evidence is not a population or replication claim."
+}

@@ -2110,6 +2110,24 @@ All ten available H100s are assigned: 2887 GPU0/1 workers 41687/43493; 2875 GPU0
 110491/112826; 2874 GPU0/1 54666/56662; 2862 GPU0/1 57545/56371; and 2859 GPU0/1
 44982/43126. Temperature expert-count is complete at six finals and four prunes. The expanded locked
 confirmation has seven active rows and one queued E32-seed2 row. Broader expert-count has one final,
-three active, and four queued; 13 tested arms remain ready and backlog remains 27. Checksum-manifest
-publication for the three extreme expert-count finals and route-E4 tail-safe is active as PID 44628
-after one quoting-only retry that mutated no artifact. OOD test remains sealed.
+three active, and four queued; 13 tested arms remain ready and backlog remains 27. OOD test remains
+sealed.
+
+## 2026-08-02 20:56 EDT — Fresh-seed E16 tail direction weakens at epoch 10; publication repair is bounded
+
+The first locked fresh-seed E16-versus-E8 comparison passes exact run/config/seed/epoch identity,
+finite metrics, ERM, four OOD-validation environments/9,854 samples, checkpoint identity and size,
+clear fatal scans, and sealed-test checks. At epoch 10, E16 minus E8 is
+`+0.142/-0.492/-0.568` OOD/ID/worst points. E16 is therefore a Pareto tradeoff rather than an
+all-axis loser, and both rows continue unchanged to epoch 30 under the predeclared delayed-emergence
+rule. This interim fresh-seed result does not reproduce the seed-0 early tail direction and raises
+seed instability as the leading alternative to a bank-size mechanism; it is diagnostic, not a
+replication claim.
+
+The checksum-manifest publication retry failed before artifact mutation because the persistent-main
+`scripts.run_ccas` lacks the expected `publish_hf_run` symbol. The earlier quoting failure and this
+single narrow retry created no manifest. The retry budget is exhausted for this invocation; the
+license condition is a clean tested checkout with the publisher import and manifest dry path
+verified before one new bounded attempt. Training is unaffected: all ten available H100s retain
+their documented assignments, E32 seed2 remains the highest-ranked queued refill, and OOD test
+remains sealed.
