@@ -1401,3 +1401,30 @@ effect. The new canonical high-z-loss row is dominated at epoch 10, but remains 
 the declared delayed-stabilization alternative; the other two new canonical rows are exact
 pressure controls. Ten workers remain assigned and no H100 in the five running containers is idle.
 OOD test remains sealed.
+
+## 2026-08-02 07:52 EDT router-aux epoch-60 falsification and temperature refill
+
+The strict router-aux ledger now contains 38 valid rows: all 16 epoch-10, 13 epoch-30, and nine
+epoch-60 milestones. Nine final JSONs, exact milestone streams, finite metrics, four validation
+environments totaling 9,854 samples, 30,676,212 parameters, ERM, clean `7dcb42e` provenance,
+epoch-60 checkpoints, fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and absent or
+null OOD-test fields pass together. All nine completed folders now have manifests and were uploaded
+under the declared router-aux HF prefix with remote file-list verification.
+
+The predeclared persistence test is negative. At `balance=0.01,zloss=0`, route pressure exceeded
+its exact canonical pair by `+1.228` OOD points at epoch 30, but only `+0.142` points at epoch 60
+(`+0.401` ID and `+0.365` worst-experiment points). At `balance=0.0001,zloss=0.001`, route changes
+mean OOD by `-0.335` while improving the tail by `+0.446` points. The completed mean leader remains
+route zero-balance plus z-loss at OOD `0.212401`; this is a small trajectory/tail effect, not a
+large stable sparse gain. The epoch-30 interaction is therefore falsified as a persistent mean-OOD
+mechanism. Sixteen-setting seed-0 multiplicity remains the largest threat.
+
+A 12-cell router-temperature-initialization question was predeclared in source commit `e22b320`:
+canonical versus route pressure, two new initial temperatures (`0.03`, `0.2`), and three
+representative auxiliary settings, with the existing `0.07` trajectories as shared references.
+Six exact pressure-paired cells launched from the clean, previously tested `7dcb42e` execution tree
+while the remaining six stay queued. Fresh process/GPU audits resolve two model allocations on each
+of containers 2887, 2875, 2874, 2862, and 2859: four remaining router-aux workers plus six new
+temperature workers occupy all ten available H100s. `tester6` 2893 was stopped; exactly one start
+request was issued and the immediate portal state still showed stopped, so no duplicate request or
+replacement was made. OOD test remains sealed.

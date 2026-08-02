@@ -968,3 +968,28 @@ The three new canonical epoch-10 OOD/ID/worst rows are: zero balance and zero z-
 `0.131825/0.308308/0.015828`. The high-z-loss row is strictly dominated, but it remains licensed
 only to test the predeclared delayed router-stabilization alternative at epoch 30; the other two
 are exact matched controls. The scientific claim stays exploratory and multiplicity exposed.
+
+## 2026-08-02 07:52 ET — route-pressure persistence fails at epoch 60
+
+Nine router-aux cells now have strict epoch-60 results, bringing campaign coverage to
+16/13/9 at epochs 10/30/60 and 38 validated milestone rows. Every consumed result has exact
+registry/config/seed identity, finite train/ID/OOD-validation/worst metrics, four environments and
+9,854 samples, ERM, the declared 30,676,212 parameters, a valid epoch-60 checkpoint, clean
+`7dcb42e` provenance, `selection_split=ood_val`, `test_evaluated=false`, and no OOD-test value. Nine
+manifests are present and all nine completed HF folders were remotely re-listed. The normalized
+record is `analysis/router_aux60_epoch60_validation.json`.
+
+The moderate-balance pressure effect is transient: route minus canonical at
+`balance=0.01,zloss=0` falls from `+1.228` OOD points at epoch 30 to `+0.142` at epoch 60, with
+`+0.401` ID and `+0.365` worst-experiment points. A second completed pair instead trades
+`-0.335` mean OOD for `+0.446` worst-experiment points. Router pressure and auxiliary losses can
+move the mean/tail trajectory, but no completed pair supports the sought large stable mean-OOD
+gain. This is exploratory seed-0 mechanism evidence, not confirmation.
+
+The next bounded question tests whether the learnable cosine router's initial temperature causes
+that transient. Twelve cells are registered in `scripts/sweep_rxrx1_router_temperature.py`; six
+pressure-paired cells are running and six remain queued. They change no parameter count or active
+compute. Four remaining router-aux workers plus the six new cells occupy all ten running H100s.
+`tester6` received one start request while stopped and was not duplicated. The sharp falsifier is
+absence of a consistent temperature-by-pressure gain at epochs 30/60; any apparent winner remains
+multiplicity exposed until locked fresh-seed confirmation. OOD test is sealed.
