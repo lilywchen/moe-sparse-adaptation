@@ -851,3 +851,27 @@ refilled GPU 0 on container 2875 with late token-linear route (PID 73667), which
 without a duplicate output or process. Coverage is 30/8/1, with 26 pruned, 10 active, six queued,
 37 W&B launches, and no unassigned available H100. This is allocation evidence only; OOD test is
 sealed and exact dense comparisons remain the efficacy gate.
+
+## 2026-08-02 00:59 ET — wave seven completes the predeclared launch matrix
+
+Eight milestones are strictly valid: six epoch-10 and two epoch-30 rows, taking cumulative coverage
+to 36/10/1 with one final result. Original Cell-DINO and late image-linear route remain
+Pareto-relevant at epoch 10. Six dominated rows were pruned after preservation. Most importantly,
+middle token-cosine canonical's early tail signal disappears by epoch 30: early token-cosine route
+is better by `+0.009742` OOD, `+0.014602` ID, and `+0.002841` worst experiment. Early token-cosine
+route also dominates early output dense at epoch 30. The provisional mechanism ranking therefore
+favors early routing pressure; ordinary capacity and optimization remain live alternatives.
+
+All 43 planned arms have now launched. One manual priority refill raced a precomputed shard queue,
+creating a second physical early-canonical dense process. The duplicate was found after W&B startup
+but before epoch 0, stopped, and excluded from every scientific count; the auto-launched comparator
+was retained. Queue controllers for shards 0 and 1 were stopped while their child workers remained
+healthy, preventing later duplicates. The remaining late token-linear canonical and late
+token-cosine output arms then launched from the frozen cell registry. The scientific denominator is
+43 unique arms; physical W&B starts are 44 with one explicit zero-milestone exclusion.
+
+All ten available H100s hold distinct active arms, the runnable factorial queue is exhausted because
+launch coverage is complete, and tester6 remains Pending for the recorded scheduler-capacity reason.
+OOD test is sealed. The sharp falsifier is the exact early-canonical dense trajectory matching or
+exceeding the early routed arms, or loss of the routed mean/tail signal at epoch 60. Multiplicity and
+seed-0 selection are the largest current threats.

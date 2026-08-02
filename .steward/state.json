@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_and_prune_late_image_linear_output_epoch10_then_refill_with_late_token_linear_route",
-  "last_action_at": "2026-08-02T00:38:44-04:00",
+  "last_action": "validate_wave7_prune_six_remove_one_transient_duplicate_and_launch_all_43_unique_planned_arms",
+  "last_action_at": "2026-08-02T00:59:10-04:00",
   "last_verified_commit": "bd213dbd7758f456eb822379707627b1998847ff",
   "valid_results": 1,
   "expected_results": 43,
   "active_gpu_workers": 10,
   "idle_h100s": 0,
-  "sciserver_resource_map": "five_2H100_containers_each_running_two_distinct_factorial60_workers_after_wave4_refill_with_owned_processes_and_gpu_allocations_or_startup_reservations; tester6_container2893_pending_after_one_start_request_no_duplicate",
+  "sciserver_resource_map": "five_2H100_containers_each_running_two_distinct_factorial60_workers_after_wave7_complete_launch_coverage_with_owned_processes_and_gpu_allocations; tester6_container2893_pending_after_one_start_request_no_duplicate",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -202,23 +202,23 @@
     "tests": "5_focused_101_full_passed",
     "hf_reverification": "20_changed_files_force_downloaded_and_sha256_verified"
   },
-  "factorial60_status": "active_wave6_30_epoch10_8_epoch30_1_epoch60_and_1_final_valid_one_pruned_and_refilled",
+  "factorial60_status": "active_wave7_36_epoch10_10_epoch30_1_epoch60_and_1_final_valid_all_43_unique_planned_arms_launched",
   "factorial60_expected_results": 43,
   "factorial60_valid_results": 1,
-  "factorial60_valid_epoch10_milestones": 30,
-  "factorial60_valid_epoch30_milestones": 8,
+  "factorial60_valid_epoch10_milestones": 36,
+  "factorial60_valid_epoch30_milestones": 10,
   "factorial60_valid_epoch60_milestones": 1,
   "factorial60_active_runs": [
     "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801",
     "rxrx1_moe_late_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
-    "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
     "rxrx1_moe_late_token_linear_route_E8k1_ep60_s0_factorial60_20260801",
-    "rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
     "rxrx1_original_ep60_s0_factorial60_20260801",
-    "rxrx1_moe_late_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
-    "rxrx1_dense_wide_middle_canonical_E8_ep60_s0_factorial60_20260801",
-    "rxrx1_moe_late_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
-    "rxrx1_moe_late_token_cosine_route_E8k1_ep60_s0_factorial60_20260801"
+    "rxrx1_moe_late_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_late_canonical_E8_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_late_output_E8_ep60_s0_factorial60_20260801",
+    "rxrx1_moe_late_token_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_middle_output_E8_ep60_s0_factorial60_20260801"
   ],
   "factorial60_pruned_runs": [
     "rxrx1_moe_early_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
@@ -246,9 +246,15 @@
     "rxrx1_moe_late_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
     "rxrx1_moe_middle_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
     "rxrx1_moe_middle_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
-    "rxrx1_moe_late_image_linear_output_E8k1_ep60_s0_factorial60_20260801"
+    "rxrx1_moe_late_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801",
+    "rxrx1_moe_late_token_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_dense_wide_middle_canonical_E8_ep60_s0_factorial60_20260801",
+    "rxrx1_moe_late_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_moe_late_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+    "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801"
   ],
-  "factorial60_queued_runs": 6,
+  "factorial60_queued_runs": 0,
   "factorial60_wandb_group": "rxrx1-cell-dino-factorial60-20260801",
   "factorial60_hf_prefix": "rxrx1/cell_dino_cp5/factorial60_20260801",
   "factorial60_split_status": "stage1_selection_split_ood_val_test_evaluated_false_ood_test_sealed",
@@ -259,19 +265,23 @@
   "factorial60_execution_tree": "7320d64944c34c9ee832924ee06429491739354f",
   "factorial60_execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-factorial60-exec-bd213db",
   "factorial60_test_status": "30_focused_and_106_full_passed_in_pinned_sciserver_runtime",
-  "factorial60_tracking_status": "thirty_seven_wandb_runs_launched_child_env_group_job_project_and_ood_test_blind_tags_verified_first_completed_run_synced_and_first_hf_folder_five_files_uploaded_and_remote_listed",
+  "factorial60_tracking_status": "all_43_unique_planned_arms_launched_with_declared_group_job_and_ood_test_blind_tags; 44_physical_wandb_starts_including_one_explicitly_excluded_pre_epoch0_duplicate; first_completed_run_synced_and_first_hf_folder_five_files_uploaded_and_remote_listed",
+  "factorial60_unique_planned_arms_launched": 43,
+  "factorial60_physical_wandb_starts": 44,
+  "factorial60_excluded_transient_duplicate_starts": 1,
   "factorial60_epoch10_validation": "analysis/factorial60_epoch10_validation.json",
   "factorial60_wave2_validation": "analysis/factorial60_wave2_validation.json",
   "factorial60_wave3_validation": "analysis/factorial60_wave3_validation.json",
   "factorial60_wave4_validation": "analysis/factorial60_wave4_validation.json",
   "factorial60_wave5_validation": "analysis/factorial60_wave5_validation.json",
   "factorial60_wave6_validation": "analysis/factorial60_wave6_validation.json",
+  "factorial60_wave7_validation": "analysis/factorial60_wave7_validation.json",
   "factorial60_first_completed_run": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
   "factorial60_first_completed_hf_status": "five_files_uploaded_and_remote_listed_under_declared_factorial60_prefix",
   "architectural_hypothesis_backlog": "analysis/architectural_hypothesis_backlog.md",
   "architectural_hypotheses_predeclared": 24,
   "architectural_implementation_priority_designs": 12,
-  "architectural_runnable_status": "factorial60_has_6_tested_queued_cells_and_10_active_cells; next_family_designs_require_isolated_implementation_tests_dry_runs_and_exact_parameter_flop_validation_before_launch",
+  "architectural_runnable_status": "all_43_factorial60_cells_have_launched_and_10_are_active_with_no_unlaunched_factorial_cells; next_family_designs_require_isolated_implementation_tests_dry_runs_and_exact_parameter_flop_validation_before_launch",
   "architectural_priority_families": [
     "function_preserving_sparse_upcycling_and_staged_unfreezing",
     "router_z_loss_load_balance_and_temperature",
@@ -283,15 +293,23 @@
   "factorial60_dense_priority": {
     "leader": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
     "exact_comparator": "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
-    "status": "known_and_queued_matched_60_epoch_milestone_not_yet_emitted_required_before_sparse_efficacy_claim",
+    "status": "active_on_container2875_gpu1_matched_60_epoch_milestones_pending_required_before_sparse_efficacy_claim",
     "historical_context": "validated_middle_canonical_hypothesis90_dense_is_not_exact_due_to_placement_and_60_vs_90_epoch_schedule"
   },
   "factorial60_container_assignments": {
     "2887": ["rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801", "rxrx1_moe_late_image_linear_route_E8k1_ep60_s0_factorial60_20260801"],
-    "2875": ["rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801", "rxrx1_moe_late_token_linear_route_E8k1_ep60_s0_factorial60_20260801"],
-    "2874": ["rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801", "rxrx1_original_ep60_s0_factorial60_20260801"],
-    "2862": ["rxrx1_moe_late_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801", "rxrx1_dense_wide_middle_canonical_E8_ep60_s0_factorial60_20260801"],
-    "2859": ["rxrx1_moe_late_image_cosine_output_E8k1_ep60_s0_factorial60_20260801", "rxrx1_moe_late_token_cosine_route_E8k1_ep60_s0_factorial60_20260801"]
+    "2875": ["rxrx1_moe_late_token_linear_route_E8k1_ep60_s0_factorial60_20260801", "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801"],
+    "2874": ["rxrx1_original_ep60_s0_factorial60_20260801", "rxrx1_moe_late_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801"],
+    "2862": ["rxrx1_dense_wide_late_canonical_E8_ep60_s0_factorial60_20260801", "rxrx1_dense_wide_late_output_E8_ep60_s0_factorial60_20260801"],
+    "2859": ["rxrx1_moe_late_token_cosine_output_E8k1_ep60_s0_factorial60_20260801", "rxrx1_dense_wide_middle_output_E8_ep60_s0_factorial60_20260801"]
+  },
+  "factorial60_transient_duplicate_exclusion": {
+    "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
+    "excluded_pid": 34257,
+    "kept_pid": 74792,
+    "status": "stopped_before_epoch0_after_wandb_core_start_no_milestone_or_result_consumed",
+    "cause": "manual_priority_refill_raced_precomputed_shard_queue",
+    "repair": "stopped_shard0_and_shard1_controllers_only_preserved_child_workers_removed_duplicate_and_directly_launched_final_two_nonduplicate_cells"
   },
   "sixth_container": {
     "name": "tester6",
@@ -308,5 +326,5 @@
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
   "overleaf_build_status": "synced_exact_github_commit_7_pages_0_errors_1_showhyphens_warning_2026-08-01T20:24-04:00; local_fatal_build_and_visual_review_pass",
-  "next_gate": "strictly_validate_next_epoch10_and_epoch30_handoffs_apply_same_pareto_rule_and_refill_from_7_tested_queue; obtain_exact_early_canonical_dense_milestone_before_any_sparse_efficacy_claim; concurrently_implement_and_test_top12_architectural_designs_without_interrupting_healthy_workers"
+  "next_gate": "strictly_validate_next_epoch10_epoch30_and_epoch60_handoffs_apply_same_pareto_rule; compare_active_exact_early_canonical_dense_to_early_routed_arms_before_any_sparse_efficacy_claim; prepare_next_family_arms_with_isolated_tests_dry_runs_and_exact_fairness_accounting_before_any_factorial_worker_finishes"
 }

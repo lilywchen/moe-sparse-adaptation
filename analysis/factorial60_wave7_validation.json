@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "status": "strictly_valid_wave7_handoff_all_planned_arms_launched",
+  "campaign": "factorial60_20260801",
+  "validated_at": "2026-08-02T00:59:10-04:00",
+  "validated_milestones": [
+    {
+      "run_id": "rxrx1_dense_wide_early_output_E8_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 30,
+      "train": 0.9985952287066246,
+      "id": 0.4109376538954004,
+      "ood_val": 0.16338542723767,
+      "worst_experiment": 0.015016233766233766,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+        "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801"
+      ]
+    },
+    {
+      "run_id": "rxrx1_moe_late_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.4485163643533123,
+      "id": 0.29363242391411404,
+      "ood_val": 0.1317231581083824,
+      "worst_experiment": 0.01461038961038961,
+      "decision": "continue_pareto_relevant"
+    },
+    {
+      "run_id": "rxrx1_moe_late_token_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.4852129337539432,
+      "id": 0.30719984241111004,
+      "ood_val": 0.1302009336310128,
+      "worst_experiment": 0.013798701298701298,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_original_ep60_s0_factorial60_20260801"
+      ]
+    },
+    {
+      "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.4776468848580442,
+      "id": 0.29616862011228207,
+      "ood_val": 0.13324538258575197,
+      "worst_experiment": 0.013392857142857142,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_original_ep60_s0_factorial60_20260801"
+      ]
+    },
+    {
+      "run_id": "rxrx1_moe_late_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.4840546135646688,
+      "id": 0.30308775731310944,
+      "ood_val": 0.1317231581083824,
+      "worst_experiment": 0.012175324675324676,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_original_ep60_s0_factorial60_20260801"
+      ]
+    },
+    {
+      "run_id": "rxrx1_original_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.5259020110410094,
+      "id": 0.3356643356643357,
+      "ood_val": 0.1376090927542115,
+      "worst_experiment": 0.014204545454545454,
+      "decision": "continue_pareto_relevant"
+    },
+    {
+      "run_id": "rxrx1_moe_late_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 10,
+      "train": 0.4597791798107255,
+      "id": 0.2984585836698513,
+      "ood_val": 0.12776537446722144,
+      "worst_experiment": 0.018668831168831168,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801"
+      ]
+    },
+    {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "milestone_epoch": 30,
+      "train": 0.9975108438485805,
+      "id": 0.45299418890968185,
+      "ood_val": 0.18439212502537042,
+      "worst_experiment": 0.018668831168831168,
+      "decision": "pruned_after_validation",
+      "dominated_by": [
+        "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801"
+      ]
+    }
+  ],
+  "common_checks": {
+    "parseable_jsonl": true,
+    "exact_run_seed_epoch_identity": true,
+    "seed_zero": true,
+    "finite_required_metrics": true,
+    "four_expected_validation_environments_and_counts": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "ood_test_metric_fields_absent_or_null": true,
+    "classification_objective_erm": true,
+    "fatal_log_scan_clear": true,
+    "frozen_config_provenance_and_tracking_verified": true
+  },
+  "provenance": {
+    "github_source_commit": "bd213dbd7758f456eb822379707627b1998847ff",
+    "sciserver_execution_commit": "b8ece25e05dc675bd6a61e0728879e53130e453e",
+    "execution_tree": "7320d64944c34c9ee832924ee06429491739354f",
+    "wandb_group": "rxrx1-cell-dino-factorial60-20260801",
+    "selection_split": "ood_val",
+    "test_evaluated": false
+  },
+  "dominance_checks": {
+    "early_token_cosine_route_epoch30_minus_dense_early_output": {
+      "ood_val": 0.03074893444286584,
+      "id": 0.0566581306017926,
+      "worst_experiment": 0.006493506493506494
+    },
+    "early_token_cosine_route_epoch30_minus_middle_token_cosine_canonical": {
+      "ood_val": 0.009742236655165414,
+      "id": 0.014601595587511137,
+      "worst_experiment": 0.002840909090909092
+    },
+    "middle_token_cosine_canonical_epoch10_minus_late_image_cosine_output": {
+      "ood_val": 0.003754820377511664,
+      "id": 0.004703043435437798,
+      "worst_experiment": 0.0008116883116883123
+    }
+  },
+  "handoff": {
+    "pruned_runs": 6,
+    "continued_runs": 2,
+    "new_unique_planned_arms_launched": [
+      "rxrx1_dense_wide_middle_output_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_dense_wide_late_canonical_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_dense_wide_late_output_E8_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_late_token_cosine_output_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "transient_duplicate_exclusion": {
+      "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801",
+      "excluded_pid": 34257,
+      "kept_pid": 74792,
+      "reason": "manual priority refill raced the still-live precomputed shard queue",
+      "scope": "stopped_before_epoch_zero_or_meaningful_training_after_W&B_core_start; no milestone_or_result_consumed",
+      "repair": "stopped shard_0_and_shard_1_queue_controllers_only, preserved their healthy child_workers, stopped_the_duplicate, and_directly_launched_the_final_two_predeclared_nonduplicate_arms"
+    }
+  },
+  "active_assignments": {
+    "2887": {
+      "gpu0": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+      "gpu1": "rxrx1_moe_late_image_linear_route_E8k1_ep60_s0_factorial60_20260801"
+    },
+    "2875": {
+      "gpu0": "rxrx1_moe_late_token_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "gpu1": "rxrx1_dense_wide_early_canonical_E8_ep60_s0_factorial60_20260801"
+    },
+    "2874": {
+      "gpu0": "rxrx1_original_ep60_s0_factorial60_20260801",
+      "gpu1": "rxrx1_moe_late_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801"
+    },
+    "2862": {
+      "gpu0": "rxrx1_dense_wide_late_canonical_E8_ep60_s0_factorial60_20260801",
+      "gpu1": "rxrx1_dense_wide_late_output_E8_ep60_s0_factorial60_20260801"
+    },
+    "2859": {
+      "gpu0": "rxrx1_moe_late_token_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "gpu1": "rxrx1_dense_wide_middle_output_E8_ep60_s0_factorial60_20260801"
+    }
+  },
+  "cumulative_state": {
+    "validated_epoch10_milestones": 36,
+    "validated_epoch30_milestones": 10,
+    "validated_epoch60_milestones": 1,
+    "completed_valid_results": 1,
+    "pruned_runs": 32,
+    "active_runs": 10,
+    "queued_tested_runs": 0,
+    "unique_planned_arms_launched": 43,
+    "physical_wandb_starts": 44,
+    "excluded_transient_duplicate_starts": 1,
+    "idle_available_h100s": 0
+  },
+  "interpretation": "Original Cell-DINO remains an early Pareto anchor, while late image-linear route survives only through a narrow mean-tail tradeoff. Middle token-cosine canonical loses its epoch-10 tail advantage by epoch 30, and early output dense is dominated by the early route frontiers at epoch 30. Early route pressure is therefore the leading mechanism hypothesis, not yet an MoE efficacy result.",
+  "sharpest_falsifier": "The exact early-canonical dense trajectory matches or exceeds the early routed arms at 30 and 60 epochs, or the routed mean-and-tail advantage disappears at epoch 60.",
+  "largest_threat": "Seed-0 selection over 43 planned arms; all current winners are exploratory until locked fresh-seed confirmation."
+}

@@ -1266,3 +1266,39 @@ the distinct tested late token-linear route arm. Cumulative coverage is 30/8/1, 
 37 W&B runs have launched, 10 workers are active, six tested arms remain queued, and zero available
 H100s are unassigned. All split/test guards remain intact; tester6 remains Pending for the recorded
 capacity reason.
+
+## 2026-08-02 00:59 EDT factorial60 wave-seven handoff and complete launch coverage
+
+Eight new milestones pass strict JSONL, exact run/seed/epoch/config, finite-metric,
+four-environment/count, ERM, tracking, fatal-scan, `selection_split=ood_val`, and
+`test_evaluated=false` checks. Six are epoch 10 and two are epoch 30, raising cumulative coverage to
+36/10/1 with one validated final result. Original Cell-DINO is Pareto-relevant at epoch 10 with
+OOD/ID/worst `0.137609/0.335664/0.014205`. Late image-linear route also continues because its
+`0.131723/0.293632/0.014610` tradeoff is not strictly dominated.
+
+Six rows are strictly dominated and were stopped after preservation: dense early output at epoch
+30; late token-cosine route, middle canonical dense, late token-cosine canonical, and late
+image-cosine output at epoch 10; and middle token-cosine canonical at epoch 30. The last comparison
+is informative: the middle canonical token arm's epoch-10 tail lead does not persist, because early
+token-cosine route exceeds it at epoch 30 by `+0.009742` OOD, `+0.014602` ID, and `+0.002841` worst
+experiment. Early token-cosine route also dominates early output dense at epoch 30 by
+`+0.030749/+0.056658/+0.006494`. This makes early routing pressure the current leading mechanism
+hypothesis, not a sparse-efficacy result.
+
+All six remaining planned cells launched, so every one of the 43 predeclared arms has now started.
+A priority refill briefly raced a still-live precomputed shard queue and created a duplicate
+early-canonical dense process. It was detected after W&B startup but before epoch 0 or meaningful
+training, explicitly excluded, and stopped; the queue controllers on shards 0 and 1 were stopped
+without disturbing their healthy children. The kept early-canonical dense comparator is PID 74792.
+The two final missing MoE arms then started directly from the exact frozen `cells()` definitions.
+This yields 43 unique planned launches plus one excluded transient physical W&B start, never a
+44-arm scientific screen.
+
+Ten distinct workers now occupy all ten available H100s: container 2887 runs early token-cosine
+route and late image-linear route; 2875 runs late token-linear route and exact early-canonical
+dense; 2874 runs original and late token-linear canonical; 2862 runs late-canonical dense and
+late-output dense; 2859 runs late token-cosine output and middle-output dense. The tested queue is
+empty only because complete planned launch coverage has been reached, not because work stopped.
+The exact dense comparator and epoch-60 route trajectories now shorten the critical path. OOD test
+remains sealed, multiplicity and seed-0 selection remain the largest threats, and no manuscript
+claim is licensed.
