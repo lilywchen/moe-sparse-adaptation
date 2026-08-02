@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_seed1_E2_vs_E8_epoch10_and_launch_strict_publication_repair",
-  "last_action_at": "2026-08-02T21:02:00-04:00",
+  "last_action": "complete_and_remote_verify_four_run_publication_repair",
+  "last_action_at": "2026-08-02T21:04:00-04:00",
   "last_verified_commit": "21d7bbe",
   "valid_results": 28,
   "expected_results": 20,
@@ -513,7 +513,8 @@
   "backlog_hypotheses": 27,
   "wandb_current_status": "locked_route_E2_seed1_28k2fboh_seed2_l7vkvk81_route_E8_seed1_qsbm21cg_seed2_kkkemsr0_route_E16_seed1_gviobuj4_seed2_abcjy5pp_and_route_E32_seed1_6cmjnu32_live; broader_canonical_E4_tail_safe_zero_aux_and_route_E4_zero_aux_live; all_temperature_expert_count_seed0_rows_terminal",
   "current_gpu_assignments": {"2887":{"gpu0":{"worker_pid":41687,"arm":"canonical_E4_tail_safe_seed0"},"gpu1":{"worker_pid":43493,"arm":"route_E2_seed1_confirmation"}},"2875":{"gpu0":{"worker_pid":110491,"arm":"route_E16_seed1_confirmation"},"gpu1":{"worker_pid":112826,"arm":"route_E16_seed2_confirmation"}},"2874":{"gpu0":{"worker_pid":54666,"arm":"route_E4_zero_aux_seed0"},"gpu1":{"worker_pid":56662,"arm":"route_E2_seed2_confirmation"}},"2862":{"gpu0":{"worker_pid":57545,"arm":"route_E32_seed1_confirmation"},"gpu1":{"worker_pid":56371,"arm":"route_E8_seed2_confirmation"}},"2859":{"gpu0":{"worker_pid":44982,"arm":"route_E8_seed1_confirmation"},"gpu1":{"worker_pid":43126,"arm":"canonical_E4_zero_aux_seed0"}}},
-  "pending_publication": {"pid": 114491, "runs": 4, "status": "active_from_documented_code_equivalent_checkout_after_four_run_strict_dry_validation_and_compile_pass", "first_attempt": "quoting_syntax_error_before_artifact_mutation", "prior_retry": "failed_importerror_persistent_main_scripts_run_ccas_missing_publish_hf_run_no_artifact_mutation", "repair_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-e16-confirm-codeeq-4969659", "repair_execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669", "repair_execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39", "strict_dry_validation": "four_candidates_passed_exact_identity_metrics_environment_checkpoint_provenance_fatal_and_ood_blind_checks", "startup": "canonical_E32_manifest_created_remote_verification_pending_no_failure_log", "completion_condition": "four_manifests_and_twenty_eight_remote_files_verified_seven_per_run"},
+  "pending_publication": null,
+  "latest_publication": {"status": "strict_complete_remote_verified", "runs": 4, "manifests": 4, "remote_files": 28, "files_per_run": 7, "families": {"temperature_expert_count60_extremes": {"runs": 3, "manifests": 3, "remote_files": 21, "hf_prefix": "rxrx1/cell_dino_cp5/temperature_expert_count60_20260802"}, "expert_count60_route_E4_tail_safe": {"runs": 1, "manifests": 1, "remote_files": 7, "hf_prefix": "rxrx1/cell_dino_cp5/expert_count60_20260802"}}, "repair_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-e16-confirm-codeeq-4969659", "repair_execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669", "repair_execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39", "report": "/home/idies/workspace/hb_publish_extreme_and_E4_2100.report.json", "selection_split": "ood_val", "test_evaluated": false},
   "sixth_container": {
     "name": "tester6",
     "container_id": 2893,
@@ -529,5 +530,5 @@
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "d71aa6955dcff053c92d5f3382fe7d82cf1331ba",
   "overleaf_build_status": "synced_exact_github_commit_d71aa6955dcff053c92d5f3382fe7d82cf1331ba_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T14:24-04:00; local_fatal_build_pass",
-  "next_gate": "verify_publication_pid114491_to_four_manifests_twenty_eight_remote_files; validate_locked_seed1_and_seed2_E2_E8_E16_pairs_at_epoch30_and_seed1_E32_vs_E8; launch_locked_E32_seed2_on_first_release; validate_canonical_and_route_E4_epoch60_pairs; then_refill_broader_E16_or_extreme_auxiliary_queue; keep_ood_test_sealed"
+  "next_gate": "validate_locked_seed1_and_seed2_E2_E8_E16_pairs_at_epoch30_and_seed1_E32_vs_E8; launch_locked_E32_seed2_on_first_release; validate_canonical_and_route_E4_epoch60_pairs; then_refill_broader_E16_or_extreme_auxiliary_queue; keep_ood_test_sealed"
 }

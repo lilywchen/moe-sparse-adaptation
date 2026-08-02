@@ -2150,3 +2150,14 @@ canonical-E32 checksum manifest has been created while remote verification proce
 not claimed until all four manifests and 28 remote files are listed. All ten available H100s remain
 assigned, E32 seed2 is still the first queued refill, tester6 remains Pending for the unchanged
 scheduler reason, and OOD test remains sealed.
+
+## 2026-08-02 21:04 EDT — Four-run checksum publication is complete and remotely verified
+
+The repaired publication worker exits successfully after strict validation, manifest generation,
+upload, and remote listing. Canonical E32, route E32, route E64, and route-E4 tail-safe each have one
+checksum manifest and seven verified remote files: result JSON, run log, milestone stream, three
+10/30/60 checkpoints, and manifest. The three temperature expert-count runs contribute 21 files
+under `rxrx1/cell_dino_cp5/temperature_expert_count60_20260802`; route-E4 tail-safe contributes
+seven under `rxrx1/cell_dino_cp5/expert_count60_20260802`. The publication report is preserved at
+`/home/idies/workspace/hb_publish_extreme_and_E4_2100.report.json`. This is artifact traceability,
+not new efficacy evidence. All ten available H100s remain assigned and OOD test remains sealed.

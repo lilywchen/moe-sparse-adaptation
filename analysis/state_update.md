@@ -1509,6 +1509,6 @@ The sharp falsifier is loss of the E2 mean or tail sign at later locked mileston
 negligible randomized-route reliance.
 
 Publication repair passes exact four-run dry validation from code-equivalent tree `fee4c45d` and
-worker 114491 is active. One manifest exists at startup; no remote-completion claim is made until
-four manifests and 28 files are verified. Training remains fully assigned and OOD test remains
-sealed.
+worker 114491 completes successfully. Four manifests and all 28 expected remote files are verified,
+seven per run. This repairs artifact traceability only and does not alter the efficacy
+interpretation. Training remains fully assigned and OOD test remains sealed.
