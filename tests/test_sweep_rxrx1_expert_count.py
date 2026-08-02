@@ -39,7 +39,11 @@ def test_expert_count60_changes_only_predeclared_mechanism_fields():
 
 def test_expert_count60_is_not_mislabeled_exact_total_parameter_matched():
     counts = {
-        int(next(v.split("=", 1)[1] for v in overrides if v.startswith("model.n_experts=")))
+        int(next(
+            v.split("=", 1)[1]
+            for v in reversed(overrides)
+            if v.startswith("model.n_experts=")
+        ))
         for _, overrides, _ in cells()
     }
     assert counts == {4, 16}
