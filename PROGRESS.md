@@ -1464,3 +1464,30 @@ stopped; exactly one start request was issued and not repeated. Declared W&B gro
 the launch commands, but no local console marker or live environment key was recoverable in this
 audit, so remote W&B state is operationally unverified; persistent milestone/result artifacts and
 HF manifests remain the scientific source of truth.
+
+## 2026-08-02 09:38 EDT router-temperature epoch-30 prune and immediate refill
+
+Ten temperature epoch-10 streams and six epoch-30 streams now pass strict registry/run/seed/epoch
+identity, finite metrics, ERM, exact four-environment coverage (9,854 samples), parameter accounting,
+checkpoint, clean `7dcb42e` provenance, fatal-scan, OOD-validation selection, and OOD-test-blind
+checks. No temperature final result or manifest exists yet. At epoch 30, temperature `0.03` exceeds
+`0.2` under `balance=0,zloss=0.001` for both pressure branches, but route pressure trails its exact
+canonical pair on mean OOD at both temperatures (`-0.629` and `-0.842` points). This supports a
+lower-temperature optimization-geometry direction, not sparse efficacy.
+
+The route-pressure `temperature=0.2,balance=0,zloss=0.001` cell was strictly dominated by its exact
+canonical pair on OOD, ID, and worst-experiment accuracy, and by the lower-temperature route cell on
+all three axes. Its 368,514,056-byte epoch-30 checkpoint was preserved and the run was pruned. The
+released container 2874 GPU0 was immediately refilled with the distinct canonical
+`temperature=0.2,balance=0,zloss=0` cell (PID 47384); preflight duplicate/provenance checks passed,
+live W&B run `rc731n1b` appeared in the declared group, and postlaunch memory/utilization confirmed a
+healthy worker. Five containers again host two assigned H100 workers each, so the ten running H100s
+have zero idle devices. `tester6` 2893 remained stopped after exactly one start request.
+
+The temperature registry is now ten active, one queued, and one preserved prune of 12 expected;
+valid milestone coverage is 10/6/0 at epochs 10/30/60. The tested ready queue retains 13 arms and the
+backlog retains 24 hypotheses. The next released GPU receives the remaining route
+`temperature=0.2,balance=0,zloss=0` cell unless another strict prune creates a higher-ranked paired
+handoff; locked seed-1 sparse/dense confirmation pairs follow. This is a multiplicity-exposed seed-0
+screen. Its sharp falsifier is loss of the temperature direction by epoch 60 or failure of the
+zero-auxiliary pairs to reproduce it. OOD test remains sealed.

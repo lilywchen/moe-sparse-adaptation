@@ -1024,3 +1024,25 @@ router-aux screen. The largest operational tracking uncertainty is that declared
 set in launch commands but no local console marker or live environment key was recoverable; remote
 W&B state is not claimed. Persistent logs, milestones, results, checkpoints, and HF manifests are
 intact. OOD test remains sealed.
+
+## 2026-08-02 09:38 ET — lower temperature is directional, not yet a sparse gain
+
+Strict validation now covers ten epoch-10 and six epoch-30 router-temperature rows. Every consumed
+row has exact registry/run/seed/milestone identity, finite metrics, ERM, four environments and 9,854
+OOD-validation samples, exact parameter accounting, a saved checkpoint, clean `7dcb42e` provenance,
+no fatal log, `selection_split=ood_val`, `test_evaluated=false`, and no OOD-test fields.
+
+Under `balance=0,zloss=0.001`, lowering initial router temperature from `0.2` to `0.03` improves
+epoch-30 OOD validation for canonical and route pressure. However, route minus canonical is still
+`-0.842` points at `0.2` and `-0.629` points at `0.03`. The exact route `0.2` cell is also worse on
+ID and worst-experiment accuracy, so it was pruned after preserving its 368,514,056-byte epoch-30
+checkpoint. This rules out that specific high-temperature route-pressure recipe; it does not rule
+out the lower-temperature optimization direction or interactions with the unfinished zero-auxiliary
+pairs. The sharp falsifier is disappearance at epoch 60 or non-reproduction in zero-auxiliary pairs.
+
+Container 2874 GPU0 immediately refilled with canonical `temperature=0.2,balance=0,zloss=0`
+(PID 47384); the duplicate/provenance preflight passed and live W&B run `rc731n1b` was verified.
+All ten running H100s are assigned across five containers. Temperature accounting is ten active,
+one queued, one pruned, zero finals; the ready queue remains 13 with a 24-question backlog.
+`tester6` 2893 remains stopped after one start request. This remains exploratory seed 0 with
+12-cell multiplicity, and OOD test is sealed.

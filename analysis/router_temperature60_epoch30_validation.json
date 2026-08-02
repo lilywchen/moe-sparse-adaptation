@@ -1,0 +1,59 @@
+{
+  "campaign": "router_temperature60_20260802",
+  "status": "ten_epoch10_and_six_epoch30_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
+  "validated_at": "2026-08-02T09:38:00-04:00",
+  "source_before_ledger_commit": "a0b8361c51a68f1641f2f9babf8fac1fa1d26284",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_results": 12,
+  "active_results": 10,
+  "queued_results": 1,
+  "pruned_results": 1,
+  "validated_milestones": {"epoch10": 10, "epoch30": 6, "epoch60": 0},
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent",
+  "validation": "exact_registry_run_seed_epoch_identity_finite_metrics_erm_four_environments_counts_2462_2464_2464_2464_total9854_exact_checkpoint_clean_provenance_fatal_scan_and_parameter_accounting_pass",
+  "prior_epoch10_validation": "analysis/router_temperature60_epoch10_validation.json",
+  "new_epoch10_rows": [
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.3136757609, "ood_val": 0.1341587173, "worst_experiment": 0.0158279221},
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.3177878460, "ood_val": 0.1345646438, "worst_experiment": 0.0158279221},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3128139466, "ood_val": 0.1367972397, "worst_experiment": 0.0117694805},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3164581897, "ood_val": 0.1356809417, "worst_experiment": 0.0129870130}
+  ],
+  "epoch30_rows": [
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.47380084704028363, "ood_val": 0.1938299167850619, "worst_experiment": 0.016233766233766232},
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.47136314389835515, "ood_val": 0.1854069413436168, "worst_experiment": 0.011363636363636364},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.47483502413079876, "ood_val": 0.19474325147148366, "worst_experiment": 0.016639610389610388},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.4719294789717325, "ood_val": 0.188451390298356, "worst_experiment": 0.0174512987012987},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.46609376538954006, "ood_val": 0.18094174954333267, "worst_experiment": 0.015016233766233766},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.4659952723333005, "ood_val": 0.18753805561193423, "worst_experiment": 0.014204545454545454}
+  ],
+  "epoch30_paired_pressure_contrasts_points": [
+    {"temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -0.8422975441, "id": -0.2437703142, "worst_experiment": -0.4870129870}},
+    {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -0.6291861173, "id": -0.2905545159, "worst_experiment": 0.0811688312}},
+    {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.6596306069, "id": -0.0098493056, "worst_experiment": -0.0811688312}}
+  ],
+  "pruned_run": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t2em1_bw0_z1em3_20260802",
+    "container_id": 2874,
+    "gpu": 0,
+    "pid": 44312,
+    "checkpoint_bytes": 368514056,
+    "marker": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t2em1_bw0_z1em3_20260802.pruned",
+    "reason": "strictly_dominated_at_epoch30_by_exact_canonical_pair_on_ood_id_and_worst_and_by_lower_temperature_route_on_all_three_axes"
+  },
+  "refill_run": {
+    "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_router_temperature60_canonical_t2em1_bw0_z0_20260802",
+    "container_id": 2874,
+    "gpu": 0,
+    "pid": 47384,
+    "wandb_run_id": "rc731n1b",
+    "preflight": "clean_exact_execution_commit_gpu_free_zero_duplicate_persistent_output_declared_group_and_hf_prefix_pass",
+    "postlaunch": "healthy_8034MiB_live_tracking_marker_verified"
+  },
+  "interpretation": "temperature_0.03_outperforms_0.2_at_epoch30_in_both_zero_balance_zloss_pressure_branches_but_route_trails_canonical_mean_ood_at_both_temperatures_so_this_is_an_optimization_geometry_direction_not_sparse_efficacy",
+  "alternative": "temperature_may_interact_with_auxiliary_setting_and_the_unfinished_zero_auxiliary_pairs",
+  "falsifier": "temperature_direction_disappears_at_epoch60_or_zero_auxiliary_pairs_do_not_reproduce_it",
+  "multiplicity": "exploratory_seed0_12_cell_screen"
+}
