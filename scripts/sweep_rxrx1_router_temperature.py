@@ -13,7 +13,11 @@ compute, so pressure pairs remain exact architectural comparisons.  This is expl
 validation selected; any winner still requires a locked fresh-seed confirmation.
 """
 import os
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from moe_shift.capacity.naming import run_id_from
 from moe_shift.utils.config import apply_overrides, load_config

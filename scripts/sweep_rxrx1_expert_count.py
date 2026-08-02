@@ -16,7 +16,11 @@ active-compute reference.  Every result is exploratory until a locked configurat
 with fresh seeds, and OOD test remains sealed.
 """
 import os
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from moe_shift.capacity.naming import run_id_from
 from moe_shift.utils.config import apply_overrides, load_config

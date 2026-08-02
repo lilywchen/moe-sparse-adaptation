@@ -15,7 +15,11 @@ predeclared milestone interpretation; OOD test remains sealed.  A replicated mat
 license a separately frozen 90-epoch adjudication, but these jobs do not evaluate test.
 """
 import os
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from moe_shift.capacity.naming import run_id_from
 from moe_shift.utils.config import apply_overrides, load_config
