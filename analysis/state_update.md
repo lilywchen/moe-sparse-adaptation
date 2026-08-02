@@ -1356,3 +1356,26 @@ The broader route-E4 tail-safe row is also strict-valid at epoch 10 with OOD/ID/
 `0.130911/0.322343/0.014205`. Its exact route-E4 zero-auxiliary comparator is still ready rather
 than completed, so no effect is estimated. It continues to epoch 30, and the exact comparator is
 now first refill. This avoids comparing incompatible auxiliary objectives.
+## 2026-08-02 14:47 EDT — route E4 fails the epoch-30 capacity gate; route E16 remains provisional
+
+The low-temperature architecture screen now has strict same-pressure epoch-30 comparisons for
+route E4 and both E16 pressures, plus strict epoch-10 E2 rows. Route E4 is dominated by E8 on mean
+OOD, ID, and worst experiment (`-0.934/-0.975/-0.284` points) and is pruned with its checkpoint and
+milestone record preserved. This rules out a useful four-expert route-pressure regime for the exact
+`temperature=0.03`, zero-balance, `zloss=0.001` recipe through epoch 30; it does not rule out the
+separate tail-safe auxiliary recipe or other fairness estimands.
+
+Route E16 is the only new epoch-30 count row with aligned mean and tail gains over its pressure-
+matched E8 anchor (`+0.365/-1.485/+0.081` OOD/ID/worst points), although the mean is far below the
+five-point target. Canonical E16 trades `-1.390/-3.620/+0.162`, and both E2 epoch-10 rows trade
+roughly tied mean OOD for materially higher ID. The most plausible current explanation is a small
+route-by-bank-size interaction rather than a monotone benefit of more or fewer experts. The
+alternative is seed-0 trajectory noise or generic optimization. The sharp falsifier is loss of
+route E16's mean or tail direction at epoch 60, dead/non-reliant experts, or no difference between
+the now-running broader route-E4 tail-safe and zero-auxiliary pair. These are exploratory active-
+compute comparisons after many searched cells; no exact-total or population-level claim follows.
+
+The strict release/refill handoff pruned worker 51475 and started the exact route-E4 zero-auxiliary
+comparator as worker 54666/W&B `8an4h01j` on container2874/GPU0. Ten H100s remain assigned, 14
+tested arms remain ready, tester6 is still scheduler-Pending without a repeat request, and OOD test
+remains sealed.

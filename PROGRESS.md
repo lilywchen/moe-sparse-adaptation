@@ -1896,3 +1896,36 @@ scan. Its same-seed, same-data-order, same-pressure route-E4 zero-auxiliary comp
 so this is a validated level only and no auxiliary-loss effect is claimed. The arm continues
 unchanged to epoch 30; route-E4 zero-auxiliary is promoted to the first refill to close the exact
 pair before launching other broader cells. All ten H100s remain assigned and 15 arms remain ready.
+## 2026-08-02 14:47 EDT — five architecture milestones validate, route E4 prunes, exact comparator refills
+
+Five previously unconsumed milestones pass strict run/config/seed/epoch and live-command identity,
+finite metrics, ERM, four OOD-validation environments and 9,854 samples, checkpoint identity,
+fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test checks. At epoch 10,
+canonical E2 minus canonical E8 is `+0.122/+1.933/-0.325` OOD/ID/worst points and route E2 minus
+route E8 is `-0.142/+2.452/+0.122`; both are Pareto tradeoffs and continue to epoch 30. At epoch
+30, canonical E16 minus canonical E8 is `-1.390/-3.620/+0.162`, while route E16 minus route E8 is
+`+0.365/-1.485/+0.081`; neither is all-axis dominated, and route E16 retains the predeclared small
+mean-plus-tail signature with less than two points ID loss, so both continue to epoch 60.
+
+Route E4 at epoch 30 is `-0.934/-0.975/-0.284` points below the same-pressure E8 anchor on all
+three axes. This satisfies its predeclared pruning falsifier. Worker 51475 and its one-cell
+controller exited cleanly; the 311,741,277-byte epoch-30 checkpoint and copied milestone-stream
+prune record are preserved. The released container2874/GPU0 was immediately assigned to the exact
+broader route-E4 zero-auxiliary comparator. Its exact one-cell dry run, result/duplicate/physical-
+GPU checks, persistent destinations, active-compute fairness label, checkpoint policy, and sealed-
+test checks passed. Controller 54661 started worker 54666, W&B `8an4h01j`, using the declared
+group and HF prefix; the worker holds 8,014 MiB and has a clear initial fatal scan.
+
+All ten available H100s are assigned: 2887 has canonical/route E2 (37956/37957); 2875 has route
+E16/canonical E32 (106032/108209); 2874 has broader route-E4 zero-aux/route E64 (54666/53264);
+2862 has broader route-E4 tail-safe/route E32 (52582/51113); and 2859 has canonical E16/E64
+(39109/41338). The ready queue is 14 (six remaining broader expert-count cells plus eight extreme-
+auxiliary cells), backlog 27, and tester6 2893 remains Pending for the unchanged 11-affinity,
+two-unschedulable, three-insufficient-GPU reason; no duplicate start/create was issued. Local and
+GitHub were clean and aligned at `a1859d8`; the clean hypothesis checkout was `cd78339`, execution
+checkouts were clean/code-equivalent at `7dcb42e7` (the broader checkout at `4893c964`), while the
+older SciServer source tree remains `4795202` with three pre-existing tracked training-log edits.
+The result favors a route-by-expert-bank-size interaction over generic pressure, but remains
+seed-0, active-compute-only, and multiplicity-exposed. Route E16 losing its mean/tail advantage at
+epoch 60 or showing dead/non-reliant experts is the sharp falsifier. Next refill is broader
+canonical-E4 tail-safe, then canonical-E4 zero-auxiliary. OOD test remains sealed.

@@ -1,0 +1,110 @@
+{
+  "validated_at": "2026-08-02T14:47:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_architecture_screen",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "registry_commit": "a97e9062d950fbf6171ceca744aecb94d64a5536",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E2": {"total": 23584500, "active_ffn_including_router": 1182337},
+    "E4": {"total": 25948404, "active_ffn_including_router": 1183105},
+    "E8": {"total": 30676212, "active_ffn_including_router": 1184641},
+    "E16": {"total": 40131828, "active_ffn_including_router": 1187713}
+  },
+  "shared_E8_anchors": {
+    "canonical_epoch10": {"id": 0.31239535112774547, "ood_val": 0.13446316216764764, "worst_experiment": 0.017857142857142856},
+    "route_epoch10": {"id": 0.30522998128631934, "ood_val": 0.13446316216764764, "worst_experiment": 0.016233766233766232},
+    "canonical_epoch30": {"id": 0.47483502413079876, "ood_val": 0.19474325147148366, "worst_experiment": 0.016639610389610388},
+    "route_epoch30": {"id": 0.4719294789717325, "ood_val": 0.188451390298356, "worst_experiment": 0.0174512987012987}
+  },
+  "rows": {
+    "canonical_E2_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E2k1_ep60_s0_temperature_expert_count60_canonical_E2_20260802",
+      "epoch": 10,
+      "seed": 0,
+      "id": 0.33172461341475423,
+      "ood_val": 0.13568094174954334,
+      "worst_experiment": 0.01461038961038961,
+      "checkpoint_bytes": 283363621,
+      "minus_same_pressure_E8_points": {"ood_val": 0.12177795818957005, "id": 1.9329262287008764, "worst_experiment": -0.3246753246753246}
+    },
+    "route_E2_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s0_temperature_expert_count60_route_E2_20260802",
+      "epoch": 10,
+      "seed": 0,
+      "id": 0.32975475228996354,
+      "ood_val": 0.1330424193221027,
+      "worst_experiment": 0.0174512987012987,
+      "checkpoint_bytes": 283357757,
+      "minus_same_pressure_E8_points": {"ood_val": -0.14207428455449422, "id": 2.45247710036442, "worst_experiment": 0.1217532467532468}
+    },
+    "canonical_E16_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E16k1_ep60_s0_temperature_expert_count60_canonical_E16_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "id": 0.43863882596276965,
+      "ood_val": 0.180840267911508,
+      "worst_experiment": 0.018262987012987012,
+      "checkpoint_bytes": 482051839,
+      "minus_same_pressure_E8_points": {"ood_val": -1.3902983559975657, "id": -3.6196198168029103, "worst_experiment": 0.1623376623376624}
+    },
+    "route_E16_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s0_temperature_expert_count60_route_E16_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "id": 0.45708165074362256,
+      "ood_val": 0.19210472904404302,
+      "worst_experiment": 0.018262987012987012,
+      "checkpoint_bytes": 482044183,
+      "minus_same_pressure_E8_points": {"ood_val": 0.3653338745687018, "id": -1.4847828228109927, "worst_experiment": 0.0811688311688312}
+    },
+    "route_E4_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_temperature_expert_count60_route_E4_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "id": 0.4621786664040185,
+      "ood_val": 0.17911508017048913,
+      "worst_experiment": 0.01461038961038961,
+      "checkpoint_bytes": 311741277,
+      "minus_same_pressure_E8_points": {"ood_val": -0.933631012786687, "id": -0.9750812567713985, "worst_experiment": -0.284090909090909}
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_and_live_command_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_E2": "continue_to_epoch30_pareto_tradeoff_high_id_retention",
+    "route_E2": "continue_to_epoch30_pareto_tradeoff_high_id_and_small_tail_gain",
+    "canonical_E16": "continue_to_epoch60_mean_and_id_loss_but_small_tail_gain_not_all_axis_dominated",
+    "route_E16": "continue_to_epoch60_small_mean_and_tail_gain_with_less_than_two_point_id_loss",
+    "route_E4": "pruned_at_epoch30_strictly_dominated_by_same_pressure_E8_on_ood_id_and_worst",
+    "preserved_prune_marker": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature_expert_count60_20260802/rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_temperature_expert_count60_route_E4_20260802.pruned",
+    "refill": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_expert_count60_route_E4_no_aux_20260802",
+      "container_id": 2874,
+      "gpu": 0,
+      "controller_pid": 54661,
+      "worker_pid": 54666,
+      "wandb_run_id": "8an4h01j",
+      "wandb_group": "rxrx1-cell-dino-expert-count60-20260802",
+      "hf_prefix": "rxrx1/cell_dino_cp5/expert_count60_20260802"
+    }
+  },
+  "interpretation": "The four-expert low-temperature route arm is strictly dominated at epoch 30, while route E16 retains a small mean and worst-experiment advantage with a tolerable ID cost. This favors a conditional expert-bank capacity interaction over generic route pressure, but the effect is small and seed-0 exploratory.",
+  "alternative": "The E16 advantage is trajectory noise or an optimization effect unrelated to useful specialization.",
+  "sharp_falsifier": "Route E16 loses its mean or tail advantage at epoch 60, or mechanism analysis shows dead or non-reliant experts; the new route-E4 tail-safe versus zero-auxiliary pair separately falsifies an auxiliary-loss explanation.",
+  "multiplicity": "five new seed0 milestone rows after prior factorial, auxiliary, temperature, and architecture screens; no confirmatory claim"
+}
