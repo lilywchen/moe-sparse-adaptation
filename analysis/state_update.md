@@ -1336,3 +1336,8 @@ and one direct eight-cell dry run after a narrow direct-execution bootstrap repa
 `3ac5ef86c804e93f809f0caa347f8b34636cfff0`. Next refill is broader canonical-E4 tail-safe, then
 canonical-E4 zero-auxiliary, with the remaining broader cells before the extreme bracket.
 tester6 remains Pending for the exact unchanged scheduler reason and received no duplicate action.
+
+The linked Overleaf project pulled exact GitHub commit
+`d71aa6955dcff053c92d5f3382fe7d82cf1331ba` and recompiled the updated decision-grade paragraph:
+seven pages, zero errors, and one pre-existing `\showhyphens` warning. This is a traceability update,
+not additional evidence.

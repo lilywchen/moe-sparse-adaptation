@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_publish_two_seed_finals_refill_five_gpus_and_license_extreme_aux_queue",
-  "last_action_at": "2026-08-02T14:20:00-04:00",
-  "last_verified_commit": "3ac5ef86c804e93f809f0caa347f8b34636cfff0",
+  "last_action": "sync_and_compile_locked_two_seed_manuscript_after_full_validation_refill_handoff",
+  "last_action_at": "2026-08-02T14:24:00-04:00",
+  "last_verified_commit": "d71aa6955dcff053c92d5f3382fe7d82cf1331ba",
   "valid_results": 13,
   "expected_results": 16,
   "active_gpu_workers": 10,
@@ -470,7 +470,7 @@
   },
   "steward_automation_status": "active_15min_factorial_sweep_contract_continuous_ready_queue_refill_validation_wandb_hf_and_tester6_capacity_check",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
-  "last_synced_commit": "3ac5ef86c804e93f809f0caa347f8b34636cfff0",
-  "overleaf_build_status": "synced_exact_github_commit_9b00954_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T12:36-04:00; local_fatal_build_pass",
+  "last_synced_commit": "d71aa6955dcff053c92d5f3382fe7d82cf1331ba",
+  "overleaf_build_status": "synced_exact_github_commit_d71aa6955dcff053c92d5f3382fe7d82cf1331ba_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T14:24-04:00; local_fatal_build_pass",
   "next_gate": "validate_active_E2_E4_E16_E32_E64_milestones_immediately; on_next_release_launch_expert_count_canonical_E4_tail_safe_then_canonical_E4_zero_aux_then_remaining_broader_cells_before_extreme_auxiliary_bracket; require_plus5_ood_with_at_most_two_id_loss_or_predeclared_consistent_tail_gain_for_epoch90_or_seed_promotion; third_locked_seed_or_independent_locked_family_tests_tail_safe_confirmation; keep_ood_test_sealed"
 }

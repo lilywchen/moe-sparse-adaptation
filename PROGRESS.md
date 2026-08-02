@@ -1868,3 +1868,8 @@ remains Pending: 11 affinity mismatches, two unschedulable nodes, three insuffic
 preemption remains unhelpful and no repeat start/create was issued. On the next release, launch
 `expert_count60` canonical-E4 tail-safe, then its zero-auxiliary comparator; after the remaining
 seven broader cells, enter the extreme auxiliary bracket. OOD test remains sealed.
+
+GitHub commit `d71aa6955dcff053c92d5f3382fe7d82cf1331ba` was then pulled into the linked
+Overleaf project. The synchronized manuscript contains the locked epoch-60 two-seed paragraph and
+compiles to seven pages with zero errors and the single pre-existing `\showhyphens` compatibility
+warning. No scientific or operational configuration changed during the paper sync.
