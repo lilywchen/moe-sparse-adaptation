@@ -1,15 +1,15 @@
 {
   "campaign": "router_temperature60_20260802",
-  "status": "ten_epoch10_and_eight_epoch30_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
-  "validated_at": "2026-08-02T10:00:31-04:00",
-  "source_before_ledger_commit": "8444415e2b12ea076385187cf2768cbf2f1e5066",
+  "status": "eleven_epoch10_ten_epoch30_and_one_epoch60_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
+  "validated_at": "2026-08-02T10:17:41-04:00",
+  "source_before_ledger_commit": "c97ded607770957a56a808cbc0862e3363db7d7a",
   "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
   "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
   "expected_results": 12,
   "active_results": 10,
   "queued_results": 1,
   "pruned_results": 1,
-  "validated_milestones": {"epoch10": 10, "epoch30": 8, "epoch60": 0},
+  "validated_milestones": {"epoch10": 11, "epoch30": 10, "epoch60": 1},
   "selection_split": "ood_val",
   "test_evaluated": false,
   "ood_test_fields": "all_absent",
@@ -19,7 +19,8 @@
     {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.3136757609, "ood_val": 0.1341587173, "worst_experiment": 0.0158279221},
     {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.3177878460, "ood_val": 0.1345646438, "worst_experiment": 0.0158279221},
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3128139466, "ood_val": 0.1367972397, "worst_experiment": 0.0117694805},
-    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3164581897, "ood_val": 0.1356809417, "worst_experiment": 0.0129870130}
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3164581897, "ood_val": 0.1356809417, "worst_experiment": 0.0129870130},
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3079631636, "ood_val": 0.1339557540, "worst_experiment": 0.0146103896}
   ],
   "epoch30_rows": [
     {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.47380084704028363, "ood_val": 0.1938299167850619, "worst_experiment": 0.016233766233766232},
@@ -29,13 +30,19 @@
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.46609376538954006, "ood_val": 0.18094174954333267, "worst_experiment": 0.015016233766233766},
     {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.4659952723333005, "ood_val": 0.18753805561193423, "worst_experiment": 0.014204545454545454},
     {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.46336058307889294, "ood_val": 0.18429064339354576, "worst_experiment": 0.015827922077922076},
-    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.4673495518565941, "ood_val": 0.19220621067586766, "worst_experiment": 0.013392857142857142}
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.4673495518565941, "ood_val": 0.19220621067586766, "worst_experiment": 0.013392857142857142},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4669309563675761, "ood_val": 0.1892632433529531, "worst_experiment": 0.017045454545454544},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4606766472963656, "ood_val": 0.18987213314390095, "worst_experiment": 0.017045454545454544}
   ],
   "epoch30_paired_pressure_contrasts_points": [
     {"temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -0.8422975441, "id": -0.2437703142, "worst_experiment": -0.4870129870}},
     {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -0.6291861173, "id": -0.2905545159, "worst_experiment": 0.0811688312}},
     {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.6596306069, "id": -0.0098493056, "worst_experiment": -0.0811688312}},
-    {"temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.7915567282, "id": 0.3988968778, "worst_experiment": -0.2435064935}}
+    {"temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.7915567282, "id": 0.3988968778, "worst_experiment": -0.2435064935}},
+    {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.0608889791, "id": -0.6254309071, "worst_experiment": 0.0}}
+  ],
+  "epoch60_rows": [
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.5306805870186152, "ood_val": 0.21179216561802314, "worst_experiment": 0.019886363636363636, "checkpoint_bytes": 368520752}
   ],
   "pruned_run": {
     "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t2em1_bw0_z1em3_20260802",
@@ -55,7 +62,15 @@
     "preflight": "clean_exact_execution_commit_gpu_free_zero_duplicate_persistent_output_declared_group_and_hf_prefix_pass",
     "postlaunch": "healthy_8034MiB_live_tracking_marker_verified"
   },
-  "interpretation": "temperature_ordering_reverses_with_auxiliary_setting_at_epoch30_low_temperature_leads_with_zero_balance_plus_zloss_but_high_temperature_leads_with_balance_0p01_and_route_pressure_has_a_directional_mean_ood_and_id_gain_with_a_worst_experiment_cost",
+  "zero_auxiliary_handoff": {
+    "canonical_temperature_0p2_epoch10": {"id": 0.3079631635969664, "ood_val": 0.13395575400852447, "worst_experiment": 0.01461038961038961, "checkpoint_bytes": 368518201},
+    "canonical_temperature_0p03_epoch30": {"id": 0.4669309563675761, "ood_val": 0.1892632433529531, "worst_experiment": 0.017045454545454544, "checkpoint_bytes": 368518201},
+    "temperature_0p2_minus_0p03_canonical_epoch10_points": {"ood_val": -0.2841485691, "id": -0.4850783020, "worst_experiment": 0.2840909091},
+    "temperature_0p03_zero_aux_minus_zloss_0p001_canonical_epoch30_points": {"ood_val": -0.5480008119, "id": -0.7904067763, "worst_experiment": 0.0405844156},
+    "temperature_0p03_route_minus_canonical_epoch30_points": {"ood_val": 0.0608889791, "id": -0.6254309071, "worst_experiment": 0.0},
+    "status": "exact_temperature_0p03_pressure_pair_complete_epoch30_temperature_pair_incomplete_no_prune"
+  },
+  "interpretation": "temperature_ordering_is_auxiliary_setting_dependent_at_epoch30_the_zero_auxiliary_temperature_0p03_exact_route_pair_has_only_a_0p061_point_mean_gain_with_0p625_point_id_loss_and_no_tail_change_and_the_first_epoch60_high_temperature_canonical_row_is_strong_but_inferior_on_mean_and_tail_to_the_already_locked_router_aux_survivor",
   "alternative": "the_apparent_temperature_by_pressure_interaction_may_be_transient_optimization_noise_or_an_auxiliary_loss_effect_not_sparse_specialization",
   "falsifier": "matched_temperature_and_pressure_contrasts_do_not_persist_at_epoch60_or_zero_auxiliary_pairs_fail_to_show_a_consistent_architecture_specific_pattern",
   "multiplicity": "exploratory_seed0_12_cell_screen"

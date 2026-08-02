@@ -1025,6 +1025,34 @@ set in launch commands but no local console marker or live environment key was r
 W&B state is not claimed. Persistent logs, milestones, results, checkpoints, and HF manifests are
 intact. OOD test remains sealed.
 
+## 2026-08-02 10:14 ET — zero-auxiliary temperature evidence remains directional
+
+Strict router-temperature coverage is now 11 epoch-10, ten epoch-30, and one epoch-60 row. The
+new high-temperature zero-auxiliary canonical row reaches epoch 10 at OOD/ID/worst
+`0.133956/0.307963/0.014610`, while the low-temperature canonical row reaches epoch 30 at
+`0.189263/0.466931/0.017045`. Its exact route-pressure pair reaches epoch 30 at
+`0.189872/0.460677/0.017045`, while high-temperature canonical plus z-loss reaches epoch 60 at
+`0.211792/0.530681/0.019886`. All 22 cumulative rows pass exact identity, finite-metric,
+four-environment/9,854-sample, ERM, checkpoint, clean `7dcb42e` provenance, fatal-scan,
+OOD-validation-selection, and OOD-test-blind checks.
+
+Within the zero-auxiliary canonical branch at epoch 10, temperature `0.2` versus `0.03` changes
+OOD/ID/worst by `-0.284/-0.485/+0.284` points. At temperature `0.03`, removing the small z-loss at
+epoch 30 changes the same metrics by `-0.548/-0.790/+0.041` points. The latest evidence therefore
+keeps a low-temperature mean/ID optimization direction alive, but with an opposing tail movement.
+The exact zero-auxiliary low-temperature route-minus-canonical contrast is
+`+0.061/-0.625/+0.000` OOD/ID/worst points, which rules out a material sparse effect for that cell.
+The first epoch-60 row is `+1.918/+3.533/+0.446` points over exact early dense, but its mean and tail
+are below the already locked router-aux survivor, so it does not open another fresh-seed branch.
+The epoch-30 zero-auxiliary temperature comparison and complete epoch-60 pairs remain the sharp
+falsifiers.
+
+Ten distinct workers occupy all ten running H100s across containers 2887, 2875, 2874, 2862, and
+2859; all resolve to clean execution commit/tree `7dcb42e` / `1755b2f` and have fresh fatal-free
+logs. One temperature cell remains queued, followed by four locked fresh-seed confirmation arms
+and eight expert-count arms; ready/backlog counts remain 13/24. `tester6` received one fresh start
+request and remained stopped. No final result, manifest, or HF folder exists. OOD test is sealed.
+
 ## 2026-08-02 09:38 ET — lower temperature is directional, not yet a sparse gain
 
 Strict validation now covers ten epoch-10 and six epoch-30 router-temperature rows. Every consumed

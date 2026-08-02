@@ -1521,3 +1521,33 @@ after exactly one start request and was not duplicated. Accounting remains ten a
 one pruned, with 13 ready arms and 24 backlog hypotheses. The next release launches route
 `temperature=0.2,balance=0,zloss=0`; locked seed-1/2 sparse/dense confirmation follows. This remains
 a multiplicity-exposed seed-0 result; OOD test is sealed.
+
+## 2026-08-02 10:14 EDT zero-auxiliary temperature handoff
+
+Two zero-auxiliary canonical milestones, one matched route milestone, and the first epoch-60 row
+raise strict temperature coverage to 11/10/1 at epochs 10/30/60. The high-temperature canonical
+refill reached epoch 10 at OOD/ID/worst `0.133956/0.307963/0.014610`; the low-temperature canonical
+cell reached epoch 30 at `0.189263/0.466931/0.017045`. Its exact route pair reached epoch 30 at
+`0.189872/0.460677/0.017045`, and high-temperature canonical with `zloss=0.001` reached epoch 60 at
+`0.211792/0.530681/0.019886`. Across all 22 cumulative milestone rows, JSON parsing, unique
+run/epoch identity, finite metrics, ERM, four environments and 9,854 OOD-validation samples,
+checkpoints, clean `7dcb42e` execution provenance, fatal scans, `selection_split=ood_val`,
+`test_evaluated=false`, and absent OOD-test fields pass.
+
+At zero auxiliary weight, temperature `0.2` trails `0.03` at epoch 10 by `0.284` OOD and `0.485`
+ID points while improving the worst experiment by `0.284` points. At temperature `0.03`, removing
+z-loss changes epoch-30 OOD/ID/worst relative to `zloss=0.001` by `-0.548/-0.790/+0.041` points.
+The now-complete low-temperature zero-auxiliary pressure pair gives route minus canonical
+`+0.061/-0.625/+0.000` OOD/ID/worst points, ruling out a material sparse benefit in that exact cell.
+The epoch-60 high-temperature canonical row exceeds the exact early dense comparator by
+`+1.918/+3.533/+0.446` points, but is weaker on mean OOD and tail than the already locked router-aux
+survivor, so it does not license another fresh-seed branch. No new row is pruned. The sharp
+falsifiers remain the epoch-30 zero-auxiliary temperature comparison and full epoch-60 pairs.
+
+Five running containers still host the same ten distinct owned workers with zero idle running
+H100s; each process resolves to the clean execution checkout and all logs are fresh and fatal-free.
+The remaining route `temperature=0.2,balance=0,zloss=0` arm stays next in the tested queue, followed
+by the locked seed-1/2 sparse/dense confirmations and expert-count cells. `tester6` 2893 remained
+stopped after exactly one fresh start request this invocation and was not duplicated. There is no
+temperature final, manifest, or HF publication; W&B refill `rc731n1b` remains initialized. The
+screen is exploratory and multiplicity exposed, and OOD test remains sealed.
