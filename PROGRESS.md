@@ -1889,3 +1889,10 @@ epoch 30. These are active-compute comparisons only and cannot be pooled with ex
 The sharp falsifier is failure to improve mean or tail at epoch 30 together with dead or unstable
 expert diagnostics; four additional seed-0 cells and the preceding screens keep the result
 exploratory. No worker, ready-arm count, or OOD-test state changed.
+
+The broader `expert_count60` route-E4 tail-safe arm also reaches a strict epoch-10 checkpoint:
+OOD/ID/worst is `0.130911/0.322343/0.014205`, with a 311,739,683-byte checkpoint and a clear fatal
+scan. Its same-seed, same-data-order, same-pressure route-E4 zero-auxiliary comparator has not run,
+so this is a validated level only and no auxiliary-loss effect is claimed. The arm continues
+unchanged to epoch 30; route-E4 zero-auxiliary is promoted to the first refill to close the exact
+pair before launching other broader cells. All ten H100s remain assigned and 15 arms remain ready.

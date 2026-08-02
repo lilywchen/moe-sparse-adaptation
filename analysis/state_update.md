@@ -1351,3 +1351,8 @@ all four continue unchanged under the predeclared delayed-specialization rule. C
 sealed-test/fairness identities are preserved in
 `analysis/temperature_expert_count60_epoch10_extreme_validation.json`. Ten H100s remain assigned
 and 15 tested arms remain ready.
+
+The broader route-E4 tail-safe row is also strict-valid at epoch 10 with OOD/ID/worst
+`0.130911/0.322343/0.014205`. Its exact route-E4 zero-auxiliary comparator is still ready rather
+than completed, so no effect is estimated. It continues to epoch 30, and the exact comparator is
+now first refill. This avoids comparing incompatible auxiliary objectives.

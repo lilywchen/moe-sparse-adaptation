@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_E32_E64_epoch10_pareto_tradeoffs_and_continue_all_four_to_epoch30",
-  "last_action_at": "2026-08-02T14:27:00-04:00",
-  "last_verified_commit": "7e3fc2215604423f10888a08141e23c5a03b3c18",
+  "last_action": "validate_unpaired_broader_route_E4_tail_safe_epoch10_and_prioritize_exact_zero_aux_refill",
+  "last_action_at": "2026-08-02T14:29:00-04:00",
+  "last_verified_commit": "4206f0d52c534f512fc5011832d5f06f15363b53",
   "valid_results": 13,
   "expected_results": 16,
   "active_gpu_workers": 10,
@@ -440,6 +440,8 @@
   "temperature_expert_count60_E64_registry": {"source_commit": "09a22aa086181267e4d14e5e343f60451c41a9c1", "source_tree": "c23625648689d7d8dc24a3a1f054d5c1c9d34d27", "sciserver_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-e32-codeeq-2e37f34", "execution_base_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be", "execution_base_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e", "focused_test": "semantic_disjointness_and_locked_config_pass", "full_tests": "117_passed_in_14.98s", "dry_run_cells": ["canonical_E64", "route_E64"], "remote_code_equivalent_sha256": "b25eb8a76951fe3d60043208322b6a8139edfb99dc9b847468a336ff9a34de37", "local_source_sha256": "579cda4a51c611658fad8f877b3502ce68a68849c0dd863418f73af01b09928f"},
   "temperature_expert_count60_new_launches": {"canonical_E32": {"container_id": 2875, "gpu": 1, "worker_pid": 108209}, "route_E32": {"container_id": 2862, "gpu": 1, "worker_pid": 51113}, "canonical_E64": {"container_id": 2859, "gpu": 1, "worker_pid": 41338}, "route_E64": {"container_id": 2874, "gpu": 1, "worker_pid": 53264}},
   "expert_count60_route_E4_tail_safe_launch": {"container_id": 2862, "gpu": 0, "worker_pid": 52582, "fairness_class": "active_compute_matched_not_exact_total_parameter_matched"},
+  "expert_count60_epoch10_validation": "analysis/expert_count60_epoch10_validation.json",
+  "expert_count60_route_E4_tail_safe_epoch10": {"ood_val": 0.1309113051, "id": 0.3223431498, "worst_experiment": 0.0142045455, "checkpoint_bytes": 311739683, "status": "strict_valid_unpaired_exact_route_E4_zero_aux_comparator_first_refill_no_effect_claim"},
   "extreme_expert_aux60_status": "eight_E32_E64_by_pressure_by_auxiliary_active_compute_matched_seed0_cells_tested_and_dry_run_ready",
   "extreme_expert_aux60_expected_results": 8,
   "extreme_expert_aux60_active_results": 0,
@@ -474,5 +476,5 @@
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "d71aa6955dcff053c92d5f3382fe7d82cf1331ba",
   "overleaf_build_status": "synced_exact_github_commit_d71aa6955dcff053c92d5f3382fe7d82cf1331ba_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T14:24-04:00; local_fatal_build_pass",
-  "next_gate": "validate_active_E2_E4_E16_E32_E64_milestones_immediately; on_next_release_launch_expert_count_canonical_E4_tail_safe_then_canonical_E4_zero_aux_then_remaining_broader_cells_before_extreme_auxiliary_bracket; require_plus5_ood_with_at_most_two_id_loss_or_predeclared_consistent_tail_gain_for_epoch90_or_seed_promotion; third_locked_seed_or_independent_locked_family_tests_tail_safe_confirmation; keep_ood_test_sealed"
+  "next_gate": "validate_active_E2_E4_E16_E32_E64_milestones_immediately; on_next_release_launch_expert_count_route_E4_zero_aux_exact_comparator_then_canonical_E4_tail_safe_and_canonical_E4_zero_aux_then_remaining_broader_cells_before_extreme_auxiliary_bracket; require_plus5_ood_with_at_most_two_id_loss_or_predeclared_consistent_tail_gain_for_epoch90_or_seed_promotion; keep_ood_test_sealed"
 }
