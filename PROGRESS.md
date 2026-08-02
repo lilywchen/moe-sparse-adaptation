@@ -1332,3 +1332,31 @@ invocation; the immediate portal recheck still reported `stopped`, so no duplica
 container was requested. Next: strictly validate the router epoch-10 handoff, prune under the
 predeclared rule, and immediately refill from the three queued settings. OOD test remains sealed;
 seed-0 multiplicity is the largest scientific threat.
+
+## 2026-08-02 05:45 EDT router-aux epoch-10 handoff and final queue refill
+
+All 13 available router-auxiliary epoch-10 rows pass exact registry/run/seed/epoch checks, finite
+train/ID/OOD-validation/worst-experiment metrics, four-environment coverage and count, ERM,
+`selection_split=ood_val`, `test_evaluated=false`, absent/null OOD-test fields, epoch-10 checkpoint,
+and fatal-scan validation. The route-pressure zero-balance plus z-loss row leads mean OOD validation
+at `0.138827`; zero balance without z-loss is nearly tied at `0.138522` and has a better tail
+(`0.014610` versus `0.013393`). Canonical `balance=0.01,zloss=0` has the best worst-experiment value
+(`0.017045`) but lower mean OOD (`0.130505`). Thus lower balance is the sharper early mechanism,
+while z-loss itself is not yet isolated. This is a seed-0, 16-setting, multiplicity-exposed
+mechanism screen, not sparse efficacy.
+
+Three strictly dominated rows were pruned only after their validated milestone and checkpoint were
+preserved: route `balance=0.01,zloss=0.01`, canonical `balance=0,zloss=0.001`, and route
+`balance=0.01,zloss=0.0001`. Their shard controllers immediately refilled with the final three
+predeclared cells: canonical `balance=0.001,zloss=0`, canonical `balance=0.01,zloss=0.01`, and
+canonical `balance=0,zloss=0`. The post-refill audit resolves ten distinct workers, two per running
+2-H100 container, ten initialized W&B logs, no fatal markers, and zero idle H100s in the five
+running containers. Two nonfrontier `balance=0.001,zloss=0.001` pressure-paired rows remain to epoch
+30 because their matched trajectory directly tests whether the early route/canonical interaction
+persists and no additional tested refill would otherwise occupy those slots.
+
+`tester6` container 2893 was still stopped. One authorized start request was issued this invocation;
+the immediate portal recheck remained stopped, so no duplicate request or replacement container was
+created. Next: validate the three refill epoch-10 rows and the surviving epoch-30 trajectories,
+prune/refill from the tested next-family queue when available, and require persistence without an ID
+or tail loss before treating low balance as more than an early direction. OOD test remains sealed.

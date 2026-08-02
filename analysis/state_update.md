@@ -904,3 +904,25 @@ The sixth container was stopped rather than pending at inspection. One start req
 authorized and the immediate portal recheck still showed stopped; no duplicate request was made.
 Classification is `RUNNING_HEALTHY`: all running H100s have decision-relevant nonduplicate work,
 completed artifacts are persisted, and the next useful action depends on new router milestones.
+
+## 2026-08-02 05:45 ET — router auxiliary epoch-10 validation and refill
+
+Thirteen router-auxiliary epoch-10 rows are strictly valid. Zero load balance under route pressure
+leads mean OOD validation (`0.138827` with z-loss `0.001`; `0.138522` without z-loss), but the two
+rows differ by only `0.000304`, so z-loss is not the isolated cause. The best tail is instead the
+canonical `balance=0.01,zloss=0` row (`0.017045`) at lower mean OOD (`0.130505`). The evidence
+therefore favors a mean-versus-tail load-balance tradeoff at epoch 10, not a general router-auxiliary
+win. Epoch-30 persistence without ID or worst-experiment loss is the falsifier.
+
+Three strict Pareto prunes released exactly the three shard-local tested refills, which launched
+without a duplicate: canonical `balance=0.001,zloss=0`, `balance=0.01,zloss=0.01`, and
+`balance=0,zloss=0`. Ten distinct workers again occupy the ten H100s in the five running containers;
+all ten logs initialized W&B and fatal scans are clear. The full screen now accounts for three
+validated finals, three pruned rows, and ten active rows, with no queued router cells. Two dominated
+but pressure-paired `balance=0.001,zloss=0.001` rows remain licensed to epoch 30 for the declared
+route-pressure interaction trajectory; they do not count as frontier winners.
+
+The exact execution remains clean `7dcb42e` / tree `1755b2f`; every validated row uses OOD
+validation only and leaves OOD test sealed. `tester6` remained stopped after the single authorized
+start request in this invocation. Multiplicity and seed-0 selection are the largest scientific
+threats.

@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "strictly_validate_and_publish_nine_factorial_finals_validate_publish_three_router_aux_finals_repair_restart_guards_and_refill_ten_h100s",
-  "last_action_at": "2026-08-02T05:16:00-04:00",
-  "last_verified_commit": "035e80b1fe376f292ed7d935714f64fc734a3da0",
+  "last_action": "strictly_validate_thirteen_router_epoch10_rows_prune_three_dominated_and_refill_final_three_settings",
+  "last_action_at": "2026-08-02T05:45:00-04:00",
+  "last_verified_commit": "222348dc1a0851a5cbedddba8174c87336585ad5",
   "valid_results": 9,
   "expected_results": 43,
   "active_gpu_workers": 10,
   "idle_h100s": 0,
-  "sciserver_resource_map": "five_2H100_containers_each_running_two_distinct_router_aux60_workers_with_physical_gpu_occupancy_guard_and_zero_unassigned_running_h100s; tester6_container2893_stopped_after_one_authorized_start_request_this_invocation_no_duplicate",
+  "sciserver_resource_map": "five_2H100_containers_each_running_two_distinct_router_aux60_workers_after_three_validated_prunes_and_three_refills_with_zero_unassigned_running_h100s; tester6_container2893_stopped_after_one_authorized_start_request_this_invocation_no_duplicate",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -274,7 +274,7 @@
   "architectural_hypothesis_backlog": "analysis/architectural_hypothesis_backlog.md",
   "architectural_hypotheses_predeclared": 24,
   "architectural_implementation_priority_designs": 12,
-  "architectural_runnable_status": "router_aux60_has_three_validated_results_ten_active_and_three_queued; later_designs_require_isolated_implementation_tests_dry_runs_and_exact_parameter_flop_validation_before_launch",
+  "architectural_runnable_status": "router_aux60_has_three_validated_results_three_validated_prunes_ten_active_and_zero_queued_after_full_16_cell_launch_coverage; next_family_designs_are_predeclared_but_require_isolated_implementation_tests_dry_runs_and_exact_parameter_flop_validation_before_launch",
   "architectural_priority_families": [
     "function_preserving_sparse_upcycling_and_staged_unfreezing",
     "router_z_loss_load_balance_and_temperature",
@@ -304,15 +304,18 @@
     "cause": "manual_priority_refill_raced_precomputed_shard_queue",
     "repair": "stopped_shard0_and_shard1_controllers_only_preserved_child_workers_removed_duplicate_and_directly_launched_final_two_nonduplicate_cells"
   },
-  "router_aux60_status": "three_strictly_validated_and_hf_published_ten_active_three_queued",
+  "router_aux60_status": "three_strictly_validated_and_hf_published_thirteen_valid_epoch10_rows_three_pruned_ten_active_zero_queued",
   "router_aux60_expected_results": 16,
   "router_aux60_valid_results": 3,
   "router_aux60_active_results": 10,
-  "router_aux60_queued_results": 3,
+  "router_aux60_queued_results": 0,
   "router_aux60_validation": "analysis/router_aux60_completed_validation.json",
+  "router_aux60_epoch10_validation": "analysis/router_aux60_epoch10_validation.json",
+  "router_aux60_epoch10_valid_rows": 13,
+  "router_aux60_pruned_results": 3,
   "router_aux60_execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
   "router_aux60_execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
-  "router_aux60_hf_status": "three_manifests_published_and_remote_files_verified",
+  "router_aux60_hf_status": "three_completed_manifests_published_and_remote_files_verified_no_new_final_this_handoff",
   "router_aux60_operational_exclusions": 4,
   "router_aux60_leader": {
     "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_aux60_route_bw0_z1em3_20260802",
@@ -327,14 +330,14 @@
     "external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
     "domain": "Interactive 2H100 GPU",
     "image": "GPU-Essesials",
-    "status": "stopped_after_one_start_request_this_invocation",
+    "status": "stopped_after_one_start_request_2026_08_02T05_29_ET_this_invocation",
     "running": false,
     "scheduler_reason": "not_exposed_while_stopped",
-    "duplicate_guard": "one_start_request_issued_2026_08_02T05_10_ET_do_not_repeat_or_recreate_this_invocation"
+    "duplicate_guard": "one_start_request_issued_2026_08_02T05_29_ET_do_not_repeat_or_recreate_this_invocation"
   },
   "steward_automation_status": "active_15min_factorial_sweep_contract_continuous_ready_queue_refill_validation_wandb_hf_and_tester6_capacity_check",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
   "overleaf_build_status": "synced_exact_github_commit_7_pages_0_errors_1_showhyphens_warning_2026-08-01T20:24-04:00; local_fatal_build_and_visual_review_pass",
-  "next_gate": "strictly_validate_router_aux60_epoch10_handoffs_prune_dominated_rows_and_immediately_refill_from_three_queued_settings; preserve_zero_balance_zloss_as_exploratory_only_until_it_beats_exact_dense_or_improves_tail_consistently; keep_ood_test_sealed"
+  "next_gate": "strictly_validate_three_refill_epoch10_rows_and_surviving_epoch30_router_trajectories; require_low_balance_mean_signal_to_persist_without_id_or_tail_loss; prepare_tested_next_family_refills_before_any_lease_release; keep_ood_test_sealed"
 }

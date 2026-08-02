@@ -1,0 +1,76 @@
+{
+  "campaign": "router_aux60_20260802",
+  "generated_at": "2026-08-02T05:45:00-04:00",
+  "grade": "validated_exploratory_epoch10_mechanism_screen",
+  "source_commit_before_ledger_update": "222348dc1a0851a5cbedddba8174c87336585ad5",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_arms": 16,
+  "validated_epoch10_rows": 13,
+  "completed_results": 3,
+  "validation": {
+    "all_passed": true,
+    "checks": [
+      "registry_run_identity",
+      "seed_0",
+      "epoch_10",
+      "finite_train_id_ood_val_worst_experiment_metrics",
+      "four_expected_validation_environments",
+      "validation_count_9854",
+      "classification_objective_erm",
+      "selection_split_ood_val",
+      "test_evaluated_false",
+      "all_ood_test_fields_absent_or_null",
+      "epoch_10_checkpoint_present_over_300MB",
+      "fatal_log_scan_clear"
+    ],
+    "ood_test_accessed": false
+  },
+  "rows": [
+    {"tag":"canonical_bw0_z1em3","train":0.497905165615142,"id":0.31842805082241704,"ood_val":0.13771057438603612,"worst_experiment":0.012581168831168832,"stream_rows":1},
+    {"tag":"canonical_bw1em2_z0","train":0.483586356466877,"id":0.30397419481926524,"ood_val":0.1305053785264867,"worst_experiment":0.017045454545454544,"stream_rows":1},
+    {"tag":"canonical_bw1em2_z1em4","train":0.49524349369085174,"id":0.31687678518664436,"ood_val":0.13314390095392734,"worst_experiment":0.016639610389610388,"stream_rows":1},
+    {"tag":"canonical_bw1em3_z1em3","train":0.48821963722397477,"id":0.3131094257854821,"ood_val":0.1348690886949462,"worst_experiment":0.01461038961038961,"stream_rows":1},
+    {"tag":"canonical_bw1em4_z1em3","train":0.5019962539432177,"id":0.3187235299911356,"ood_val":0.13740612949056222,"worst_experiment":0.015422077922077922,"stream_rows":1},
+    {"tag":"route_bw0_z0","train":0.5022180599369085,"id":0.3179109622771595,"ood_val":0.13852242744063326,"worst_experiment":0.01461038961038961,"stream_rows":1},
+    {"tag":"route_bw0_z1em3","train":0.4981269716088328,"id":0.3189205161036147,"ood_val":0.13882687233610716,"worst_experiment":0.013392857142857142,"stream_rows":3},
+    {"tag":"route_bw1em2_z0","train":0.4940358832807571,"id":0.3139958632916379,"ood_val":0.1345646437994723,"worst_experiment":0.015827922077922076,"stream_rows":1},
+    {"tag":"route_bw1em2_z1em2","train":0.4738515378548896,"id":0.30244755244755245,"ood_val":0.12187943982139232,"worst_experiment":0.01176948051948052,"stream_rows":1},
+    {"tag":"route_bw1em2_z1em4","train":0.49107847003154576,"id":0.3148084310056141,"ood_val":0.13009945199918815,"worst_experiment":0.015422077922077922,"stream_rows":1},
+    {"tag":"route_bw1em3_z0","train":0.479421332807571,"id":0.30518073475819957,"ood_val":0.12806981936269535,"worst_experiment":0.015422077922077922,"stream_rows":3},
+    {"tag":"route_bw1em3_z1em3","train":0.4930993690851735,"id":0.316950654978824,"ood_val":0.13628983154049118,"worst_experiment":0.01461038961038961,"stream_rows":1},
+    {"tag":"route_bw1em4_z1em3","train":0.4861740930599369,"id":0.31338028169014087,"ood_val":0.13283945605845343,"worst_experiment":0.016233766233766232,"stream_rows":3}
+  ],
+  "pareto_frontier": [
+    "canonical_bw1em2_z0",
+    "canonical_bw1em2_z1em4",
+    "canonical_bw1em4_z1em3",
+    "route_bw0_z0",
+    "route_bw0_z1em3",
+    "route_bw1em2_z0"
+  ],
+  "pruned_after_validation": [
+    {"tag":"route_bw1em2_z1em2","reason":"strictly_dominated_on_ood_val_id_and_worst_experiment","refill":"canonical_bw1em3_z0","container":2875,"gpu":0},
+    {"tag":"canonical_bw0_z1em3","reason":"strictly_dominated_on_ood_val_id_and_worst_experiment_by_route_bw0_z1em3","refill":"canonical_bw1em2_z1em2","container":2874,"gpu":1},
+    {"tag":"route_bw1em2_z1em4","reason":"strictly_dominated_on_ood_val_id_and_worst_experiment_by_canonical_bw1em2_z1em4","refill":"canonical_bw0_z0","container":2862,"gpu":0}
+  ],
+  "continued_nonfrontier_pairs": [
+    {"tag":"canonical_bw1em3_z1em3","reason":"retain_matched_pressure_pair_to_epoch30_while_no_refill_slot_would_otherwise_be_available"},
+    {"tag":"route_bw1em3_z1em3","reason":"retain_matched_pressure_pair_to_epoch30_while_no_refill_slot_would_otherwise_be_available"}
+  ],
+  "post_refill_assignments": {
+    "2887": ["route_bw0_z0", "canonical_bw1em2_z0"],
+    "2875": ["canonical_bw1em3_z0", "canonical_bw1em3_z1em3"],
+    "2874": ["route_bw1em2_z0", "canonical_bw1em2_z1em2"],
+    "2862": ["canonical_bw0_z0", "canonical_bw1em4_z1em3"],
+    "2859": ["route_bw1em3_z1em3", "canonical_bw1em2_z1em4"]
+  },
+  "post_refill_health": {
+    "active_gpu_workers": 10,
+    "idle_h100s_in_running_pool": 0,
+    "wandb_initialized_logs": 10,
+    "fatal_markers": 0
+  },
+  "interpretation": "At epoch 10, zero load-balance route pressure leads mean OOD validation, while canonical pressure with stronger balance has the best worst-experiment value. The difference between zero-balance route rows with and without z-loss is only 0.0304 OOD-validation points, so z-loss is not yet an isolated explanation. This is a multiplicity-exposed seed-0 mechanism result and not sparse efficacy or a fresh-seed confirmation.",
+  "falsifier": "The low-balance mean-OOD ordering must persist to epoch 30 without losing ID or worst-experiment performance; otherwise the epoch-10 direction is an early transient."
+}
