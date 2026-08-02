@@ -1,0 +1,73 @@
+{
+  "validated_at": "2026-08-02T14:59:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_architecture_screen",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "registry_commit": "a97e9062d950fbf6171ceca744aecb94d64a5536",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E2": {"total": 23584500, "active_ffn_including_router": 1182337},
+    "E8": {"total": 30676212, "active_ffn_including_router": 1184641}
+  },
+  "shared_E8_anchors": {
+    "canonical_epoch30": {"id": 0.47483502413079876, "ood_val": 0.19474325147148366, "worst_experiment": 0.016639610389610388},
+    "route_epoch30": {"id": 0.4719294789717325, "ood_val": 0.188451390298356, "worst_experiment": 0.0174512987012987}
+  },
+  "rows": {
+    "canonical_E2_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E2k1_ep60_s0_temperature_expert_count60_canonical_E2_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "id": 0.4658475327489412,
+      "ood_val": 0.1805358230160341,
+      "worst_experiment": 0.015827922077922076,
+      "checkpoint_bytes": 283363621,
+      "minus_same_pressure_E8_points": {"ood_val": -1.420742845544956, "id": -0.898749138185756, "worst_experiment": -0.0811688311688312}
+    },
+    "route_E2_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s0_temperature_expert_count60_route_E2_20260802",
+      "epoch": 30,
+      "seed": 0,
+      "id": 0.46833448241898945,
+      "ood_val": 0.18774101887558353,
+      "worst_experiment": 0.018668831168831168,
+      "checkpoint_bytes": 283357757,
+      "minus_same_pressure_E8_points": {"ood_val": -0.07103714227724711, "id": -0.3594996552743035, "worst_experiment": 0.1217532467532468}
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_and_live_command_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_E2": "pruned_at_epoch30_strictly_dominated_by_same_pressure_E8_on_ood_id_and_worst",
+    "route_E2": "continue_to_epoch60_effective_mean_and_id_tie_with_small_tail_gain",
+    "preserved_prune_marker": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature_expert_count60_20260802/rxrx1_moe_early_token_cosine_canonical_E2k1_ep60_s0_temperature_expert_count60_canonical_E2_20260802.pruned",
+    "refill": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_expert_count60_canonical_E4_tail_safe_20260802",
+      "container_id": 2887,
+      "gpu": 0,
+      "controller_pid": 41682,
+      "worker_pid": 41687,
+      "wandb_run_id": "shgndkjb",
+      "wandb_group": "rxrx1-cell-dino-expert-count60-20260802",
+      "hf_prefix": "rxrx1/cell_dino_cp5/expert_count60_20260802"
+    }
+  },
+  "interpretation": "Capacity starvation without route pressure is ruled out for this exact E2 recipe through epoch 30. Route E2 remains an effective mean and ID tie with a small worst-experiment advantage, indicating that any E2 value is pressure-dependent rather than a generic small-bank benefit.",
+  "alternative": "The small route-E2 tail advantage is seed-0 evaluation noise or transient optimization rather than stable robust routing.",
+  "sharp_falsifier": "Route E2 loses its tail direction at epoch 60 or mechanism analysis shows collapsed, unstable, or non-reliant routing.",
+  "multiplicity": "two additional seed0 milestone rows after prior factorial, auxiliary, temperature, and expert-count screens; no confirmatory claim"
+}

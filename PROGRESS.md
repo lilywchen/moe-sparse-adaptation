@@ -1929,3 +1929,27 @@ The result favors a route-by-expert-bank-size interaction over generic pressure,
 seed-0, active-compute-only, and multiplicity-exposed. Route E16 losing its mean/tail advantage at
 epoch 60 or showing dead/non-reliant experts is the sharp falsifier. Next refill is broader
 canonical-E4 tail-safe, then canonical-E4 zero-auxiliary. OOD test remains sealed.
+## 2026-08-02 14:59 EDT — E2 epoch-30 gate validates; canonical E2 prunes and refills
+
+The canonical/route E2 epoch-30 pair passes exact run/config/seed/epoch and live-command identity,
+finite metrics, ERM, four OOD-validation environments and 9,854 samples, 283 MB checkpoint
+identity, fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test checks.
+Canonical E2 minus canonical E8 is `-1.421/-0.899/-0.081` OOD/ID/worst points and is strictly
+dominated on every gate axis, so its checkpoint and copied milestone prune stream are preserved and
+worker 37956 is stopped. Route E2 minus route E8 is `-0.071/-0.359/+0.122`, an effective mean/ID
+tie with a small tail gain; it is not dominated and continues unchanged to epoch 60.
+
+Container2887/GPU0 was immediately refilled with broader canonical-E4 tail-safe. The exact shard-4
+dry run, result/active duplicate guards, physical-free-GPU check, persistent destinations,
+active-compute fairness label, seed/data order, milestone checkpoint policy, and sealed-test checks
+passed. Controller 41682 started worker 41687/W&B `shgndkjb`; it owns 8,010 MiB and its initial
+log is fatal-free. All ten available H100s remain assigned. The broader expert-count family now has
+three active and five queued cells; the tested ready queue is 13, with 27 backlog hypotheses.
+tester6 2893 remains Pending for 11 affinity mismatches, two unschedulable nodes, and three
+insufficient-GPU nodes; no repeat start/create was issued.
+
+This rules out a generic capacity-starvation benefit for canonical E2 through epoch 30. The small
+route-E2 tail direction remains provisional and pressure-dependent; loss of that direction at
+epoch 60 or collapsed/non-reliant routing is its sharp falsifier. These are seed-0 active-compute
+comparisons after many searched cells, not exact-total or confirmatory evidence. Next refill is
+broader canonical-E4 zero-auxiliary, then the remaining E16 broader cells. OOD test remains sealed.

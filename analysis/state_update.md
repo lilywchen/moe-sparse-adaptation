@@ -1379,3 +1379,18 @@ The strict release/refill handoff pruned worker 51475 and started the exact rout
 comparator as worker 54666/W&B `8an4h01j` on container2874/GPU0. Ten H100s remain assigned, 14
 tested arms remain ready, tester6 is still scheduler-Pending without a repeat request, and OOD test
 remains sealed.
+## 2026-08-02 14:59 EDT — E2 capacity starvation is pressure-dependent, not generic
+
+At epoch 30, canonical E2 is strictly below canonical E8 on OOD, ID, and worst experiment by
+`-1.421/-0.899/-0.081` points and is pruned with its checkpoint and milestone record preserved.
+Route E2 is nearly tied on mean OOD and ID while improving the worst experiment by 0.122 points
+(`-0.071/-0.359/+0.122`). It continues to epoch 60 because the predeclared smaller-mean tail
+alternative remains possible. Thus the latest result rules out generic capacity starvation as a
+benefit for the exact canonical E2 recipe, while leaving a weak pressure-dependent tail effect.
+
+The alternative is seed-0 noise or transient optimization rather than stable specialization. The
+sharp falsifier is loss of route E2's tail direction at epoch 60 or dead, unstable, non-reliant
+experts. Multiplicity remains high and this active-compute estimand cannot be pooled with the
+locked exact-total comparison. Canonical-E2's released H100 now runs broader canonical-E4
+tail-safe as worker 41687/W&B `shgndkjb`; ten H100s are assigned, 13 arms remain ready, and OOD
+test remains sealed.
