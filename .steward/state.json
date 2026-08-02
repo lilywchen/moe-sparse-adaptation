@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_factorial60_wave4_publish_first_completion_prune_six_dominated_workers_and_refill_seven_leases",
-  "last_action_at": "2026-08-02T00:11:05-04:00",
+  "last_action": "validate_late_arriving_factorial60_early_token_cosine_route_epoch30_and_retain_frontier_worker",
+  "last_action_at": "2026-08-02T00:29:12-04:00",
   "last_verified_commit": "bd213dbd7758f456eb822379707627b1998847ff",
   "valid_results": 1,
   "expected_results": 43,
@@ -202,11 +202,11 @@
     "tests": "5_focused_101_full_passed",
     "hf_reverification": "20_changed_files_force_downloaded_and_sha256_verified"
   },
-  "factorial60_status": "active_wave4_29_epoch10_7_epoch30_1_epoch60_and_1_final_valid_six_pruned_one_completed_seven_refilled",
+  "factorial60_status": "active_wave5_29_epoch10_8_epoch30_1_epoch60_and_1_final_valid_route_pressure_frontier_retained",
   "factorial60_expected_results": 43,
   "factorial60_valid_results": 1,
   "factorial60_valid_epoch10_milestones": 29,
-  "factorial60_valid_epoch30_milestones": 7,
+  "factorial60_valid_epoch30_milestones": 8,
   "factorial60_valid_epoch60_milestones": 1,
   "factorial60_active_runs": [
     "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_factorial60_20260801",
@@ -263,6 +263,7 @@
   "factorial60_wave2_validation": "analysis/factorial60_wave2_validation.json",
   "factorial60_wave3_validation": "analysis/factorial60_wave3_validation.json",
   "factorial60_wave4_validation": "analysis/factorial60_wave4_validation.json",
+  "factorial60_wave5_validation": "analysis/factorial60_wave5_validation.json",
   "factorial60_first_completed_run": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
   "factorial60_first_completed_hf_status": "five_files_uploaded_and_remote_listed_under_declared_factorial60_prefix",
   "architectural_hypothesis_backlog": "analysis/architectural_hypothesis_backlog.md",

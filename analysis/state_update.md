@@ -820,3 +820,24 @@ the locked 60-epoch schedule by at least five absolute OOD-validation points wit
 than two ID points, or produces the separately predeclared consistent worst-experiment gain.
 `tester6` remains Pending for the unchanged 11-affinity, 2-unschedulable, 3-insufficient-GPU
 scheduler reason; no duplicate start was issued. OOD test is sealed.
+
+## 2026-08-02 00:29 ET — route-pressure epoch-30 mechanism signal
+
+The protected early token-cosine route-pressure arm now has a strictly valid epoch-30 milestone:
+train/ID/OOD-validation/worst `0.999906/0.467596/0.194134/0.021510`. Cumulative factorial60
+coverage is 29 epoch-10, eight epoch-30, one epoch-60, and one completed result. The arm is second
+on epoch-30 mean OOD and first on epoch-30 worst-experiment accuracy, so it remains on the frozen
+Pareto frontier and continues to epoch 60.
+
+The matched routing-pressure contrast is directional: versus early token-cosine canonical MoE,
+route pressure is `+0.004364` OOD, `-0.006993` ID, and `+0.006088` worst experiment. This isolates a
+possible pressure/geometry interaction but does not show that MoE beats dense. The exact
+early-canonical dense comparator is known and queued; ordinary early-placement capacity and
+optimization remain viable alternatives. The sharp falsifier is loss of the mean/tail signal at
+epoch 60 or its disappearance against that locked dense comparator.
+
+Strict JSON, run/seed/epoch/config, finite metric, four-environment, ERM, tracking, fatal-scan,
+`selection_split=ood_val`, and `test_evaluated=false` checks pass. No OOD-test metric exists. The
+worker was healthy beyond epoch 37, all ten available H100s were assigned, seven tested cells were
+queued, and tester6 remained Pending for the recorded capacity reason. Search multiplicity and
+seed-0 selection remain the largest threats.

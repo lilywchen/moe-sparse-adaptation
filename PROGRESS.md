@@ -1233,3 +1233,25 @@ have launched, and none of the ten available H100s is unassigned. `tester6` 2893
 repeated. OOD test remains sealed. The next gate is the exact early-canonical dense milestone and
 the next validated halving/refill; multiplicity and seed-0 winner selection remain the largest
 threats.
+
+## 2026-08-02 00:29 EDT factorial60 late epoch-30 frontier handoff
+
+A late-arriving epoch-30 row from the protected early token-cosine route-pressure arm is strictly
+valid, raising cumulative factorial60 coverage to 29/8/1 at epochs 10/30/60. It reaches
+train/ID/OOD-validation/worst-experiment accuracy
+`0.999906/0.467596/0.194134/0.021510`. Relative to its own epoch-10 row, OOD validation improves
+`0.057743`, ID `0.149980`, and worst experiment `0.008117`; the signal is not an early transient.
+
+Against the otherwise matched early token-cosine canonical MoE at epoch 30, route pressure changes
+OOD validation by `+0.004364`, ID by `-0.006993`, and worst experiment by `+0.006088`. It is now the
+second-best validated epoch-30 mean-OOD cell and the epoch-30 worst-experiment frontier. This is an
+exploratory routing-pressure mechanism contrast, not sparse-versus-dense efficacy. The exact
+early-canonical dense control remains known and queued.
+
+The JSONL has unique epoch-10/30 identities, finite metrics, four expected validation environments,
+ERM, `selection_split=ood_val`, `test_evaluated=false`, and no held-out-test metric. The active
+worker still matches the frozen seed-0 early/token/cosine/route/E8/top-1 configuration and has
+advanced past epoch 37 without a fatal log. It remains licensed to epoch 60 under the frozen Pareto
+rule. All ten available H100s remain assigned to ten distinct workers; seven tested arms remain
+queued. `tester6` 2893 is still Pending for the unchanged 11-affinity, 2-unschedulable,
+3-insufficient-GPU reason. OOD test remains sealed.
