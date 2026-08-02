@@ -28,6 +28,10 @@ from moe_shift.train.invariance import SiteAdversary, lambda_schedule
 from moe_shift.utils.config import apply_overrides, load_config
 
 RESULTS = Path(os.environ.get("MOE_RESULTS", "./RESULTS/ccas"))
+HELDOUT_RESULT_FIELDS = (
+    "acc_heldout", "worst_env_heldout", "per_env_heldout",
+    "per_env_n_heldout", "degradation_gap_test",
+)
 
 
 def git_info():
@@ -111,11 +115,24 @@ def _sha256_file(path):
     return digest.hexdigest()
 
 
+def normalize_withheld_ood_fields(result):
+    """Normalize legacy empty OOD-test maps to explicit nulls without touching metrics."""
+    normalized = dict(result)
+    if normalized.get("test_evaluated") is not False:
+        return normalized
+    for key in HELDOUT_RESULT_FIELDS:
+        value = normalized.get(key)
+        if value not in (None, {}):
+            raise ValueError(f"cannot normalize non-empty OOD-test field {key}")
+        normalized[key] = None
+    return normalized
+
+
 def validate_stage1_artifacts(result, milestone_path=None):
     """Fail closed before publishing any selection-stage artifact externally."""
     if result.get("selection_split") != "ood_val" or result.get("test_evaluated") is not False:
         raise ValueError("publish requires selection_split=ood_val and test_evaluated=false")
-    if result.get("acc_heldout") is not None or result.get("worst_env_heldout") is not None:
+    if any(result.get(key) is not None for key in HELDOUT_RESULT_FIELDS):
         raise ValueError("publish requires all OOD-test metrics to remain null")
     required = ("acc_selection", "acc_val", "worst_env_val", "acc_within")
     if any(not math.isfinite(float(result[key])) for key in required):
@@ -420,7 +437,7 @@ def main():
         test_evaluated = True
     else:
         acc_ood = worst_ood = None
-        per_env_ood, per_env_n_ood = {}, {}
+        per_env_ood = per_env_n_ood = None
         test_evaluated = False
         print(f"[stage {stage}] OOD TEST not evaluated by design; selecting on {selection_split}",
               flush=True)

@@ -64,6 +64,17 @@ run paired seeds 1 and 2. Otherwise no architecture grid is launched. A replicat
 gain is the target; a smaller gain requires consistent per-experiment effects and mechanism
 evidence.
 
+After the initial ten-epoch negative gate, we authorize one bounded substrate-strength matrix to
+test whether the conclusion depended on under-adaptation rather than retroactively relabeling the
+original experiment. Ten seed-0 arms train for 90 epochs with common milestones at epochs
+10, 30, 60, and 90: original, matched dense-wide, canonical token top-1 MoE, image top-1 MoE,
+within-experiment-balanced token MoE, token top-2 MoE, frozen linear, last-four-block adaptation,
+output invariance, and environment-balanced classification. Only the original anchor saves
+milestone checkpoints. The original/dense-wide/canonical top-1 contrast remains the controlling
+efficacy comparison; top-2 has unmatched active compute and the remaining arms are diagnostic.
+Replication remains licensed only by at least five OOD-validation points over dense-wide with at
+most two ID points lost.
+
 \subsection{Expansion and confirmatory gate}
 Only after replication do we construct multiple cell-type-stratified held-out-experiment folds and
 a fixed 4/8/16/32-training-experiment curve. These tests ask whether conditional gain increases

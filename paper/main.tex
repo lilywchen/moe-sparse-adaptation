@@ -30,7 +30,10 @@ experiment accuracy and the ID--OOD gap distinguish failed task learning from ge
 transfer. Gradient-conflict, routing, and counterfactual probes test whether any matched gain comes
 from separating interfering acquisition environments rather than added capacity or batch
 memorization. A negative matched result remains informative because the substrate, parameter
-budget, and failure regime are validated before sparse capacity is tested.
+budget, and failure regime are validated before sparse capacity is tested. With 90-epoch
+adaptation, top-1 MoE improves OOD validation by only 1.72 points over the parameter-matched dense
+model, is effectively tied with the smaller original encoder, and does not improve the worst held-
+out experiment, failing the predeclared replication gate.
 \end{abstract}
 
 \input{sections/01_introduction}

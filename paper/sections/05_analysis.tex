@@ -98,3 +98,54 @@ with sparse activation weakly regularizing a harmful dense widening, a fixed ran
 creating mildly useful subspaces, or single-seed variation. It does not establish the proposed
 cross-batch gradient-interference mechanism, and it cannot reopen the failed replication gate. All
 OOD-test values remain withheld.
+
+\paragraph{Long-adaptation substrate-strength test.}
+The bounded 90-epoch matrix in Table~\ref{tab:hypothesis90} separates a weak substrate from a weak
+sparse intervention. Every adapted arm fits the training set perfectly and reaches 48--53\% ID
+accuracy, while OOD-validation accuracy remains 18.5--20.5\%. Cell-DINO is therefore a competent
+instrument and the remaining failure is transfer to unseen experiments, not inability to learn the
+training task.
+
+Canonical top-1 MoE improves OOD validation by 1.72 points and ID by 3.21 points relative to the
+matched dense-wide model, but worst-experiment accuracy falls by 0.08 points. It is only 0.12 OOD
+points above the smaller original model, which has a better worst-experiment score. The matched
+models differ by 378 parameters (0.001232\%), within the predeclared 0.1\% tolerance. The primary
+contrast therefore fails the five-point replication gate.
+
+The matched OOD gain is $-0.42$, $+2.78$, $+2.55$, and $+1.72$ points at epochs 10, 30, 60, and
+90, respectively. The conclusion is therefore already visible by epoch 60 and does not arise from
+stopping before a growing sparse advantage; the final 30 epochs strengthen absolute baselines
+while the conditional gain contracts.
+
+\begin{table}[t]
+  \centering
+  \caption{Validated seed-0 90-epoch RxRx1 hypothesis matrix (accuracy in \%). Top-2 activates
+  two experts and is not active-compute matched; partial and loss-based arms are diagnostic. OOD
+  test is untouched.}
+  \label{tab:hypothesis90}
+  \begin{tabular}{lrrrr}
+    \toprule
+    Arm & Train & ID & OOD-val & Worst \\
+    \midrule
+    Original anchor & 100.00 & 52.09 & 20.09 & 1.75 \\
+    Matched dense-wide & 100.00 & 48.23 & 18.50 & 1.70 \\
+    Canonical token top-1 MoE & 100.00 & 51.45 & 20.22 & 1.62 \\
+    Image top-1 MoE & 100.00 & 50.45 & 20.13 & 1.46 \\
+    Within-experiment-balanced MoE & 100.00 & 51.96 & 20.46 & 1.38 \\
+    Token top-2 MoE & 100.00 & 49.91 & 19.79 & 1.50 \\
+    Frozen linear & 31.77 & 14.73 & 6.69 & 0.53 \\
+    Last-four-block adaptation & 100.00 & 53.01 & 19.82 & 1.79 \\
+    Output invariance & 100.00 & 43.53 & 16.58 & 1.38 \\
+    Environment-balanced classification & 100.00 & 50.85 & 19.99 & 1.66 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The alternative arms do not expose a hidden large sparse effect. Top-2 trails top-1, weakening
+hard-routing starvation as the dominant explanation. Image routing is effectively tied with token
+routing, so token granularity is not decisive. Within-experiment balancing gives the highest mean
+OOD accuracy but the lowest worst-experiment score among the main adapted arms. Last-four-block
+adaptation has the best ID and worst-experiment values without the best mean OOD value. These
+patterns retain regularization, representation depth, and single-seed variation as alternatives;
+they do not support a uniquely sparse or tail-robust mechanism. No replication, deeper mechanism
+campaign, or OOD-test evaluation is opened by this result.

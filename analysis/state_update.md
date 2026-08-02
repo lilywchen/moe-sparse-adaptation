@@ -609,3 +609,49 @@ files remain inaccessible until the user reauthenticates; the formal negative ga
 ledger, SHA-256 manifests, and Hugging Face publication must wait for strict validation. No seed
 replication or mechanistic campaign is licensed unless validated exact values unexpectedly cross
 the predeclared threshold. OOD test remains sealed.
+
+## Validated hypothesis90 decision: competent substrate, no large sparse advantage
+
+SciServer reauthentication resolves the former evidence blocker. Ten of ten exact result JSONs,
+40/40 milestone rows, four original-anchor checkpoints, ten manifests, and all campaign logs pass
+strict identity, finiteness, coverage, digest, and fatal-error checks. Results share execution
+commit/tree `cd783399ab1d4cee2666f1af8dfe3bfd9fc29280` /
+`ec05b37b9f2ac593e047243c414b114c3a1fb52c`, seed 0, native CP5 preprocessing, identical data
+order, and OOD-validation selection. OOD test is untouched: `test_evaluated=false` and every
+withheld-test field is null.
+
+The canonical top-1 token MoE reaches 20.215% OOD validation versus 18.500% for the exact-total-
+parameter-matched dense-wide comparator, a 1.715-point gain. It improves ID by 3.213 points but
+reduces worst-experiment accuracy by 0.081 points. The 378-parameter difference is 0.001232%, well
+inside the frozen 0.1% tolerance. This is below the predeclared 5-point replication threshold, so
+the formal gate is negative. The smaller original model reaches 20.093% OOD validation and a
+better worst-experiment score; canonical MoE is only 0.122 points higher on average OOD.
+
+The matrix resolves the main competing explanations. The former 10-epoch recipe did understate
+substrate strength: all adapted 90-epoch arms fit training perfectly and reach 48--53% ID, while
+OOD validation remains 18.5--20.5%. The failure regime is therefore genuine experiment transfer,
+not basic representation or optimization failure. Hard top-1 starvation is not supported because
+top-2 is worse than top-1. Token granularity is not decisive because image routing is effectively
+tied with canonical routing. Global load balancing may suppress specialization on average—the
+within-experiment-balanced MoE is highest at 20.459%—but its worst-experiment score falls to
+1.380%, below dense-wide's 1.705%, so it does not support tail robustness. Partial adaptation and
+environment balancing are close enough to keep general regularization/representation depth as
+credible alternatives to sparse conditionality.
+
+The exact checkpoint trajectory also resolves the duration question. Canonical MoE minus
+dense-wide OOD validation is -0.416 points at epoch 10, +2.781 at 30, +2.547 at 60, and +1.715 at
+90. The qualitative gate is already clear by epoch 60, while the later 30 epochs add 1.58 OOD
+points to original, 1.37 to dense-wide, and only 0.54 to canonical MoE. Ninety epochs are therefore
+useful to establish the strongest absolute substrate and eliminate undertraining as a critique,
+not because the sparse effect grows. The campaign saved model checkpoints only for the original
+anchor at epochs 10/30/60/90; exact milestone metrics exist for every arm. A future exploratory
+screen can use 60 epochs, with 90 reserved for final confirmation.
+
+This interpretation is decision-grade for the bounded seed-0 target, not proof of zero MoE effect.
+It would be overturned by an independently replicated fair contrast exceeding 5 OOD points while
+preserving ID and worst-experiment performance. Such replication is not licensed by the frozen
+gate. The largest residual uncertainty is single-seed variation; the largest threat to the broad
+mechanistic claim is that no valid predictive effect exists to justify gradient-conflict or route-
+reuse analyses. The consuming artifact is `analysis/hypothesis90_final_validation.json`; all ten
+validated folders are published under the declared Hugging Face prefix and tracked in the fresh
+W&B group.

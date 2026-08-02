@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-01T20:08:33-04:00",
+  "status": "decision_grade_negative_gate",
+  "campaign": "rxrx1-cell-dino-hypothesis90-20260801",
+  "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/hypothesis90",
+  "execution": {
+    "commit": "cd783399ab1d4cee2666f1af8dfe3bfd9fc29280",
+    "tree": "ec05b37b9f2ac593e047243c414b114c3a1fb52c",
+    "git_dirty": false,
+    "focused_tests_before_launch": "5/5",
+    "full_tests_before_launch": "99/99"
+  },
+  "metadata_repair": {
+    "reason": "Withheld OOD-test per-environment containers were serialized as empty maps instead of explicit nulls.",
+    "changed_fields": [
+      "per_env_heldout",
+      "per_env_n_heldout"
+    ],
+    "metrics_changed": false,
+    "repair_commit": "84185df6c7356de6d63d49fae13355e4e6621a9",
+    "repair_tree": "9772f6d4a1400812ca81463e40a253976278eb6c",
+    "focused_tests": "5/5",
+    "full_tests": "101/101",
+    "persistent_backup": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/hypothesis90/metadata_pre_null_normalization_20260801",
+    "normalized_runs": 10,
+    "hf_files_reuploaded_and_download_verified": 20
+  },
+  "validation": {
+    "valid_results": 10,
+    "expected_results": 10,
+    "valid_milestone_rows": 40,
+    "expected_milestone_rows": 40,
+    "anchor_checkpoints": 4,
+    "expected_anchor_checkpoints": 4,
+    "hf_files_present": 44,
+    "hf_files_expected": 44,
+    "hf_prefix": "rxrx1/cell_dino_cp5/hypothesis90_20260801",
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "exact_run_seed_config_identity": true,
+    "clean_execution_identity": true,
+    "checkpoint_and_backbone_provenance": true,
+    "four_ood_validation_environments_per_run": true,
+    "ood_validation_count_per_run": 9854,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "all_ood_test_fields_null": true,
+    "fatal_log_matches": 0,
+    "scientific_exclusions": 0
+  },
+  "runs": {
+    "original_anchor": {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_original_anchor",
+      "wandb_run_id": "6zkqodfv",
+      "train": 1.0,
+      "id": 0.5209297744509012,
+      "ood_val": 0.2009336310127867,
+      "worst_ood_val_experiment": 0.0174512987012987,
+      "total_params": 22402163,
+      "active_ffn_params": 1181568,
+      "wall_seconds": 14359.9
+    },
+    "dense_wide": {
+      "run_id": "rxrx1_dense_wide_middle_canonical_E8_ep90_s0_hypothesis90_dense_wide",
+      "wandb_run_id": "0xpwd8mc",
+      "train": 1.0,
+      "id": 0.48234511966906335,
+      "ood_val": 0.18500101481631825,
+      "worst_ood_val_experiment": 0.017045454545454544,
+      "total_params": 30675834,
+      "active_ffn_params": 9455239,
+      "wall_seconds": 15504.6
+    },
+    "moe_token_top1": {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_token_top1",
+      "wandb_run_id": "jo0b8ycc",
+      "train": 1.0,
+      "id": 0.5144784792672117,
+      "ood_val": 0.20215141059468236,
+      "worst_ood_val_experiment": 0.016233766233766232,
+      "total_params": 30676212,
+      "active_ffn_params": 1184641,
+      "wall_seconds": 14231.0
+    },
+    "moe_image_top1": {
+      "run_id": "rxrx1_moe_middle_image_cosine_canonical_E8k1_ep90_s0_hypothesis90_moe_image_top1",
+      "wandb_run_id": "w6sqdgov",
+      "train": 1.0,
+      "id": 0.5045306805870187,
+      "ood_val": 0.20133955754008526,
+      "worst_ood_val_experiment": 0.01461038961038961,
+      "total_params": 30676212,
+      "active_ffn_params": 1184641,
+      "wall_seconds": 14231.5
+    },
+    "moe_token_within_env": {
+      "run_id": "rxrx1_moe_middle_token_cosine_route_E8k1_ep90_s0_hypothesis90_moe_token_within_env",
+      "wandb_run_id": "0crn85p0",
+      "train": 1.0,
+      "id": 0.5196247414557273,
+      "ood_val": 0.2045869697584737,
+      "worst_ood_val_experiment": 0.013798701298701298,
+      "total_params": 30676212,
+      "active_ffn_params": 1184641,
+      "wall_seconds": 17461.2
+    },
+    "moe_token_top2": {
+      "run_id": "rxrx1_moe_middle_token_cosine_canonical_E8k2_ep90_s0_hypothesis90_moe_token_top2",
+      "wandb_run_id": "j9yjhagx",
+      "train": 1.0,
+      "id": 0.4990643159657244,
+      "ood_val": 0.19788918205804748,
+      "worst_ood_val_experiment": 0.015016233766233766,
+      "total_params": 30676212,
+      "active_ffn_params": 2366209,
+      "wall_seconds": 14473.9
+    },
+    "frozen_linear": {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_frozen_linear",
+      "wandb_run_id": "1zwn6qq5",
+      "train": 0.31770011829652994,
+      "id": 0.14734561213434452,
+      "ood_val": 0.06687639537243759,
+      "worst_ood_val_experiment": 0.005275974025974026,
+      "total_params": 22402163,
+      "active_ffn_params": 1181568,
+      "wall_seconds": 14314.6
+    },
+    "partial_last4": {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_partial_last4",
+      "wandb_run_id": "ixgx0uhr",
+      "train": 1.0,
+      "id": 0.5301388752092977,
+      "ood_val": 0.1981936269535214,
+      "worst_ood_val_experiment": 0.017857142857142856,
+      "total_params": 22402163,
+      "active_ffn_params": 1181568,
+      "wall_seconds": 14377.5
+    },
+    "output_invariant": {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_output_invariant",
+      "wandb_run_id": "rmsua36b",
+      "train": 1.0,
+      "id": 0.4352900620506254,
+      "ood_val": 0.16582098640146134,
+      "worst_ood_val_experiment": 0.013798701298701298,
+      "total_params": 22402163,
+      "active_ffn_params": 1181568,
+      "wall_seconds": 14373.2
+    },
+    "environment_balanced": {
+      "run_id": "rxrx1_original_ep90_s0_hypothesis90_environment_balanced",
+      "wandb_run_id": "kmotbuzn",
+      "train": 1.0,
+      "id": 0.5085442726287797,
+      "ood_val": 0.1999188146945403,
+      "worst_ood_val_experiment": 0.016639610389610388,
+      "total_params": 22402163,
+      "active_ffn_params": 1181568,
+      "wall_seconds": 14315.5
+    }
+  },
+  "primary_trajectory": {
+    "checkpoint_policy": "Original anchor checkpoints exist at epochs 10, 30, 60, and 90; dense-wide and MoE arms retain exact milestone metrics but no intermediate model checkpoints.",
+    "epochs": [10, 30, 60, 90],
+    "original_ood_val": [0.13771057438603612, 0.17515729652932818, 0.1851024964481429, 0.2009336310127867],
+    "dense_wide_ood_val": [0.13314390095392734, 0.1529328191597321, 0.1713009945199919, 0.18500101481631825],
+    "moe_token_top1_ood_val": [0.12898315404911712, 0.18073878627968337, 0.19677288410797647, 0.20215141059468236],
+    "moe_minus_dense_wide_ood_val": [-0.00416074690481022, 0.027805967119951286, 0.025471889587984575, 0.017150395778364108],
+    "interpretation": "Sixty epochs are sufficient for the qualitative gate: the MoE advantage is already below five points and then contracts by epoch 90. Ninety epochs strengthen absolute baselines and rule out undertraining as an explanation, but do not uncover a growing sparse advantage."
+  },
+  "primary_gate": {
+    "comparison": "moe_token_top1_minus_dense_wide",
+    "ood_val_gain": 0.017150395778364108,
+    "id_delta": 0.03213335959814834,
+    "worst_experiment_delta": -0.000811688311688312,
+    "total_parameter_delta": 378,
+    "total_parameter_delta_fraction": 0.000012322403361551637,
+    "total_parameter_tolerance": 0.001,
+    "ood_val_replication_threshold": 0.05,
+    "maximum_allowed_id_loss": 0.02,
+    "trigger_met": false,
+    "licensed_next_stage": "none"
+  },
+  "secondary_contrasts": {
+    "within_env_moe_minus_dense_wide_ood_val": 0.01958595494215545,
+    "within_env_moe_minus_dense_wide_worst_experiment": -0.003246753246753246,
+    "canonical_moe_minus_original_ood_val": 0.001217779581895668,
+    "canonical_moe_minus_original_worst_experiment": -0.0012175324675324687
+  },
+  "interpretation": "Long adaptation establishes a strong Cell-DINO baseline and a genuine ID-to-OOD batch-transfer gap, but canonical sparse routing does not meet the predeclared five-point gain threshold and slightly worsens the worst held-out experiment. The close ordering of original, image-routed, partial-adaptation, and environment-balanced arms does not support a uniquely sparse robustness mechanism."
+}

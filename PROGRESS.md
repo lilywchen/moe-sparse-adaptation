@@ -929,3 +929,66 @@ ten exact result JSONs, milestones, parameter counts, `selection_split=ood_val`,
 `test_evaluated=false`, null OOD-test fields, logs, and anchor checkpoints; only then can manifests
 be created and valid folders uploaded to Hugging Face. `tester6` remains unavailable with `503`.
 OOD test remains sealed, and there are zero scientific exclusions.
+
+### 2026-08-01 20:12 ET — hypothesis90 strictly validated; formal negative gate
+
+Classification is `ACTIONABLE` for the final source-of-truth and manuscript handoff. SciServer
+reauthentication restored direct access to the persistent campaign. All ten final result JSONs,
+all 40 milestone rows, the four declared original-anchor checkpoints, all ten SHA-256 manifests,
+and the execution logs now pass strict validation. The exact execution identity is commit
+`cd783399ab1d4cee2666f1af8dfe3bfd9fc29280`, tree
+`ec05b37b9f2ac593e047243c414b114c3a1fb52c`, Cell-DINO checkpoint SHA-256
+`37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a`, and DINOv2
+commit `7764ea0f912e53c92e82eb78a2a1631e92725fc8`. Every result is seed 0, uses
+`selection_split=ood_val`, records `test_evaluated=false`, and has null OOD-test metrics. There
+are no scientific exclusions.
+
+The strict audit found one uniform metadata-only defect: the two per-environment OOD-test maps
+were empty dictionaries rather than explicit JSON nulls. No OOD-test value existed or was
+accessed. A narrow repair normalizes all withheld-test fields to null and strengthens the
+publisher guard; five focused and 101 full tests pass in isolated repair commit
+`84185df6c7356de6d63d49fae13355e4e6621a9`, tree
+`9772f6d4a1400812ca81463e40a253976278eb6c`. Original metadata is preserved under
+`metadata_pre_null_normalization_20260801/`. The ten corrected result files and manifests were
+re-uploaded and force-downloaded from Hugging Face for digest verification; the published prefix
+contains 44 files.
+
+The formal primary result is canonical token top-1 MoE OOD validation `0.2021514106` versus
+exact-total-parameter-matched dense-wide `0.1850010148`, a gain of `0.0171503958` (1.715 points).
+ID improves by `0.0321333596`, but worst-experiment accuracy changes by `-0.0008116883`. The
+models differ by only 378 total parameters, or `0.001232%`, within the frozen 0.1% tolerance.
+This fails the predeclared `+5`-point replication trigger. The smaller original reaches
+`0.2009336310` OOD validation, only 0.122 points below canonical MoE, with a better worst-
+experiment score. Within-experiment-balanced routing is the highest average OOD arm at
+`0.2045869698`, but its worst-experiment accuracy is 0.325 points below dense-wide. Top-2,
+image routing, partial adaptation, output invariance, and environment balancing do not create a
+large or tail-robust effect.
+
+This is decision-grade evidence for the bounded seed-0 question. Longer adaptation establishes a
+strong Cell-DINO instrument and a genuine ID-to-OOD transfer failure: all adapted arms reach
+100% train accuracy and roughly 48--53% ID accuracy, while OOD validation remains roughly
+18.5--20.5%. It does not support a large, uniquely sparse, or worst-experiment-robust advantage.
+Single-seed variation or a smaller true effect remains possible, but the predeclared target is
+falsified by the exact matched contrast. Seeds 1 and 2, mechanism expansion, and OOD-test access
+are not licensed.
+
+The exact 10/30/60/90 primary OOD trajectories are original
+`0.137711/0.175157/0.185102/0.200934`, dense-wide
+`0.133144/0.152933/0.171301/0.185001`, and canonical MoE
+`0.128983/0.180739/0.196773/0.202151`. Thus conditional gain is
+`-0.004161/+0.027806/+0.025472/+0.017150`: it peaks by epoch 30 and contracts thereafter. Sixty
+epochs would have been sufficient for the qualitative negative gate; 90 epochs are still valuable
+for the final result because they improve absolute baselines and rule out undertraining. Only the
+original anchor has reloadable checkpoints at 10/30/60/90; all arms retain exact milestone
+metrics. Future bounded scouting should use 60 epochs, reserving 90 for final adjudication.
+
+Traceable decision artifact: `analysis/hypothesis90_final_validation.json`. W&B group:
+`rxrx1-cell-dino-hypothesis90-20260801`. Hugging Face prefix:
+`rxrx1/cell_dino_cp5/hypothesis90_20260801`. All ten workers are finished; 10 assigned H100s are
+idle. A single portal start request was issued for existing `tester6` container 2893 after login;
+the refreshed authoritative portal state remains `stopped`, so the request did not acquire a
+two-H100 allocation. No second start request, duplicate container, or speculative GPU work was
+launched.
+
+Next: finish the manuscript compile, GitHub/source-of-truth commit, and Overleaf sync for this
+validated milestone. No new GPU experiment is licensed by the negative gate.
