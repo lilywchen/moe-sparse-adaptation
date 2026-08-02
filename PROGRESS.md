@@ -1146,3 +1146,29 @@ unschedulable, and three lack the requested GPUs; the prior single start request
 Next: strictly validate the next complete epoch-10 wave, apply the frozen Pareto rule, promote the
 early canonical dense comparator at the next safe refill opportunity, and continue the two current
 frontier arms to their licensed milestones. OOD test remains sealed.
+
+## 2026-08-01 23:26 EDT factorial60 wave-three handoff
+
+Eight additional epoch-10 rows are strictly valid, raising cumulative factorial60 coverage to 22
+epoch-10 and six epoch-30 milestones; no final result JSON has completed. Early token-cosine route
+is the sole new Pareto survivor and leads cumulative epoch-10 mean OOD validation and ID accuracy
+at `0.136391` and `0.317615`, with worst-experiment accuracy `0.013393`. The other seven cells are
+strictly dominated by the already validated early token-cosine canonical cell on all three frozen
+triage axes and were stopped only after their complete milestones were preserved.
+
+All seven released leases refilled immediately. Ten direct workers remain active across containers
+2887/2875/2874/2862/2859 and 14 arms remain queued; cumulative pruning is 19 and 29 W&B runs have
+launched. The seven new arms are middle token-linear output, middle token-cosine canonical, late
+token-linear output, early output-pressure dense-wide, middle token-cosine output, late image-cosine
+route, and late image-linear canonical. Direct process ownership, two model allocations per
+container, and the declared W&B group/job/OOD-test-blind tags were verified. The three protected
+survivors remained live. No available H100 is idle.
+
+This is an exploratory allocation result, not evidence that sparse computation beats dense. The
+early canonical dense comparator is known and still queued; the early output-pressure dense control
+has now launched for its own exact output-pressure contrasts. The sharp falsifier is persistence of
+the early token-cosine route lead at epoch 30 followed by at least +5 absolute OOD-validation points
+over its exact early canonical dense control with no more than two ID points lost, or the separately
+predeclared consistent tail improvement. Search multiplicity is the largest threat. `tester6`
+container 2893 remains Pending for 11 affinity mismatches, two unschedulable nodes, and three nodes
+without requested GPUs; no duplicate request was issued. OOD test remains sealed.

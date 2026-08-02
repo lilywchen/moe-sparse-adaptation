@@ -747,3 +747,24 @@ schedule differ. Therefore the current result is diagnostic/provisional only. It
 is the locked early canonical dense contrast: less than +5 absolute OOD points without a consistent
 tail improvement rejects a material sparse effect. Multiplicity remains the largest threat. OOD
 test is sealed.
+
+## 2026-08-01 23:26 ET — factorial60 wave-three successive-halving handoff
+
+Eight more epoch-10 milestones pass exact identity, finite-metric, four-environment coverage/count,
+ERM, provenance, tracking, fatal-scan, `selection_split=ood_val`, and `test_evaluated=false` checks.
+Cumulative coverage is 22 valid epoch-10 and six epoch-30 rows. Early token-cosine route is the only
+new frontier cell: OOD validation `0.136391`, ID `0.317615`, and worst experiment `0.013393`. Seven
+other cells are strictly dominated on all three frozen triage axes and were pruned after validation.
+
+Seven distinct cells immediately refilled the leases, leaving 10 active, 14 queued, 19 cumulatively
+pruned, 29 W&B runs launched, and zero idle among the ten available H100s. The refill includes the
+early output-pressure dense-wide arm; the separate early canonical dense comparator required for the
+current route-pressure leaders is known and remains queued. All new direct workers are owned, two
+model allocations are present per container, and their environments carry the declared W&B
+group/job/tags. `tester6` remains Pending for the recorded scheduler-capacity reason after one start
+request.
+
+The result is a multiplicity-exposed seed-0 screening signal. A plausible interaction between early
+placement, token routing, cosine geometry, and within-experiment route pressure is now worth carrying
+to epoch 30, but ordinary capacity or early optimization can still explain it. Its falsifier is the
+locked matched-dense contrast and tail behavior at later milestones. OOD test is sealed.
