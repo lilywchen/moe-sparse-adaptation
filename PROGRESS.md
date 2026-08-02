@@ -1385,3 +1385,19 @@ milestone files with 25 rows, three results, three prunes, fresh logs, and zero 
 Three refill settings have not yet emitted epoch 10. `tester6` remained stopped after the one
 authorized start request in this invocation. OOD test is sealed; 16-cell seed-0 multiplicity is the
 largest threat.
+
+## 2026-08-02 06:26 EDT router-aux full epoch-10 coverage and tenth epoch-30 pair
+
+The three latest refills emitted valid epoch-10 rows and the last pressure-paired survivor emitted
+epoch 30 while the preceding handoff was being persisted. The strict campaign ledger now contains
+29 rows: all 16 epoch-10 rows, ten epoch-30 rows, and three epoch-60 finals. The same exact identity,
+metric, environment, checkpoint, provenance, split-blindness, and fatal-log checks pass with no
+exclusion or new final.
+
+The new `balance=0.001,zloss=0.001` pressure pair does not favor route pressure: route minus
+canonical changes OOD/ID/worst by `-0.193/+0.153/-0.406` points. This makes the positive
+`balance=0.01,zloss=0` pressure contrast setting-specific rather than a general route-pressure
+effect. The new canonical high-z-loss row is dominated at epoch 10, but remains to epoch 30 under
+the declared delayed-stabilization alternative; the other two new canonical rows are exact
+pressure controls. Ten workers remain assigned and no H100 in the five running containers is idle.
+OOD test remains sealed.

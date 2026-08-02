@@ -953,3 +953,18 @@ workers remain active and zero H100s in the running five-container pool are unas
 latest refills still await epoch 10. The falsifier is loss of the matched route-pressure advantage
 or an ID/tail penalty at epoch 60. Seed-0 multiplicity remains the largest threat and OOD test is
 sealed.
+
+## 2026-08-02 06:26 ET — complete epoch-10 coverage sharpens the interaction
+
+All 16 router-aux settings now have a strict epoch-10 row, ten have strict epoch-30 rows, and the
+three prior finalists retain strict epoch-60 rows: 29 validated milestones total. The last
+epoch-30 pressure pair, `balance=0.001,zloss=0.001`, changes OOD/ID/worst by
+`-0.193/+0.153/-0.406` percentage points for route versus canonical pressure. Route pressure is
+therefore not beneficial in general; its positive signal is conditional on auxiliary weights.
+
+The three new canonical epoch-10 OOD/ID/worst rows are: zero balance and zero z-loss
+`0.135174/0.310598/0.013393`; balance `0.01` and z-loss `0.01`
+`0.125127/0.297572/0.011769`; and balance `0.001` with zero z-loss
+`0.131825/0.308308/0.015828`. The high-z-loss row is strictly dominated, but it remains licensed
+only to test the predeclared delayed router-stabilization alternative at epoch 30; the other two
+are exact matched controls. The scientific claim stays exploratory and multiplicity exposed.
