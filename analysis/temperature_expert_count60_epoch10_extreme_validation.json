@@ -1,0 +1,84 @@
+{
+  "validated_at": "2026-08-02T14:27:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_extreme_expert_count_epoch10_milestones",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "registry_sources": {
+    "E32": "2e37f34819e6ddb6b4014bb17b820fe50ff3dc6c",
+    "E64": "09a22aa086181267e4d14e5e343f60451c41a9c1"
+  },
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E8_shared_anchor": {"total": 30676212, "active_ffn_including_router": 1184641},
+    "E32": {"total": 59043060, "active_ffn_including_router": 1193857},
+    "E64": {"total": 96865524, "active_ffn_including_router": 1206145}
+  },
+  "shared_E8_anchors": {
+    "canonical": {"id": 0.31239535112774547, "ood_val": 0.13446316216764764, "worst_experiment": 0.017857142857142856},
+    "route": {"id": 0.30522998128631934, "ood_val": 0.13446316216764764, "worst_experiment": 0.016233766233766232}
+  },
+  "rows": {
+    "canonical_E32": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_temperature_expert_count60_canonical_E32_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "id": 0.32098887028464496,
+      "ood_val": 0.1335498274812259,
+      "worst_experiment": 0.018668831168831168,
+      "checkpoint_bytes": 709123088,
+      "minus_same_pressure_E8_points": {"ood_val": -0.09133346864217406, "id": 0.8593519156899487, "worst_experiment": 0.0811688311688312}
+    },
+    "route_E32": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s0_temperature_expert_count60_route_E32_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "id": 0.31842805082241704,
+      "ood_val": 0.1330424193221027,
+      "worst_experiment": 0.018262987012987012,
+      "checkpoint_bytes": 709113384,
+      "minus_same_pressure_E8_points": {"ood_val": -0.14207428455449422, "id": 1.31980695360977, "worst_experiment": 0.202922077922078}
+    },
+    "canonical_E64": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_temperature_expert_count60_canonical_E64_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "id": 0.3142174726681769,
+      "ood_val": 0.13831946417698396,
+      "worst_experiment": 0.013392857142857142,
+      "checkpoint_bytes": 1163265872,
+      "minus_same_pressure_E8_points": {"ood_val": 0.38563020093363154, "id": 0.18221215404314317, "worst_experiment": -0.4464285714285714}
+    },
+    "route_E64": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E64k1_ep60_s0_temperature_expert_count60_route_E64_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "id": 0.31547325913523094,
+      "ood_val": 0.14024761518165213,
+      "worst_experiment": 0.013798701298701298,
+      "checkpoint_bytes": 1163252072,
+      "minus_same_pressure_E8_points": {"ood_val": 0.5784453014004487, "id": 1.0243277848911603, "worst_experiment": -0.24350649350649342}
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true,
+    "live_worker_command_matches_registry": true
+  },
+  "decision": "continue_all_four_unchanged_to_epoch30_because_each_is_a_predeclared_delayed_specialization_question_and_none_is_dominated_on_ood_id_and_tail",
+  "interpretation": "E32_is_an_effective_mean_tie_with_better_id_and_tail_while_E64_has_small_mean_and_id_gains_but_worse_tail; no_extreme_bank_size_is_an_epoch10_winner",
+  "alternative": "differences_are_early_optimization_noise_or_raw_inactive_parameter_scaling_rather_than_useful_routing",
+  "sharp_falsifier": "E32_or_E64_fails_to_improve_mean_or_tail_by_epoch30_and_mechanism_diagnostics_show_dead_or_unstable_experts",
+  "multiplicity": "four_new_seed0_cells_with_shared_pressure_matched_E8_anchors_after_prior_architecture_and_temperature_screens"
+}

@@ -1341,3 +1341,13 @@ The linked Overleaf project pulled exact GitHub commit
 `d71aa6955dcff053c92d5f3382fe7d82cf1331ba` and recompiled the updated decision-grade paragraph:
 seven pages, zero errors, and one pre-existing `\showhyphens` warning. This is a traceability update,
 not additional evidence.
+
+### 2026-08-02 14:27 EDT — extreme expert-count epoch-10 gate
+
+The canonical/route E32 and E64 epoch-10 rows are strict-valid. Against same-pressure E8,
+E32 is `-0.091/+0.859/+0.081` and `-0.142/+1.320/+0.203` OOD/ID/worst points, whereas E64 is
+`+0.386/+0.182/-0.446` and `+0.578/+1.024/-0.244`. These are Pareto tradeoffs, not winners, so
+all four continue unchanged under the predeclared delayed-specialization rule. Checkpoints and
+sealed-test/fairness identities are preserved in
+`analysis/temperature_expert_count60_epoch10_extreme_validation.json`. Ten H100s remain assigned
+and 15 tested arms remain ready.

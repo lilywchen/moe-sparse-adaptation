@@ -1873,3 +1873,19 @@ GitHub commit `d71aa6955dcff053c92d5f3382fe7d82cf1331ba` was then pulled into th
 Overleaf project. The synchronized manuscript contains the locked epoch-60 two-seed paragraph and
 compiles to seven pages with zero errors and the single pre-existing `\showhyphens` compatibility
 warning. No scientific or operational configuration changed during the paper sync.
+
+## 2026-08-02 14:27 EDT — E32/E64 epoch-10 checkpoints validate and all four continue
+
+Canonical/route E32 and E64 crossed epoch 10 during the paper handoff. All four milestones pass
+exact run/seed/epoch and live-command identity, finite metrics, ERM, the four expected validation
+experiments and 9,854 samples, 709 MB--1.16 GB checkpoint identity, fatal scans,
+`selection_split=ood_val`, `test_evaluated=false`, and sealed OOD-test checks. Relative to their
+same-pressure completed E8 anchors, canonical/route E32 changes OOD/ID/worst by
+`-0.091/+0.859/+0.081` and `-0.142/+1.320/+0.203` points; canonical/route E64 changes them by
+`+0.386/+0.182/-0.446` and `+0.578/+1.024/-0.244`. E32 is an effective mean tie with better ID
+and tail, while E64 offers a small mean/ID gain with a tail cost. No row is dominated on all three
+axes, and delayed architecture specialization was predeclared, so all four continue unchanged to
+epoch 30. These are active-compute comparisons only and cannot be pooled with exact-total claims.
+The sharp falsifier is failure to improve mean or tail at epoch 30 together with dead or unstable
+expert diagnostics; four additional seed-0 cells and the preceding screens keep the result
+exploratory. No worker, ready-arm count, or OOD-test state changed.
