@@ -926,3 +926,30 @@ The exact execution remains clean `7dcb42e` / tree `1755b2f`; every validated ro
 validation only and leaves OOD test sealed. `tester6` remained stopped after the single authorized
 start request in this invocation. Multiplicity and seed-0 selection are the largest scientific
 threats.
+
+## 2026-08-02 06:18 ET — router balance signal changes by epoch 30
+
+The strict router-auxiliary ledger now contains 25 valid milestone rows across all 16 registered
+streams: 13 epoch-10, nine epoch-30, and the three previously validated epoch-60 finals. Six
+epoch-30 rows are new. Every consumed row has exact run/config/seed/epoch identity, finite metrics,
+four validation environments totaling 9,854 samples, ERM, a declared checkpoint, clean execution
+provenance, `selection_split=ood_val`, `test_evaluated=false`, and no OOD-test value. The normalized
+record is `analysis/router_aux60_epoch30_validation.json`.
+
+The epoch-10 low-balance lead is an early transient rather than a stable ordering. At epoch 30,
+route `balance=0.01,zloss=0` leads mean OOD (`0.198295`). Its exact canonical-pressure pair reaches
+`0.186016`, so the route-pressure delta is `+1.228` OOD points, `-0.207` ID points, and `+0.081`
+worst-experiment points. A second exact pair at `balance=0.0001,zloss=0.001` favors route pressure
+by `+0.548/+0.867/+0.325` points. Conversely, zero balance without z-loss leads the tail
+(`0.019075`) but is `0.609` mean-OOD points below the overall epoch-30 leader. Moderate balance and
+route pressure are now the most plausible interaction; neither zero balance nor z-loss alone is
+supported.
+
+Three canonical rows that are globally dominated remain licensed because each is the exact
+pressure control for a routed setting and therefore changes the causal interpretation. The other
+live rows are Pareto-relevant or complete the remaining matched pair; pruning them would release
+compute before a tested next-family refill exists without answering a sharper question. Ten
+workers remain active and zero H100s in the running five-container pool are unassigned. The three
+latest refills still await epoch 10. The falsifier is loss of the matched route-pressure advantage
+or an ID/tail penalty at epoch 60. Seed-0 multiplicity remains the largest threat and OOD test is
+sealed.

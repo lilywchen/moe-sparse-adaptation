@@ -304,7 +304,7 @@
     "cause": "manual_priority_refill_raced_precomputed_shard_queue",
     "repair": "stopped_shard0_and_shard1_controllers_only_preserved_child_workers_removed_duplicate_and_directly_launched_final_two_nonduplicate_cells"
   },
-  "router_aux60_status": "three_strictly_validated_and_hf_published_thirteen_valid_epoch10_rows_three_pruned_ten_active_zero_queued",
+  "router_aux60_status": "three_strictly_validated_and_hf_published_thirteen_valid_epoch10_nine_valid_epoch30_twentyfive_total_milestone_rows_three_pruned_ten_active_zero_queued",
   "router_aux60_expected_results": 16,
   "router_aux60_valid_results": 3,
   "router_aux60_active_results": 10,
@@ -312,6 +312,10 @@
   "router_aux60_validation": "analysis/router_aux60_completed_validation.json",
   "router_aux60_epoch10_validation": "analysis/router_aux60_epoch10_validation.json",
   "router_aux60_epoch10_valid_rows": 13,
+  "router_aux60_epoch30_validation": "analysis/router_aux60_epoch30_validation.json",
+  "router_aux60_epoch30_valid_rows": 9,
+  "router_aux60_total_valid_milestone_rows": 25,
+  "router_aux60_refill_awaiting_epoch10": 3,
   "router_aux60_pruned_results": 3,
   "router_aux60_execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
   "router_aux60_execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
@@ -324,20 +328,30 @@
     "worst_env_val": 0.016639610389610388,
     "minus_best_factorial_dense_ood_points": -0.23340775319667106
   },
+  "router_aux60_epoch30_leader": {
+    "tag": "route_bw1em2_z0",
+    "acc_selection": 0.19829510858534605,
+    "acc_within": 0.46924554318920514,
+    "worst_env_val": 0.015016233766233766,
+    "route_minus_exact_canonical_ood_points": 1.227927745078139,
+    "route_minus_exact_canonical_id_points": -0.2068354181030241,
+    "route_minus_exact_canonical_worst_points": 0.0811688311688312,
+    "interpretation": "moderate_balance_route_pressure_interaction_replaces_epoch10_zero_balance_ordering"
+  },
   "sixth_container": {
     "name": "tester6",
     "container_id": 2893,
     "external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
     "domain": "Interactive 2H100 GPU",
     "image": "GPU-Essesials",
-    "status": "stopped_after_one_start_request_2026_08_02T05_29_ET_this_invocation",
+    "status": "stopped_after_one_start_request_2026_08_02T06_15_ET_this_invocation",
     "running": false,
     "scheduler_reason": "not_exposed_while_stopped",
-    "duplicate_guard": "one_start_request_issued_2026_08_02T05_29_ET_do_not_repeat_or_recreate_this_invocation"
+    "duplicate_guard": "one_start_request_issued_2026_08_02T06_15_ET_do_not_repeat_or_recreate_this_invocation"
   },
   "steward_automation_status": "active_15min_factorial_sweep_contract_continuous_ready_queue_refill_validation_wandb_hf_and_tester6_capacity_check",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
   "overleaf_build_status": "synced_exact_github_commit_7_pages_0_errors_1_showhyphens_warning_2026-08-01T20:24-04:00; local_fatal_build_and_visual_review_pass",
-  "next_gate": "strictly_validate_three_refill_epoch10_rows_and_surviving_epoch30_router_trajectories; require_low_balance_mean_signal_to_persist_without_id_or_tail_loss; prepare_tested_next_family_refills_before_any_lease_release; keep_ood_test_sealed"
+  "next_gate": "strictly_validate_three_refill_epoch10_rows_and_remaining_matched_epoch30_pair; require_route_pressure_by_moderate_balance_advantage_to_persist_at_epoch60_without_id_or_tail_loss; prepare_tested_next_family_refills_before_any_lease_release; keep_ood_test_sealed"
 }

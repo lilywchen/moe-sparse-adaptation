@@ -1,0 +1,78 @@
+{
+  "campaign": "router_aux60_20260802",
+  "generated_at": "2026-08-02T06:18:00-04:00",
+  "grade": "validated_exploratory_epoch30_mechanism_screen",
+  "source_commit_before_ledger_update": "fe9a0b4063df5d1c8dac2a5473c2a0cd9d588c0c",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_arms": 16,
+  "milestone_streams": 16,
+  "validated_milestone_rows": 25,
+  "validated_epoch10_rows": 13,
+  "validated_epoch30_rows": 9,
+  "completed_results": 3,
+  "pruned_results": 3,
+  "active_results": 10,
+  "queued_results": 0,
+  "validation": {
+    "all_milestone_checks_passed": true,
+    "checks": [
+      "registry_run_identity",
+      "seed_0",
+      "unique_ordered_epoch_identity",
+      "finite_train_id_ood_val_worst_experiment_metrics",
+      "four_expected_validation_environments",
+      "validation_count_9854",
+      "classification_objective_erm",
+      "selection_split_ood_val",
+      "test_evaluated_false",
+      "all_ood_test_fields_absent_or_null",
+      "declared_epoch_checkpoint_present_over_300MB",
+      "fatal_log_scan_clear",
+      "clean_execution_commit_and_tree",
+      "declared_wandb_group_job_and_ood_test_blind_tags"
+    ],
+    "ood_test_accessed": false,
+    "exclusions": []
+  },
+  "epoch30_rows": [
+    {"tag":"route_bw1em2_z0","train":0.9990388406940063,"id":0.46924554318920514,"ood_val":0.19829510858534605,"worst_experiment":0.015016233766233766},
+    {"tag":"canonical_bw1em2_z1em4","train":0.9989402602523659,"id":0.4699349945828819,"ood_val":0.1958595494215547,"worst_experiment":0.013798701298701298},
+    {"tag":"route_bw1em4_z1em3","train":0.9989402602523659,"id":0.47220033487639124,"ood_val":0.19342399025776336,"worst_experiment":0.017857142857142856},
+    {"tag":"route_bw0_z0","train":0.9988909700315457,"id":0.46572441642864176,"ood_val":0.19220621067586766,"worst_experiment":0.019074675324675324},
+    {"tag":"canonical_bw1em3_z1em3","train":0.9987430993690851,"id":0.4655766768442825,"ood_val":0.1907854678303227,"worst_experiment":0.018262987012987012},
+    {"tag":"route_bw0_z1em3","train":0.9988663249211357,"id":0.4617846941790604,"ood_val":0.19007509640755024,"worst_experiment":0.01461038961038961},
+    {"tag":"route_bw1em3_z0","train":0.9994085173501577,"id":0.47655865261499064,"ood_val":0.18865435356200527,"worst_experiment":0.015827922077922076},
+    {"tag":"canonical_bw1em4_z1em3","train":0.9987184542586751,"id":0.46353294592731215,"ood_val":0.1879439821392328,"worst_experiment":0.01461038961038961},
+    {"tag":"canonical_bw1em2_z0","train":0.9991374211356467,"id":0.4713138973702354,"ood_val":0.18601583113456466,"worst_experiment":0.014204545454545454}
+  ],
+  "paired_pressure_contrasts": [
+    {
+      "setting": "balance_1e-2_zloss_0",
+      "route_minus_canonical": {"ood_val":0.01227927745078139,"id":-0.002068354181030241,"worst_experiment":0.000811688311688312}
+    },
+    {
+      "setting": "balance_1e-4_zloss_1e-3",
+      "route_minus_canonical": {"ood_val":0.005480008118530555,"id":0.008667388949079091,"worst_experiment":0.003246753246753246}
+    }
+  ],
+  "epoch30_pareto_frontier": [
+    "route_bw1em2_z0",
+    "canonical_bw1em2_z1em4",
+    "route_bw1em4_z1em3",
+    "route_bw0_z0",
+    "route_bw1em3_z0"
+  ],
+  "continued_matched_controls": [
+    {"tag":"canonical_bw1em2_z0","reason":"exact_pressure_pair_for_route_bw1em2_z0"},
+    {"tag":"canonical_bw1em4_z1em3","reason":"exact_pressure_pair_for_completed_route_bw1em4_z1em3"},
+    {"tag":"canonical_bw1em3_z1em3","reason":"exact_pressure_pair_for_live_route_bw1em3_z1em3"}
+  ],
+  "pending_first_milestone": [
+    "canonical_bw0_z0",
+    "canonical_bw1em2_z1em2",
+    "canonical_bw1em3_z0"
+  ],
+  "interpretation": "The epoch-10 zero-balance mean-OOD ordering does not persist: route pressure with balance 0.01 and zero z-loss now leads epoch-30 mean OOD validation at 0.198295. Against the exact canonical-pressure arm at the same auxiliary setting, route pressure adds 1.228 OOD-validation points with a 0.207-point ID loss and a 0.081-point worst-experiment gain. Zero-balance without z-loss retains the best epoch-30 tail at 0.019075 but trails the mean leader by 0.609 points. This favors a pressure-by-moderate-balance interaction and mean-versus-tail tradeoff, not a general zero-balance or z-loss effect. All claims remain exploratory, seed-0, and multiplicity exposed.",
+  "falsifier": "Route balance=0.01,zloss=0 must retain its matched pressure advantage and avoid an ID or tail loss at epoch 60; otherwise the epoch-30 interaction is transient. Fresh-seed confirmation remains barred unless the locked comparison becomes scientifically material."
+}

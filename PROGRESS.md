@@ -1360,3 +1360,28 @@ the immediate portal recheck remained stopped, so no duplicate request or replac
 created. Next: validate the three refill epoch-10 rows and the surviving epoch-30 trajectories,
 prune/refill from the tested next-family queue when available, and require persistence without an ID
 or tail loss before treating low balance as more than an early direction. OOD test remains sealed.
+
+## 2026-08-02 06:18 EDT router-aux epoch-30 interaction handoff
+
+Nine epoch-30 rows and 25 cumulative milestone rows across all 16 registered router-aux streams
+pass exact registry/run/seed/epoch, unique ordering, finite train/ID/OOD-validation/worst metrics,
+four-environment coverage and count, ERM, checkpoint, clean `7dcb42e` provenance, fatal-scan,
+`selection_split=ood_val`, `test_evaluated=false`, and absent/null OOD-test checks. Six epoch-30
+rows are new since the prior handoff. Three published finals and three preserved prunes remain
+unchanged; no new final or HF upload is claimed.
+
+The epoch-10 zero-balance ordering does not persist. Route pressure with `balance=0.01,zloss=0`
+leads epoch-30 mean OOD at `0.198295`. Against the exact canonical-pressure arm with the same
+auxiliary weights, it changes OOD/ID/worst by `+1.228/-0.207/+0.081` percentage points. Zero
+balance without z-loss has the best epoch-30 tail (`0.019075`) but trails the mean leader by
+`0.609` points. The sharper live explanation is therefore a route-pressure by moderate-balance
+interaction with a mean-versus-tail tradeoff, not a generic zero-balance or z-loss benefit.
+
+No worker was pruned at this handoff: the three globally dominated canonical rows are the exact
+pressure-matched controls needed to separate routing pressure from auxiliary-weight effects, and
+the remaining rows are Pareto-relevant or complete those declared pairs. Fresh audits resolve the
+same ten direct workers, two model allocations per running container, clean execution state, 16
+milestone files with 25 rows, three results, three prunes, fresh logs, and zero fatal markers.
+Three refill settings have not yet emitted epoch 10. `tester6` remained stopped after the one
+authorized start request in this invocation. OOD test is sealed; 16-cell seed-0 multiplicity is the
+largest threat.
