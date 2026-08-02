@@ -1411,6 +1411,24 @@ sharp falsifier. Multiplicity remains high,
 and this active-compute estimand cannot be pooled with the locked exact-total comparison.
 Canonical-E64's released H100 now runs broader canonical-E4 zero-auxiliary as worker 43126/W&B
 `60jcriar`; ten H100s are assigned, 12 arms remain tested-ready, and OOD test remains sealed.
+
+## 2026-08-02 20:13 EDT — Route E16 passes the predeclared tail alternative; locked confirmation starts
+
+The completed route-balanced E16 final is strict-valid and is `+0.528/-0.007/+0.528`
+OOD/ID/worst points above the exact route-E8 anchor at epoch 60. Its epoch-30 direction was
+`+0.365/-1.485/+0.081`, so the mean and tail signs persist while ID converges to a tie. This
+licenses a locked fresh-seed confirmation under the predeclared smaller-mean plus consistent-tail
+clause, not the five-point clause. Canonical E16 remains terminal-negative. Both E16 finals are
+manifested and remotely verified at five HF files each; OOD test is sealed.
+
+The new four-cell registry freezes route E8/E16 at seeds 1/2 with no further tuning. Seed-1 E8
+worker 44982/W&B `qsbm21cg` runs on 2859/GPU0 and seed-1 E16 worker 110491/W&B `gviobuj4`
+runs on 2875/GPU0. Ten H100s are assigned, zero are idle, two confirmation rows are queued, and
+14 total arms remain tested and exact-dry-run ready. The most plausible bounded explanation is a
+weak route-pressure-by-bank-size interaction; the alternative is seed-0 selection optimism or
+ordinary optimization noise. Only four of sixteen experts are used, making weak specialization
+the largest mechanism threat. The sharp falsifier is loss of the E16-minus-E8 mean or tail sign
+across locked seeds without acceptable ID retention.
 ## 2026-08-02 15:45 EDT — Canonical E16 is terminal-negative; canonical E4 remains unpaired
 
 Canonical E16 is below its exact same-pressure E8 anchor at epoch 60 by

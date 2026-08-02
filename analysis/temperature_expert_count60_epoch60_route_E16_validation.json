@@ -1,0 +1,83 @@
+{
+  "campaign": "temperature_expert_count60_20260802",
+  "status": "strict_seed0_epoch60_final_valid_and_locked_fresh_seed_confirmation_licensed_by_predeclared_consistent_tail_clause",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": {
+    "acc_heldout": null,
+    "worst_env_heldout": null,
+    "per_env_heldout": null,
+    "per_env_n_heldout": null
+  },
+  "route_E16_epoch60": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s0_temperature_expert_count60_route_E16_20260802",
+    "seed": 0,
+    "train": 1.0,
+    "id": 0.5268886043533931,
+    "ood_val": 0.20976253298153033,
+    "worst_experiment": 0.02150974025974026,
+    "checkpoint_bytes": 482044183,
+    "total_params": 40131828,
+    "active_ffn_params": 1187713,
+    "experts_used": 4.0,
+    "routing_entropy": 0.16261631612863092,
+    "route_reliance": 0.0045666734321087865,
+    "wandb_run_id": "eytascl6"
+  },
+  "route_E8_epoch60_anchor": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t3em2_bw0_z1em3_20260802",
+    "seed": 0,
+    "id": 0.5269624741455727,
+    "ood_val": 0.20448548812664907,
+    "worst_experiment": 0.016233766233766232,
+    "total_params": 30676212,
+    "active_ffn_params": 1184641,
+    "experts_used": 3.0,
+    "routing_entropy": 0.3298538081647154,
+    "route_reliance": 0.001116297950071038
+  },
+  "route_E16_minus_route_E8_points": {
+    "epoch30": {
+      "ood_val": 0.3653338746,
+      "id": -1.4847828228,
+      "worst_experiment": 0.0811688312
+    },
+    "epoch60": {
+      "ood_val": 0.5277044854881258,
+      "id": -0.007386979217960388,
+      "worst_experiment": 0.5275974025974027
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_required_metrics_finite": true,
+    "exact_run_seed_config_epoch_identity": true,
+    "erm_and_shared_data_order": true,
+    "four_expected_ood_validation_environments": [7, 27, 42, 49],
+    "ood_validation_sample_count": 9854,
+    "milestone_epochs": [10, 30, 60],
+    "epoch60_checkpoint_present": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "all_ood_test_fields_null": true,
+    "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
+    "dinov2_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+    "execution_commit_short": "7dcb42e",
+    "documented_code_equivalent_dirty_registry": true,
+    "artifact_manifest_present": true,
+    "hf_remote_files_verified": 5
+  },
+  "paired_canonical_E16_final": {
+    "status": "strict_final_terminal_negative_no_promotion",
+    "artifact_manifest_present": true,
+    "hf_remote_files_verified": 5
+  },
+  "decision": "promote_locked_route_E8_vs_E16_seed1_seed2_confirmation_at_60_epochs_no_further_tuning",
+  "promotion_basis": "the predeclared smaller-mean alternative is satisfied because mean OOD and worst-experiment deltas are positive at both epochs 30 and 60 while epoch60 ID is effectively tied",
+  "interpretation": "route-balanced pressure weakly interacts with a larger expert bank in a tail-safe direction, unlike canonical pressure; the magnitude is small and the router uses only four of sixteen experts",
+  "alternative": "the aligned seed0 trajectory is selection optimism, ordinary optimization noise, or a small route-pressure regularization effect rather than reproducible sparse specialization",
+  "falsifier": "the locked seed1_seed2 E16-minus-E8 comparisons fail to preserve a positive mean or worst-experiment direction without more than two ID points lost",
+  "multiplicity": "seed0 survivor selected after the prior 43-arm factorial plus router auxiliary, temperature, and expert-count screens; no population claim until locked fresh seeds close",
+  "largest_threat": "selection on one seed across many architecture and router settings, compounded by only four of sixteen experts being used"
+}

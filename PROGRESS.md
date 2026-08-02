@@ -2010,3 +2010,41 @@ loss of those pressure-specific directions at epoch 60 or dead/non-reliant routi
 falsifier. Multiplicity is explicit and all comparisons here are active-compute, not exact-total.
 Next refill is the first broader E16 tail-safe cell, with its zero-auxiliary comparator immediately
 afterward. OOD test remains sealed.
+
+## 2026-08-02 20:13 EDT — Route E16 licenses a locked fresh-seed pair and both released GPUs refill
+
+Route-balanced E16's epoch-60 final passes strict result/config/seed identity, finite metrics, ERM,
+four OOD-validation environments and 9,854 samples, all 10/30/60 milestones, a 482,044,183-byte
+checkpoint, fatal scan, `selection_split=ood_val`, `test_evaluated=false`, null OOD-test fields,
+and Cell-DINO/DINOv2 provenance checks. Against its exact route-balanced E8 anchor, E16 changes
+OOD/ID/worst by `+0.528/-0.007/+0.528` points at epoch 60, following
+`+0.365/-1.485/+0.081` at epoch 30. This is far below the five-point target but satisfies the
+predeclared smaller-mean criterion: mean and worst-experiment directions are positive at both
+milestones and final ID is effectively tied. Canonical E16 remains the terminal negative already
+reported. Both completed E16 finals now have checksum manifests and five remotely verified HF
+files each.
+
+The licensed question is now frozen as route-balanced E16 versus E8 at fresh seeds 1 and 2, with
+temperature `0.03`, zero balance loss, z-loss `0.001`, identical data order/optimizer, and the
+60-epoch 10/30/60 checkpoint policy. Source commit `4969659` adds the four-cell registry. The
+SciServer code-equivalent checkout is based on `4893c964`, has indexed tree
+`081bd31e94145fc9cefc033bf1418417ac0f30c7`, matching source/test SHA-256, two focused tests, a
+full-suite exit status of zero, and exact one-cell dry runs. Seed-1 route-E8 started on
+container2859/GPU0 as worker 44982/W&B `qsbm21cg`; route-E16 started on container2875/GPU0 as
+worker 110491/W&B `gviobuj4`. Both hold about 8.0 GB, report selection on 9,854 OOD-validation
+samples with test untouched, and have clear initial fatal scans.
+
+All ten available H100s are assigned: 2887 GPU0/1 workers 41687/37957; 2875 GPU0/1
+110491/108209; 2874 GPU0/1 54666/53264; 2862 GPU0/1 52582/51113; and 2859 GPU0/1
+44982/43126. Temperature expert-count has two completed finals, four active rows, and four pruned
+rows. The confirmation family has two active and two queued rows. Four broader expert-count plus
+eight extreme-auxiliary plus the seed-2 confirmation pair leave 14 exact dry-run-ready arms;
+backlog remains 27. tester6 2893 remains Pending for 11 affinity mismatches, two unschedulable
+nodes, and three insufficient-GPU nodes; no duplicate start/create was issued.
+
+The result rules out a generic monotone bank-size benefit and narrows the explanation to a weak
+route-pressure interaction. Only four of sixteen experts are used and route reliance is 0.00457,
+so stable sparse specialization is not established. The alternative is seed-0 selection optimism
+or ordinary optimization noise. Failure of the locked seed-1/2 E16-minus-E8 mean or tail direction,
+or more than two ID points loss, is the sharp falsifier. This remains active-compute matched,
+multiplicity-exposed, and OOD-test blind.
