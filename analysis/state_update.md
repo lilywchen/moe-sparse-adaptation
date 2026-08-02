@@ -1046,3 +1046,26 @@ All ten running H100s are assigned across five containers. Temperature accountin
 one queued, one pruned, zero finals; the ready queue remains 13 with a 24-question backlog.
 `tester6` 2893 remains stopped after one start request. This remains exploratory seed 0 with
 12-cell multiplicity, and OOD test is sealed.
+
+## 2026-08-02 10:00 ET — temperature ordering is auxiliary-setting dependent
+
+Two new exact `balance=0.01,zloss=0` epoch-30 rows pass the strict registry, identity, finite metric,
+ERM, four-environment/9,854-sample, parameter, checkpoint, clean `7dcb42e` provenance, fatal-scan,
+OOD-validation-selection, and OOD-test-blind checks. Router-temperature coverage is now 10/8/0 at
+epochs 10/30/60; there are no final results or manifests.
+
+Temperature `0.2` now beats `0.03` on mean OOD for both canonical (`+0.335` points) and route
+(`+0.467` points) at moderate balance, reversing the zero-balance plus z-loss direction. At
+temperature `0.2`, route minus canonical changes OOD/ID/worst by `+0.792/+0.399/-0.244` points.
+This is a directional mean/ID sparse effect with a tail tradeoff, not a tail-safe gain. It rules out
+a global lower-temperature benefit and makes a temperature-by-auxiliary-pressure interaction most
+plausible. Transient optimization noise or a loss-only effect remains viable; persistence at epoch
+60 and a consistent zero-auxiliary architecture contrast are the falsifiers. Neither row is pruned.
+
+All five running containers expose two distinct active workers from the clean dedicated
+`7dcb42e` / `1755b2f` execution checkout, with zero idle running H100s and no fatal marker. The
+shared persistent project checkout is dirty legacy state but is not an execution tree. Tracking
+markers are initialized without errors; HF publication remains correctly empty before finals.
+`tester6` 2893 stayed stopped after exactly one start request. One temperature cell remains queued,
+followed by four locked fresh-seed confirmation arms and eight expert-count cells; ready/backlog
+counts remain 13/24. OOD test remains sealed and 12-cell seed-0 multiplicity is explicit.

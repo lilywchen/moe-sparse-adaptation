@@ -1491,3 +1491,33 @@ backlog retains 24 hypotheses. The next released GPU receives the remaining rout
 handoff; locked seed-1 sparse/dense confirmation pairs follow. This is a multiplicity-exposed seed-0
 screen. Its sharp falsifier is loss of the temperature direction by epoch 60 or failure of the
 zero-auxiliary pairs to reproduce it. OOD test remains sealed.
+
+## 2026-08-02 10:00 EDT router-temperature epoch-30 interaction reversal
+
+The exact `balance=0.01,zloss=0` temperature pair has now reached epoch 30, raising strict
+router-temperature coverage to 10/8/0 at epochs 10/30/60. Both rows pass registry/run/seed/epoch
+identity, finite metrics, ERM, four environments and 9,854 OOD-validation samples, shared exact
+parameter accounting, 368,520,752/368,514,056-byte checkpoints, clean `7dcb42e` execution provenance,
+fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and absent OOD-test fields.
+
+This pair reverses the earlier temperature direction: with `balance=0.01,zloss=0`, temperature
+`0.2` exceeds `0.03` on mean OOD in both canonical (`+0.335` points) and route (`+0.467` points)
+branches. At temperature `0.2`, route minus exact canonical changes OOD/ID/worst by
+`+0.792/+0.399/-0.244` points. The mean and ID direction is potentially useful, but the tail cost
+prevents a tail-safe sparse claim. Together with the opposite ordering under zero balance plus
+z-loss, this rules out a global "lower initial temperature is better" explanation and instead
+points to a temperature-by-auxiliary-pressure interaction. A transient optimization fluctuation or
+ordinary auxiliary-loss effect remains an alternative; epoch-60 persistence and the unfinished
+zero-auxiliary pair are the sharp falsifiers. No new row is strictly dominated within its exact
+temperature/pressure comparison, so both remain licensed to epoch 60.
+
+Five running containers each have two distinct owned workers (ten active H100 processes, zero idle
+running H100s); no fatal marker, final result, manifest, or HF publication exists. The active process
+working directories all resolve to the clean dedicated execution checkout at commit/tree
+`7dcb42e` / `1755b2f`, even though the shared persistent project checkout is a dirty legacy source
+workspace and is not used for execution. Seven launcher logs plus the two new run logs and the
+latest refill record show initialized W&B tracking without errors. `tester6` 2893 stayed stopped
+after exactly one start request and was not duplicated. Accounting remains ten active, one queued,
+one pruned, with 13 ready arms and 24 backlog hypotheses. The next release launches route
+`temperature=0.2,balance=0,zloss=0`; locked seed-1/2 sparse/dense confirmation follows. This remains
+a multiplicity-exposed seed-0 result; OOD test is sealed.
