@@ -992,3 +992,18 @@ launched.
 
 Next: finish the manuscript compile, GitHub/source-of-truth commit, and Overleaf sync for this
 validated milestone. No new GPU experiment is licensed by the negative gate.
+
+### 2026-08-01 20:24 ET — validated milestone synchronized and campaign complete
+
+GitHub commit `ae27241addbcd65e8f698b73ee2adea4ba1d19c4` contains the strict final
+validation artifact, exact 10/30/60/90 trajectory, withheld-test metadata guard and regression
+tests, evidence ledgers, abstract, result table, and duration interpretation. It is pushed to
+`origin/main`. The linked Overleaf project imported that exact commit, then compiled the synced
+seven-page manuscript with 0 errors and 1 benign `Command \\showhyphens has changed` warning. A
+local fatal-error build and complete rendered-page inspection also pass.
+
+Classification is `COMPLETE` for the bounded hypothesis90 campaign. The substrate-strength
+question is resolved, all 10 result folders are validated and published, no H100 worker is active,
+and the frozen replication threshold is not met. No seed replication, mechanism expansion,
+architecture sweep, or OOD-test evaluation is licensed. A new campaign requires an explicit new
+scientific question rather than reuse of the failed gate.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "classification": "ACTIONABLE",
-  "last_action": "strictly_validate_publish_and_close_hypothesis90_negative_gate",
-  "last_action_at": "2026-08-01T20:12:00-04:00",
-  "last_verified_commit": "2558250",
+  "classification": "COMPLETE",
+  "last_action": "sync_validated_hypothesis90_negative_milestone_and_complete_campaign",
+  "last_action_at": "2026-08-01T20:24:00-04:00",
+  "last_verified_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
   "valid_results": 10,
   "expected_results": 10,
   "active_gpu_workers": 0,
@@ -215,7 +215,7 @@
   },
   "steward_automation_status": "active_15min_hypothesis90_contract_five_active_container_health_tester6_capacity_check_strict_validation_wandb_and_hf_handoff",
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
-  "last_synced_commit": "63c9be6",
-  "overleaf_build_status": "local_pass_7_pages_0_errors_1_underfull_vbox_warning_2026-08-01T20:16-04:00; overleaf_sync_pending",
-  "next_gate": "compile_commit_push_and_sync_validated_negative_hypothesis90_manuscript_milestone; no_gpu_successor_licensed"
+  "last_synced_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
+  "overleaf_build_status": "synced_exact_github_commit_7_pages_0_errors_1_showhyphens_warning_2026-08-01T20:24-04:00; local_fatal_build_and_visual_review_pass",
+  "next_gate": "none_under_completed_hypothesis90_protocol; explicit_new_scientific_question_required"
 }
