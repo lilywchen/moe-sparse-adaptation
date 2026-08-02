@@ -1038,3 +1038,35 @@ Next: commit and push the clean campaign tree, run focused and full tests in the
 environment, dry-run all five shards, verify every GPU is free and no duplicate result/process
 exists, then launch the ten initial arms. A completion or pruned milestone immediately refills its
 GPU from the remaining 33 arms.
+
+### 2026-08-01 21:19 ET — factorial60 sweep launched on all ten available H100s
+
+Classification is `RUNNING_HEALTHY`. GitHub commit `bd213dbd7758f456eb822379707627b1998847ff`
+was transferred as a code archive into the isolated SciServer execution checkout, whose local
+execution commit is `b8ece25e05dc675bd6a61e0728879e53130e453e`. Both resolve to the exact tree
+`7320d64944c34c9ee832924ee06429491739354f`. In the pinned runtime, 30 focused tests and 106
+full tests pass. Five dry-run shards are disjoint and exhaustive at 9/9/9/8/8 cells; the duplicate
+scan found zero factorial results or workers and each of the ten assigned GPUs was free before
+launch.
+
+Five continuous-refill launchers now run two workers each across the five existing 2-H100
+containers. The initial ten distinct arms all have fresh epoch-0 train records, approximately
+8 GiB allocated on each GPU, and no fatal-error signature. Coverage is 0/43 valid results, with
+10 active and 33 queued. The child environments identify the fresh W&B project/group/job type and
+tags, and ten live W&B run directories exist under the configured persistent tracking root. HF
+publication remains deliberately deferred until each completed folder passes strict result,
+milestone, log, checkpoint, split, provenance, and SHA-256 validation; upload must not hold a GPU
+lease.
+
+No performance conclusion is available from epoch-0 losses. The active factorial is designed to
+separate placement, image-versus-token routing, cosine-versus-linear routers, and environment
+pressure, always against an explicit placement/pressure-matched dense comparator. OOD test remains
+sealed. Multiple-search optimism is the largest scientific threat, so any apparent seed-0 winner
+must pass the frozen effect/ID/tail rule and then be replicated unchanged at seeds 1 and 2.
+
+`tester6` container 2893 remains `Pending` after the single authorized start request because no
+eligible two-H100 node is schedulable; no duplicate request or container was created. The next
+automatic action is the first completion or 10-epoch handoff: strictly validate the milestone,
+apply the predeclared prune/continue rule, refill the freed GPU from the 33-cell queue, and publish
+only validated completed folders. This directly shortens the critical path while preserving
+OOD-test blindness and comparator fairness.

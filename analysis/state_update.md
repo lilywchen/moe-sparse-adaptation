@@ -675,3 +675,25 @@ The immediate implementation is complete but not yet remotely tested or launched
 2-H100 containers are available in the portal; the sixth requested container is pending for lack
 of an eligible H100 pair. Job-level GPU freedom, focused/full test success, clean execution commit,
 and dry-run identity are the remaining launch gates.
+
+## 2026-08-01 21:19 ET — factorial60 execution handoff
+
+The launch gate passed. Source commit `bd213dbd7758f456eb822379707627b1998847ff` and isolated
+SciServer execution commit `b8ece25e05dc675bd6a61e0728879e53130e453e` share exact tree
+`7320d64944c34c9ee832924ee06429491739354f`; the remote pinned environment passes 30 focused and
+106 full tests. Dry runs prove five nonoverlapping shards with 43 total cells, and prelaunch audits
+prove no duplicate process/result and ten free owned GPUs.
+
+All five launchers are active with two distinct workers per container. Ten fresh epoch-0 JSONL
+records and per-GPU model allocations verify training rather than mere launcher/PID presence; the
+fatal scan is empty. Current coverage is 0/43 strictly valid, 10 active, 33 queued, and 0 available
+H100s idle. Ten tracking directories were created with the declared W&B group
+`rxrx1-cell-dino-factorial60-20260801`, job type `rxrx1_factorial60`, and OOD-test-blind tags. HF
+upload is pending strict completion validation by design.
+
+This is operational progress only. Training loss and epoch-0 activity carry no scientific claim.
+The largest trust threat is search multiplicity across 36 MoE cells; the antidote remains locked
+matched controls plus unchanged paired-seed replication for any promoted cell. The next licensed
+action is to validate each 10-epoch milestone, continue/prune under the declared rule, and refill
+each released GPU immediately from the remaining queue. `tester6` remains pending for the recorded
+scheduler capacity reason, so no sixth-container work is yet possible.
