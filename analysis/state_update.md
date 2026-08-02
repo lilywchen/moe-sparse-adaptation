@@ -1629,3 +1629,10 @@ Route-E32 seed 2 then reaches a strict epoch-30 comparison against its same-seed
 OOD is heterogeneous and total parameters differ under the active-compute estimand. Both rows
 continue locked to epoch 60 without promotion. Failure to retain the tail direction in either seed,
 ID loss over two points, or negligible final route reliance is the bounded falsifier.
+
+Locked E16 seed 1 has a strict epoch-60 level of OOD/ID/worst
+`0.21656/0.53846/0.02557`, but the exact seed-1 E8 anchor is not yet at epoch 60. The row passes
+identity, finite metric, ERM, four-environment/9,854-sample, 482,054,774-byte checkpoint, live-
+worker, fatal-scan, OOD-validation-selection and sealed-test checks. It is explicitly unpaired:
+no bank-size effect or promotion is licensed until E8 seed 1 and both final mechanism rows are
+validated. Worker110491 remains active, so container2875/GPU0 is not free.

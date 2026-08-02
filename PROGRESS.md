@@ -2313,3 +2313,10 @@ both fresh seeds while the mean direction disagrees; the descriptive two-seed me
 and the active-compute estimand changes total parameter count. Both rows continue unchanged to
 epoch 60. The falsifier is loss of the positive tail direction in either seed at epoch 60, more
 than two ID points lost, or negligible route reliance with the effect explained by exact controls.
+
+Route-E16 seed 1 also emits a strict epoch-60 milestone at OOD/ID/worst
+`0.21656/0.53846/0.02557` with its 482,054,774-byte checkpoint. Its exact route-E8 seed-1 anchor
+has not yet reached epoch 60, so this is recorded as an unpaired level and no E16-minus-E8 effect,
+promotion, or replication claim is made. Worker110491 remains live for the declared final mechanism
+and result artifacts; its GPU is therefore not released. The paired final contrast and route-
+reliance diagnostics are the only license for an E16 conclusion.
