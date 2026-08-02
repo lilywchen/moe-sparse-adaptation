@@ -768,3 +768,25 @@ The result is a multiplicity-exposed seed-0 screening signal. A plausible intera
 placement, token routing, cosine geometry, and within-experiment route pressure is now worth carrying
 to epoch 30, but ordinary capacity or early optimization can still explain it. Its falsifier is the
 locked matched-dense contrast and tail behavior at later milestones. OOD test is sealed.
+
+## 2026-08-01 23:40 ET — next-family architectural hypotheses registered
+
+The factorial60 evidence set did not change: 22 epoch-10 and six epoch-30 rows remain strictly
+valid, with zero completed result JSONs. Five independent container audits still show ten direct
+owned workers, two model allocations per container, clean execution commit
+`b8ece25e05dc675bd6a61e0728879e53130e453e`, and no fatal file. `tester6` remains Pending for the
+same exact scheduler-capacity reason; no duplicate request was made.
+
+The new `analysis/architectural_hypothesis_backlog.md` turns a primary-literature synthesis into 24
+predeclared causal tests. The ranking favors function-preserving sparse upcycling, router stability
+and pressure, expert-choice/soft/shared-expert routing, gradient-conflict-localized placement, and
+tail-safe robust objectives because those directly target the current early mean-OOD signal, weak
+tail performance, and the prior epoch-30/60 gain followed by epoch-90 shrinkage. Each design has a
+matched dense or router control and a stated falsifier; active-compute and total-parameter
+estimands remain separate.
+
+The registry is planning evidence, not a run result. The 14-cell factorial60 queue remains the only
+currently tested runnable refill set. The highest-priority scientific gate is still the matched
+early-canonical dense milestone. Next-family arms become runnable only after isolated
+implementation, parameter/FLOP accounting, focused/full tests, dry-run identity, no-duplicate
+checks, persistent destinations, and OOD-test-blind validation pass.

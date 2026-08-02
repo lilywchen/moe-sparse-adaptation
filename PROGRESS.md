@@ -1172,3 +1172,31 @@ over its exact early canonical dense control with no more than two ID points los
 predeclared consistent tail improvement. Search multiplicity is the largest threat. `tester6`
 container 2893 remains Pending for 11 affinity mismatches, two unschedulable nodes, and three nodes
 without requested GPUs; no duplicate request was issued. OOD test remains sealed.
+
+## 2026-08-01 23:40 EDT — literature-backed architectural queue predeclared during healthy execution
+
+Classification remains `RUNNING_HEALTHY`. A fresh audit of containers 2887/2875/2874/2862/2859
+finds the same ten direct owned factorial60 workers and two approximately 8 GiB model allocations
+per container. Cumulative scientific coverage is unchanged at 22 valid epoch-10 and six valid
+epoch-30 milestones, with no final result JSON, no new checkpoint, and no fatal file. All ten
+available H100s remain assigned; no worker was interrupted. `tester6` 2893 is still `Pending`
+because 11 nodes fail affinity, two are unschedulable, and three lack the requested GPUs;
+preemption is unhelpful and the single prior start request was not repeated.
+
+The active tested refill queue remains 14 factorial60 cells. To keep the next architectural family
+ahead of lease turnover, `analysis/architectural_hypothesis_backlog.md` now predeclares 24 bounded,
+literature-backed questions spanning sparse upcycling, staged router/expert unfreezing, router
+z-loss and balance strength, expert-choice and soft routing, shared experts, well-level routing,
+augmentation consistency, representation preservation, gradient-conflict-localized placement,
+tail-safe robust objectives, route mechanism controls, expert count, capacity, and temperature.
+Each row records an exact comparator, predicted signature, alternative explanation, falsifier,
+fairness class, horizon, and implementation gate. The top 12 next-family designs are designated for
+isolated implementation and testing; they are not called runnable until those gates pass.
+
+This action creates no performance claim and does not alter factorial60's frozen pruning or
+replication rules. The immediate automatic action remains strict validation of the next complete
+milestone and refill from the existing tested queue, with the known early-canonical dense control
+highest priority. In parallel, implementation work begins with the first 12 next-family designs so
+the next sweep can start without leaving a future lease idle. OOD test remains sealed; multiplicity
+and failure to separate sparse routing from objective or active-compute effects remain the largest
+scientific threats.
