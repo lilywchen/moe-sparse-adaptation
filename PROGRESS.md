@@ -1671,3 +1671,34 @@ dry run exact, and the five-focused/118-full-tested code-equivalent checkout unc
 are assigned again; three E4/E16 pressure cells and eight broader expert-count cells remain ready.
 W&B `vzbz70rc` is live and epoch 1 is logged. The controller's expected `.active` marker was
 missing even though controller and worker were both alive; it was repaired once to worker 104310.
+
+## 2026-08-02 11:52 EDT — capacity-starved E2 architecture bracket restores the ready queue
+
+All ten H100s in containers 2887/2875/2874/2862/2859 remain assigned to the same ten distinct
+workers, with no fatal signature and no new milestone beyond the previously validated rows. The
+exact allocation is sparse/dense seed 1 on 2887, low-temperature canonical E4 plus sparse seed 2
+on 2875, high-temperature zero-aux canonical plus locked leader seed 1 on 2874, locked leader seed
+2 plus high-temperature zero-aux route on 2862, and low-temperature zero-aux route plus exact dense
+seed 2 on 2859. Occupancy is operational state, not scientific progress.
+
+The ready queue had fallen to eleven after three licensed arms entered service. A bounded E2 lower
+bracket was therefore predeclared for both canonical and route pressure at the provisional
+low-temperature setting. Its scientific question is architectural: if useful conditional
+specialization causes the E8 direction, a capacity-starved E2 model should trail E4/E8 while using
+both experts; an E2 tie would instead favor generic regularization over the need for a larger
+expert bank. Both arms are active-compute matched only, share the completed E8 anchor, save
+10/30/60 checkpoints, and remain exploratory seed 0.
+
+GitHub registry commit `a97e9062d950fbf6171ceca744aecb94d64a5536` was transferred byte-for-
+byte into a separate SciServer checkout on execution base `7dcb42e7`; the two transferred files
+match SHA-256 hashes. Three focused tests and the complete 116-test base suite pass, and the dry
+run enumerates six unique E2/E4/E16-by-pressure IDs with declared W&B/HF destinations. Because
+canonical E4 is already active, the five remaining cells combine with eight broader expert-count
+arms for thirteen tested runnable arms. The next release is licensed for canonical E16 (shard
+2/6), followed by route E4, route E16, then the two E2 falsifiers.
+
+`tester6` 2893 was stopped on inspection and received exactly one start request this invocation.
+Its authoritative state is Pending: 11/16 nodes fail affinity, two are unschedulable, and three
+have insufficient GPU capacity; preemption cannot help. No duplicate start or container was
+created. OOD validation remains the only selection split, `test_evaluated=false`, and OOD test
+remains sealed. No W&B, HF, result, or manuscript artifact changed in this update.

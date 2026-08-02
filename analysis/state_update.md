@@ -1197,3 +1197,34 @@ architecture falsifier, not an exact-total-parameter efficacy comparison. Ten H1
 again, and the remaining runnable queue is 11 arms. W&B `vzbz70rc` is live. A missing controller
 marker was narrowly repaired once to the verified live worker PID 104310; no model restart or
 duplicate launch occurred.
+
+## 2026-08-02 11:52 ET — E2 lower bracket is remotely licensed; no new scientific milestone
+
+Independent audit finds ten distinct owned GPU workers and zero idle running H100s with the same
+container/GPU map recorded in `.steward/state.json`. Fatal scans are empty. The active runs remain
+at their previously validated milestones: the four locked sparse/dense confirmations and two
+locked low-temperature leader seeds are still before epoch 30; zero-auxiliary route temperature
+rows remain at epoch 30 or earlier; canonical E4 has not yet emitted epoch 10. This is execution
+coverage only and does not change the scientific interpretation.
+
+The ready queue is now thirteen. Two new active-compute-matched E2 lower-bracket arms extend the
+low-temperature expert-count question without duplicating E8. Prediction: conditional
+specialization requires E2 to trail E4/E8 while using both experts. Alternative: if E2 ties, the
+direction is more consistent with generic auxiliary regularization than expert-bank capacity.
+The sharp falsifier is the locked E2/E4/E8/E16 OOD-validation, ID, worst-environment, usage, and
+dead-expert trajectory under identical data order and optimizer. Search multiplicity remains the
+largest threat, and seed-0 results cannot confirm efficacy.
+
+The E2 registry is GitHub commit `a97e9062d950fbf6171ceca744aecb94d64a5536`, tree
+`36a9df3f987c8d2bc0df32cf72343e05fbad8a88`, executed from a separate code-equivalent checkout
+at base `7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be` / tree
+`1755b2f967e6ecfd1adef8a4e346defeca44904e`. The two copied source/test files match local SHA-256,
+three focused plus 116 full tests pass, and one six-cell dry run is exhaustive and unique. All
+rows specify OOD-validation selection, sealed test, 10/30/60 checkpoints, active-compute fairness,
+W&B group `rxrx1-cell-dino-temperature-expert-count60-20260802`, and HF prefix
+`rxrx1/cell_dino_cp5/temperature_expert_count60_20260802`.
+
+tester6 received exactly one start request and is Pending because 11 nodes fail affinity, two are
+unschedulable, and three have insufficient GPUs; no duplicate was requested. On the next release,
+launch canonical E16 from shard 2/6 after free-GPU/no-duplicate preflight, then route E4, route E16,
+canonical E2, and route E2. OOD test stays sealed.

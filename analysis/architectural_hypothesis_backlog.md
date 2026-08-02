@@ -2,9 +2,9 @@
 
 Status: predeclared exploratory backlog, updated 2026-08-02 11:47 EDT. This registry extends the active
 factorial60 queue; it does not interrupt healthy workers and does not license OOD-test access.
-The active campaign has eleven tested runnable arms after the latest refill. Two additional E2
-lower-bracket arms are predeclared below and become runnable only after isolated SciServer tests
-and dry runs, restoring the immediate queue above the 12-arm minimum. The rows below are the next bounded architectural questions to make
+The active campaign now has thirteen tested runnable arms after two additional E2 lower-bracket
+arms passed isolated SciServer tests and dry runs, restoring the immediate queue above the 12-arm
+minimum. The rows below are the next bounded architectural questions to make
 runnable through isolated implementation, regression testing, smoke tests, and exact matched
 controls. A selected seed-0 winner remains exploratory until its configuration is locked and
 replicated unchanged at fresh seeds.
@@ -89,9 +89,9 @@ matched performance comparison.
 
 ## Immediate refill policy
 
-Eleven nonduplicate arms remain tested and dry-run ready after three locked confirmations and one
-E4 architecture arm entered service. Two new low-temperature E2 lower-bracket arms are now
-predeclared and await remote licensing; none displaces a healthy worker:
+Thirteen nonduplicate arms are tested and dry-run ready after three locked confirmations and one
+E4 architecture arm entered service. The two new low-temperature E2 lower-bracket arms are
+remotely licensed; none displaced a healthy worker:
 
 1. eight expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
    tail-safe versus zero auxiliary pressure; these are active-compute matched and must not be
