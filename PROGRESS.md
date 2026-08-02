@@ -2320,3 +2320,39 @@ has not yet reached epoch 60, so this is recorded as an unpaired level and no E1
 promotion, or replication claim is made. Worker110491 remains live for the declared final mechanism
 and result artifacts; its GPU is therefore not released. The paired final contrast and route-
 reliance diagnostics are the only license for an E16 conclusion.
+
+## 2026-08-02 19:24 EDT — E16 seed 1 closes and publishes; two more locked epoch-60 levels remain unpaired
+
+Locked route-E16 seed 1 exits cleanly and its strict final preserves the epoch-60 OOD/ID/worst
+level `0.21656/0.53846/0.02557`. Randomized-route reliance is `0.01147`, larger than the nearly
+zero canonical E4 mechanism values but still not a bank-size effect: the exact route-E8 seed-1
+epoch-60 anchor is absent. The final JSON, run log, milestone stream, three checkpoints, checksum
+manifest, and all seven remote paths pass strict validation and listing checks. The recorded
+code-equivalent provenance remains execution commit/tree `4893c964` /
+`fee4c45d00ea38e209a913f69ca9b0db62338b39`; `git_dirty=true` is preserved rather than relabeled.
+
+Route-E2 seed 1 and route-E8 seed 2 independently reach strict epoch-60 milestones at
+`0.21250/0.53157/0.02029` and `0.20956/0.53346/0.02273` OOD/ID/worst. Both have finite ERM metrics,
+four environments/9,854 samples, exact 283,365,884/368,517,372-byte checkpoints, clear fatal scans,
+OOD-validation selection, and sealed test. They are different seed pairings and remain live for
+final mechanism/result emission, so no subtraction, promotion, or replication claim is made.
+Locked coverage is now 8/8 at epochs 10 and 30 and 3/8 at epoch 60.
+
+Container2875/GPU0 immediately refills with the predeclared canonical-E16 tail-safe arm
+(launcher116479, controller116485, worker116490, W&B `lbxzw1ou`). Four focused tests, the 124-test suite, exact
+shard-6/8 one-cell dry run, result/prune/active/duplicate and physical-GPU guards, persistent
+tracking/checkpoint destinations, and sealed-test checks pass. Its missing active marker is repaired
+once to the verified worker PID without restart. Ten distinct H100 workers are assigned and zero
+running H100s are idle. The tested ready queue is 13 (one broader canonical-E16 cell, eight extreme-
+auxiliary cells, four locked auxiliary-confirmation cells); backlog remains 27. tester6 container2893
+remains Pending for 11 affinity mismatches, two unschedulable nodes, and three insufficient-GPU
+nodes without a duplicate start or create.
+
+During the closing audit route-E2 seed 1 also exits `rc=0`; its route reliance is only `0.00223`.
+Its result/log/milestones/three checkpoints/manifest are strict-published as seven verified remote
+files, while the missing route-E8 seed-1 epoch-60 anchor still forbids an E2 effect. The released
+container2887/GPU1 immediately starts canonical-E16 zero auxiliary (controller48228, worker48233,
+W&B `f7unxpd2`) after the same 4-focused/124-full test evidence, an exact shard-7/8 one-cell dry
+run, and all launch guards. Its missing marker is repaired once to worker48233 without restart.
+The broader E16 pair is now fully active, all ten running H100s are assigned, and the ready queue
+is exactly 12: eight extreme-auxiliary plus four locked auxiliary-confirmation cells.

@@ -1,0 +1,71 @@
+{
+  "validated_at": "2026-08-02T19:24:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_strict_epoch60_milestones_unpaired_no_effect_claim",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_pending_same_seed_route_E8_anchor_or_partner",
+  "rows": [
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s1_temperature_expert_count_confirm60_route_E2_s1_20260802",
+      "seed": 1,
+      "n_experts": 2,
+      "epoch": 60,
+      "acc_train": 1.0,
+      "acc_within": 0.531567024524771,
+      "acc_selection": 0.2125025370407956,
+      "worst_env_val": 0.020292207792207792,
+      "checkpoint_bytes": 283365884,
+      "worker_pid": 43493,
+      "wandb_run_id": "28k2fboh",
+      "final_result_complete": true,
+      "controller_exit_code": 0,
+      "route_reliance": 0.002232595900142076,
+      "hf_publication": {
+        "status": "strict_complete_remote_verified",
+        "remote_files": 7,
+        "prefix": "rxrx1/cell_dino_cp5/temperature_expert_count_confirm60_20260802/rxrx1_moe_early_token_cosine_route_E2k1_ep60_s1_temperature_expert_count_confirm60_route_E2_s1_20260802"
+      },
+      "missing_exact_comparator": "route_E8_seed1_epoch60"
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s2_temperature_expert_count_confirm60_route_E8_s2_20260802",
+      "seed": 2,
+      "n_experts": 8,
+      "epoch": 60,
+      "acc_train": 1.0,
+      "acc_within": 0.5334630158573821,
+      "acc_selection": 0.20955956971788106,
+      "worst_env_val": 0.022727272727272728,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 56371,
+      "wandb_run_id": "kkkemsr0",
+      "final_result_complete": false,
+      "missing_exact_comparators": ["route_E2_seed2_epoch60", "route_E16_seed2_epoch60", "route_E32_seed2_epoch60"]
+    }
+  ],
+  "strict_checks": {
+    "json_lines_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "E2_seed1_worker_cleanly_exited_and_gpu_released": true,
+    "E8_seed2_worker_live_for_declared_final_mechanism_and_result_emission": true,
+    "E2_seed1_checksum_manifest_and_remote_listing_verified": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "paired_effect_available": false,
+  "decision": "withhold_all_bank_size_effects_until_same_seed_epoch60_rows_and_final_mechanism_results_are_jointly_validated",
+  "interpretation": "These are strict locked epoch-60 levels. E2 seed 1 and E8 seed 2 arrive from different seed pairings, so subtracting them would be invalid.",
+  "alternative": "The absolute levels reflect seed and shared optimization trajectory rather than expert-bank size.",
+  "falsifier": "The locked same-seed E2/E16/E32-minus-E8 epoch-60 contrasts must show consistent mean or worst-experiment benefit with at most two ID points lost and non-negligible route reliance.",
+  "multiplicity": "Two unpaired rows from a four-bank-size, two-seed locked confirmation following a broader seed-0 screen; no comparative or population claim is made."
+}

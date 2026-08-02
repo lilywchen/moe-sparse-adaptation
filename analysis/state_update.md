@@ -1636,3 +1636,32 @@ identity, finite metric, ERM, four-environment/9,854-sample, 482,054,774-byte ch
 worker, fatal-scan, OOD-validation-selection and sealed-test checks. It is explicitly unpaired:
 no bank-size effect or promotion is licensed until E8 seed 1 and both final mechanism rows are
 validated. Worker110491 remains active, so container2875/GPU0 is not free.
+
+## 2026-08-02 19:24 EDT — Strict E16 final/publication and immediate canonical-E16 refill
+
+Route-E16 seed 1 is now a strict published final: controller `rc=0`, W&B `gviobuj4`, OOD/ID/worst
+`0.21656/0.53846/0.02557`, route reliance `0.01147`, three 482,054,774-byte checkpoints, one
+checksum manifest, and seven remotely verified files. It remains unpaired because route-E8 seed 1
+has not reached epoch 60; no E16-minus-E8, sparse-benefit, or replication claim is licensed.
+
+Route-E2 seed 1 and route-E8 seed 2 add strict unpaired epoch-60 levels of
+`0.21250/0.53157/0.02029` and `0.20956/0.53346/0.02273`. Their exact same-seed partners are missing,
+so they only raise locked epoch-60 coverage to 3/8. All checks use OOD validation; test remains
+unevaluated with held-out fields null. The largest current scientific threat is seed/horizon
+heterogeneity amplified by multiple bank sizes and milestones.
+
+The released container2875/GPU0 starts canonical-E16 tail-safe as launcher116479/controller116485/worker116490,
+W&B `lbxzw1ou`, after four focused tests, 124 full tests, an exact one-cell shard-6/8 dry run, all
+idempotency and physical-GPU guards, and a clear startup fatal scan. The only repair writes the
+missing active marker to the verified worker PID. Current assignments are 2887 45603/43493; 2875
+116490/112826; 2874 58240/56662; 2862 57545/56371; 2859 44982/47671. Zero of ten running H100s
+are idle; 13 tested arms remain ready and backlog remains 27. The next release is canonical-E16
+zero auxiliary, shard 7/8, subject to the same exact guards; OOD test remains sealed.
+
+The final audit catches route-E2 seed 1's clean handoff. Its strict final retains
+`0.21250/0.53157/0.02029` OOD/ID/worst and adds route reliance `0.00223`; one manifest and seven
+remote files are verified. The row remains unpaired. Container2887/GPU1 immediately receives
+canonical-E16 zero auxiliary as controller48228/worker48233/W&B `f7unxpd2` after exact shard-7/8
+dry-run and all result/marker/duplicate/physical-GPU/persistence/tracking/test-blind guards. The
+missing marker is repaired once without restart. All four broader E16 cells are now complete or
+active; ready is 12, backlog 27, active workers 10, idle running H100s 0.

@@ -1,7 +1,7 @@
 {
-  "validated_at": "2026-08-02T19:02:00-04:00",
+  "validated_at": "2026-08-02T19:24:00-04:00",
   "campaign": "temperature_expert_count_confirm60_20260802",
-  "classification": "locked_fresh_seed_strict_final_milestone_unpaired_no_effect_claim",
+  "classification": "locked_fresh_seed_strict_published_final_unpaired_no_effect_claim",
   "selection_split": "ood_val",
   "test_evaluated": false,
   "ood_test_fields": null,
@@ -22,7 +22,14 @@
     "checkpoint_bytes": 482054774,
     "worker_pid": 110491,
     "wandb_run_id": "gviobuj4",
-    "final_result_complete": false
+    "final_result_complete": true,
+    "controller_exit_code": 0,
+    "route_reliance": 0.011467424396184284,
+    "hf_publication": {
+      "status": "strict_complete_remote_verified",
+      "remote_files": 7,
+      "prefix": "rxrx1/cell_dino_cp5/temperature_expert_count_confirm60_20260802/rxrx1_moe_early_token_cosine_route_E16k1_ep60_s1_temperature_expert_count_confirm60_route_E16_s1_20260802"
+    }
   },
   "strict_checks": {
     "json_line_parseable_and_finite": true,
@@ -33,14 +40,18 @@
     "environment_total": 9854,
     "checkpoint_identity_and_size": true,
     "fatal_scan_clear": true,
-    "worker_live_for_declared_final_mechanism_and_result_emission": true,
+    "worker_no_longer_live_after_clean_exit_and_release": true,
+    "controller_exit_zero": true,
+    "three_milestone_checkpoints_present": true,
+    "final_mechanism_result_present": true,
+    "checksum_manifest_and_remote_listing_verified": true,
     "selection_split_ood_val": true,
     "ood_test_blind": true
   },
   "paired_effect_available": false,
   "missing_exact_comparator": "route_E8_seed1_epoch60",
-  "decision": "withhold_all_E16_minus_E8_interpretation_promotion_and_release_until_the_same_seed_E8_epoch60_anchor_and_final_mechanism_rows_are_validated",
-  "interpretation": "This is a strict final-milestone level for the locked E16 seed-1 row, not a sparse bank-size effect estimate. The matched E8 seed-1 anchor has not yet reached epoch 60.",
+  "decision": "withhold_all_E16_minus_E8_interpretation_and_promotion_until_the_same_seed_E8_epoch60_anchor_and_final_mechanism_row_are_validated; released_gpu_refilled_with_predeclared_canonical_E16_tail_safe",
+  "interpretation": "This is a strict published final level for the locked E16 seed-1 row, not a sparse bank-size effect estimate. The matched E8 seed-1 anchor has not yet reached epoch 60.",
   "alternative": "The high absolute OOD-validation level reflects the shared training trajectory or seed rather than expert-bank size.",
   "falsifier": "Only the locked same-seed E16-minus-E8 epoch-60 contrast, with ID retention and final route-reliance checks, can support or reject the bank-size hypothesis.",
   "multiplicity": "Unpaired row from a four-bank-size, two-seed locked confirmation following a broader seed-0 screen; no comparative or population claim is made."
