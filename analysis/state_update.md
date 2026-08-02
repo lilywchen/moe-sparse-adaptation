@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-01 12:17 EDT
+Last verified: 2026-08-02 05:16 EDT
 
 ## Scientific question
 
@@ -875,3 +875,32 @@ launch coverage is complete, and tester6 remains Pending for the recorded schedu
 OOD test is sealed. The sharp falsifier is the exact early-canonical dense trajectory matching or
 exceeding the early routed arms, or loss of the routed mean/tail signal at epoch 60. Multiplicity and
 seed-0 selection are the largest current threats.
+
+## 2026-08-02 05:16 ET — factorial60 final decision and router-aux continuation
+
+All nine factorial60 epoch-60 results pass strict result, milestone, log, checkpoint, parameter,
+provenance, four-environment, split-blindness, and finite-metric validation. All nine have manifests
+and verified HF folders. The complete seed-0 screen contains 43 unique scientific arms, 34
+predeclared prunes, nine finals, and one separately excluded pre-epoch-0 duplicate physical start.
+No OOD-test field was populated or consumed.
+
+Late canonical dense-wide leads mean OOD validation (`0.214735`). Early image-linear route is the
+best sparse finalist (`0.211082`) and trails it by `0.365` OOD and `2.071` ID points while improving
+worst-experiment accuracy by `0.406` points. Against the same-placement early dense control, it
+improves OOD/ID/worst by `1.847/3.218/0.933` points. This is a real directional placement-matched
+signal, but not the `+5` mean-OOD effect and not a fresh-seed replication. The leading explanation
+is a depth/placement effect with a possible sparse tail tradeoff; the falsifier is consistency under
+locked fresh seeds or a router setting that beats the best dense arm without sacrificing ID.
+
+Three router-aux finals pass the same split and artifact checks and are published. Zero balance plus
+z-loss `1e-3` leads at OOD `0.212401`; it improves the factorial token-route reference by only
+`0.436` points, remains `0.233` below the best dense arm, and worsens the tail. Ten nonduplicate
+settings are active and three remain queued across the five running 2-H100 containers. The active
+remote execution commit `7dcb42e` contains the physical-occupancy refill guard and is clean. The
+local source repair additionally adds restart markers. Four earlier oversubscription attempts are
+operationally excluded before scientific milestones.
+
+The sixth container was stopped rather than pending at inspection. One start request was issued as
+authorized and the immediate portal recheck still showed stopped; no duplicate request was made.
+Classification is `RUNNING_HEALTHY`: all running H100s have decision-relevant nonduplicate work,
+completed artifacts are persisted, and the next useful action depends on new router milestones.

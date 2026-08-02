@@ -1,7 +1,7 @@
 # Progress ledger
 
-Last verified: 2026-08-01 12:17 EDT on SciServer and GitHub. The paper has not been changed for the
-new campaign because no new performance milestone is valid yet.
+Last verified: 2026-08-02 05:16 EDT on SciServer and GitHub. The paper has not been changed for the
+new exploratory campaigns because the new result is a multiplicity-exposed seed-0 screen.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -1302,3 +1302,33 @@ empty only because complete planned launch coverage has been reached, not becaus
 The exact dense comparator and epoch-60 route trajectories now shorten the critical path. OOD test
 remains sealed, multiplicity and seed-0 selection remain the largest threats, and no manuscript
 claim is licensed.
+
+## 2026-08-02 05:16 EDT factorial60 adjudication and router-aux refill
+
+The factorial60 screen is complete: all 43 predeclared seed-0 arms have preserved milestones, 34
+were successively halved, and nine reached epoch 60. All nine final JSONs, exact 10/30/60 milestone
+streams, logs, checkpoints, finite metrics, four-environment coverage, parameter accounting,
+clean `b8ece25` provenance, `selection_split=ood_val`, `test_evaluated=false`, and null/absent
+OOD-test fields pass one strict validation-only batch. Nine manifests are present. Every final
+folder is published under the declared factorial60 HF prefix and its remote file list was checked.
+
+Late canonical dense-wide is the finished mean-OOD leader at `0.214735`; early image-linear route
+is the best sparse arm at `0.211082`. Relative to that best dense arm, sparse changes OOD/ID/worst
+by `-0.365/-2.071/+0.406` percentage points. Relative to its same-placement early dense control it
+is directionally positive at `+1.847/+3.218/+0.933` points, but misses the predeclared `+5` mean-OOD
+trigger. Placement and ordinary dense adaptation are therefore the leading seed-0 explanation;
+early image routing retains an exploratory tail signal, not a replicated sparse-efficacy claim.
+
+The first three router-auxiliary finals are strictly valid and published. Zero load-balance with
+router z-loss leads them at OOD `0.212401`, `+0.436` points over the factorial token-route reference
+but `-0.233` below late canonical dense and with a weaker tail. Ten distinct remaining router arms
+were launched across the five running 2-H100 containers, leaving three queued. The clean execution
+commit is `7dcb42e` / tree `1755b2f`; its physical-GPU occupancy guard prevents controller restarts
+from duplicating preserved workers. All ten running H100s were assigned at the post-refill audit.
+Four pre-guard controller attempts are operational exclusions with no scientific milestone.
+
+`tester6` 2893 was `stopped` when inspected. Exactly one authorized start request was issued this
+invocation; the immediate portal recheck still reported `stopped`, so no duplicate start or new
+container was requested. Next: strictly validate the router epoch-10 handoff, prune under the
+predeclared rule, and immediately refill from the three queued settings. OOD test remains sealed;
+seed-0 multiplicity is the largest scientific threat.

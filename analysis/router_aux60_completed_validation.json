@@ -1,0 +1,73 @@
+{
+  "campaign": "router_aux60_20260802",
+  "status": "three_results_strictly_validated_published_and_ten_nonduplicate_arms_active",
+  "validated_at": "2026-08-02T04:44:00-04:00",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_null_or_absent",
+  "expected_results": 16,
+  "validated_results": 3,
+  "active_results": 10,
+  "queued_results": 3,
+  "hf_prefix": "rxrx1/cell_dino_cp5/router_aux60_20260802",
+  "hf_status": "three_manifests_published_and_remote_files_verified",
+  "results": [
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_aux60_route_bw0_z1em3_20260802",
+      "balance_weight": 0.0,
+      "router_z_loss_weight": 0.001,
+      "total_params": 30676212,
+      "train": 1.0,
+      "id": 0.527110213729932,
+      "ood_val": 0.21240105540897097,
+      "worst_experiment": 0.016639610389610388
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_aux60_route_bw1em3_z0_20260802",
+      "balance_weight": 0.001,
+      "router_z_loss_weight": 0.0,
+      "total_params": 30676212,
+      "train": 1.0,
+      "id": 0.5287107258938245,
+      "ood_val": 0.20874771666328396,
+      "worst_experiment": 0.016233766233766232
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_aux60_route_bw1em4_z1em3_20260802",
+      "balance_weight": 0.0001,
+      "router_z_loss_weight": 0.001,
+      "total_params": 30676212,
+      "train": 1.0,
+      "id": 0.5289323352703634,
+      "ood_val": 0.20621067586766795,
+      "worst_experiment": 0.019074675324675324
+    }
+  ],
+  "contrasts_percentage_points": {
+    "zero_balance_zloss_minus_factorial_token_route": {
+      "id": -0.10341770905151204,
+      "ood_val": 0.4363710168459517,
+      "worst_experiment": -0.1623376623376624
+    },
+    "zero_balance_zloss_minus_best_factorial_dense": {
+      "id": -2.1126760563380254,
+      "ood_val": -0.23340775319667106,
+      "worst_experiment": -0.405844155844156
+    }
+  },
+  "active_assignments": {
+    "2875": ["route_bw1em2_z1em2", "canonical_bw1em3_z1em3"],
+    "2887": ["route_bw0_z0", "canonical_bw1em2_z0"],
+    "2859": ["route_bw1em3_z1em3", "canonical_bw1em2_z1em4"],
+    "2874": ["route_bw1em2_z0", "canonical_bw0_z1em3"],
+    "2862": ["route_bw1em2_z1em4", "canonical_bw1em4_z1em3"]
+  },
+  "operational_exclusions": {
+    "count": 4,
+    "reason": "controller_restart_attempts_detected_physical_gpu_occupancy_before_scientific_milestone; same_planned_rows_relaunched_once_after_guard_repair"
+  },
+  "decision": "zero_balance_with_zloss_is_directional_mean_ood_leader_but_does_not_beat_best_dense_and_does_not_improve_tail",
+  "multiplicity": "seed0_exploratory_router_hyperparameter_screen"
+}

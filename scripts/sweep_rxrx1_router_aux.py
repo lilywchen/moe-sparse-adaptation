@@ -52,6 +52,76 @@ AUX_SETTINGS = (
 )
 
 
+def _busy_gpu_indices(gpu_rows, process_rows):
+    """Map nvidia-smi compute-process UUIDs back to container-local GPU indices."""
+    uuid_to_index = {}
+    for row in gpu_rows.splitlines():
+        fields = [field.strip() for field in row.split(",")]
+        if len(fields) >= 2 and fields[0] and fields[1]:
+            uuid_to_index[fields[1]] = fields[0]
+    busy = set()
+    for row in process_rows.splitlines():
+        uuid = row.split(",", 1)[0].strip()
+        if uuid in uuid_to_index:
+            busy.add(uuid_to_index[uuid])
+    return busy
+
+
+def idle_nvidia_slots(slots):
+    """Return physically idle slots, failing closed if GPU state cannot be inspected."""
+    try:
+        gpu_rows = subprocess.run(
+            [
+                "nvidia-smi", "--query-gpu=index,uuid",
+                "--format=csv,noheader,nounits",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        process_rows = subprocess.run(
+            [
+                "nvidia-smi", "--query-compute-apps=gpu_uuid,pid",
+                "--format=csv,noheader,nounits",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+    except (OSError, subprocess.CalledProcessError) as exc:
+        print(f"[occupancy-blocked] nvidia-smi inspection failed: {exc}", flush=True)
+        return []
+    busy = _busy_gpu_indices(gpu_rows, process_rows)
+    return [slot for slot in slots if slot not in busy]
+
+
+def active_marker_live(path):
+    """Return whether a restart marker still names a live worker, removing stale markers."""
+    path = Path(path)
+    if not path.is_file():
+        return False
+    try:
+        pid = int(path.read_text().strip())
+        os.kill(pid, 0)
+    except (ValueError, ProcessLookupError):
+        path.unlink(missing_ok=True)
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def clear_active_marker(path, pid):
+    """Clear only the marker owned by the exiting worker."""
+    path = Path(path)
+    try:
+        marker_pid = int(path.read_text().strip())
+    except (FileNotFoundError, ValueError):
+        return
+    if marker_pid == pid:
+        path.unlink(missing_ok=True)
+
+
 def _base_overrides(config, pressure):
     tag = f"moe_early_token_cosine_{pressure}"
     for row_tag, overrides, _ in factorial_cells(config):
@@ -103,6 +173,7 @@ def main():
         row for row in rows
         if not (out / f"{row[2]}.json").exists()
         and not (out / f"{row[2]}.pruned").exists()
+        and not active_marker_live(out / f"{row[2]}.active")
     ]
     if args.dry_run:
         print(f"router_aux60 shard {args.shard_index}/{args.num_shards}: "
@@ -118,7 +189,11 @@ def main():
     running = {}
     while pending or running:
         while pending and len(running) < args.max_concurrent:
-            gpu = gpulease.acquire_any(slots)
+            # gpulease is the coordination layer, while nvidia-smi is the physical source of
+            # truth.  Both checks are required because a steward may preserve an adopted worker
+            # after its original controller exits, leaving stale or missing lease metadata.
+            physically_idle = idle_nvidia_slots(slots)
+            gpu = gpulease.acquire_any(physically_idle) if physically_idle else None
             if gpu is None:
                 break
             tag, overrides, run_id = pending.pop(0)
@@ -143,6 +218,7 @@ def main():
                 start_new_session=True,
             )
             gpulease.adopt(gpu, process.pid)
+            (out / f"{run_id}.active").write_text(str(process.pid))
             running[gpu] = (process, run_id, tag, log_handle)
             print(f"[start] shard={args.shard_index} gpu={gpu} pid={process.pid} "
                   f"{tag} {run_id}", flush=True)
@@ -152,6 +228,7 @@ def main():
             if process.poll() is not None:
                 log_handle.close()
                 gpulease.release(gpu, pid=process.pid)
+                clear_active_marker(out / f"{run_id}.active", process.pid)
                 print(f"[exit] gpu={gpu} rc={process.returncode} {tag} {run_id}", flush=True)
                 del running[gpu]
         if pending or running:
