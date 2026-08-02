@@ -2279,3 +2279,37 @@ E8 at `-1.817/-1.684/-0.284`. E32 seed 1 is aligned over E8 at epoch 30
 to resolve this seed and horizon heterogeneity. All findings remain exploratory and multiplicity-
 exposed; useful specialization is falsified if epoch 60 lacks a consistent mean-or-tail advantage
 with acceptable ID retention and non-negligible routing reliance.
+
+## 2026-08-02 18:50 EDT — Wider route-E16 shows no early tail-safe benefit
+
+The exact broader route-E16 tail-safe/zero-auxiliary pair reaches strict epoch-10 milestones. Both
+rows pass exact run/config/seed/epoch identity, finite ERM metrics, the expected four OOD-validation
+environments and 9,854 samples, 482 MB checkpoint identity, live-worker and fatal scans, declared
+W&B identity, `selection_split=ood_val`, `test_evaluated=false`, and sealed-test checks. Tail-safe
+minus zero auxiliary is `-0.274/+0.190/+0.000` OOD/ID/worst points. This rules out an immediate
+mean-or-tail benefit for the auxiliary objective in the wider route-balanced E16 recipe; it does
+not yet rule out the predeclared delayed effect. Both rows continue unchanged to epoch 30 without
+promotion.
+
+The leading explanation is now generic or trajectory-sensitive regularization rather than a robust
+tail-protection mechanism. That explanation is falsified if tail-safe fails to recover a
+nonnegative mean-and-tail direction by epoch 30 or 60; any routing-specific explanation also
+requires non-negligible final randomized-route reliance. The contrast is seed 0 after extensive
+architecture and objective searches, so it remains exploratory and multiplicity-exposed.
+
+All ten available H100s remain assigned to distinct live workers: container2887 GPU0/1
+45603/43493; 2875 GPU0/1 110491/112826; 2874 GPU0/1 58240/56662; 2862 GPU0/1
+57545/56371; and 2859 GPU0/1 44982/47671. The locked expert-count confirmation has 8/8 active,
+8/8 epoch-10 and 7/8 epoch-30 coverage; broader expert-count has four finals, two active route-E16
+rows and two queued canonical-E16 rows. Fourteen tested arms remain ready and backlog remains 27.
+tester6 container2893 is still Pending for 11 affinity mismatches, two unschedulable nodes, and
+three insufficient-GPU nodes; no duplicate start or create was issued. OOD test remains sealed.
+
+Locked route-E32 seed 2 subsequently reaches its strict epoch-30 milestone. Against the exact
+same-seed E8 anchor, E32 is `-0.832/+0.032/+0.528` OOD/ID/worst points. Seed 1 was
+`+0.903/+1.088/+0.731` at the same milestone, so the worst-experiment direction is positive in
+both fresh seeds while the mean direction disagrees; the descriptive two-seed mean is
+`+0.036/+0.560/+0.629`. This is a promising locked tail signal but not an overall replication,
+and the active-compute estimand changes total parameter count. Both rows continue unchanged to
+epoch 60. The falsifier is loss of the positive tail direction in either seed at epoch 60, more
+than two ID points lost, or negligible route reliance with the effect explained by exact controls.

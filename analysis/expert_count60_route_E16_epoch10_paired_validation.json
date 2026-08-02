@@ -1,0 +1,72 @@
+{
+  "validated_at": "2026-08-02T18:50:00-04:00",
+  "campaign": "expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_interim_objective_pair",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "same_route_E16_active_compute_parameters_seed_data_order_and_checkpoint_policy_auxiliary_regularization_only",
+  "parameter_counts": {
+    "total": 40131828,
+    "active_ffn_including_router": 1187713
+  },
+  "rows": {
+    "route_E16_tail_safe_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s0_expert_count60_route_E16_tail_safe_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "balance_w": 0.01,
+      "zloss_w": 0.01,
+      "acc_selection": 0.1333468642175766,
+      "acc_within": 0.3160149709445484,
+      "worst_env_val": 0.017857142857142856,
+      "checkpoint_bytes": 482042269,
+      "worker_pid": 45603,
+      "wandb_run_id": "9ycfe34j",
+      "final_result_complete": false
+    },
+    "route_E16_zero_aux_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s0_expert_count60_route_E16_no_aux_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "balance_w": 0.0,
+      "zloss_w": 0.0,
+      "acc_selection": 0.13608686827684188,
+      "acc_within": 0.31411897961193735,
+      "worst_env_val": 0.017857142857142856,
+      "checkpoint_bytes": 482039398,
+      "worker_pid": 47671,
+      "wandb_run_id": "pujjny7w",
+      "final_result_complete": false
+    }
+  },
+  "deltas_points": {
+    "tail_safe_minus_zero_aux_epoch10": {
+      "ood_val": -0.274000405926528,
+      "id": 0.18959913326110467,
+      "worst_experiment": 0.0
+    }
+  },
+  "strict_checks": {
+    "json_lines_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "same_parameter_count_and_data_order": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "both_workers_live_in_separate_container_audit": true,
+    "wandb_run_ids_match_declared_group": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_both_locked_rows_unchanged_to_epoch30_under_the_predeclared_delayed_objective_effect_rule_no_prune_or_promotion",
+  "interpretation": "At epoch 10 the wider route-E16 tail-safe objective does not improve mean OOD validation or worst-experiment accuracy over its exact zero-auxiliary comparator; it gains only 0.190 ID points and ties the tail. This is diagnostic evidence against an immediate tail-protection effect, not a terminal result.",
+  "alternative": "The auxiliary effect is delayed, trajectory-sensitive, or generic optimization regularization rather than useful routing; the earlier canonical-E4 direction may not transfer to a wider route-balanced bank.",
+  "falsifier": "The bounded delayed-effect explanation fails if tail-safe does not recover a nonnegative mean-and-tail direction at epoch 30 or 60, and any routing-specific explanation fails if final randomized-route reliance remains negligible.",
+  "multiplicity": "Seed-0 objective pair opened after broad architecture, pressure, expert-count, and auxiliary searches; all interpretation is exploratory and requires locked fresh seeds plus exact dense objective controls."
+}

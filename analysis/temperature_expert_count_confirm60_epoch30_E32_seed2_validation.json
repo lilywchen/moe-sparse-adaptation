@@ -1,0 +1,76 @@
+{
+  "validated_at": "2026-08-02T18:57:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_tail_signal",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "registry_source_commits": {
+    "route_E8": "4969659",
+    "route_E32": "21d7bbe"
+  },
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_same_pressure_temperature_auxiliary_seed_and_data_order_total_parameters_vary_by_expert_count",
+  "parameter_counts": {
+    "route_E8": {"total": 30676212, "active_ffn_including_router": 1184641},
+    "route_E32": {"total": 59043060, "active_ffn_including_router": 1193857}
+  },
+  "rows": {
+    "route_E8_seed2_epoch30_anchor": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s2_temperature_expert_count_confirm60_route_E8_s2_20260802",
+      "seed": 2,
+      "epoch": 30,
+      "acc_selection": 0.19656992084432717,
+      "acc_within": 0.4777159460258052,
+      "worst_env_val": 0.0174512987012987,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 56371,
+      "wandb_run_id": "kkkemsr0"
+    },
+    "route_E32_seed2_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s2_temperature_expert_count_confirm60_route_E32_s2_20260802",
+      "seed": 2,
+      "epoch": 30,
+      "acc_selection": 0.1882484270347067,
+      "acc_within": 0.47803604845858366,
+      "worst_env_val": 0.022727272727272728,
+      "checkpoint_bytes": 709126791,
+      "worker_pid": 58240,
+      "wandb_run_id": "e7s5hj5m"
+    }
+  },
+  "deltas_points": {
+    "route_E32_minus_route_E8_seed2_epoch30": {
+      "ood_val": -0.832149380962047,
+      "id": 0.03201024327784552,
+      "worst_experiment": 0.5275974025974028
+    }
+  },
+  "two_seed_descriptive_means_points": {
+    "route_E32_minus_route_E8_epoch30": {
+      "ood_val": 0.035518571138622,
+      "id": 0.5601792573623553,
+      "worst_experiment": 0.6290584415584418
+    }
+  },
+  "strict_checks": {
+    "json_lines_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "same_seed_data_order_pressure_temperature_auxiliary_and_checkpoint_policy": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "both_workers_live_in_per_container_audit": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_locked_E8_and_E32_seed2_unchanged_to_epoch60_no_prune_or_promotion_tail_direction_is_consistent_but_mean_direction_is_not",
+  "interpretation": "At epoch 30 route-E32 seed 2 improves worst-experiment accuracy by 0.528 points with essentially unchanged ID but loses 0.832 mean OOD points versus its exact E8 anchor. Combined descriptively with seed 1, the tail direction is positive in both seeds while the mean effect averages near zero. This is a locked interim tail signal, not a replicated overall robustness gain.",
+  "alternative": "More total parameters or ordinary checkpoint variance improves the smallest held-out environment without useful sparse specialization; the near-zero two-seed mean effect and prior negligible route reliance support this alternative.",
+  "falsifier": "Reject a useful E32 bank-size regime if epoch 60 fails to retain a positive worst-experiment direction in both locked seeds with no more than two ID points lost, or if final route reliance remains negligible and exact controls explain the tail effect.",
+  "multiplicity": "E32 followed an E2/E8/E16/E32 seed-0 screen and multiple milestones; the two-seed average is descriptive, the estimand is active-compute rather than exact-total-parameter matched, and no population claim is licensed."
+}

@@ -1595,3 +1595,37 @@ continue unchanged to epoch 60 because the disagreement is exactly what the pred
 milestone must adjudicate. These are exploratory multi-arm interim comparisons, not population
 estimates; total-parameter scaling and generic regularization remain live alternatives, and OOD
 test remains sealed.
+
+## 2026-08-02 18:50 EDT — Strict route-E16 objective pair at epoch 10
+
+The broader route-E16 tail-safe and exact zero-auxiliary rows both pass the strict epoch-10 gate.
+Tail-safe minus zero auxiliary is `-0.274/+0.190/+0.000` OOD-validation/ID/worst-experiment
+points. The exact immediate tail-protection hypothesis is unsupported at this milestone; the rows
+remain a Pareto tradeoff and continue unchanged under the predeclared delayed-effect rule. A
+generic or trajectory-sensitive auxiliary regularizer is more plausible than robust routing-based
+tail protection. Failure to recover a nonnegative mean-and-tail direction at epoch 30 or 60, or
+negligible final route reliance, is the sharp falsifier.
+
+Trust checks pass: same E16 parameter and active-compute budget (40,131,828 total; 1,187,713 active
+FFN/router), seed/data/checkpoint policy, ERM, four environments/9,854 OOD-validation samples,
+finite metrics, 482 MB checkpoints, live workers, clean fatal scan, declared W&B runs
+`9ycfe34j`/`pujjny7w`, OOD-validation selection, and sealed test. The execution base/tree remains
+`4893c964e67477a25a2e3b331dde9c7e641ca669` / `fee4c45d00ea38e209a913f69ca9b0db62338b39`.
+The seed-0 contrast follows multiple earlier searches and is exploratory; locked fresh seeds and
+exact dense objective controls are still required.
+
+Ten distinct workers occupy the five running 2H100 containers and no physical GPU is free. Locked
+confirmation coverage is 8/8 at epoch 10 and 7/8 at epoch 30; all eight rows remain active. The
+ready queue remains 14 (two broader canonical-E16, eight extreme auxiliary, four locked E4
+auxiliary cells), backlog is 27, and no new arm is pruned. tester6 2893 remains Pending for the
+unchanged 11-affinity/two-unschedulable/three-insufficient-GPU scheduler reason without a duplicate
+action. The next release receives the highest-ranked nonduplicate exact-source arm after result,
+active-marker, physical-GPU, tracking, checkpoint, and sealed-test guards pass.
+
+Route-E32 seed 2 then reaches a strict epoch-30 comparison against its same-seed E8 anchor:
+`-0.832/+0.032/+0.528` OOD/ID/worst points. Seed 1's corresponding difference is
+`+0.903/+1.088/+0.731`; descriptively across two locked seeds the mean is
+`+0.036/+0.560/+0.629`. The tail direction is therefore consistent at this milestone, but mean
+OOD is heterogeneous and total parameters differ under the active-compute estimand. Both rows
+continue locked to epoch 60 without promotion. Failure to retain the tail direction in either seed,
+ID loss over two points, or negligible final route reliance is the bounded falsifier.
