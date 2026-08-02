@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "status": "strictly_valid_diagnostic_milestone",
+  "campaign": "factorial60_20260801",
+  "milestone_epoch": 10,
+  "validated_at": "2026-08-01T22:02:00-04:00",
+  "validated_runs": 10,
+  "expected_active_runs": 10,
+  "source_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/factorial60_20260801",
+  "provenance": {
+    "github_source_commit": "bd213dbd7758f456eb822379707627b1998847ff",
+    "sciserver_execution_commit": "b8ece25e05dc675bd6a61e0728879e53130e453e",
+    "execution_tree": "7320d64944c34c9ee832924ee06429491739354f",
+    "cell_dino_checkpoint_sha256": "37d20e9cd48b3d610b5de15a4ea4e7e060a593b8d8358e928d079dc7b03ee66a",
+    "dinov2_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8"
+  },
+  "checks": {
+    "parseable_jsonl": true,
+    "exact_expected_run_ids": true,
+    "unique_run_ids": true,
+    "epoch_10": true,
+    "seed_0": true,
+    "finite_required_metrics": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "no_ood_test_fields": true,
+    "four_expected_environments": true,
+    "per_environment_counts": true,
+    "classification_objective_erm": true,
+    "log_fatal_scan_clear": true,
+    "wandb_group_job_tags_verified": true,
+    "moe_parameter_count_preflight": true
+  },
+  "parameter_accounting": {
+    "moe_total_parameters": 30676212,
+    "dense_wide_total_parameters": 30675834,
+    "mismatch_parameters": 378,
+    "mismatch_fraction": 0.000012322403361551637,
+    "fairness_status": "Preflight-validated exact-total-parameter-matched dense controls remain queued; no MoE-minus-dense efficacy contrast is available at this milestone."
+  },
+  "metrics": [
+    {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.4899447949526814,
+      "id": 0.31155816014970944,
+      "ood_val": 0.1348690886949462,
+      "worst_experiment": 0.01461038961038961
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.48045642744479494,
+      "id": 0.3076923076923077,
+      "ood_val": 0.13324538258575197,
+      "worst_experiment": 0.018262987012987012
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.4815654574132492,
+      "id": 0.30788929380478675,
+      "ood_val": 0.1317231581083824,
+      "worst_experiment": 0.015422077922077922
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.48627267350157727,
+      "id": 0.3103023736826554,
+      "ood_val": 0.13080982342196062,
+      "worst_experiment": 0.015016233766233766
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.46771490536277605,
+      "id": 0.30719984241111004,
+      "ood_val": 0.12735944793992288,
+      "worst_experiment": 0.016233766233766232
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.47678430599369087,
+      "id": 0.31195213237466757,
+      "ood_val": 0.12725796630809824,
+      "worst_experiment": 0.015827922077922076
+    },
+    {
+      "run_id": "rxrx1_moe_early_image_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.4810479100946372,
+      "id": 0.3064611444893135,
+      "ood_val": 0.12705500304444894,
+      "worst_experiment": 0.01461038961038961
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_linear_output_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.45162164826498424,
+      "id": 0.2937062937062937,
+      "ood_val": 0.1251268520397808,
+      "worst_experiment": 0.019886363636363636
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.4383625788643533,
+      "id": 0.2800403821530582,
+      "ood_val": 0.12360462756241121,
+      "worst_experiment": 0.013392857142857142
+    },
+    {
+      "run_id": "rxrx1_moe_early_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "epoch": 10,
+      "train": 0.45462835173501576,
+      "id": 0.29210578154240124,
+      "ood_val": 0.12299573777146336,
+      "worst_experiment": 0.012175324675324676
+    }
+  ],
+  "successive_halving": {
+    "rule": "Prune strict Pareto-dominated arms on OOD validation, ID retention, and worst-experiment accuracy at epoch 10; retain the nondominated frontier. This is within-sweep triage, not an efficacy claim.",
+    "continued_runs": [
+      "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_image_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_image_cosine_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_token_linear_output_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "pruned_runs": [
+      "rxrx1_moe_early_image_linear_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_image_cosine_route_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_token_linear_route_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_early_token_linear_canonical_E8k1_ep60_s0_factorial60_20260801"
+    ],
+    "refilled_runs": [
+      "rxrx1_moe_early_token_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_middle_image_linear_canonical_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_middle_image_cosine_output_E8k1_ep60_s0_factorial60_20260801",
+      "rxrx1_moe_middle_image_linear_output_E8k1_ep60_s0_factorial60_20260801"
+    ]
+  },
+  "interpretation": "This is a complete, strictly validated seed-0 diagnostic milestone for the first ten searched MoE cells. Early token-cosine canonical has the highest mean OOD validation (0.134869), while early image-linear route has the strongest worst-experiment score among the top mean performers (0.018263). Four cells are strictly Pareto dominated and were pruned; six remain on the frontier. No sparse efficacy claim is available because their placement/pressure-matched dense controls have not yet reached the same milestone. The ranking is exploratory and subject to multiplicity.",
+  "largest_threat": "Search multiplicity and absence of completed matched dense controls; the current ordering cannot distinguish sparse conditionality from placement, pressure, or ordinary capacity."
+}

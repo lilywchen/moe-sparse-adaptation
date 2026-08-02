@@ -1070,3 +1070,35 @@ automatic action is the first completion or 10-epoch handoff: strictly validate 
 apply the predeclared prune/continue rule, refill the freed GPU from the 33-cell queue, and publish
 only validated completed folders. This directly shortens the critical path while preserving
 OOD-test blindness and comparator fairness.
+
+### 2026-08-01 22:02 ET — first factorial60 epoch-10 handoff validated, pruned, and refilled
+
+Classification is `RUNNING_HEALTHY`. All ten initial MoE cells emitted exactly one epoch-10 row,
+and all ten rows pass parseability, exact run/seed/epoch identity, finite train/ID/OOD-validation/
+worst-experiment metrics, four-environment coverage, fixed per-environment counts,
+`selection_split=ood_val`, `test_evaluated=false`, ERM-objective, tracking-identity, and fatal-log
+checks. The source/execution/tree remain `bd213dbd7758f456eb822379707627b1998847ff` /
+`b8ece25e05dc675bd6a61e0728879e53130e453e` /
+`7320d64944c34c9ee832924ee06429491739354f`. Exact normalized rows are in
+`analysis/factorial60_epoch10_validation.json`; OOD test remains sealed.
+
+Early token-cosine canonical leads mean OOD validation at `0.134869`, while early image-linear
+route is second at `0.133245` and has the stronger worst-experiment score (`0.018263`). This is a
+diagnostic ranking across searched MoE cells, not sparse-efficacy evidence: the paired dense
+controls have not yet reached the same milestone. Search multiplicity and the absent matched
+contrast are the largest threats.
+
+The predeclared strict Pareto rule on OOD validation, ID retention, and worst-experiment accuracy
+pruned four dominated cells: early image-linear output, early image-cosine route, early token-linear
+route, and early token-linear canonical. Their epoch-10 rows and logs are preserved. Six frontier
+cells continue. The four released leases immediately refilled with early token-cosine output,
+middle image-linear canonical, middle image-cosine output, and middle image-linear output. All four
+new workers have fresh W&B directories in the declared group, correct job/tags, model allocations,
+and no fatal trace. Coverage is 10/10 validated diagnostic milestones for the first wave, 0/43
+completed valid results, 4 pruned, 10 active, 29 queued, and 0 idle among the ten allocated H100s.
+
+`tester6` remains authoritatively `Pending`: 3 nodes lack the requested GPUs, 2 are unschedulable,
+and 11 fail affinity; the single prior start request was not repeated. Next: validate the next
+epoch-10 handoff, apply the same declared pruning rule, and immediately refill every released GPU.
+The first MoE-minus-dense efficacy comparison is licensed only after the exact placement/pressure-
+matched dense control reaches the same milestone.

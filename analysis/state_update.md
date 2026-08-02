@@ -697,3 +697,26 @@ matched controls plus unchanged paired-seed replication for any promoted cell. T
 action is to validate each 10-epoch milestone, continue/prune under the declared rule, and refill
 each released GPU immediately from the remaining queue. `tester6` remains pending for the recorded
 scheduler capacity reason, so no sixth-container work is yet possible.
+
+## 2026-08-01 22:02 ET — first factorial60 successive-halving handoff
+
+The first ten searched MoE cells now have complete, strictly validated epoch-10 milestones. Exact
+rows pass identity, finiteness, environment-coverage, split, test-blindness, ERM-objective,
+provenance, tracking, and fatal-log checks. Early token-cosine canonical is highest on mean OOD
+validation (`0.134869`), followed by early image-linear route (`0.133245`); the latter has the
+stronger worst-experiment score (`0.018263`). The smallest OOD spread among these searched cells is
+not an efficacy contrast, because no placement/pressure-matched dense control has yet reached
+epoch 10.
+
+Applying the predeclared strict Pareto rule across OOD validation, ID retention, and worst-
+experiment accuracy removes four dominated cells and preserves six nondominated cells. The four
+released H100 leases immediately started four new, nonduplicate cells, restoring 10/10 active GPU
+workers with 29 queued. Fresh tracking directories, exact group/job/tags, roughly 8 GiB model
+allocations, and empty fatal scans verify the refill. The normalized evidence and exact triage list
+are in `analysis/factorial60_epoch10_validation.json`.
+
+The current evidence provisionally favors cosine token routing for mean OOD and image-linear route
+pressure for the mean/tail tradeoff, but the sharp falsifier is their exact matched dense controls:
+if those controls close the gap, the apparent advantage is placement/pressure or ordinary capacity,
+not conditional computation. Multiplicity remains the largest threat, and any eventual winner is
+exploratory until locked seeds 1 and 2 replicate it without OOD-test access.
