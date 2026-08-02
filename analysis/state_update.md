@@ -993,3 +993,34 @@ compute. Four remaining router-aux workers plus the six new cells occupy all ten
 `tester6` received one start request while stopped and was not duplicated. The sharp falsifier is
 absence of a consistent temperature-by-pressure gain at epochs 30/60; any apparent winner remains
 multiplicity exposed until locked fresh-seed confirmation. OOD test is sealed.
+
+## 2026-08-02 09:12 ET — tail-safe sparse survivor licenses locked fresh-seed pairs
+
+The router-auxiliary campaign is closed at 13 valid finals, three preserved prunes, and complete
+16/13/13 epoch-10/30/60 coverage. The final normalized record is
+`analysis/router_aux60_final_validation.json`. All consumed rows pass exact identity, finite metric,
+four-environment and 9,854-count, ERM, parameter, checkpoint, clean `7dcb42e` provenance,
+fatal-scan, OOD-validation selection, and OOD-test-blind checks. Thirteen manifests exist and the
+strict batch publisher reports success for the four newly completed folders.
+
+Canonical pressure at `balance=0.01,zloss=0.01` is the locked seed-0 survivor. Against the exact
+same-placement early dense comparator its OOD/ID/worst deltas are `+1.979/+3.130/+0.649` points;
+against the best late dense they are `-0.233/-2.159/+0.122`. This rules out a large `+5` mean-OOD
+effect for this recipe, but licenses the predeclared smaller-mean plus consistent-tail pathway.
+The sharp falsifier is failure of the locked sparse-minus-exact-dense tail direction at seeds 1
+and 2, or a pooled mean interval compatible with no useful OOD benefit. No tuning is allowed inside
+that confirmation.
+
+The initial temperature handoff contains six strict epoch-10 rows. Paired route-minus-canonical
+OOD deltas are `0.000`, `-0.477`, and `+0.041` points, so initialization temperature has not created
+a material early ordering. Four distinct temperature refills launched into the four released GPU
+slots; ten temperature workers now occupy all ten running H100s, with two cells queued. The tested
+ready queue contains 14 arms: four locked seed-1/2 confirmation cells, eight 4-versus-16 expert
+architecture cells, and the two remaining temperature cells. All passed 18 focused tests and dry
+runs in isolated clean checkout `4893c964` / tree `74e62d3b`; source commit is `d592a89`.
+
+The largest scientific threat is winner selection across the prior 43-arm factorial and 16-cell
+router-aux screen. The largest operational tracking uncertainty is that declared W&B groups were
+set in launch commands but no local console marker or live environment key was recoverable; remote
+W&B state is not claimed. Persistent logs, milestones, results, checkpoints, and HF manifests are
+intact. OOD test remains sealed.

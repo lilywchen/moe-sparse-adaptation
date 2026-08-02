@@ -1428,3 +1428,39 @@ of containers 2887, 2875, 2874, 2862, and 2859: four remaining router-aux worker
 temperature workers occupy all ten available H100s. `tester6` 2893 was stopped; exactly one start
 request was issued and the immediate portal state still showed stopped, so no duplicate request or
 replacement was made. OOD test remains sealed.
+
+## 2026-08-02 09:12 EDT router-aux final decision, temperature handoff, and locked-confirmation queue
+
+All 13 router-aux survivors now have strict epoch-60 results and manifests; together with three
+preserved prunes this closes all 16 registered cells at 16/13/13 valid epoch-10/30/60 coverage and
+42 milestone rows. Exact run/config/seed identity, finite metrics, four OOD-validation environments
+and 9,854 samples, ERM, parameter accounting, checkpoints, clean `7dcb42e` provenance, fatal scans,
+`selection_split=ood_val`, `test_evaluated=false`, and absent/null OOD-test fields pass. The strict
+publisher uploaded the four newly completed folders, so all 13 completed folders have manifests
+under `rxrx1/cell_dino_cp5/router_aux60_20260802`.
+
+The completed seed-0 survivor is canonical pressure with `balance=0.01,zloss=0.01`: OOD/ID/worst
+are `0.212401/0.526642/0.021916`. Relative to its exact same-placement early dense comparator this
+is `+1.979/+3.130/+0.649` percentage points; relative to the best late dense finalist it is
+`-0.233/-2.159/+0.122`. It does not meet the `+5` mean-OOD target, but it does satisfy the separately
+predeclared smaller-mean plus consistent worst-experiment pathway. Locked 60-epoch seed-1/2 sparse
+and exact-dense pairs are therefore licensed with no further tuning. This remains a winner selected
+from 16 router-aux cells after the prior 43-arm factorial and is not confirmatory evidence yet.
+
+Six router-temperature epoch-10 rows pass the same strict metric, environment, checkpoint, split,
+test-blindness, provenance, and fatal-scan checks. Route-minus-canonical OOD changes by `0.000`,
+`-0.477`, and `+0.041` points across the three paired settings; temperature `0.03` versus `0.2`
+therefore has no material early ordering. The delayed-emergence alternative remains open to epoch
+30. Four completed router-aux leases refilled immediately with four distinct temperature cells, so
+containers 2887, 2875, 2874, 2862, and 2859 each run two temperature workers and all ten available
+H100s are assigned. Two temperature cells remain queued.
+
+The next-family queue is no longer thin. Four locked confirmation arms, eight expert-count
+architecture arms, and two remaining temperature arms passed 18 focused tests and complete dry
+runs from isolated clean checkout commit/tree `4893c964` / `74e62d3b`; 14 tested arms are ready and
+the ranked backlog retains 24 questions. Source commit `d592a89` declares separate W&B groups, HF
+folders, fairness labels, milestones, checkpoint policy, and no OOD-test access. `tester6` 2893 was
+stopped; exactly one start request was issued and not repeated. Declared W&B groups are present in
+the launch commands, but no local console marker or live environment key was recoverable in this
+audit, so remote W&B state is operationally unverified; persistent milestone/result artifacts and
+HF manifests remain the scientific source of truth.

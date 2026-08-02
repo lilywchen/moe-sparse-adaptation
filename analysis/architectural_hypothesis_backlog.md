@@ -88,8 +88,19 @@ matched performance comparison.
 
 ## Immediate refill policy
 
-The 14 existing factorial60 cells remain the only currently tested runnable refill queue. No row
-above may displace a healthy worker. As leases turn over, factorial60's exact early-canonical dense
-comparator stays highest priority until its matched milestone exists. In parallel, implementation
-work starts with ranks 1, 5--7, 9, 11--13, 16, 19, and 20 so at least 12 next-family arms can pass
-tests and dry runs before factorial60 exhausts its queue.
+Fourteen nonduplicate arms are now tested and dry-run ready; none displaces a healthy worker:
+
+1. four locked 60-epoch confirmation arms for the canonical `balance=0.01,zloss=0.01` sparse
+   survivor and its exact same-placement early dense comparator at fresh seeds 1 and 2;
+2. eight expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
+   tail-safe versus zero auxiliary pressure; these are active-compute matched and must not be
+   described as exact-total-parameter or original-budget matched; and
+3. the two remaining router-temperature cells at temperature `0.2`, zero balance, and zero z-loss.
+
+The locked fresh-seed pairs have first refill priority because the seed-0 sparse survivor improves
+OOD validation, ID, and worst-experiment accuracy over its exact early dense comparator, satisfying
+the predeclared smaller-mean-plus-consistent-tail confirmation pathway. Expert-count arms answer
+the next architectural question rather than retuning the selected pair. All 14 inherit the sealed
+OOD test, 10/30/60 checkpoints, exact data ordering within each pair, declared W&B groups and HF
+campaign folders, and milestone validation before scientific consumption. The 24 ranked questions
+above remain the hypothesis backlog.
