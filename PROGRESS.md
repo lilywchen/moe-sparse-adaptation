@@ -2071,3 +2071,10 @@ one-cell dry runs are pending-clean, and indexed execution tree is
 `904aff13f75fec7b3b2a8b5fd7c2ac5b65fc88c4`. These two rows raise the tested ready queue to 16.
 Seed-1 E2 is the exact refill for container2887/GPU1 when worker 37957 and its controller finish;
 until then all ten H100s remain assigned and OOD test remains sealed.
+
+The route-E2 seed-0 controller subsequently exited cleanly (`rc=0`) after W&B sync and final JSON
+emission. Container2887/GPU1 was immediately refilled with the locked route-E2 seed-1 confirmation:
+controller 43488, worker 43493, W&B run `28k2fboh`. It loaded the declared 9,854-sample OOD-validation
+split, explicitly reports the test untouched, holds about 7.96 GB on GPU1, and has no fatal-log match.
+The locked confirmation family therefore has three active rows and three queued rows; 15 tested arms
+remain ready, all ten available H100s are assigned, and OOD test remains sealed.

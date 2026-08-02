@@ -1459,3 +1459,12 @@ is now pressure-specific bank-size behavior rather than generic capacity. The al
 seed-0 trajectory noise; disappearance of route-E16/E64 or E32 tail directions at epoch 60, or
 dead/non-reliant routing, is the sharp falsifier. Ten H100s remain assigned, 12 tested arms remain
 ready, and OOD test remains sealed.
+
+Route-E2 seed 0 completed cleanly after its validated epoch-60 milestone, W&B sync, and final JSON
+emission. The released container2887/GPU1 was immediately assigned the predeclared locked route-E2
+seed-1 row (controller 43488, worker 43493, W&B `28k2fboh`). Its exact route-E8 seed-1 anchor is
+already active, so this preserves pairing without launching a duplicate comparator. Startup confirms
+9,854 OOD-validation samples, explicit test blindness, expected GPU memory, and no fatal signature.
+This is execution evidence, not efficacy evidence: E2 remains exploratory until the locked fresh-seed
+contrast is validated. Three confirmation rows are active, three queued, 15 tested arms remain ready,
+all ten available H100s are assigned, and OOD test remains sealed.
