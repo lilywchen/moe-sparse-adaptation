@@ -1133,3 +1133,9 @@ temperature/z-loss. The E8 pressure pair is shared, not duplicated. These six ar
 remote tests and dry runs; after those checks they combine with eight tested expert-count arms for
 14 runnable candidates. The decisive falsifiers are fresh-seed sparse-minus-dense consistency and
 loss of the E8 signature under E4/E16. OOD test remains sealed.
+
+Remote licensing is complete: all five copied source/test files match GitHub `f5ac9f4` by SHA-256,
+five focused tests and all 118 tests pass, and dry runs enumerate exactly two locked fresh-seed
+sparse arms and four E4/E16 pressure arms. These six join the eight previously tested expert-count
+cells, making 14 runnable arms. The test checkout is explicitly code-equivalent on base execution
+commit `7dcb42e`; it is not mislabeled as a clean checkout of the unreachable GitHub object.

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_publish_five_temperature_finals_refill_final_temperature_and_locked_seed1_seed2_confirmation_pairs",
-  "last_action_at": "2026-08-02T10:50:36-04:00",
-  "last_verified_commit": "a6b7457c61fc75575281b46de948ca0a6a74ec06",
+  "last_action": "license_fourteen_arm_ready_queue_after_exact_file_hash_focused_full_suite_and_dry_run_pass",
+  "last_action_at": "2026-08-02T10:59:13-04:00",
+  "last_verified_commit": "f5ac9f48d56b94996a46772a2d37bc0529b12142",
   "valid_results": 13,
   "expected_results": 16,
   "active_gpu_workers": 10,
@@ -392,11 +392,14 @@
   "expert_count60_queued_results": 8,
   "expert_count60_wandb_group": "rxrx1-cell-dino-expert-count60-20260802",
   "expert_count60_hf_prefix": "rxrx1/cell_dino_cp5/expert_count60_20260802",
-  "temperature_leader_confirm60_status": "two_locked_sparse_seed1_seed2_arms_registered_pending_remote_tests_share_active_tail_safe_exact_dense_anchors",
+  "temperature_leader_confirm60_status": "two_locked_sparse_seed1_seed2_arms_remote_tested_and_dry_run_ready_share_active_tail_safe_exact_dense_anchors",
   "temperature_leader_confirm60_expected_results": 2,
-  "temperature_expert_count60_status": "four_seed0_active_compute_matched_E4_E16_by_pressure_arms_registered_pending_remote_tests_share_completed_E8_pressure_anchor",
+  "temperature_expert_count60_status": "four_seed0_active_compute_matched_E4_E16_by_pressure_arms_remote_tested_and_dry_run_ready_share_completed_E8_pressure_anchor",
   "temperature_expert_count60_expected_results": 4,
-  "ready_arms_pending_registry_tests": 14,
+  "ready_arms": 14,
+  "ready_queue_test_status": "five_focused_and_118_full_tests_passed_two_plus_four_arm_dry_runs_passed_in_separate_7dcb42e_code_equivalent_checkout_all_five_copied_source_test_files_sha256_match_github_f5ac9f4",
+  "ready_queue_registry_commit": "f5ac9f48d56b94996a46772a2d37bc0529b12142",
+  "ready_queue_registry_tree": "c921d9e5536ab34d2fe6742dbbe198073542d6bb",
   "backlog_hypotheses": 25,
   "wandb_current_status": "temperature_final_refill_0kye1de5_and_tail_safe_seed1_sparse_pbuazutb_and_seed2_sparse_d0k0a92d_verified_live_in_declared_groups_dense_runs_initialized_or_loading_persistent_artifacts_authoritative",
   "sixth_container": {
@@ -414,5 +417,5 @@
   "canonical_reference_completed": {"best_epoch": 82, "acc_selection": 0.195149, "acc_within": 0.356249, "acc_train": 0.999877},
   "last_synced_commit": "ae27241addbcd65e8f698b73ee2adea4ba1d19c4",
   "overleaf_build_status": "synced_exact_github_commit_7_pages_0_errors_1_showhyphens_warning_2026-08-01T20:24-04:00; local_fatal_build_and_visual_review_pass",
-  "next_gate": "remote_test_and_dry_run_temperature_leader_confirmation_and_low_temperature_E4_E16_pressure_registry_then_launch_best_nonduplicate_architecture_arm_on_each_release; strictly_validate_remaining_temperature_milestones_and_locked_seed_pairs; keep_ood_test_sealed"
+  "next_gate": "launch_best_nonduplicate_temperature_leader_or_low_temperature_E4_E16_pressure_arm_on_each_release_then_continue_expert_count_queue; strictly_validate_remaining_temperature_milestones_and_locked_seed_pairs; keep_ood_test_sealed"
 }

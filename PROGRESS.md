@@ -1592,3 +1592,10 @@ the already-running exact dense anchors, and an active-compute-matched E4/E16 by
 the winning low-temperature/z-loss setting sharing the completed E8 pair. Together with the eight
 previous expert-count cells they restore a 14-arm candidate queue once remote tests and dry runs
 pass. OOD test remains sealed.
+
+The two new registries are now licensed rather than merely staged. A separate SciServer checkout
+at execution base `7dcb42e` received byte-identical copies of the five relevant source/test files
+from GitHub commit `f5ac9f4` (all SHA-256 hashes matched). Five focused tests and the complete
+118-test suite passed, and dry runs expanded to exactly two leader-confirmation plus four E4/E16
+pressure arms with unique run IDs and declared campaign destinations. The runnable ready queue is
+therefore 14 arms, with 25 backlog hypotheses.
