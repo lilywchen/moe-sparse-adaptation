@@ -1,0 +1,39 @@
+{
+  "validated_at": "2026-08-02T20:45:00-04:00",
+  "campaign": "expert_count60_20260802",
+  "classification": "strict_exploratory_active_compute_matched_objective_milestones",
+  "coverage": "canonical_E4_tail_safe_and_zero_aux_epoch30_pair_plus_route_E4_tail_safe_epoch60_unpaired",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "fairness_class": "active_compute_matched_same_sparse_architecture_objective_ablation",
+  "rows": {
+    "canonical_E4_tail_safe_epoch30": {"train": 0.9986198738170347, "id": 0.457204767063922, "ood_val": 0.1892632433529531, "worst_experiment": 0.0174512987012987, "checkpoint_bytes": 311745867},
+    "canonical_E4_zero_aux_epoch30": {"train": 0.9977326498422713, "id": 0.4473308381759086, "ood_val": 0.17180840267911507, "worst_experiment": 0.015422077922077922, "checkpoint_bytes": 311743572},
+    "route_E4_tail_safe_epoch60": {"train": 1.0, "id": 0.5235890869693687, "ood_val": 0.20925512482240716, "worst_experiment": 0.015016233766233766, "checkpoint_bytes": 311739683, "wandb_run_id": "63qrbth0", "experts_used": 4, "route_reliance": -0.00020296326364926953, "routing_entropy": 0.9999877841361485}
+  },
+  "paired_effects_points": {
+    "canonical_epoch30_tail_safe_minus_zero_aux": {"ood_val": 1.7454840673838041, "id": 0.9873928888013417, "worst_experiment": 0.2029220779220778}
+  },
+  "strict_checks": {
+    "json_or_milestone_parseable_and_finite": true,
+    "exact_run_seed_epoch_identity": true,
+    "objective": "erm",
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "route_tail_safe_controller_exit_zero": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_pair": "continue_both_to_epoch60_positive_aligned_epoch30_objective_effect",
+    "route_tail_safe": "withhold_epoch60_objective_effect_until_active_zero_aux_comparator_reaches_epoch60",
+    "fresh_seed_or_epoch90": "not_licensed_before_paired_epoch60_and_exact_dense_objective_controls"
+  },
+  "interpretation": "Tail-safe regularization has a positive aligned canonical-E4 epoch-30 effect, but the route-pressure arm remains unpaired at epoch 60 and has essentially zero randomized-route reliance. This supports an objective effect within one sparse setting, not a general sparse-routing robustness claim.",
+  "alternative": "The canonical epoch-30 difference is transient seed-0 optimization noise or a loss effect that an exact dense objective control would reproduce.",
+  "sharp_falsifier": "The canonical effect reverses at epoch 60, the route pair fails to improve worst-experiment accuracy, or exact dense objective controls match the apparent benefit.",
+  "multiplicity": "Three new seed0 milestone/final rows after prior architecture and objective screens; no population or routing-specific claim."
+}

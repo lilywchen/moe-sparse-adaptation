@@ -1,0 +1,99 @@
+{
+  "validated_at": "2026-08-02T20:45:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "strict_exploratory_active_compute_matched_terminal_architecture_screen",
+  "coverage": "canonical_E32_route_E32_route_E64_epoch60_finals",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "registry_commits": {
+    "E32": "2e37f34819e6ddb6b4014bb17b820fe50ff3dc6c",
+    "E64": "09a22aa086181267e4d14e5e343f60451c41a9c1",
+    "E32_confirmation": "21d7bbe"
+  },
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "same_pressure_E8_epoch60_anchors": {
+    "canonical": {"ood_val": 0.21869291658209863, "id": 0.527750418595489, "worst_experiment": 0.022727272727272728},
+    "route": {"ood_val": 0.20448548812664907, "id": 0.5269624741455727, "worst_experiment": 0.016233766233766232}
+  },
+  "rows": {
+    "canonical_E32": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_temperature_expert_count60_canonical_E32_20260802",
+      "wandb_run_id": "ibnb1k74",
+      "train": 1.0,
+      "id": 0.5308037033389146,
+      "ood_val": 0.21473513294093768,
+      "worst_experiment": 0.018262987012987012,
+      "checkpoint_bytes": 709123088,
+      "total_params": 59043060,
+      "active_ffn_including_router": 1193857,
+      "experts_used": 2,
+      "route_reliance": 0.007611122386847968,
+      "routing_entropy": 0.12320545223587005,
+      "minus_E8_points": {"ood_val": -0.395778364116095, "id": 0.30532847434255883, "worst_experiment": -0.44642857142857156}
+    },
+    "route_E32": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s0_temperature_expert_count60_route_E32_20260802",
+      "wandb_run_id": "sv51b71c",
+      "train": 1.0,
+      "id": 0.5272087067861716,
+      "ood_val": 0.21158920235437387,
+      "worst_experiment": 0.022727272727272728,
+      "checkpoint_bytes": 709113384,
+      "total_params": 59043060,
+      "active_ffn_including_router": 1193857,
+      "experts_used": 3,
+      "route_reliance": 0.0059874162776537565,
+      "routing_entropy": 0.15260667983193635,
+      "minus_E8_points": {"ood_val": 0.7103714227724794, "id": 0.024623264059886463, "worst_experiment": 0.6493506493506496}
+    },
+    "route_E64": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E64k1_ep60_s0_temperature_expert_count60_route_E64_20260802",
+      "wandb_run_id": "wqpiql8o",
+      "train": 1.0,
+      "id": 0.5273564463705309,
+      "ood_val": 0.20590623097219404,
+      "worst_experiment": 0.022321428571428572,
+      "checkpoint_bytes": 1163252072,
+      "total_params": 96865524,
+      "active_ffn_including_router": 1206145,
+      "experts_used": 3,
+      "route_reliance": 0.002131114268317441,
+      "routing_entropy": 0.1659688729104435,
+      "minus_E8_points": {"ood_val": 0.142074284554497, "id": 0.03939722249581834, "worst_experiment": 0.608766233766234},
+      "minus_route_E32_points": {"ood_val": -0.5682971382179824, "id": 0.014773958435931878, "worst_experiment": -0.0405844155844156}
+    }
+  },
+  "trajectory_points": {
+    "route_E32_minus_E8_epoch30": {"ood_val": -0.8524457073269737, "id": -1.1080468826947687, "worst_experiment": 0.3652597402597404},
+    "route_E32_minus_E8_epoch60": {"ood_val": 0.7103714227724794, "id": 0.024623264059886463, "worst_experiment": 0.6493506493506496},
+    "route_E64_minus_E8_epoch30": {"ood_val": 0.58859346458291, "id": 0.1452772579533136, "worst_experiment": 0.1217532467532468},
+    "route_E64_minus_E8_epoch60": {"ood_val": 0.142074284554497, "id": 0.03939722249581834, "worst_experiment": 0.608766233766234}
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_identity": true,
+    "controller_exit_zero": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "milestone_epochs": [10, 30, 60],
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_E32": "terminal_no_promotion_mean_and_tail_below_canonical_E8",
+    "route_E32": "locked_seed1_seed2_confirmation_licensed_by_predeclared_consistent_tail_clause",
+    "route_E64": "terminal_no_fresh_seeds_route_E32_is_stronger_on_mean_and_tail_with_far_fewer_total_parameters",
+    "refill": "route_E8_seed2_then_route_E16_seed2_route_E2_seed2_and_route_E32_seed1"
+  },
+  "interpretation": "Route pressure, not generic bank size, is necessary for the small E32 tail signal. E32 is the seed-0 route leader, while canonical E32 is below its anchor on mean OOD and tail and E64 saturates below E32 despite substantially more inactive parameters.",
+  "alternative": "The route-E32 leader is seed-0 selection optimism or ordinary optimization noise; only three of 32 experts are used and randomized-route reliance is small.",
+  "sharp_falsifier": "Locked route-E32 seeds 1 and 2 fail to preserve either the mean-OOD or worst-experiment direction versus their exact shared route-E8 anchors, or lose more than two ID points.",
+  "multiplicity": "Three terminal seed0 architecture rows after extensive factorial, router, auxiliary, temperature, and expert-count screens; E32 is exploratory until the locked fresh-seed comparisons complete."
+}

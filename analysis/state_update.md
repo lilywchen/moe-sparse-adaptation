@@ -1468,3 +1468,26 @@ already active, so this preserves pairing without launching a duplicate comparat
 This is execution evidence, not efficacy evidence: E2 remains exploratory until the locked fresh-seed
 contrast is validated. Three confirmation rows are active, three queued, 15 tested arms remain ready,
 all ten available H100s are assigned, and OOD test remains sealed.
+
+Route E32 is the terminal seed-0 architecture leader. At epoch 60 its exact route-E8 difference is
+`+0.710/+0.025/+0.649` OOD/ID/worst points, with the tail direction strengthening from `+0.365` at
+epoch 30. Canonical E32 is `-0.396/+0.305/-0.446` versus canonical E8 and is terminal without
+promotion. Route E64 is `+0.142/+0.039/+0.609` versus route E8, but is below route E32 on mean and
+tail, uses only 3/64 experts, and has route reliance `0.00213`; it is not assigned fresh seeds.
+Route E32 uses only 3/32 experts and route reliance is `0.00599`, so its fresh-seed license tests a
+small empirical mean-plus-tail direction rather than established specialization. The sharp
+falsifier is failure of either locked E32 seed to preserve mean or worst-experiment direction versus
+its exact E8 anchor, or more than two ID points lost.
+
+Canonical E4 tail-safe minus zero-auxiliary reaches an aligned epoch-30 effect of
+`+1.745/+0.987/+0.203` points and both continue to epoch 60. Route-E4 tail-safe is strict-final at
+OOD/ID/worst `0.2093/0.5236/0.0150`, but no effect is estimated until active route-E4 zero-aux reaches
+epoch 60; near-zero randomized-route reliance is evidence against a routing mechanism. Exact dense
+objective controls remain necessary before any routing-specific claim.
+
+The frozen E32 registry at source `21d7bbe` passes six focused and 130 full tests, two exact dry
+runs, matching hashes, and code-equivalent tree `fee4c45d00ea38e209a913f69ca9b0db62338b39`.
+Route-E8 seed2, E16 seed2, E2 seed2, and E32 seed1 immediately refill four released GPUs. Seven
+confirmation rows are active and E32 seed2 is queued; all ten available H100s are assigned, 13
+tested arms remain ready, and OOD test remains sealed. Checksum-manifest publication is active and
+not yet claimed complete.

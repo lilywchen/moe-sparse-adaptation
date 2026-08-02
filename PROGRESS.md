@@ -2078,3 +2078,38 @@ controller 43488, worker 43493, W&B run `28k2fboh`. It loaded the declared 9,854
 split, explicitly reports the test untouched, holds about 7.96 GB on GPU1, and has no fatal-log match.
 The locked confirmation family therefore has three active rows and three queued rows; 15 tested arms
 remain ready, all ten available H100s are assigned, and OOD test remains sealed.
+
+## 2026-08-02 20:48 EDT — Route E32 becomes the architecture leader; four locked refills start
+
+Canonical E32, route E32, and route E64 finish cleanly at epoch 60 with three 10/30/60 checkpoints,
+complete final JSONs, W&B sync, controller `rc=0`, clear fatal scans, four OOD-validation
+environments/9,854 samples, and sealed-test fields. Against their exact pressure-matched E8 anchors,
+canonical E32 changes OOD/ID/worst by `-0.396/+0.305/-0.446` points, route E32 by
+`+0.710/+0.025/+0.649`, and route E64 by `+0.142/+0.039/+0.609`. Canonical E32 therefore has no
+promotion. Route E64 is not advanced because route E32 is stronger on mean and tail with far fewer
+total parameters; it also uses only 3/64 experts with route reliance `0.00213`. Route E32 is the
+seed-0 route leader and preserves its predeclared tail direction from epoch 30, so it licenses one
+locked E32 seed-1/2 check. This remains exploratory: only 3/32 experts are used and route reliance is
+`0.00599`.
+
+The broader E4 sweep also moves. Canonical tail-safe minus canonical zero-auxiliary at epoch 30 is
+`+1.745/+0.987/+0.203` OOD/ID/worst points, an aligned but seed-0 objective effect; both continue to
+epoch 60. Route-E4 tail-safe finishes at OOD/ID/worst `0.2093/0.5236/0.0150`, but its exact zero-aux
+comparator is only at epoch 43, so no route objective effect is claimed. Its randomized-route
+reliance is effectively zero (`-0.00020`), which weighs against a routing-mechanism explanation.
+
+Source commit `21d7bbe` freezes E32 seeds 1 and 2 against the already launched route-E8 anchors.
+The code-equivalent SciServer tree is `fee4c45d00ea38e209a913f69ca9b0db62338b39`; source/test hashes
+match, six focused tests and all 130 tests pass, and both one-cell dry runs are pending-clean. A
+remote Git fetch was unavailable and changed nothing; the documented code-equivalent copy path was
+used once. Four released GPUs were refilled: route-E8 seed2 worker 56371/W&B `kkkemsr0`, route-E16
+seed2 112826/`abcjy5pp`, route-E2 seed2 56662/`l7vkvk81`, and route-E32 seed1 57545/`6cmjnu32`.
+All report 9,854 OOD-validation samples, test untouched, expected GPU memory, and no fatal signature.
+
+All ten available H100s are assigned: 2887 GPU0/1 workers 41687/43493; 2875 GPU0/1
+110491/112826; 2874 GPU0/1 54666/56662; 2862 GPU0/1 57545/56371; and 2859 GPU0/1
+44982/43126. Temperature expert-count is complete at six finals and four prunes. The expanded locked
+confirmation has seven active rows and one queued E32-seed2 row. Broader expert-count has one final,
+three active, and four queued; 13 tested arms remain ready and backlog remains 27. Checksum-manifest
+publication for the three extreme expert-count finals and route-E4 tail-safe is active as PID 44628
+after one quoting-only retry that mutated no artifact. OOD test remains sealed.
