@@ -1262,3 +1262,18 @@ Pareto-dominated. This family is active-compute matched only: E2/E4/E8/E16 total
 release launches route E4 (shard 4/6), followed by route E16, canonical E2, route E2, and broader
 expert-count arms. tester6 remains Pending for the unchanged scheduler reason without a repeat
 start request.
+
+### 2026-08-02 12:41 EDT — paper sync and route-E4 handoff
+
+Commit `9b00954f020e3fe6ce6cc06a3f5eb214f8621c86` was pulled into the linked Overleaf
+project and compiled successfully: seven pages, zero errors, and one pre-existing `\\showhyphens`
+compatibility warning. The synchronized source contains the new exploratory post-gate confirmation
+paragraph.
+
+Container 2874/GPU0 was released by the completed high-temperature zero-auxiliary canonical arm
+and immediately refilled by `temperature_expert_count60` route E4 shard 4/6. Controller 51470
+started worker 51475 (W&B `ka08nx5w`) from the tested code-equivalent checkout on execution base
+`7dcb42e7`; the worker holds 8,014 MiB and its fatal scan is clear. A missing `.active` marker was
+repaired once to the live worker without restart. All ten available H100s are assigned, eleven arms
+remain ready, and the next refill is route E16 shard 5/6. This family is active-compute matched,
+exploratory, selected only on OOD validation, and OOD test remains sealed.

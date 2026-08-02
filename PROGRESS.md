@@ -1745,3 +1745,24 @@ allows delayed emergence, so it continues to epoch 30. Ten H100s remain assigned
 running containers, 12 tested nonduplicate arms remain ready, and tester6 remains Pending for the
 unchanged scheduler reason without another start request. The next automatic refill is route E4
 (shard 4/6), then route E16, canonical E2, route E2, and the broader expert-count queue.
+
+## 2026-08-02 12:41 EDT — synchronized paper and immediate route-E4 refill
+
+GitHub commit `9b00954f020e3fe6ce6cc06a3f5eb214f8621c86`, including the locked fresh-seed
+epoch-30 validation and the explicitly exploratory manuscript paragraph, was pulled into the linked
+Overleaf project. The synchronized source contains the new post-gate confirmation paragraph and
+compiles to seven pages with zero errors. The only warning is the pre-existing TeX Live 2025
+`\\showhyphens` compatibility warning; the local fatal-error build also passes.
+
+The completed high-temperature zero-auxiliary canonical worker released container 2874/GPU0.
+The free slot was immediately refilled with the predeclared low-temperature route-E4 architecture
+arm, shard 4/6: controller 51470, worker 51475, W&B `ka08nx5w`. The dry run enumerated exactly one
+pending route-E4 cell, GPU0 was physically empty, the exact result was absent, and the worker now
+holds 8,014 MiB with no fatal signature. The controller again omitted its `.active` file, so the
+marker alone was repaired once to the verified live worker without a restart or duplicate.
+
+Ten H100s are assigned across the five running containers and tester6 remains Pending for the
+unchanged scheduler reason. Three low-temperature architecture arms are active, three cells remain
+queued, and eleven tested nonduplicate arms remain ready overall. The next release is route E16
+shard 5/6, then canonical E2, route E2, and the broader expert-count queue. These comparisons remain
+active-compute matched only; OOD validation is the selection split and OOD test remains sealed.
