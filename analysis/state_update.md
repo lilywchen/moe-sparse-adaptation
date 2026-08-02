@@ -1171,3 +1171,27 @@ anchors. A post-launch shell-scope error affected only the `.active` marker writ
 workers were healthy, and the markers were narrowly repaired once to their actual GPU PIDs. All
 ten running H100s are occupied by distinct arms, 12 tested arms remain ready, and OOD test stays
 sealed.
+
+## 2026-08-02 11:27 ET — locked epoch-10 confirmations split mean versus tail
+
+The four seed-1/2 tail-safe sparse/exact-dense arms now have strict epoch-10 milestones. Sparse
+minus dense OOD/ID/worst is `-0.690/+0.719/+0.933` points at seed 1 and
+`+1.370/+2.089/-0.203` at seed 2. Opposite mean and tail signs mean there is no consistent early
+replication. Neither pair is dominated on all decision axes, so the predeclared delayed-emergence
+allowance keeps every locked arm running to epoch 30 with no tuning. The sharp falsifier is aligned
+paired mean or tail improvement at epoch 30; failure to align would support selection optimism.
+
+Strict checks cover identities, finite metrics, ERM, four environments/9,854 samples, checkpoints,
+explicit launch/train logs, OOD-validation selection, and sealed OOD test. The comparison retains
+the documented exact-total-parameter fairness class. Router-temperature coverage is now
+`12/11/8`; the new zero-auxiliary canonical epoch-60 row is
+`0.206617/0.525682/0.021104` OOD/ID/worst and does not challenge the plus-z-loss leader. Its route
+pair is still active. Ten distinct workers occupy ten H100s, 12 tested arms are ready, and tester6
+remained stopped after one start request.
+
+The zero-auxiliary canonical temperature run is now a strict published final with W&B run
+`15uoiq6l`; its seven remote files raise temperature finals/manifests/files to `8/8/56`. The
+released container 2875/GPU0 was immediately refilled with the predeclared low-temperature
+canonical E4 arm (worker 104310) under the active-compute-matched fairness class. This is an
+architecture falsifier, not an exact-total-parameter efficacy comparison. Ten H100s are assigned
+again, and the remaining runnable queue is 11 arms.

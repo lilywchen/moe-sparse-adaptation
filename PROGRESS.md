@@ -1634,3 +1634,38 @@ caused only the controller-marker writes to fail; the markers were repaired once
 GPU worker PIDs. Exact command, clean execution checkout, live 7.9-8.0 GiB allocation, declared
 tracking group, data path, and OOD-test blindness all pass. Ten H100s are again assigned, with 12
 tested nonduplicate arms still ready.
+
+## 2026-08-02 11:27 EDT fresh-seed epoch-10 directions disagree and all pairs continue
+
+All four locked tail-safe confirmation arms have strict epoch-10 milestones and saved checkpoints.
+Seed 1 sparse minus exact dense changes OOD-validation/ID/worst-experiment accuracy by
+`-0.690/+0.719/+0.933` points; seed 2 changes them by `+1.370/+2.089/-0.203` points. The mean and
+tail signs therefore reverse across seeds. This does not replicate a consistent sparse advantage
+at epoch 10 and makes seed-0 selection optimism plausible, but it also does not dominate either
+pair on every axis. Under the locked successive-halving rule all four arms continue without tuning
+to the epoch-30 falsifier.
+
+The four rows pass exact run/seed/milestone identity, finite metrics, ERM, all four held-out
+validation experiments and expected counts, checkpoint, explicit launch/train-log fatal scans,
+`selection_split=ood_val`, and `test_evaluated=false`. The comparison is exact-total-parameter
+matched up to the documented 378-parameter (0.001232%) implementation difference. OOD test remains
+sealed and the multi-family seed-0 winner search is the largest threat.
+
+Router-temperature coverage also rises from `12/11/7` to `12/11/8`: the low-temperature
+zero-auxiliary canonical row finishes epoch 60 at OOD/ID/worst `0.206617/0.525682/0.021104`, below
+the provisional low-temperature plus-z-loss leader `0.218693/0.527750/0.022727`. Its exact route
+pair remains active, so the final zero-auxiliary architecture contrast stays open.
+
+All ten H100s in the five running containers remain assigned to distinct arms. `tester6` 2893 was
+stopped on inspection and remained stopped after exactly one start request; no duplicate start or
+container was created. Twelve tested arms remain ready, with the E4/E16 low-temperature pressure
+screen first on release and the expert-count queue behind it.
+
+At 11:35 EDT the completed zero-auxiliary canonical temperature run passed strict final/config,
+parameter, three-milestone, environment, checkpoint, clean-provenance, fatal-scan, OOD-blind, and
+remote-publication checks. Its seven-file HF folder raises temperature finals/manifests/verified
+files to `8/8/56`; W&B run `15uoiq6l` is recorded. Container 2875/GPU0 was immediately refilled
+with the highest-ranked active-compute-matched architecture arm, low-temperature canonical E4
+(controller 104305, worker 104310). The preflight found the GPU free, the run absent, the shard
+dry run exact, and the five-focused/118-full-tested code-equivalent checkout unchanged. Ten GPUs
+are assigned again; three E4/E16 pressure cells and eight broader expert-count cells remain ready.

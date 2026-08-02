@@ -1,0 +1,32 @@
+{
+  "campaign": "tail_safe_confirm60_20260802",
+  "status": "four_locked_seed1_seed2_sparse_dense_epoch10_milestones_strict_valid_with_inconsistent_mean_tail_directions_continue_all_to_epoch30",
+  "validated_at": "2026-08-02T11:26:50-04:00",
+  "source_before_ledger_commit": "ed55c67a022517ecb6328d8a27be86ec3900dbe8",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_results": 4,
+  "active_results": 4,
+  "validated_epoch10_rows": 4,
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent",
+  "fairness_class": "exact_total_parameter_matched_with_378_parameter_0.001232_percent_implementation_difference",
+  "parameter_counts": {"moe": 30676212, "dense_wide": 30675834},
+  "validation": "exact_run_seed_epoch_identity_finite_metrics_erm_four_environments_counts_2462_2464_2464_2464_total9854_checkpoint_over_300MB_explicit_launch_and_train_logs_fatal_scan_and_ood_test_blindness_pass",
+  "rows": [
+    {"run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s1_tail_safe_confirm60_moe_s1_20260802", "seed": 1, "variant": "moe", "train": 0.5176951892744479, "id": 0.33834827144686297, "ood_val": 0.13324538258575197, "worst_experiment": 0.02150974025974026, "checkpoint_bytes": 368504044},
+    {"run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s1_tail_safe_confirm60_dense_s1_20260802", "seed": 1, "variant": "dense_wide", "train": 0.5108438485804416, "id": 0.33115827834137695, "ood_val": 0.14014613354982747, "worst_experiment": 0.012175324675324676, "checkpoint_bytes": 368432734},
+    {"run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s2_tail_safe_confirm60_moe_s2_20260802", "seed": 2, "variant": "moe", "train": 0.5095869479495269, "id": 0.32963163596966416, "ood_val": 0.14136391313172317, "worst_experiment": 0.013798701298701298, "checkpoint_bytes": 368504044},
+    {"run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s2_tail_safe_confirm60_dense_s2_20260802", "seed": 2, "variant": "dense_wide", "train": 0.48038249211356465, "id": 0.3087511080468827, "ood_val": 0.12766389283539678, "worst_experiment": 0.015827922077922076, "checkpoint_bytes": 368432734}
+  ],
+  "sparse_minus_dense_points": {
+    "seed1": {"ood_val": -0.6900750964, "id": 0.7189993105, "worst_experiment": 0.9334415584},
+    "seed2": {"ood_val": 1.3700020296, "id": 2.0880527923, "worst_experiment": -0.2029220779}
+  },
+  "decision": "continue_all_four_locked_arms_to_epoch30_no_prune_no_tuning",
+  "interpretation": "epoch10_does_not_replicate_a_consistent_sparse_mean_or_tail_advantage_because_the_two_seeds_have_opposite_mean_and_tail_directions",
+  "alternative": "the_seed0_tail_safe_survivor_may_have_been_selection_optimism_or_the_effect_may_emerge_only_after_longer_optimization",
+  "falsifier": "paired_seed1_seed2_sparse_minus_dense_deltas_at_epoch30_fail_to_align_on_mean_or_tail_without_material_id_loss",
+  "multiplicity": "locked_confirmation_of_a_seed0_winner_selected_after_router_aux_and_prior_factorial_search_not_a_new_tuning_screen"
+}
