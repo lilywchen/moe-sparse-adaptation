@@ -38,6 +38,8 @@ WANDB_GROUP = os.environ.get(
 HF_PREFIX = os.environ.get(
     "MOE_RX_HF_PREFIX", "rxrx1/cell_dino_cp5/tail_safe_confirm60_20260802"
 )
+WANDB_JOB_TYPE = "rxrx1_tail_safe_confirm60"
+WANDB_TAGS = "rxrx1,cell-dino,tail-safe-confirm60,confirmatory,ood-test-blind"
 
 SEEDS = (1, 2)
 BALANCE_W = 1.0e-2
@@ -84,6 +86,8 @@ def main():
     refill.RESULT_ROOT = RESULT_ROOT
     refill.WANDB_GROUP = WANDB_GROUP
     refill.HF_PREFIX = HF_PREFIX
+    refill.WANDB_JOB_TYPE = WANDB_JOB_TYPE
+    refill.WANDB_TAGS = WANDB_TAGS
     refill.cells = cells
     refill.main()
 

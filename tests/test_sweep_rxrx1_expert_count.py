@@ -1,3 +1,4 @@
+from scripts import sweep_rxrx1_expert_count as sweep
 from scripts.sweep_rxrx1_expert_count import (
     AUX_SETTINGS,
     EXPERT_COUNTS,
@@ -13,6 +14,8 @@ def test_expert_count60_has_complete_unique_budget():
     assert len({run_id for _, _, run_id in rows}) == 8
     assert sum(tag.startswith("route_") for tag, _, _ in rows) == 4
     assert sum(tag.startswith("canonical_") for tag, _, _ in rows) == 4
+    assert sweep.WANDB_JOB_TYPE == "rxrx1_expert_count60"
+    assert "expert-count60" in sweep.WANDB_TAGS
 
 
 def test_expert_count60_changes_only_predeclared_mechanism_fields():

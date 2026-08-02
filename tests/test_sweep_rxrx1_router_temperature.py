@@ -1,3 +1,4 @@
+from scripts import sweep_rxrx1_router_temperature as sweep
 from scripts.sweep_rxrx1_router_aux import sharded_rows
 from scripts.sweep_rxrx1_router_temperature import (
     AUX_SETTINGS,
@@ -13,6 +14,8 @@ def test_router_temperature60_has_complete_unique_budget():
     assert len({run_id for _, _, run_id in rows}) == 12
     assert sum(tag.startswith("route_") for tag, _, _ in rows) == 6
     assert sum(tag.startswith("canonical_") for tag, _, _ in rows) == 6
+    assert sweep.WANDB_JOB_TYPE == "rxrx1_router_temperature60"
+    assert "router-temperature60" in sweep.WANDB_TAGS
 
 
 def test_router_temperature60_changes_only_predeclared_mechanism_fields():

@@ -36,6 +36,8 @@ WANDB_GROUP = os.environ.get(
 HF_PREFIX = os.environ.get(
     "MOE_RX_HF_PREFIX", "rxrx1/cell_dino_cp5/router_temperature60_20260802"
 )
+WANDB_JOB_TYPE = "rxrx1_router_temperature60"
+WANDB_TAGS = "rxrx1,cell-dino,router-temperature60,exploratory,ood-test-blind"
 
 PRESSURES = ("route", "canonical")
 TEMPERATURES = (("t3em2", 3.0e-2), ("t2em1", 2.0e-1))
@@ -71,6 +73,8 @@ def main():
     refill.RESULT_ROOT = RESULT_ROOT
     refill.WANDB_GROUP = WANDB_GROUP
     refill.HF_PREFIX = HF_PREFIX
+    refill.WANDB_JOB_TYPE = WANDB_JOB_TYPE
+    refill.WANDB_TAGS = WANDB_TAGS
     refill.cells = cells
     refill.main()
 

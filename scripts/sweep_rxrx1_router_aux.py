@@ -38,6 +38,8 @@ WANDB_GROUP = os.environ.get(
 HF_PREFIX = os.environ.get(
     "MOE_RX_HF_PREFIX", "rxrx1/cell_dino_cp5/router_aux60_20260802"
 )
+WANDB_JOB_TYPE = "rxrx1_router_aux60"
+WANDB_TAGS = "rxrx1,cell-dino,router-aux60,exploratory,ood-test-blind"
 
 PRESSURES = ("route", "canonical")
 AUX_SETTINGS = (
@@ -180,8 +182,14 @@ def main():
               f"{len(rows)} planned, {len(pending)} pending -> {out}")
         print(f"W&B group: {WANDB_GROUP}; HF prefix: {HF_PREFIX}")
         for tag, overrides, run_id in rows:
-            balance = next(v for v in overrides if v.startswith("losses.balance_w="))
-            zloss = next(v for v in overrides if v.startswith("losses.zloss_w="))
+            balance = next(
+                (v for v in overrides if v.startswith("losses.balance_w=")),
+                "losses.balance_w=n/a",
+            )
+            zloss = next(
+                (v for v in overrides if v.startswith("losses.zloss_w=")),
+                "losses.zloss_w=n/a",
+            )
             print(f"  {tag}: {run_id} [{balance}, {zloss}]")
         return
 
@@ -199,10 +207,8 @@ def main():
             tag, overrides, run_id = pending.pop(0)
             env = dict(os.environ, CUDA_VISIBLE_DEVICES=gpu)
             env["WANDB_GROUP"] = WANDB_GROUP
-            env["WANDB_JOB_TYPE"] = "rxrx1_router_aux60"
-            env["WANDB_TAGS"] = (
-                "rxrx1,cell-dino,router-aux60,exploratory,ood-test-blind"
-            )
+            env["WANDB_JOB_TYPE"] = WANDB_JOB_TYPE
+            env["WANDB_TAGS"] = WANDB_TAGS
             env["CCAS_HF_PREFIX"] = HF_PREFIX
             env["HF_TOKEN"] = ""
             log_handle = open(out / f"{run_id}.log", "a")

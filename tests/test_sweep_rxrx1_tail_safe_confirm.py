@@ -1,4 +1,5 @@
 from scripts.sweep_rxrx1_router_aux import sharded_rows
+from scripts import sweep_rxrx1_tail_safe_confirm as sweep
 from scripts.sweep_rxrx1_tail_safe_confirm import (
     BALANCE_W,
     SEEDS,
@@ -15,6 +16,8 @@ def test_tail_safe_confirmation_is_locked_and_paired():
         seed_rows = [(tag, overrides) for tag, overrides, _ in rows if tag.endswith(f"s{seed}")]
         assert {tag.split("_", 1)[0] for tag, _ in seed_rows} == {"moe", "dense"}
         assert all(f"seed={seed}" in overrides for _, overrides in seed_rows)
+    assert sweep.WANDB_JOB_TYPE == "rxrx1_tail_safe_confirm60"
+    assert "confirmatory" in sweep.WANDB_TAGS
 
 
 def test_tail_safe_sparse_configuration_has_no_tunable_fields():
