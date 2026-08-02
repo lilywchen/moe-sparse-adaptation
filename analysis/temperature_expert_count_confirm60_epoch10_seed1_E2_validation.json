@@ -1,0 +1,65 @@
+{
+  "validated_at": "2026-08-02T21:02:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_milestone",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "source_registry_commit": "488e77b",
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "904aff13f75fec7b3b2a8b5fd7c2ac5b65fc88c4",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "parameter_counts": {
+    "route_E2": {"total": 23584500, "active_ffn_including_router": 1182337},
+    "route_E8": {"total": 30676212, "active_ffn_including_router": 1184641}
+  },
+  "rows": {
+    "route_E2_seed1_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s1_temperature_expert_count_confirm60_route_E2_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.1455246600365334,
+      "acc_within": 0.3459568600413671,
+      "worst_env_val": 0.024350649350649352,
+      "checkpoint_bytes": 283365884,
+      "worker_pid": 43493,
+      "wandb_run_id": "28k2fboh"
+    },
+    "route_E8_seed1_epoch10_anchor": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s1_temperature_expert_count_confirm60_route_E8_s1_20260802",
+      "seed": 1,
+      "epoch": 10,
+      "acc_selection": 0.13517353359042014,
+      "acc_within": 0.34445484093371415,
+      "worst_env_val": 0.017045454545454544,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 44982,
+      "wandb_run_id": "qsbm21cg"
+    }
+  },
+  "deltas_points": {
+    "route_E2_minus_route_E8_seed1_epoch10": {
+      "ood_val": 1.035112644611326,
+      "id": 0.1502019107652972,
+      "worst_experiment": 0.7305194805194808
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "both_workers_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_E2_and_shared_E8_anchor_to_epoch30_under_locked_configuration",
+  "interpretation": "Seed-1 E2 is aligned on mean OOD, ID, and worst-experiment accuracy at epoch 10. Together with the positive seed-0 tail direction at epochs 10, 30, and 60, this is provisional evidence for a small-bank regularization effect, not yet a reproducible sparse-capacity result.",
+  "alternative": "The aligned early checkpoint is trajectory noise and the E2 bank is acting as ordinary capacity regularization rather than useful conditional specialization.",
+  "falsifier": "The E2-minus-E8 mean or tail direction disappears at locked epoch 30/60 or in seed 2, or randomized-route analysis shows no route reliance.",
+  "multiplicity": "Locked seed1 row after a multi-arm seed0 architecture screen; interim epoch10 evidence is not a population or replication claim."
+}

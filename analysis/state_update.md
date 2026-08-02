@@ -1499,3 +1499,16 @@ not reproduce the seed-0 early direction, so seed instability is now a sharper a
 evidence remains diagnostic. The publication attempt is no longer active: its one narrow retry
 failed before mutation because the stale persistent-main publisher lacks `publish_hf_run`. A new
 attempt is licensed only from a clean tested checkout with import and manifest-dry-path validation.
+
+Locked seed-1 route-E2 is `+1.035/+0.150/+0.731` OOD/ID/worst points above its shared route-E8
+anchor at epoch 10. This is aligned but interim and single-seed; both rows continue unchanged to
+epoch 30. Because seed-1 E16 is weaker on ID and tail at the same milestone, the current evidence
+does not support monotone gains from more experts. A small-bank regularization effect is more
+plausible than useful high-cardinality specialization, with trajectory noise as the alternative.
+The sharp falsifier is loss of the E2 mean or tail sign at later locked milestones or seed 2, or
+negligible randomized-route reliance.
+
+Publication repair passes exact four-run dry validation from code-equivalent tree `fee4c45d` and
+worker 114491 is active. One manifest exists at startup; no remote-completion claim is made until
+four manifests and 28 files are verified. Training remains fully assigned and OOD test remains
+sealed.

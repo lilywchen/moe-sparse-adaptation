@@ -2131,3 +2131,22 @@ license condition is a clean tested checkout with the publisher import and manif
 verified before one new bounded attempt. Training is unaffected: all ten available H100s retain
 their documented assignments, E32 seed2 remains the highest-ranked queued refill, and OOD test
 remains sealed.
+
+## 2026-08-02 21:02 EDT — Locked E2 is aligned at epoch 10; publication repair passes its dry gate
+
+Locked seed-1 route-E2 reaches OOD/ID/worst `0.14552/0.34596/0.02435` at epoch 10. Against the
+strictly validated shared route-E8 seed-1 anchor, the paired difference is
+`+1.035/+0.150/+0.731` points. Exact run/config/seed identity, finite metrics, ERM, four
+environments/9,854 samples, 283,365,884-byte checkpoint, live worker, fatal scan, OOD-validation
+selection, and sealed-test checks pass. This is an aligned locked interim signal, but only one fresh
+seed and one early checkpoint: E2 and E8 continue unchanged to epoch 30. Together with E16's weaker
+tail at the same seed, the current bounded explanation is small-bank regularization rather than
+monotone expert-bank specialization. Seed-2 or later-milestone sign loss remains the falsifier.
+
+The four-run publication repair was moved to the code-equivalent checkout that actually contains
+`publish_hf_run`. All four exact candidates pass a nonmutating strict dry validation and the encoded
+worker compiles before launch. Background worker 114491 is active; its log has no failure and the
+canonical-E32 checksum manifest has been created while remote verification proceeds. Completion is
+not claimed until all four manifests and 28 remote files are listed. All ten available H100s remain
+assigned, E32 seed2 is still the first queued refill, tester6 remains Pending for the unchanged
+scheduler reason, and OOD test remains sealed.
