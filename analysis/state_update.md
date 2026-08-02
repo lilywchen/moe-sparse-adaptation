@@ -1194,4 +1194,6 @@ The zero-auxiliary canonical temperature run is now a strict published final wit
 released container 2875/GPU0 was immediately refilled with the predeclared low-temperature
 canonical E4 arm (worker 104310) under the active-compute-matched fairness class. This is an
 architecture falsifier, not an exact-total-parameter efficacy comparison. Ten H100s are assigned
-again, and the remaining runnable queue is 11 arms.
+again, and the remaining runnable queue is 11 arms. W&B `vzbz70rc` is live. A missing controller
+marker was narrowly repaired once to the verified live worker PID 104310; no model restart or
+duplicate launch occurred.

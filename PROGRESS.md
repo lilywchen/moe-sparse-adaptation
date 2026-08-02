@@ -1669,3 +1669,5 @@ with the highest-ranked active-compute-matched architecture arm, low-temperature
 (controller 104305, worker 104310). The preflight found the GPU free, the run absent, the shard
 dry run exact, and the five-focused/118-full-tested code-equivalent checkout unchanged. Ten GPUs
 are assigned again; three E4/E16 pressure cells and eight broader expert-count cells remain ready.
+W&B `vzbz70rc` is live and epoch 1 is logged. The controller's expected `.active` marker was
+missing even though controller and worker were both alive; it was repaired once to worker 104310.
