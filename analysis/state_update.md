@@ -1228,3 +1228,37 @@ tester6 received exactly one start request and is Pending because 11 nodes fail 
 unschedulable, and three have insufficient GPUs; no duplicate was requested. On the next release,
 launch canonical E16 from shard 2/6 after free-GPU/no-duplicate preflight, then route E4, route E16,
 canonical E2, and route E2. OOD test stays sealed.
+
+## 2026-08-02 12:24 ET — aligned fresh-seed epoch-30 effect and architecture handoff
+
+The locked seed-1/2 tail-safe sparse-versus-exact-dense confirmation is strict-valid at epoch 30.
+Sparse minus dense OOD/ID/worst is `+1.756/+1.886/+0.041` points for seed 1 and
+`+1.451/+1.500/+0.122` for seed 2, averaging `+1.603/+1.693/+0.081`. The alignment reverses the
+mixed epoch-10 diagnosis and supports a reproducible but modest sparse direction. It does not meet
+the five-point target and is still multiplicity-exposed because the recipe was selected after
+several seed-0 screens. All four locked arms continue without tuning to epoch 60, whose paired
+trajectory is the sharp falsifier; no test or epoch-90 promotion is opened.
+
+Strict checks cover exact run/seed/epoch identity, finite metrics, ERM, four validation experiments
+and 9,854 samples, checkpoint identity and size, clean `7dcb42e` execution provenance, fatal scans,
+30,676,212 versus 30,675,834 total parameters, `selection_split=ood_val`, and
+`test_evaluated=false`. OOD-test fields are absent and the OOD test remains sealed.
+
+The bounded router-temperature screen now has `12/12/10` strict epoch-10/30/60 rows, ten finals,
+ten manifests, 70 remotely verified files, one active arm, and one preserved prune. Its completed
+low-temperature zero-auxiliary pressure pair gives route minus canonical
+`+0.264/+0.030/+0.000` OOD/ID/worst points at epoch 60. That small setting-specific gain does not
+challenge the canonical low-temperature plus-z-loss leader and weakens any claim that route
+pressure itself is a stable mechanism.
+
+The released container 2859/GPU0 immediately received canonical E16 from the tested six-cell
+temperature/expert-count registry. Controller 39104 and GPU worker 39109 are live; the absent
+marker was repaired once to the existing worker, with no restart or duplicate. Canonical E4 is
+strict-valid at epoch 10 and trails the shared E8 anchor by `0.852` OOD and `0.244` worst-
+experiment points while leading ID by `0.278`; it continues to epoch 30 because it is not
+Pareto-dominated. This family is active-compute matched only: E2/E4/E8/E16 total parameters are
+23.5845/25.9484/30.6762/40.1318M and active FFN-plus-router counts are
+1.1823/1.1831/1.1846/1.1877M. Ten H100s are assigned, 12 tested arms remain ready, and the next
+release launches route E4 (shard 4/6), followed by route E16, canonical E2, route E2, and broader
+expert-count arms. tester6 remains Pending for the unchanged scheduler reason without a repeat
+start request.

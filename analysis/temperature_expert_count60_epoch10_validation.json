@@ -1,0 +1,29 @@
+{
+  "campaign": "temperature_expert_count60_20260802",
+  "status": "canonical_E4_epoch10_strict_valid_directionally_below_E8_on_ood_and_tail_continue_to_epoch30",
+  "validated_at": "2026-08-02T12:24:32-04:00",
+  "source_before_ledger_commit": "efcc0be8c46a8b03456070a0ee56f8ef3c4ca615",
+  "registry_commit": "a97e9062d950fbf6171ceca744aecb94d64a5536",
+  "registry_tree": "36a9df3f987c8d2bc0df32cf72343e05fbad8a88",
+  "execution_base_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_base_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent",
+  "fairness_class": "active_compute_matched_only_total_parameters_intentionally_vary",
+  "parameter_counts": {
+    "E2": {"total": 23584500, "active_ffn_including_router": 1182337},
+    "E4": {"total": 25948404, "active_ffn_including_router": 1183105},
+    "E8_shared_anchor": {"total": 30676212, "active_ffn_including_router": 1184641},
+    "E16": {"total": 40131828, "active_ffn_including_router": 1187713}
+  },
+  "validation": "exact_run_seed_epoch_identity_live_command_config_finite_metrics_erm_four_environments_counts_2462_2464_2464_2464_total9854_311747397_byte_checkpoint_fatal_scan_and_ood_test_blindness_pass",
+  "row": {"run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_temperature_expert_count60_canonical_E4_20260802", "seed": 0, "pressure": "canonical", "n_experts": 4, "id": 0.31517777996651236, "ood_val": 0.1259387050943779, "worst_experiment": 0.015422077922077922, "checkpoint_bytes": 311747397},
+  "shared_E8_anchor_epoch10": {"id": 0.31239535112774547, "ood_val": 0.13446316216764764, "worst_experiment": 0.017857142857142856},
+  "E4_minus_E8_points": {"ood_val": -0.8524457073, "id": 0.2782428839, "worst_experiment": -0.2435064935},
+  "decision": "continue_E4_to_epoch30_because_it_is_not_dominated_on_all_axes_and_the_question_is_predeclared_as_delayed_architecture_specialization",
+  "interpretation": "E4_is_directionally_weaker_than_E8_on_ood_and_tail_at_epoch10_but_slightly_better_on_id_consistent_with_but_not_yet_establishing_an_expert_bank_capacity_effect",
+  "alternative": "the_epoch10_gap_is_optimization_noise_or_transient_and_E4_may_catch_up_by_epoch30",
+  "falsifier": "E4_ties_or_beats_E8_on_ood_tail_at_epoch30_and_E16_fails_to_improve_without_dead_experts",
+  "multiplicity": "exploratory_seed0_six_cell_E2_E4_E16_by_pressure_screen_with_shared_completed_E8_anchor"
+}

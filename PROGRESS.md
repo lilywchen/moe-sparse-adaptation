@@ -1702,3 +1702,46 @@ Its authoritative state is Pending: 11/16 nodes fail affinity, two are unschedul
 have insufficient GPU capacity; preemption cannot help. No duplicate start or container was
 created. OOD validation remains the only selection split, `test_evaluated=false`, and OOD test
 remains sealed. No W&B, HF, result, or manuscript artifact changed in this update.
+
+## 2026-08-02 12:24 EDT — fresh-seed epoch-30 effects align and released compute opens E16
+
+All four locked tail-safe confirmation arms now have strict epoch-30 milestones and checkpoints.
+Sparse minus exact-total-parameter-matched dense changes OOD-validation/ID/worst-experiment
+accuracy by `+1.756/+1.886/+0.041` points at seed 1 and `+1.451/+1.500/+0.122` points at seed 2.
+The two-seed means are `+1.603/+1.693/+0.081` points. This is the first aligned fresh-seed signal
+on all three decision axes, but it is a modest effect below the five-point target and remains a
+locked confirmation of a winner chosen after multiple seed-0 families. All four arms therefore
+continue unchanged to epoch 60; no epoch-90 promotion or OOD-test evaluation is licensed yet.
+
+The four rows pass exact run/seed/epoch identity, finite metrics, ERM, the four expected OOD-
+validation experiments and counts totaling 9,854 samples, `>300 MB` checkpoints, four-log fatal
+scans, `selection_split=ood_val`, `test_evaluated=false`, and absent OOD-test fields. MoE and dense
+contain 30,676,212 and 30,675,834 parameters, respectively, preserving the documented 378-
+parameter (0.001232%) exact-total fairness tolerance. The largest threat is selection across the
+preceding seed-0 factorial, router-auxiliary, and temperature screens; the sharp falsifier is loss
+of aligned mean/tail direction at the paired seed-1/2 epoch-60 checkpoint.
+
+Router-temperature accounting is now `12/12/10` strict rows at epochs 10/30/60. Ten finals have
+strict manifests and 70 remotely re-listed HF files. The completed low-temperature zero-auxiliary
+route row reaches OOD/ID/worst `0.209255/0.525978/0.021104`; route minus its exact canonical pair
+is only `+0.264/+0.030/+0.000` points. Route pressure is therefore setting dependent: it is
+harmful with z-loss, mildly positive with zero auxiliary loss, and does not displace the canonical
+low-temperature plus-z-loss seed-0 leader. The high-temperature zero-auxiliary route row is the
+only active cell left in this 12-cell family.
+
+Container 2859/GPU0 released after that final and was immediately assigned the predeclared
+low-temperature canonical E16 architecture arm (controller 39104, worker 39109). Free-GPU,
+no-duplicate, clean code-equivalent checkout, exact 2/6 shard dry run, persistent destination,
+campaign tracking/publication, and sealed-test checks passed. The worker holds 8,046 MiB and has no
+fatal signature. Its controller omitted the `.active` marker; the marker alone was repaired once
+to verified worker 39109 without a restart. The active-compute parameter ledger is E2/E4/E8/E16
+totals `23,584,500/25,948,404/30,676,212/40,131,828`, with active FFN-plus-router counts
+`1,182,337/1,183,105/1,184,641/1,187,713`; these claims are never pooled with exact-total fairness.
+
+Canonical E4 is strict-valid at epoch 10 with OOD/ID/worst
+`0.125939/0.315178/0.015422`. Relative to the shared completed E8 anchor it changes those metrics
+by `-0.852/+0.278/-0.244` points. E4 is not dominated on every axis and the expert-bank question
+allows delayed emergence, so it continues to epoch 30. Ten H100s remain assigned across five
+running containers, 12 tested nonduplicate arms remain ready, and tester6 remains Pending for the
+unchanged scheduler reason without another start request. The next automatic refill is route E4
+(shard 4/6), then route E16, canonical E2, route E2, and the broader expert-count queue.
