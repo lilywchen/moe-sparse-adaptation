@@ -1156,3 +1156,18 @@ remain allocated while final-result packaging completes, so there is no idle GPU
 The next two releases are licensed for locked sparse leader seeds 1 and 2 sharing the already
 active exact-dense anchors, followed by E4/E16 pressure arms. Multiplicity remains explicit and
 OOD test remains sealed.
+
+## 2026-08-02 11:14 ET — strict publication and locked fresh-seed handoff
+
+The completed `temperature=0.2,balance=0.01,zloss=0` pair now has strict result validation,
+manifests, and seven remotely verified HF files per run. This raises temperature finals/manifests
+to `7/7` and the remote verified-file count to 49. The scientific interpretation is unchanged:
+route pressure is a mean/ID tie with a tail cost at epoch 60, not a promotion.
+
+The two released GPUs were immediately assigned to the predeclared low-temperature canonical
+sparse leader at seeds 1 and 2. Container 2874/GPU1 runs worker 49277 (W&B `po7ckidl`) and
+container 2862/GPU0 runs worker 48824 (W&B `9sjnn6el`), paired with already-active exact dense
+anchors. A post-launch shell-scope error affected only the `.active` marker writes; both detached
+workers were healthy, and the markers were narrowly repaired once to their actual GPU PIDs. All
+ten running H100s are occupied by distinct arms, 12 tested arms remain ready, and OOD test stays
+sealed.

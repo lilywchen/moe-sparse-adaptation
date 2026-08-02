@@ -1618,3 +1618,19 @@ ERM, four held-out validation experiments totaling 9,854 samples, checkpoint ide
 OOD-test fields. The two epoch-60 workers are still finalizing and retain their GPU allocations;
 all ten running H100s remain assigned, with 14 independently tested arms ready for the next
 release. OOD test remains sealed.
+
+## 2026-08-02 11:14 EDT two finals published and both releases become locked replications
+
+The high-temperature moderate-balance canonical/route runs are now complete strict finals. Their
+result, log, milestone stream, three checkpoints, and SHA-256 manifest were uploaded and remotely
+re-listed at seven files per run. Router-temperature accounting is seven valid finals, four active,
+one preserved prune, seven manifests, and 49 remotely verified files.
+
+Container 2874/GPU1 immediately refilled with the locked low-temperature sparse seed-1 arm
+(worker PID 49277, W&B `po7ckidl`), and container 2862/GPU0 with the corresponding seed-2 arm
+(worker PID 48824, W&B `9sjnn6el`). Their exact dense seed-matched comparators were already active,
+so no anchors were duplicated. The initial detached launches started correctly, but shell scope
+caused only the controller-marker writes to fail; the markers were repaired once to the verified
+GPU worker PIDs. Exact command, clean execution checkout, live 7.9-8.0 GiB allocation, declared
+tracking group, data path, and OOD-test blindness all pass. Ten H100s are again assigned, with 12
+tested nonduplicate arms still ready.
