@@ -1551,3 +1551,44 @@ by the locked seed-1/2 sparse/dense confirmations and expert-count cells. `teste
 stopped after exactly one fresh start request this invocation and was not duplicated. There is no
 temperature final, manifest, or HF publication; W&B refill `rc731n1b` remains initialized. The
 screen is exploratory and multiplicity exposed, and OOD test remains sealed.
+
+## 2026-08-02 10:23 EDT first epoch-60 pressure pair identifies a stronger provisional survivor
+
+The complete low-temperature `balance=0,zloss=0.001` pressure pair raises strict temperature
+coverage to 11/10/3 and 24 cumulative milestones. Canonical OOD/ID/worst at epoch 60 are
+`0.218693/0.527750/0.022727`; route is `0.204485/0.526962/0.016234`. Route minus canonical is
+`-1.421/-0.079/-0.649` points, so within-experiment route pressure is harmful on all three axes in
+this exact pair. This rules out route pressure as the source of the gain.
+
+The canonical low-temperature row is nevertheless the strongest sparse seed-0 survivor seen so
+far. Relative to exact early dense it changes OOD/ID/worst by `+2.608/+3.240/+0.731` points and
+strictly exceeds the previously locked router-aux survivor by `+0.629/+0.111/+0.081`. It therefore
+becomes the provisional fresh-seed lock candidate when the bounded temperature campaign closes.
+The more plausible mechanism is global auxiliary regularization or router geometry, not
+within-experiment specialization. Seed-0 selection across the factorial, router-aux, and
+temperature screens is the largest threat; locked fresh seeds and exact dense controls are the
+sharp falsifier. No OOD-test value was accessed.
+
+## 2026-08-02 10:50 EDT five temperature finals published and all released GPUs refilled
+
+Five temperature runs now have strict final results, manifests, and remotely verified HF folders
+with seven files each. Coverage is `11/10/5` at epochs `10/30/60`. The second completed pressure
+pair (`temperature=0.03,balance=0.01,zloss=0`) changes OOD/ID/worst by
+`+0.162/-0.059/+0.284` route minus canonical points: a small directional mean/tail result, not a
+new leader. The low-temperature canonical plus z-loss row remains the provisional seed-0 leader;
+the route-pressure negative in its exact pair remains the stronger mechanism result. Multiplicity
+across the preceding screens is explicit, so no seed-0 winner is confirmation.
+
+Every released H100 received an immediate nonduplicate handoff. Container 2862/GPU1 now runs the
+last temperature cell (`route,t=0.2,zero auxiliary`, PID 47170, W&B `0kye1de5`). Container 2887
+runs the locked seed-1 sparse/dense pair (PIDs 32715/32716); container 2875/GPU1 and 2859/GPU1 run
+the locked seed-2 sparse/dense pair (PIDs 102783/37266). The first seed-2 registry launcher failed
+before model start because that clean execution checkout predates the registry script; the exact
+predeclared configurations were launched manually once from the same clean tested execution tree.
+All ten running H100s are assigned, while tester6 remains stopped after one start request.
+
+Two additional bounded registries are now staged: the new temperature leader at seeds 1/2 sharing
+the already-running exact dense anchors, and an active-compute-matched E4/E16 by pressure screen at
+the winning low-temperature/z-loss setting sharing the completed E8 pair. Together with the eight
+previous expert-count cells they restore a 14-arm candidate queue once remote tests and dry runs
+pass. OOD test remains sealed.

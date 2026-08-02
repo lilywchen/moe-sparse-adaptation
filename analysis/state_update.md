@@ -1097,3 +1097,39 @@ markers are initialized without errors; HF publication remains correctly empty b
 `tester6` 2893 stayed stopped after exactly one start request. One temperature cell remains queued,
 followed by four locked fresh-seed confirmation arms and eight expert-count cells; ready/backlog
 counts remain 13/24. OOD test remains sealed and 12-cell seed-0 multiplicity is explicit.
+
+## 2026-08-02 10:23 ET — low-temperature canonical plus z-loss is the new provisional survivor
+
+The first complete epoch-60 pressure pair raises strict router-temperature coverage to 11/10/3.
+At `temperature=0.03,balance=0,zloss=0.001`, canonical OOD/ID/worst are
+`0.218693/0.527750/0.022727` and route is `0.204485/0.526962/0.016234`. Route minus canonical is
+`-1.421/-0.079/-0.649` points, a clean negative for within-experiment route pressure in this cell.
+
+Against exact early dense, the canonical row is `+2.608/+3.240/+0.731` OOD/ID/worst points and it
+strictly exceeds the prior locked router-aux survivor by `+0.629/+0.111/+0.081`. This is a stronger
+exploratory seed-0 candidate under the predeclared smaller-mean plus tail pathway, but not a
+confirmation. The gain now points toward global auxiliary regularization or temperature-dependent
+router geometry rather than route-pressure specialization. Fresh-seed exact-dense comparisons are
+the sharp falsifier after the temperature campaign closes; multiplicity remains the largest threat.
+All 24 cumulative rows pass strict checks and OOD test remains sealed.
+
+## 2026-08-02 10:50 ET — five strict finals, full refill, and next architecture split
+
+Temperature coverage is now `11/10/5`; five exact result folders pass strict final validation,
+have manifests, and are remotely listed with seven HF files each. At
+`temperature=0.03,balance=0.01,zloss=0`, route minus canonical is
+`+0.162/-0.059/+0.284` OOD/ID/worst points. This is directional but smaller than the provisional
+low-temperature canonical plus z-loss leader and is not promoted.
+
+The last temperature arm and locked seed-1/2 sparse/dense pairs now occupy the four GPUs released
+by completed temperature runs. Exact assignments are recorded in `.steward/state.json`; ten
+workers occupy ten H100s and none are idle. A registry-availability launch failure occurred before
+model start and was repaired once with the exact frozen commands from clean execution commit
+`7dcb42e7`; no scientific run was excluded.
+
+The ready queue is being replenished with two sparse fresh-seed leader confirmations sharing the
+active dense anchors and four active-compute-matched E4/E16 pressure cells at the winning router
+temperature/z-loss. The E8 pressure pair is shared, not duplicated. These six arms remain pending
+remote tests and dry runs; after those checks they combine with eight tested expert-count arms for
+14 runnable candidates. The decisive falsifiers are fresh-seed sparse-minus-dense consistency and
+loss of the E8 signature under E4/E16. OOD test remains sealed.

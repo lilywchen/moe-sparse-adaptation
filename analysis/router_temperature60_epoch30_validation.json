@@ -1,15 +1,15 @@
 {
   "campaign": "router_temperature60_20260802",
-  "status": "eleven_epoch10_ten_epoch30_and_one_epoch60_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
-  "validated_at": "2026-08-02T10:17:41-04:00",
-  "source_before_ledger_commit": "c97ded607770957a56a808cbc0862e3363db7d7a",
+  "status": "eleven_epoch10_ten_epoch30_and_five_epoch60_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
+  "validated_at": "2026-08-02T10:34:33-04:00",
+  "source_before_ledger_commit": "a6b7457c61fc75575281b46de948ca0a6a74ec06",
   "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
   "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
   "expected_results": 12,
   "active_results": 10,
   "queued_results": 1,
   "pruned_results": 1,
-  "validated_milestones": {"epoch10": 11, "epoch30": 10, "epoch60": 1},
+  "validated_milestones": {"epoch10": 11, "epoch30": 10, "epoch60": 5},
   "selection_split": "ood_val",
   "test_evaluated": false,
   "ood_test_fields": "all_absent",
@@ -42,8 +42,23 @@
     {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.0608889791, "id": -0.6254309071, "worst_experiment": 0.0}}
   ],
   "epoch60_rows": [
-    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.5306805870186152, "ood_val": 0.21179216561802314, "worst_experiment": 0.019886363636363636, "checkpoint_bytes": 368520752}
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.5306805870186152, "ood_val": 0.21179216561802314, "worst_experiment": 0.019886363636363636, "checkpoint_bytes": 368520752},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.527750418595489, "ood_val": 0.21869291658209863, "worst_experiment": 0.022727272727272728, "checkpoint_bytes": 368520752},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.5269624741455727, "ood_val": 0.20448548812664907, "worst_experiment": 0.016233766233766232, "checkpoint_bytes": 368514056},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.52543583177386, "ood_val": 0.20773290034503755, "worst_experiment": 0.016639610389610388, "checkpoint_bytes": 368520752},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.5248448734364227, "ood_val": 0.2093566064542318, "worst_experiment": 0.01948051948051948, "checkpoint_bytes": 368514056}
   ],
+  "epoch60_paired_pressure_contrasts_points": [
+    {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -1.4207428455, "id": -0.0787944449, "worst_experiment": -0.6493506494}},
+    {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.1623706109, "id": -0.0590958337, "worst_experiment": 0.2840909091}}
+  ],
+  "epoch60_provisional_leader": {
+    "pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001,
+    "ood_val": 0.21869291658209863, "id": 0.527750418595489, "worst_experiment": 0.022727272727272728,
+    "minus_exact_early_dense_points": {"ood_val": 2.6080779379, "id": 3.2404215503, "worst_experiment": 0.7305194805},
+    "minus_prior_locked_router_aux_survivor_points": {"ood_val": 0.6291861173, "id": 0.1108046883, "worst_experiment": 0.0811688312},
+    "status": "exploratory_seed0_provisional_survivor_fresh_seed_lock_candidate_after_campaign_completion"
+  },
   "pruned_run": {
     "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t2em1_bw0_z1em3_20260802",
     "container_id": 2874,
@@ -70,8 +85,8 @@
     "temperature_0p03_route_minus_canonical_epoch30_points": {"ood_val": 0.0608889791, "id": -0.6254309071, "worst_experiment": 0.0},
     "status": "exact_temperature_0p03_pressure_pair_complete_epoch30_temperature_pair_incomplete_no_prune"
   },
-  "interpretation": "temperature_ordering_is_auxiliary_setting_dependent_at_epoch30_the_zero_auxiliary_temperature_0p03_exact_route_pair_has_only_a_0p061_point_mean_gain_with_0p625_point_id_loss_and_no_tail_change_and_the_first_epoch60_high_temperature_canonical_row_is_strong_but_inferior_on_mean_and_tail_to_the_already_locked_router_aux_survivor",
-  "alternative": "the_apparent_temperature_by_pressure_interaction_may_be_transient_optimization_noise_or_an_auxiliary_loss_effect_not_sparse_specialization",
-  "falsifier": "matched_temperature_and_pressure_contrasts_do_not_persist_at_epoch60_or_zero_auxiliary_pairs_fail_to_show_a_consistent_architecture_specific_pattern",
+  "interpretation": "low_temperature_canonical_plus_zloss_remains_the_exploratory_seed0_leader_and_strictly_exceeds_the_prior_locked_router_aux_survivor_on_ood_id_and_tail_while_route_pressure_is_harmful_with_zloss_and_only_small_mean_tail_positive_under_moderate_balance_so_the_leader_gain_points_to_global_auxiliary_regularization_or_router_geometry_not_within_experiment_route_pressure",
+  "alternative": "the_new_leader_may_be_a_seed0_selection_fluctuation_or_a_generic_auxiliary_regularization_effect_rather_than_reusable_sparse_specialization",
+  "falsifier": "the_remaining_epoch60_pairs_or_locked_fresh_seed_exact_dense_comparisons_fail_to_reproduce_the_leaders_mean_and_tail_advantage",
   "multiplicity": "exploratory_seed0_12_cell_screen"
 }
