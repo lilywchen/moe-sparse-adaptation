@@ -1,0 +1,33 @@
+{
+  "campaign": "router_temperature60_20260802",
+  "status": "six_initial_cells_strict_epoch10_valid_four_refills_active_two_queued",
+  "validated_at": "2026-08-02T08:37:36-04:00",
+  "source_before_ledger_commit": "b3a9c271c1b30a6d9adf75fd09a584e891ea641f",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_results": 12,
+  "active_results": 10,
+  "queued_results": 2,
+  "validated_milestones": {"epoch10": 6, "epoch30": 0, "epoch60": 0},
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_null_or_absent",
+  "validation": "exact_run_seed_epoch_identity_finite_metrics_erm_four_environments_9854_samples_checkpoint_over_300MB_fatal_scan_and_clean_provenance_pass",
+  "rows": [
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.31239535112774547, "ood_val": 0.13446316216764764, "worst_experiment": 0.017857142857142856},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.30522998128631934, "ood_val": 0.13446316216764764, "worst_experiment": 0.016233766233766232},
+    {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.304663646212942, "ood_val": 0.13426019890399837, "worst_experiment": 0.014204545454545454},
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.31281394661676354, "ood_val": 0.13426019890399837, "worst_experiment": 0.013392857142857142},
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.3099084014576972, "ood_val": 0.1338542723766998, "worst_experiment": 0.01461038961038961},
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.30715059588299026, "ood_val": 0.12949056220824032, "worst_experiment": 0.015016233766233766}
+  ],
+  "paired_pressure_contrasts_points": [
+    {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": 0.0, "id": -0.7165369841426128, "worst_experiment": -0.1623376623376624}},
+    {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": -0.4769636695758056, "id": 0.2486949670048255, "worst_experiment": 0.0811688311688312}},
+    {"temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": 0.04059265272985668, "id": 0.2905545159066325, "worst_experiment": -0.1217532467532468}}
+  ],
+  "interpretation": "initial_temperature_0.03_versus_0.2_does_not_create_a_material_epoch10_ordering_in_the_shared_zero_balance_zloss_setting",
+  "alternative": "temperature_may_affect_specialization_only_after_router_and_experts_diverge",
+  "falsifier": "no_persistent_temperature_by_pressure_or_tail_difference_at_epochs30_and60",
+  "multiplicity": "exploratory_seed0_12_cell_screen"
+}
