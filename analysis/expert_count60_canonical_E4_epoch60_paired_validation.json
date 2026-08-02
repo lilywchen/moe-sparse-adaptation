@@ -1,0 +1,93 @@
+{
+  "validated_at": "2026-08-02T17:56:00-04:00",
+  "campaign": "expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_terminal_pair_complete_and_published",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "same_canonical_E4_active_compute_parameters_seed_and_data_order_auxiliary_regularization_only",
+  "parameter_counts": {
+    "total": 25948404,
+    "active_ffn_including_router": 1183105
+  },
+  "rows": {
+    "canonical_E4_tail_safe_epoch60": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_expert_count60_canonical_E4_tail_safe_20260802",
+      "seed": 0,
+      "epoch": 60,
+      "balance_w": 0.01,
+      "zloss_w": 0.01,
+      "acc_selection": 0.20773290034503755,
+      "acc_within": 0.5230473751600512,
+      "worst_env_val": 0.016233766233766232,
+      "checkpoint_bytes": 311745867,
+      "worker_pid": 41687,
+      "wandb_run_id": "shgndkjb",
+      "experts_used": 4,
+      "routing_entropy": 0.9999561255784847,
+      "route_reliance": 0.002131114268317441,
+      "final_result_complete": true,
+      "controller_exit_code": 0,
+      "published_manifest_remote_files": 7
+    },
+    "canonical_E4_zero_aux_epoch60": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_expert_count60_canonical_E4_no_aux_20260802",
+      "seed": 0,
+      "epoch": 60,
+      "balance_w": 0.0,
+      "zloss_w": 0.0,
+      "acc_selection": 0.2040795615993505,
+      "acc_within": 0.5208559046587216,
+      "worst_env_val": 0.012581168831168832,
+      "checkpoint_bytes": 311743572,
+      "worker_pid": 43126,
+      "wandb_run_id": "60jcriar",
+      "experts_used": 4,
+      "routing_entropy": 0.980761160109987,
+      "route_reliance": 0.00040592652729853906,
+      "final_result_complete": true,
+      "controller_exit_code": 0,
+      "published_manifest_remote_files": 7
+    }
+  },
+  "deltas_points": {
+    "tail_safe_minus_zero_aux_epoch10": {
+      "ood_val": 0.5885934646,
+      "id": -0.4038215306,
+      "worst_experiment": 0.0811688312
+    },
+    "tail_safe_minus_zero_aux_epoch30": {
+      "ood_val": 1.7454840674,
+      "id": 0.9873928888,
+      "worst_experiment": 0.2029220779
+    },
+    "tail_safe_minus_zero_aux_epoch60": {
+      "ood_val": 0.365333874568705,
+      "id": 0.219147050132959,
+      "worst_experiment": 0.36525974025974
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "same_parameter_count_and_data_order": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "both_final_results_complete_and_controllers_rc0": true,
+    "cell_dino_dinov2_provenance_exact": true,
+    "two_checksum_manifests_and_fourteen_remote_files_verified": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "license_locked_fresh_seed_confirmation_of_the_auxiliary_effect_under_the_smaller_mean_consistent_worst_clause_but_do_not_claim_sparse_or_routing_specific_efficacy_without_dense_objective_controls",
+  "interpretation": "Canonical E4 tail-safe is modestly better than zero auxiliary on mean OOD and worst-experiment accuracy at all three milestones, with an aligned epoch-60 difference. Both final mechanism rows have near-zero randomized-route reliance, so this supports a bounded auxiliary-regularization effect for this sparse recipe, not useful specialization or a sparse-computation advantage.",
+  "alternative": "The small aligned difference is seed-0 trajectory noise or a generic regularization effect that would also occur in an exact dense objective control.",
+  "falsifier": "Fresh locked seeds must preserve the mean-or-tail direction with no more than two ID points lost, and exact dense objective controls must fail to explain it before any routing-specific claim is made.",
+  "multiplicity": "Seed0 objective pair after broad router, architecture, and auxiliary searches; the winner is exploratory and requires locked fresh seeds, exact controls, and multiplicity-aware interpretation."
+}

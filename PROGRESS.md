@@ -2211,3 +2211,71 @@ and seven remotely listed files: result JSON, run log, milestone stream, three c
 manifest. The verified report is `/home/idies/workspace/hb_publish_route_E4_zero_1735.report.json`.
 This closes artifact traceability only; the terminal negative, multiplicity, fairness, and sealed-
 test conclusions are unchanged.
+
+## 2026-08-02 17:56 EDT — Locked E16 aligns at epoch 30; canonical E4 auxiliary pair stays small but tail-consistent
+
+Locked seed-1 route E2/E8/E16 epoch-30 rows pass exact run/config/seed/epoch identity, finite
+metrics, ERM, four OOD-validation environments/9,854 samples, checkpoint identity, live-worker and
+fatal scans, active-compute fairness, `selection_split=ood_val`, `test_evaluated=false`, and sealed-
+test checks. E16 minus E8 is `+0.954/+1.157/+0.812` OOD/ID/worst points, aligned after its negative
+epoch-10 tail difference; E2 minus E8 is `+0.173/-0.837/-0.244`, a Pareto tradeoff. All three
+remain locked and continue unchanged to epoch 60. This is one fresh seed after a multi-arm screen,
+not a replication; seed 2 or epoch-60 sign loss and negligible route reliance remain the falsifier.
+
+The canonical E4 tail-safe and zero-auxiliary rows also reach strict epoch-60 milestones. Tail-safe
+minus zero auxiliary is `+0.365/+0.219/+0.365` OOD/ID/worst points, after positive mean and worst-
+experiment differences at epochs 10 and 30. This satisfies the predeclared smaller-mean,
+consistent-worst clause only for a bounded auxiliary-regularization confirmation. It does not show
+a sparse or routing-specific advantage: locked fresh seeds and exact dense objective controls are
+required. Both workers remain live for declared mechanism/final artifact emission, so no GPU is
+free and no refill is launched.
+
+All ten available H100s remain assigned: container2887 GPU0/1 workers41687/43493; 2875 GPU0/1
+110491/112826; 2874 GPU0/1 58240/56662; 2862 GPU0/1 57545/56371; and 2859 GPU0/1
+44982/43126. The tested ready queue remains 12 (four broader E16 cells plus eight extreme-
+auxiliary cells), backlog remains 27, and tester6 container2893 remains Pending for the exact
+11-affinity/two-unschedulable/three-insufficient-GPU reason without a duplicate start or create.
+OOD test remains sealed.
+
+## 2026-08-02 18:08 EDT — Canonical E4 finals close; broader route-E16 pair refills both releases
+
+Both canonical-E4 controllers exit cleanly with strict final JSONs, W&B sync, exact Cell-DINO and
+DINOv2 provenance, null OOD-test fields, and four-expert mechanism rows. Tail-safe and zero-
+auxiliary randomized-route reliance are only `0.00213` and `0.00041`, sharpening generic auxiliary
+regularization as the alternative to useful routing specialization. A strict two-run checksum
+publisher is active for two manifests and 14 expected remote files; completion is not yet claimed.
+
+Container2887/GPU0 immediately starts broader route-E16 tail-safe (controller45598, worker45603,
+W&B `9ycfe34j`) and container2859/GPU1 starts its exact route-E16 zero-auxiliary comparator
+(controller47666, worker47671, W&B `pujjny7w`). Exact shard-2/3 dry runs each report one planned,
+one pending cell; result/prune/active and duplicate guards, physical GPU checks, persistent
+destinations, matched seed/data/checkpoint policy, and sealed-test checks pass. Both startup logs
+load 9,854 OOD-validation samples with test untouched and have no fatal match. Their missing active
+markers were repaired once to the verified worker PIDs without restart. Ten H100s are again
+assigned. Ten tested arms remain ready; the licensed canonical-E4 fresh-seed registry is being
+prepared to restore the minimum twelve before the next release.
+## 2026-08-02 18:22 EDT — Canonical publication closes; locked auxiliary queue reaches fourteen
+
+The canonical-E4 pair now has two checksum manifests and all 14 expected remote files verified
+under `rxrx1/cell_dino_cp5/expert_count60_20260802`. Publication changes traceability only. A
+separate clean checkout predeclares the four locked canonical-E4 tail-safe/zero-auxiliary seed-1/2
+confirmation cells at source commit `d5d2b63`. Its exact script SHA-256 is
+`548790a06fa7ec422c4d9ec9d42962c15f3a994154f60ec3dc085e3459fe160a`; checksum-semantic checks,
+four exact one-cell dry runs, and the existing full suite exit zero. Together with two remaining
+broader E16 cells and eight extreme-auxiliary cells, the tested ready queue is 14 and the backlog is
+27. A private GitHub fetch on SciServer failed before mutation because no credential was available;
+the exact source payload was instead checksum-verified in memory. Launch therefore requires that
+same exact source transport or a clean credentialed checkout. OOD test remains sealed.
+
+## 2026-08-02 18:29 EDT — Seed 2 reverses E16 at epoch 30; E32 remains mixed and exploratory
+
+Five newly available locked milestones pass exact identity, finite metric, ERM, four-environment/
+9,854-sample, checkpoint, fatal-scan, OOD-validation-selection and sealed-test checks. At epoch 30,
+seed-2 E16 minus E8 is `-0.690/-0.192/-0.365` OOD/ID/worst points, reversing seed 1's aligned
+advantage; the descriptive two-seed mean is only `+0.132/+0.483/+0.223`. Seed-2 E2 is dominated by
+E8 at `-1.817/-1.684/-0.284`. E32 seed 1 is aligned over E8 at epoch 30
+(`+0.903/+1.088/+0.731`), while E32 seed 2 at epoch 10 improves mean and ID but loses tail
+(`+1.187/+1.189/-0.487`). No row is pruned because the predeclared epoch-60 adjudication is needed
+to resolve this seed and horizon heterogeneity. All findings remain exploratory and multiplicity-
+exposed; useful specialization is falsified if epoch 60 lacks a consistent mean-or-tail advantage
+with acceptable ID retention and non-negligible routing reliance.

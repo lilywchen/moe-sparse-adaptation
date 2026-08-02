@@ -1544,3 +1544,54 @@ The publisher's first encoded payload fails syntax compilation before any manife
 single narrow retry compiles and completes: route-E4 zero-auxiliary has one checksum manifest and
 seven remotely verified files. Publication changes traceability only; no scientific promotion,
 fairness reclassification, or OOD-test access follows.
+
+## 2026-08-02 17:56 EDT — Locked epoch-30 E16 aligns; canonical E4 auxiliary effect is bounded
+
+Three locked seed-1 expert-count rows and the canonical E4 epoch-60 objective pair are strict-valid.
+At epoch 30, E16 minus the same-seed E8 anchor is `+0.954/+1.157/+0.812` OOD/ID/worst points,
+while E2 minus E8 is `+0.173/-0.837/-0.244`. E16 therefore survives as an aligned later-emerging
+signal and E2 as a Pareto tradeoff; both continue unchanged with E8 to epoch 60. Seed 2 and the
+locked final milestone remain required, and these inspected multi-arm interim rows are not
+population estimates.
+
+Canonical E4 tail-safe minus zero auxiliary is `+0.365/+0.219/+0.365` at epoch 60. Its worst-
+experiment difference is positive at 10, 30, and 60 epochs, so the smaller-mean consistent-tail
+clause licenses a locked fresh-seed confirmation of this auxiliary effect. The claim is deliberately
+narrow: without exact dense objective controls and non-negligible routing reliance it cannot be
+called a sparse-computation or routing benefit. Both canonical workers are still finalizing their
+declared mechanism/result artifacts; all ten H100s remain assigned, ready queue and backlog remain
+12 and 27, tester6 is scheduler-Pending unchanged, and OOD test is sealed. First clean release still
+receives the highest-ranked broader E16 cell; the auxiliary confirmation registry/control is the
+next bounded preparation task.
+
+## 2026-08-02 18:08 EDT — Final canonical mechanism favors regularization; route-E16 pair refills
+
+The canonical E4 pair is now strict-final. Both rows use all four experts, but tail-safe and zero-
+auxiliary randomized-route reliance are only `0.00213` and `0.00041`. The aligned validation effect
+therefore remains an auxiliary-regularization signal rather than evidence that conditional routing
+is doing useful work. Two checksum manifests and 14 remote files are under strict background
+publication and are not yet counted complete.
+
+The two released H100s receive the exact predeclared broader route-E16 tail-safe/zero-auxiliary pair:
+2887/GPU0 worker45603/W&B `9ycfe34j` and 2859/GPU1 worker47671/W&B `pujjny7w`. Both exact one-cell
+dry runs, no-result/no-duplicate and physical-GPU guards, persistent tracking, data/checkpoint,
+active-compute fairness, and sealed-test checks pass. A narrow missing-marker repair writes only the
+verified live worker PIDs; no process is restarted. All ten H100s are assigned. The tested queue is
+temporarily ten after the two refills, and the already licensed four-arm canonical-E4 fresh-seed
+registry is the immediate preparation task to restore at least twelve ready arms.
+## 2026-08-02 18:29 EDT — Publication and queue close; locked bank-size evidence becomes heterogeneous
+
+The canonical-E4 pair is now remotely verified with two manifests and 14 files. Commit `d5d2b63`
+predeclares four locked fresh-seed auxiliary cells; checksum-semantic checks, four exact one-cell dry
+runs, and the existing full-suite exit status pass, restoring the tested queue to 14. SciServer's
+private GitHub fetch failed before mutation for lack of a credential, so readiness is explicitly
+code-equivalent by exact in-memory SHA-256 rather than a new clean remote checkout.
+
+New strict milestones materially weaken the expert-bank interpretation. Seed-2 E16 minus E8 at
+epoch 30 is `-0.690/-0.192/-0.365` OOD/ID/worst points, opposite seed 1; the descriptive two-seed
+mean is only `+0.132/+0.483/+0.223`. E2 is dominated at seed 2. E32 is aligned at seed 1 epoch 30
+but seed 2 epoch 10 loses worst-experiment accuracy despite higher mean and ID. All locked rows
+continue unchanged to epoch 60 because the disagreement is exactly what the predeclared final
+milestone must adjudicate. These are exploratory multi-arm interim comparisons, not population
+estimates; total-parameter scaling and generic regularization remain live alternatives, and OOD
+test remains sealed.

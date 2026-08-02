@@ -1,0 +1,80 @@
+{
+  "validated_at": "2026-08-02T17:56:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_milestone",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "source_registry_commits": {
+    "route_E8_and_route_E16": "4969659",
+    "route_E2": "488e77b"
+  },
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_same_pressure_temperature_auxiliary_seed_and_data_order_total_parameters_vary_by_expert_count",
+  "rows": {
+    "route_E2_seed1_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s1_temperature_expert_count_confirm60_route_E2_s1_20260802",
+      "seed": 1,
+      "epoch": 30,
+      "acc_selection": 0.18906028008930384,
+      "acc_within": 0.4636806855116714,
+      "worst_env_val": 0.01461038961038961,
+      "checkpoint_bytes": 283365884,
+      "worker_pid": 43493,
+      "wandb_run_id": "28k2fboh"
+    },
+    "route_E8_seed1_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s1_temperature_expert_count_confirm60_route_E8_s1_20260802",
+      "seed": 1,
+      "epoch": 30,
+      "acc_selection": 0.18733509234828497,
+      "acc_within": 0.4720525952920319,
+      "worst_env_val": 0.017045454545454544,
+      "checkpoint_bytes": 368517372,
+      "worker_pid": 44982,
+      "wandb_run_id": "qsbm21cg"
+    },
+    "route_E16_seed1_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s1_temperature_expert_count_confirm60_route_E16_s1_20260802",
+      "seed": 1,
+      "epoch": 30,
+      "acc_selection": 0.1968743657398011,
+      "acc_within": 0.4836255294001773,
+      "worst_env_val": 0.025162337662337664,
+      "checkpoint_bytes": 482054774,
+      "worker_pid": 110491,
+      "wandb_run_id": "gviobuj4"
+    }
+  },
+  "deltas_points": {
+    "route_E2_minus_route_E8_seed1_epoch30": {
+      "ood_val": 0.172518774101887,
+      "id": -0.837190978036059,
+      "worst_experiment": -0.2435064935064934
+    },
+    "route_E16_minus_route_E8_seed1_epoch30": {
+      "ood_val": 0.953927339151613,
+      "id": 1.15729341081454,
+      "worst_experiment": 0.811688311688312
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "all_workers_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "continue_locked_seed1_E2_E8_E16_unchanged_to_epoch60_E16_aligned_E2_pareto_tradeoff_no_interim_population_claim",
+  "interpretation": "At locked seed 1 and epoch 30, E16 is aligned over E8 on mean OOD, ID, and worst-experiment accuracy, whereas E2 preserves only a small mean gain with lower ID and tail. The E16 direction emerges later than epoch 10 and remains provisional until seed 2 and epoch 60.",
+  "alternative": "The aligned E16 row is checkpoint noise or ordinary optimization regularization rather than useful expert specialization.",
+  "falsifier": "Reject the expert-bank explanation if seed 2 or epoch 60 loses the E16 mean-or-tail direction, exceeds the two-point ID-loss allowance, or mechanism analysis shows dead or non-reliant routing.",
+  "multiplicity": "Locked seed1 interim comparison after a multi-arm seed0 screen; three bank sizes and multiple milestones are being inspected, so this is not a replication or population estimate."
+}

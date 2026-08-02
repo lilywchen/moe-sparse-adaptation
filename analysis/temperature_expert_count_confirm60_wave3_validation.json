@@ -1,0 +1,36 @@
+{
+  "validated_at": "2026-08-02T18:29:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_active_compute_matched_interim_milestones",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "registry_source_commits": {"route_E8_and_route_E16": "4969659", "route_E2": "488e77b", "route_E32": "21d7bbe"},
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_same_pressure_temperature_auxiliary_seed_and_data_order_total_parameters_vary_by_expert_count",
+  "rows": {
+    "route_E2_seed2_epoch30": {"run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s2_temperature_expert_count_confirm60_route_E2_s2_20260802", "seed": 2, "epoch": 30, "acc_selection": 0.17840470874771666, "acc_within": 0.4608736334088447, "worst_env_val": 0.01461038961038961, "checkpoint_bytes": 283365884, "worker_pid": 56662, "wandb_run_id": "l7vkvk81"},
+    "route_E8_seed2_epoch30_anchor": {"run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s2_temperature_expert_count_confirm60_route_E8_s2_20260802", "seed": 2, "epoch": 30, "acc_selection": 0.19656992084432717, "acc_within": 0.4777159460258052, "worst_env_val": 0.0174512987012987, "checkpoint_bytes": 368517372, "worker_pid": 56371, "wandb_run_id": "kkkemsr0"},
+    "route_E16_seed2_epoch30": {"run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s2_temperature_expert_count_confirm60_route_E16_s2_20260802", "seed": 2, "epoch": 30, "acc_selection": 0.18966916988025168, "acc_within": 0.47579533142913427, "worst_env_val": 0.013798701298701298, "checkpoint_bytes": 482054774, "worker_pid": 112826, "wandb_run_id": "abcjy5pp"},
+    "route_E32_seed1_epoch30": {"run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s1_temperature_expert_count_confirm60_route_E32_s1_20260802", "seed": 1, "epoch": 30, "acc_selection": 0.1963669575806779, "acc_within": 0.48293607800650057, "worst_env_val": 0.024350649350649352, "checkpoint_bytes": 709126791, "worker_pid": 57545, "wandb_run_id": "6cmjnu32"},
+    "route_E32_seed2_epoch10": {"run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s2_temperature_expert_count_confirm60_route_E32_s2_20260802", "seed": 2, "epoch": 10, "acc_selection": 0.14998985183681754, "acc_within": 0.34206638431990544, "worst_env_val": 0.010551948051948052, "checkpoint_bytes": 709126791, "worker_pid": 58240, "wandb_run_id": "e7s5hj5m"}
+  },
+  "deltas_points": {
+    "route_E2_minus_route_E8_seed2_epoch30": {"ood_val": -1.816521209661051, "id": -1.684231261696051, "worst_experiment": -0.284090909090909},
+    "route_E16_minus_route_E8_seed2_epoch30": {"ood_val": -0.6900750964075497, "id": -0.192061459667092, "worst_experiment": -0.3652597402597402},
+    "route_E32_minus_route_E8_seed1_epoch30": {"ood_val": 0.903186523239291, "id": 1.088348271446865, "worst_experiment": 0.7305194805194808},
+    "route_E32_minus_route_E8_seed2_epoch10": {"ood_val": 1.187335092348284, "id": 1.189303654092384, "worst_experiment": -0.487012987012987}
+  },
+  "two_seed_descriptive_means_points": {
+    "route_E2_minus_route_E8_epoch30": {"ood_val": -0.822001217779582, "id": -1.260711119866055, "worst_experiment": -0.2637987012987012},
+    "route_E16_minus_route_E8_epoch30": {"ood_val": 0.13192612137203165, "id": 0.482615975573724, "worst_experiment": 0.2232142857142859},
+    "route_E32_minus_route_E8_epoch10": {"ood_val": 0.938705094377917, "id": 0.3496503496503495, "worst_experiment": -0.4870129870129869}
+  },
+  "strict_checks": {"json_parseable_and_finite": true, "exact_run_seed_epoch_config_identity": true, "objective": "erm", "environment_ids": [7, 27, 42, 49], "environment_counts": [2462, 2464, 2464, 2464], "environment_total": 9854, "checkpoint_identity_and_size": true, "fatal_scan_clear": true, "all_workers_live_in_per_container_audit": true, "selection_split_ood_val": true, "ood_test_blind": true},
+  "decision": "continue_all_locked_rows_unchanged_to_epoch60_prune_no_rows_because_E16_seed_disagreement_and_E32_later_emergence_require_predeclared_final_adjudication",
+  "interpretation": "Seed 2 reverses the seed-1 epoch-30 E16 advantage over E8, leaving only a small descriptive two-seed mean. E32 is aligned over E8 at seed 1 epoch 30 and on mean/ID but not tail at seed 2 epoch 10. The bank-size effect is heterogeneous and provisional rather than replicated.",
+  "alternative": "Checkpoint noise, ordinary optimization regularization, or total-parameter scaling rather than useful expert specialization explains the mixed bank-size ranking.",
+  "falsifier": "Reject a useful expert-bank regime if epoch 60 fails to produce a consistent mean-or-tail advantage across locked seeds with acceptable ID retention and non-negligible routing reliance.",
+  "multiplicity": "Four bank sizes and multiple milestones follow a broad seed-0 screen; descriptive two-seed means are not population estimates and all winners remain exploratory."
+}
