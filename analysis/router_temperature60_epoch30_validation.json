@@ -1,15 +1,15 @@
 {
   "campaign": "router_temperature60_20260802",
-  "status": "eleven_epoch10_ten_epoch30_and_five_epoch60_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
-  "validated_at": "2026-08-02T10:34:33-04:00",
-  "source_before_ledger_commit": "a6b7457c61fc75575281b46de948ca0a6a74ec06",
+  "status": "twelve_epoch10_eleven_epoch30_and_seven_epoch60_rows_strict_valid_one_dominated_route_cell_pruned_and_refilled",
+  "validated_at": "2026-08-02T11:06:14-04:00",
+  "source_before_ledger_commit": "67c8539347b1246f7cdb0c417f062ed8eca9d464",
   "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
   "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
   "expected_results": 12,
   "active_results": 10,
   "queued_results": 1,
   "pruned_results": 1,
-  "validated_milestones": {"epoch10": 11, "epoch30": 10, "epoch60": 5},
+  "validated_milestones": {"epoch10": 12, "epoch30": 11, "epoch60": 7},
   "selection_split": "ood_val",
   "test_evaluated": false,
   "ood_test_fields": "all_absent",
@@ -20,7 +20,8 @@
     {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.3177878460, "ood_val": 0.1345646438, "worst_experiment": 0.0158279221},
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3128139466, "ood_val": 0.1367972397, "worst_experiment": 0.0117694805},
     {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3164581897, "ood_val": 0.1356809417, "worst_experiment": 0.0129870130},
-    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3079631636, "ood_val": 0.1339557540, "worst_experiment": 0.0146103896}
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3079631636, "ood_val": 0.1339557540, "worst_experiment": 0.0146103896},
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.3121491185, "ood_val": 0.1360868683, "worst_experiment": 0.0170454545}
   ],
   "epoch30_rows": [
     {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.47380084704028363, "ood_val": 0.1938299167850619, "worst_experiment": 0.016233766233766232},
@@ -32,7 +33,8 @@
     {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.46336058307889294, "ood_val": 0.18429064339354576, "worst_experiment": 0.015827922077922076},
     {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.4673495518565941, "ood_val": 0.19220621067586766, "worst_experiment": 0.013392857142857142},
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4669309563675761, "ood_val": 0.1892632433529531, "worst_experiment": 0.017045454545454544},
-    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4606766472963656, "ood_val": 0.18987213314390095, "worst_experiment": 0.017045454545454544}
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4606766472963656, "ood_val": 0.18987213314390095, "worst_experiment": 0.017045454545454544},
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.0, "id": 0.4587560327, "ood_val": 0.1832758271, "worst_experiment": 0.0170454545}
   ],
   "epoch30_paired_pressure_contrasts_points": [
     {"temperature": 0.2, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -0.8422975441, "id": -0.2437703142, "worst_experiment": -0.4870129870}},
@@ -46,11 +48,14 @@
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.527750418595489, "ood_val": 0.21869291658209863, "worst_experiment": 0.022727272727272728, "checkpoint_bytes": 368520752},
     {"pressure": "route", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "id": 0.5269624741455727, "ood_val": 0.20448548812664907, "worst_experiment": 0.016233766233766232, "checkpoint_bytes": 368514056},
     {"pressure": "canonical", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.52543583177386, "ood_val": 0.20773290034503755, "worst_experiment": 0.016639610389610388, "checkpoint_bytes": 368520752},
-    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.5248448734364227, "ood_val": 0.2093566064542318, "worst_experiment": 0.01948051948051948, "checkpoint_bytes": 368514056}
+    {"pressure": "route", "temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.5248448734364227, "ood_val": 0.2093566064542318, "worst_experiment": 0.01948051948051948, "checkpoint_bytes": 368514056},
+    {"pressure": "canonical", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.5264207623362553, "ood_val": 0.20651512076314188, "worst_experiment": 0.020698051948051948, "checkpoint_bytes": 368520752},
+    {"pressure": "route", "temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "id": 0.5268639810893332, "ood_val": 0.20692104729044042, "worst_experiment": 0.018262987012987012, "checkpoint_bytes": 368514056}
   ],
   "epoch60_paired_pressure_contrasts_points": [
     {"temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001, "route_minus_canonical": {"ood_val": -1.4207428455, "id": -0.0787944449, "worst_experiment": -0.6493506494}},
-    {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.1623706109, "id": -0.0590958337, "worst_experiment": 0.2840909091}}
+    {"temperature": 0.03, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.1623706109, "id": -0.0590958337, "worst_experiment": 0.2840909091}},
+    {"temperature": 0.2, "balance_weight": 0.01, "zloss_weight": 0.0, "route_minus_canonical": {"ood_val": 0.0405926527, "id": 0.0443218753, "worst_experiment": -0.2435064935}}
   ],
   "epoch60_provisional_leader": {
     "pressure": "canonical", "temperature": 0.03, "balance_weight": 0.0, "zloss_weight": 0.001,
@@ -85,7 +90,7 @@
     "temperature_0p03_route_minus_canonical_epoch30_points": {"ood_val": 0.0608889791, "id": -0.6254309071, "worst_experiment": 0.0},
     "status": "exact_temperature_0p03_pressure_pair_complete_epoch30_temperature_pair_incomplete_no_prune"
   },
-  "interpretation": "low_temperature_canonical_plus_zloss_remains_the_exploratory_seed0_leader_and_strictly_exceeds_the_prior_locked_router_aux_survivor_on_ood_id_and_tail_while_route_pressure_is_harmful_with_zloss_and_only_small_mean_tail_positive_under_moderate_balance_so_the_leader_gain_points_to_global_auxiliary_regularization_or_router_geometry_not_within_experiment_route_pressure",
+  "interpretation": "low_temperature_canonical_plus_zloss_remains_the_exploratory_seed0_leader_and_strictly_exceeds_the_prior_locked_router_aux_survivor_on_ood_id_and_tail_while_route_pressure_is_harmful_with_zloss_and_at_temperature_0p2_moderate_balance_is_effectively_tied_on_mean_id_with_a_repeated_tail_cost_so_the_leader_gain_points_to_global_auxiliary_regularization_or_router_geometry_not_within_experiment_route_pressure",
   "alternative": "the_new_leader_may_be_a_seed0_selection_fluctuation_or_a_generic_auxiliary_regularization_effect_rather_than_reusable_sparse_specialization",
   "falsifier": "the_remaining_epoch60_pairs_or_locked_fresh_seed_exact_dense_comparisons_fail_to_reproduce_the_leaders_mean_and_tail_advantage",
   "multiplicity": "exploratory_seed0_12_cell_screen"

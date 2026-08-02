@@ -1139,3 +1139,20 @@ five focused tests and all 118 tests pass, and dry runs enumerate exactly two lo
 sparse arms and four E4/E16 pressure arms. These six join the eight previously tested expert-count
 cells, making 14 runnable arms. The test checkout is explicitly code-equivalent on base execution
 commit `7dcb42e`; it is not mislabeled as a clean checkout of the unreachable GitHub object.
+
+## 2026-08-02 11:06 ET — high-temperature moderate balance is a mean tie with a tail cost
+
+Router-temperature validation now covers `12/11/7` strict epoch-10/30/60 rows. At
+`temperature=0.2,balance=0.01,zloss=0`, canonical OOD/ID/worst are
+`0.206515/0.526421/0.020698` and route is `0.206921/0.526864/0.018263`; route minus canonical is
+`+0.041/+0.044/-0.244` points. The mean and ID effect has effectively vanished by epoch 60 while
+the tail cost persists. This rules out a robust moderate-balance route-pressure gain for the exact
+pair and leaves global auxiliary regularization or temperature-dependent router geometry as the
+more plausible explanation for the seed-0 leader.
+
+All 30 rows pass exact identity, finite-metric, four-environment/9,854-sample, ERM, checkpoint,
+clean-provenance, fatal-scan, OOD-validation-selection, and OOD-test-blind checks. The two workers
+remain allocated while final-result packaging completes, so there is no idle GPU to hand off yet.
+The next two releases are licensed for locked sparse leader seeds 1 and 2 sharing the already
+active exact-dense anchors, followed by E4/E16 pressure arms. Multiplicity remains explicit and
+OOD test remains sealed.

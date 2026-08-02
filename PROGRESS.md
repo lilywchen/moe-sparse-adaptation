@@ -1599,3 +1599,22 @@ from GitHub commit `f5ac9f4` (all SHA-256 hashes matched). Five focused tests an
 118-test suite passed, and dry runs expanded to exactly two leader-confirmation plus four E4/E16
 pressure arms with unique run IDs and declared campaign destinations. The runnable ready queue is
 therefore 14 arms, with 25 backlog hypotheses.
+
+## 2026-08-02 11:06 EDT moderate-balance pressure does not survive as a robust effect
+
+Strict router-temperature coverage is now `12/11/7` at epochs `10/30/60`. The completed
+`temperature=0.2,balance=0.01,zloss=0` pair reaches canonical OOD/ID/worst
+`0.206515/0.526421/0.020698` and route `0.206921/0.526864/0.018263`. Route minus canonical is only
+`+0.041/+0.044/-0.244` points: an effective mean/ID tie with the same tail-cost direction seen at
+epoch 30. The lower-temperature canonical-plus-z-loss cell therefore remains the provisional
+seed-0 leader. Moderate-balance route pressure is not a reproducible robust mechanism in this
+pair, further favoring global auxiliary regularization or router geometry over within-experiment
+specialization. Fresh-seed sparse-versus-dense consistency remains the sharp falsifier, and the
+multi-family winner search remains the largest threat.
+
+All 30 cumulative milestone rows pass exact registry/run/seed/epoch identity, finite metrics,
+ERM, four held-out validation experiments totaling 9,854 samples, checkpoint identity, clean
+`7dcb42e` provenance, fatal scans, `selection_split=ood_val`, `test_evaluated=false`, and absent
+OOD-test fields. The two epoch-60 workers are still finalizing and retain their GPU allocations;
+all ten running H100s remain assigned, with 14 independently tested arms ready for the next
+release. OOD test remains sealed.
