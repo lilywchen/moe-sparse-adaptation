@@ -1766,3 +1766,105 @@ unchanged scheduler reason. Three low-temperature architecture arms are active, 
 queued, and eleven tested nonduplicate arms remain ready overall. The next release is route E16
 shard 5/6, then canonical E2, route E2, and the broader expert-count queue. These comparisons remain
 active-compute matched only; OOD validation is the selection split and OOD test remains sealed.
+
+## 2026-08-02 13:22 EDT — E4 pruned, route E16 launched, and locked leader reaches epoch 30
+
+Four new milestone rows are strict-valid. Canonical E4 at epoch 30 reaches OOD/ID/worst
+`0.185508/0.466906/0.011769`, trailing its shared canonical-E8 anchor by
+`-0.923/-0.793/-0.487` points. It meets the predeclared all-axis domination falsifier, so its
+epoch-30 checkpoint was preserved, a `.pruned` record was written, and worker 104310/controller
+104305 were stopped. This negative rules out E4 as a better low-temperature canonical bank size
+for this seed and recipe; it does not rule out route pressure, E2 capacity starvation, or E16/E32.
+
+Canonical E16 at epoch 10 reaches `0.139334/0.318625/0.015016` and differs from the shared E8
+anchor by `+0.487/+0.623/-0.284` points. This Pareto tradeoff is not dominated, so E16 continues
+to epoch 30. The freed container2875/GPU0 was immediately refilled by route E16: controller
+106027, worker 106032, W&B `eytascl6`. The exact shard dry run, no-duplicate/result-absent/free-GPU
+checks, persistent output, tracking/publication destinations, and sealed-test checks passed. A
+missing `.active` marker was repaired once to the verified worker without restart.
+
+The locked low-temperature sparse leader at seeds 1/2 is also strict-valid at epoch 30. Sparse
+minus the exact dense anchors is `+0.457/+0.850/-0.081` points at seed 1 and
+`+1.928/+1.576/+0.041` at seed 2, averaging `+1.192/+1.213/-0.020`. Positive mean OOD and ID
+license unchanged continuation to epoch 60, but the result is below the five-point target, lacks
+aligned tail improvement, and is weaker than the separately locked tail-safe epoch-30 pair. It is
+not a replication claim; selection multiplicity remains the largest threat and epoch 60 is the
+sharp falsifier.
+
+The ready queue was restored from ten to twelve by a bounded canonical/route E32 extension. GitHub
+commit `2e37f34819e6ddb6b4014bb17b820fe50ff3dc6c` adds the two-cell registry and test. In a separate
+SciServer code-equivalent checkout on execution base/tree `7dcb42e7`/`1755b2f`, four focused and
+117 full tests pass, SHA-256 identities match the local files, and two dry runs enumerate only
+canonical E32 and route E32 with the declared W&B/HF destinations. Ten H100s are again assigned;
+tester6 remains Pending for 11 affinity mismatches, two unschedulable nodes, and three insufficient-
+GPU nodes, with preemption unhelpful and no repeat start. The next refill is canonical E2, then
+route E2, canonical/route E32, and the eight broader expert-count arms. OOD test remains sealed.
+
+## 2026-08-02 13:42 EDT — seed-1 tail-safe final validates and both GPUs refill with E2
+
+The locked tail-safe seed-1 sparse and exact-dense pair completed epoch 60 and passes strict final
+validation. Sparse reaches OOD/ID/worst `0.217780/0.536393/0.024351`; dense reaches
+`0.206109/0.518591/0.022321`, for sparse-minus-dense `+1.167/+1.780/+0.203` points. The aligned
+mean, ID, and tail direction persists from epoch 30, although the mean advantage contracts and
+remains below +5. This is one fresh-seed final, not a completed replication: locked seed 2 is still
+running and is the sharp falsifier. Both folders now have strict manifests and seven remotely
+verified HF files; W&B runs are `pbuazutb` and `dv3di7mt`. OOD test was not evaluated.
+
+The released container2887 GPUs were immediately filled with the predeclared capacity-starved E2
+pair. Canonical E2 worker 37956/W&B `9q59fd1t` owns GPU0 and route E2 worker 37957/W&B
+`4sxy0aps` owns GPU1. Both exact shard dry runs, result/duplicate/physical-GPU checks, persistent
+destinations, and OOD-test-blind preflight passed. Both workers hold 7,956 MiB, logs are fatal-free,
+and missing `.active` markers were repaired once to the live workers without restart.
+
+Consuming the E2 pair reduced the ready queue to ten, so a bounded canonical/route E64 extreme-
+overfragmentation bracket was added at GitHub commit `09a22aa086181267e4d14e5e343f60451c41a9c1`.
+The SciServer code-equivalent E64 registry passed a focused disjointness/config check, the existing
+117-test suite, and two exact dry runs. The two E64 cells restore twelve ready arms: eight broader
+expert-count cells plus E32 and E64 pressure pairs. All ten running H100s are assigned; tester6
+remains Pending for the unchanged scheduler reason. Next refill is canonical E32, route E32, the
+E64 pair, then the broader queue. OOD test remains sealed.
+
+## 2026-08-02 14:20 EDT — two-seed tail-safe confirmation closes and five GPUs refill
+
+The locked tail-safe seed-1/2 sparse-versus-exact-dense comparison is now strict-valid at epoch 60
+for all four rows. Sparse minus dense OOD-validation/ID/worst-experiment accuracy is
+`+1.167/+1.780/+0.203` points for seed 1 and `+1.055/+2.593/+0.284` for seed 2, averaging
+`+1.111/+2.187/+0.244`. The effect is below the five-point mean target, but its aligned positive
+tail direction at both fresh seeds satisfies the predeclared smaller-mean plus consistent-tail
+alternative. This is decision-grade confirmation for this exact locked recipe, not a search-free
+population claim: the recipe was chosen after multiple seed-0 screens and uncertainty remains
+large at two fresh seeds. A third locked seed or independent locked family losing the positive
+tail direction is the sharpest falsifier. OOD test was not evaluated.
+
+The separately locked low-temperature seed-1/2 leader also closes with mean sparse-minus-dense
+`+0.761/+2.317/+0.162` points. Its aligned but weaker mean OOD result makes low temperature alone
+an insufficient explanation and leaves the tail-safe auxiliary recipe as the stronger candidate.
+The router-temperature family closes at 11 strict finals plus one preserved prune; the final
+high-temperature zero-auxiliary route row is OOD/ID/worst `0.211082/0.525042/0.024756`.
+All five new finals pass exact run/config/seed identity, finite metrics, four environments and
+9,854 samples, milestones/checkpoints 10/30/60, fatal scans, clean execution provenance,
+`selection_split=ood_val`, `test_evaluated=false`, and null/absent OOD-test fields. Publication is
+remotely verified at 4 manifests/28 files for tail-safe, 2/14 for the leader, and 11/77 for router
+temperature.
+
+Five released H100s were immediately refilled without duplicate scientific starts: canonical E32
+worker 108209 on 2875/GPU1, route E32 worker 51113 on 2862/GPU1, canonical E64 worker 41338 on
+2859/GPU1, route E64 worker 53264 on 2874/GPU1, and broader expert-count route-E4 tail-safe worker
+52582 on 2862/GPU0. The other live workers are canonical/route E2 37956/37957 on 2887, route E16
+106032 on 2875/GPU0, route E4 51475 on 2874/GPU0, and canonical E16 39109 on 2859/GPU0. All ten
+processes are owned by `idies`, hold 8.0--9.1 GB, and their recent fatal scans are clear. Latest
+epochs are E2 14/14, E16 34/26, route E4 37, E32 9/9, E64 9/6, and broader route-E4 6.
+Three completed stale markers were moved to explicit recoverable `stale_completed` names and five
+missing live markers were repaired to verified worker PIDs without restarting workers.
+
+Consuming five ready arms left seven, so an eight-cell E32/E64 by canonical/route by
+tail-safe/no-auxiliary interaction bracket was predeclared. Source commits
+`d370b701760a32ba45af2a172e5562fe587dce25` and
+`3ac5ef86c804e93f809f0caa347f8b34636cfff0` add and repair the direct registry execution. In a
+separate code-equivalent checkout on base/tree `4893c964e67477a25a2e3b331dde9c7e641ca669` /
+`74e62d3b`, 124 full tests pass and the direct dry run enumerates exactly eight unique cells with
+declared W&B/HF destinations. The ready queue is therefore 15 and the backlog is 27. tester6 2893
+remains Pending: 11 affinity mismatches, two unschedulable nodes, three insufficient-GPU nodes;
+preemption remains unhelpful and no repeat start/create was issued. On the next release, launch
+`expert_count60` canonical-E4 tail-safe, then its zero-auxiliary comparator; after the remaining
+seven broader cells, enter the extreme auxiliary bracket. OOD test remains sealed.

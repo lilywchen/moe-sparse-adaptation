@@ -1,10 +1,12 @@
 # RxRx1 Cell-DINO architectural hypothesis backlog
 
-Status: predeclared exploratory backlog, updated 2026-08-02 11:47 EDT. This registry extends the active
+Status: predeclared exploratory backlog, updated 2026-08-02 14:20 EDT. This registry extends the active
 factorial60 queue; it does not interrupt healthy workers and does not license OOD-test access.
-The active campaign now has thirteen tested runnable arms after two additional E2 lower-bracket
-arms passed isolated SciServer tests and dry runs, restoring the immediate queue above the 12-arm
-minimum. The rows below are the next bounded architectural questions to make
+The active campaign has fifteen tested runnable arms after five released GPUs were assigned
+canonical/route E32, canonical/route E64, and broader route-E4 tail-safe. An eight-cell extreme
+expert-bank by pressure by auxiliary-loss bracket passed isolated SciServer tests and an exact dry
+run, restoring the queue above the 12-arm minimum. The
+rows below are the next bounded architectural questions to make
 runnable through isolated implementation, regression testing, smoke tests, and exact matched
 controls. A selected seed-0 winner remains exploratory until its configuration is locked and
 replicated unchanged at fresh seeds.
@@ -77,6 +79,9 @@ points lost, or a smaller mean gain with a consistent predeclared worst-experime
 | 22 | Router temperature schedule: fixed `1.0` versus anneal `2.0→0.7` for early token-cosine. | Soft early credit assignment followed by sharper specialization improves epoch-30 OOD and route stability. | Generic learning-rate effect; falsified if entropy changes without conditional gain. | Exact-total-parameter; share dense and fixed-temperature comparator. |
 | 23 | Layerwise learning-rate decay preserving early shared features, crossed only with the best upcycling arm and its dense control. | Reduces late forgetting so the epoch-60 gain does not collapse by epoch 90. | Ordinary optimization rescues both equally; falsified by matched dense or no persistence. | Exact pair; licensed only after a rank 1--12 arm survives epoch 30. |
 | 24 | Locked winner ablation: learned router versus nearest-prototype cosine router computed from train-only features. | Prototype routing is more stable across experiments if learned routing overfits source batches. | Prototypes encode labels directly; falsified with class-agnostic morphology prototypes and dense controls. | Mechanism/exploratory; no held-out experiment identity; implement only after a reproducible learned-router lead. |
+| 25 | Extend the low-temperature plus-z-loss expert-bank bracket to canonical and route-pressure E32, sharing the completed E8 anchor. | If useful specialization continues with bank size, E32 improves mean OOD with nondead, stable expert use; if E16 is already sufficient, the curve saturates. | Raw parameter count or router fragmentation explains any movement; falsified by an E32 tie/loss versus E8/E16, dead experts, or unstable routes. | Active-compute matched only, not exact-total or original-budget matched; seed 0; 10/30/60; two-arm bounded extension; total/active FFN-plus-router parameters predeclared as 59,043,060/1,193,857. |
+| 26 | Extreme canonical/route E64 overfragmentation bracket at the same low-temperature plus-z-loss setting, sharing E8 and the E16/E32 trajectory. | If conditional capacity remains useful, E64 improves OOD without dead experts; otherwise route fragmentation or excess inactive parameters causes saturation or degradation. | A gain is raw capacity rather than routing; falsified by no E64 improvement over E16/E32, dead experts, unstable augmentation routes, or worse tail. | Active-compute matched only; seed 0; 10/30/60; two-arm hard upper bracket; total/active FFN-plus-router parameters predeclared as 96,865,524/1,206,145. |
+| 27 | Cross E32/E64 and canonical/route pressure with tail-safe auxiliary loss `(balance,z)=(0.01,0.01)` versus no auxiliary loss `(0,0)`, holding temperature 0.03 and data order fixed. | Auxiliary pressure prevents dead or highly imbalanced experts at extreme bank sizes and improves worst-experiment accuracy without erasing mean OOD. | Bank size is irrelevant or auxiliaries only add generic regularization; falsified by no usage/entropy interaction and no OOD/tail improvement over no-aux. | Active-compute matched only; eight seed-0 arms, 10/30/60 milestones; new W&B group/HF folder; never pool with exact-total efficacy. |
 
 ## Required measurements for every new MoE arm
 
@@ -89,21 +94,19 @@ matched performance comparison.
 
 ## Immediate refill policy
 
-Thirteen nonduplicate arms are tested and dry-run ready after three locked confirmations and one
-E4 architecture arm entered service. The two new low-temperature E2 lower-bracket arms are
-remotely licensed; none displaced a healthy worker:
+Fifteen nonduplicate arms are tested and dry-run ready after E32/E64 pairs and one broader cell
+entered service. The remaining broader and extreme-auxiliary brackets are remotely licensed; none
+displaced a healthy worker:
 
-1. eight expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
+1. seven remaining expert-count architecture arms crossing route/canonical pressure, 4/16 experts, and
    tail-safe versus zero auxiliary pressure; these are active-compute matched and must not be
    described as exact-total-parameter or original-budget matched; and
-2. the three remaining low-temperature E4/E16 pressure cells; and
-3. two new low-temperature E2 pressure arms sharing the completed E8 anchor. E2 is a capacity-
-   starved architecture falsifier: specialization predicts E2 < E4/E8 with both experts alive,
-   while an E2 tie would favor generic regularization over a need for a larger expert bank.
+2. eight E32/E64-by-pressure-by-auxiliary cells testing whether balance/z-loss prevents extreme-bank
+   fragmentation.
 
-The three remaining low-temperature E4/E16 cells have first refill priority, followed by the two
-E2 lower-bracket arms and then the eight broader expert-count cells. Expert-count arms answer the
+Broader canonical-E4 tail-safe has first refill priority, followed by canonical-E4 zero-auxiliary
+and the other five broader cells, then the eight extreme-auxiliary cells. Expert-count arms answer the
 next architectural question rather than retuning the selected pair. All arms inherit the sealed
 OOD test, 10/30/60 checkpoints, exact data ordering within each pair, declared W&B groups and HF
-campaign folders, and milestone validation before scientific consumption. The 24 ranked questions
+campaign folders, and milestone validation before scientific consumption. The 27 ranked questions
 above remain the hypothesis backlog.

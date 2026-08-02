@@ -1,0 +1,79 @@
+{
+  "validated_at": "2026-08-02T18:15:00Z",
+  "campaign": "temperature_leader_confirm60_20260802",
+  "classification": "locked_two_fresh_seed_exact_total_parameter_matched_confirmation_secondary_to_tail_safe",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "rows": {
+    "sparse_seed1": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s1_temperature_leader_confirm60_moe_s1_20260802",
+      "wandb_run_id": "po7ckidl",
+      "epoch": 60,
+      "acc_selection": 0.21189364724984777,
+      "acc_within": 0.5363193144883286,
+      "worst_env_val": 0.024756493506493508,
+      "total_parameters": 30676212,
+      "checkpoint_bytes": 368511569
+    },
+    "sparse_seed2": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s2_temperature_leader_confirm60_moe_s2_20260802",
+      "wandb_run_id": "9sjnn6el",
+      "epoch": 60,
+      "acc_selection": 0.21087883093160137,
+      "acc_within": 0.5319363734856692,
+      "worst_env_val": 0.01948051948051948,
+      "total_parameters": 30676212,
+      "checkpoint_bytes": 368511569
+    }
+  },
+  "exact_dense_anchors": "shared_locked_seed1_and_seed2_exact_dense_rows_in_tail_safe_confirm60_epoch60_validation.json",
+  "sparse_minus_exact_dense_points": {
+    "seed1": {
+      "ood_val": 0.578445301400447,
+      "id": 1.77287501231164,
+      "worst_experiment": 0.2435064935064936
+    },
+    "seed2": {
+      "ood_val": 0.943779175969147,
+      "id": 2.86122328375849,
+      "worst_experiment": 0.0811688311688312
+    },
+    "two_seed_mean": {
+      "ood_val": 0.761112238684797,
+      "id": 2.317049148035065,
+      "worst_experiment": 0.1623376623376624
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_locked_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "milestones": [10, 30, 60],
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "git_dirty": false,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true,
+    "fairness": "exact_total_parameter_matched_with_shared_locked_dense_anchors_and_378_parameter_tolerance"
+  },
+  "publication": {
+    "manifests": 2,
+    "hf_remote_verified_files_per_run": 7,
+    "hf_remote_verified_files_total": 14,
+    "prefix": "rxrx1/cell_dino_cp5/temperature_leader_confirm60_20260802",
+    "manifest_sha256": {
+      "seed1": "3a92aed44a3d25162d5eb5333cb1fa91011afb1855d17ea93d2e4e8e81e5dae1",
+      "seed2": "804ffb5a759ed58d312fea2538b0f2f1814a6ec30a3ffc8889255bb212413d90"
+    }
+  },
+  "decision": "small_aligned_two_seed_mean_id_tail_gain_but_weaker_ood_than_tail_safe_and_below_five_point_target_no_epoch90_or_ood_test",
+  "interpretation": "lower temperature is not sufficient for a large sparse effect; the tail-safe auxiliary recipe is the stronger locked candidate",
+  "sharp_falsifier": "tail_safe_recipe_fails_to_outperform_this_leader_on_an_additional_locked_seed_or_tail_direction_reverses",
+  "multiplicity": "secondary locked confirmation of a seed0-selected temperature winner; two fresh seeds reduce but do not remove selection uncertainty"
+}

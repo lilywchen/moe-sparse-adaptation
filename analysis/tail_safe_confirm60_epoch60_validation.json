@@ -1,0 +1,98 @@
+{
+  "validated_at": "2026-08-02T18:15:00Z",
+  "campaign": "tail_safe_confirm60_20260802",
+  "classification": "locked_two_fresh_seed_exact_total_parameter_matched_confirmation_decision_grade_for_exact_recipe",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "rows": {
+    "sparse_seed1": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s1_tail_safe_confirm60_moe_s1_20260802",
+      "wandb_run_id": "pbuazutb",
+      "epoch": 60,
+      "acc_selection": 0.2177795818956769,
+      "acc_within": 0.5363931842805082,
+      "worst_env_val": 0.024350649350649352,
+      "total_parameters": 30676212,
+      "checkpoint_bytes": 368504044
+    },
+    "exact_dense_seed1": {
+      "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s1_tail_safe_confirm60_dense_s1_20260802",
+      "wandb_run_id": "dv3di7mt",
+      "epoch": 60,
+      "acc_selection": 0.2061091942358433,
+      "acc_within": 0.5185905643652122,
+      "worst_env_val": 0.022321428571428572,
+      "total_parameters": 30675834,
+      "checkpoint_bytes": 368432734
+    },
+    "sparse_seed2": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s2_tail_safe_confirm60_moe_s2_20260802",
+      "wandb_run_id": "d0k0a92d",
+      "epoch": 60,
+      "acc_selection": 0.2119951288816724,
+      "acc_within": 0.5292524377031419,
+      "worst_env_val": 0.02150974025974026,
+      "total_parameters": 30676212,
+      "checkpoint_bytes": 368504044
+    },
+    "exact_dense_seed2": {
+      "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s2_tail_safe_confirm60_dense_s2_20260802",
+      "wandb_run_id": "6ph9amzz",
+      "epoch": 60,
+      "acc_selection": 0.2014410391719099,
+      "acc_within": 0.5033241406480843,
+      "worst_env_val": 0.018668831168831168,
+      "total_parameters": 30675834,
+      "checkpoint_bytes": 368432734
+    }
+  },
+  "sparse_minus_exact_dense_points": {
+    "seed1": {
+      "ood_val": 1.16703876598336,
+      "id": 1.7802619915296,
+      "worst_experiment": 0.202922077922078
+    },
+    "seed2": {
+      "ood_val": 1.05540897097625,
+      "id": 2.59282970550576,
+      "worst_experiment": 0.2840909090909092
+    },
+    "two_seed_mean": {
+      "ood_val": 1.111223868479805,
+      "id": 2.18654584851768,
+      "worst_experiment": 0.2435064935064936
+    }
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_locked_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "milestones": [10, 30, 60],
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "git_dirty": false,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true,
+    "fairness": "exact_total_parameter_matched_with_378_parameter_0.001232_percent_tolerance"
+  },
+  "publication": {
+    "manifests": 4,
+    "hf_remote_verified_files_per_run": 7,
+    "hf_remote_verified_files_total": 28,
+    "prefix": "rxrx1/cell_dino_cp5/tail_safe_confirm60_20260802",
+    "seed2_manifest_sha256": {
+      "sparse": "102ad53446e551c95f54f72f56f34a06cc3a2586aabf6819dd6106973432224c",
+      "exact_dense": "fb1911fc096af040b3f9994e1013246172ec8a7dc652ee9361778d85e8ca2230"
+    }
+  },
+  "decision": "exact_recipe_confirms_a_small_consistent_mean_id_and_predeclared_tail_gain_across_two_fresh_seeds_below_five_point_mean_target_no_epoch90_or_ood_test",
+  "interpretation": "sparse conditional computation has a reproducible small advantage for this locked tail-safe recipe, including aligned worst-experiment gains, but not a large mean-OOD effect",
+  "sharp_falsifier": "a_third_locked_fresh_seed_or_independent_locked_family_loses_the_positive_tail_direction_or_the_mean_effect_collapses_to_zero",
+  "multiplicity": "confirmatory for the locked recipe at two fresh seeds, but the recipe itself was selected after multiple seed0 screens and n_equals_2 limits population uncertainty"
+}

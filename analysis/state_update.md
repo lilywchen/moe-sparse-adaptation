@@ -1277,3 +1277,62 @@ started worker 51475 (W&B `ka08nx5w`) from the tested code-equivalent checkout o
 repaired once to the live worker without restart. All ten available H100s are assigned, eleven arms
 remain ready, and the next refill is route E16 shard 5/6. This family is active-compute matched,
 exploratory, selected only on OOD validation, and OOD test remains sealed.
+
+### 2026-08-02 13:22 EDT — architecture pruning/refill and locked leader epoch-30 validation
+
+Canonical E4 is strict-valid at epoch 30 but strictly dominated by the shared canonical E8
+anchor: E4 minus E8 OOD/ID/worst is `-0.923/-0.793/-0.487` points. Its checkpoint and explicit
+prune record are preserved, and the worker was stopped under the predeclared epoch-30 rule.
+Canonical E16 at epoch 10 is a `+0.487/+0.623/-0.284` point mean/ID/tail tradeoff versus E8 and
+therefore continues. The released 2875/GPU0 was immediately assigned route E16 (controller
+106027, worker 106032, W&B `eytascl6`); a marker-only repair was performed without restart.
+
+The locked low-temperature leader sparse-minus-exact-dense deltas at epoch 30 are
+`+0.457/+0.850/-0.081` for seed 1 and `+1.928/+1.576/+0.041` for seed 2, averaging
+`+1.192/+1.213/-0.020`. This supports unchanged continuation to epoch 60 but is below the +5
+target and does not show consistent tail safety, so it is not replicated or promoted.
+
+A two-arm E32 overfragmentation bracket restores twelve tested ready arms. Source commit
+`2e37f34819e6ddb6b4014bb17b820fe50ff3dc6c` passed four focused and 117 full tests in the separate
+SciServer code-equivalent checkout; dry runs enumerate unique canonical/route E32 cells only.
+All ten running H100s are assigned. tester6 remains Pending for the unchanged exact scheduler
+reason and received no repeat start. Next launch order is canonical E2, route E2, the E32 pair,
+then the broader expert-count queue. OOD test remains sealed.
+
+### 2026-08-02 13:42 EDT — seed-1 final, publication, and two-slot E2 handoff
+
+The locked tail-safe seed-1 pair is strict-valid at epoch 60. Sparse minus exact dense is
+`+1.167/+1.780/+0.203` OOD/ID/worst points. All three directions are positive, but the mean gain
+is below +5 and contracts from epoch 30; seed 2 must complete before any replication decision.
+Two manifests and 14 HF files were remotely verified. OOD test remains sealed.
+
+Container2887 released both H100s and immediately started canonical E2 worker 37956/W&B
+`9q59fd1t` on GPU0 and route E2 worker 37957/W&B `4sxy0aps` on GPU1. Both hold 7,956 MiB with
+fatal-free logs; missing markers were repaired once without restart. A two-cell E64 extension at
+source commit `09a22aa086181267e4d14e5e343f60451c41a9c1` passed a focused semantic check, 117 full
+tests, and two exact SciServer dry runs, restoring twelve ready arms. Next launch order is the E32
+pair, E64 pair, then eight broader expert-count cells. tester6 remains Pending unchanged.
+
+### 2026-08-02 14:20 EDT — locked final decision, full refill, and queue expansion
+
+The complete locked tail-safe two-seed final is strict-valid and published. Sparse minus exact
+dense OOD/ID/worst is `+1.167/+1.780/+0.203` at seed 1 and `+1.055/+2.593/+0.284` at seed 2;
+the two-seed mean is `+1.111/+2.187/+0.244`. This is decision-grade for the exact recipe under the
+predeclared smaller-mean plus consistent-tail criterion, but it remains multiplicity-exposed and
+uncertain at only two fresh seeds. The locked low-temperature leader closes at a weaker two-seed
+mean `+0.761/+2.317/+0.162`, so low temperature alone is not the best current explanation.
+Router-temperature closes at 11 finals and one prune. All new rows remain OOD-test blind and are
+published at 4/28, 2/14, and 11/77 manifests/files for tail-safe, leader, and router-temperature.
+
+The five released GPUs immediately received canonical/route E32, canonical/route E64, and
+broader route-E4 tail-safe. Exact live assignments are 2887 GPU0/1 workers 37956/37957; 2875
+GPU0/1 106032/108209; 2874 GPU0/1 51475/53264; 2862 GPU0/1 52582/51113; and 2859 GPU0/1
+39109/41338. Ten live markers now match these workers; three completed stale markers are preserved
+with explicit suffixes. No fatal signature or idle H100 is present.
+
+An eight-cell E32/E64 by pressure by auxiliary-loss interaction bracket restores 15 tested ready
+arms and 27 predeclared hypotheses. The separate code-equivalent checkout passes 124 full tests
+and one direct eight-cell dry run after a narrow direct-execution bootstrap repair at source
+`3ac5ef86c804e93f809f0caa347f8b34636cfff0`. Next refill is broader canonical-E4 tail-safe, then
+canonical-E4 zero-auxiliary, with the remaining broader cells before the extreme bracket.
+tester6 remains Pending for the exact unchanged scheduler reason and received no duplicate action.

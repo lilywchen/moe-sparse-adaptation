@@ -1,0 +1,51 @@
+{
+  "validated_at": "2026-08-02T18:15:00Z",
+  "campaign": "router_temperature60_20260802",
+  "classification": "complete_seed0_exploratory_sweep_with_multiplicity",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "expected_results": 12,
+  "valid_results": 11,
+  "pruned_results": 1,
+  "active_results": 0,
+  "queued_results": 0,
+  "validated_milestones": {"epoch10": 12, "epoch30": 12, "epoch60": 11},
+  "new_final": {
+    "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_router_temperature60_route_t2em1_bw0_z0_20260802",
+    "wandb_run_id": "0kye1de5",
+    "epoch": 60,
+    "acc_selection": 0.21108179419525067,
+    "acc_within": 0.5250418595489018,
+    "worst_env_val": 0.024756493506493508,
+    "total_parameters": 30676212,
+    "checkpoint_bytes": 368511569,
+    "manifest_sha256": "850bd81c2f0153644be485db28545c1e844c3b263b3369451e08df07b51fb342"
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_registry_run_seed_epoch_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "milestones": [10, 30, 60],
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "git_dirty": false,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "publication": {
+    "manifests": 11,
+    "hf_remote_verified_files_per_run": 7,
+    "hf_remote_verified_files_total": 77,
+    "prefix": "rxrx1/cell_dino_cp5/router_temperature60_20260802"
+  },
+  "decision": "campaign_closed_without_large_sparse_effect; preserve_all_valid_rows_and_do_not_promote_seed0_winner_without_locked_fresh_seed_confirmation",
+  "interpretation": "temperature and auxiliary pressure alter small mean-tail tradeoffs but do not establish a five-point sparse advantage",
+  "sharp_falsifier": "a_locked_fresh_seed_pair_from_a_predeclared_temperature_cell_reproduces_a_large_or_consistent_tail_safe_gain",
+  "multiplicity": "eleven completed seed0 cells plus prior related screens make any within-sweep winner exploratory"
+}

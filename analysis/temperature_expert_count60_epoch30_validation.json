@@ -1,0 +1,68 @@
+{
+  "validated_at": "2026-08-02T13:22:00-04:00",
+  "campaign": "temperature_expert_count60_20260802",
+  "classification": "exploratory_active_compute_matched_architecture_screen",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "rows": {
+    "canonical_E4_epoch30": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_temperature_expert_count60_canonical_E4_20260802",
+      "seed": 0,
+      "epoch": 30,
+      "acc_selection": 0.18550842297544146,
+      "acc_within": 0.4669063331035162,
+      "worst_env_val": 0.01176948051948052,
+      "checkpoint_bytes": 311747397,
+      "total_parameters": 25948404,
+      "active_ffn_including_router": 1183105
+    },
+    "canonical_E16_epoch10": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E16k1_ep60_s0_temperature_expert_count60_canonical_E16_20260802",
+      "seed": 0,
+      "epoch": 10,
+      "acc_selection": 0.13933428049523036,
+      "acc_within": 0.3186250369348961,
+      "worst_env_val": 0.015016233766233766,
+      "checkpoint_bytes": 482051839,
+      "total_parameters": 40131828,
+      "active_ffn_including_router": 1187713
+    },
+    "shared_canonical_E8_epoch30_anchor": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_router_temperature60_canonical_t3em2_bw0_z1em3_20260802",
+      "seed": 0,
+      "epoch": 30,
+      "acc_selection": 0.19474325147148366,
+      "acc_within": 0.47483502413079876,
+      "worst_env_val": 0.016639610389610388,
+      "total_parameters": 30676212,
+      "active_ffn_including_router": 1184641
+    }
+  },
+  "deltas_points": {
+    "canonical_E4_minus_shared_E8_at_epoch30": {"ood_val": -0.9234828496042205, "id": -0.792869102728256, "worst_experiment": -0.4870129870129869},
+    "canonical_E16_minus_shared_E8_at_epoch10": {"ood_val": 0.4871118327932797, "id": 0.6229685807199899, "worst_experiment": -0.28409090909090906}
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "live_process_checkout_identity": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": {
+    "canonical_E4": "pruned_at_epoch30_strictly_dominated_by_shared_E8_on_ood_id_and_worst",
+    "canonical_E16": "continue_to_epoch30_pareto_tradeoff_not_dominated",
+    "preserved_prune_marker": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature_expert_count60_20260802/rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_temperature_expert_count60_canonical_E4_20260802.pruned",
+    "refill": {"run_id": "rxrx1_moe_early_token_cosine_route_E16k1_ep60_s0_temperature_expert_count60_route_E16_20260802", "container_id": 2875, "gpu": 0, "controller_pid": 106027, "worker_pid": 106032, "wandb_run_id": "eytascl6", "marker_only_repair": true}
+  },
+  "multiplicity": "seed0 exploratory architecture screen selected after prior factorial, router-auxiliary, and temperature sweeps; no confirmatory claim"
+}

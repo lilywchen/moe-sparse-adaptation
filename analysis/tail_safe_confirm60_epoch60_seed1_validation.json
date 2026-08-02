@@ -1,0 +1,62 @@
+{
+  "validated_at": "2026-08-02T13:42:00-04:00",
+  "campaign": "tail_safe_confirm60_20260802",
+  "classification": "locked_fresh_seed_final_pair_interim_until_seed2_completes",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": "all_absent_or_null",
+  "execution_commit": "7dcb42e7fa46536588903cf0cd9c3a2c2b45e3be",
+  "execution_tree": "1755b2f967e6ecfd1adef8a4e346defeca44904e",
+  "rows": {
+    "sparse_seed1": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s1_tail_safe_confirm60_moe_s1_20260802",
+      "wandb_run_id": "pbuazutb",
+      "epoch": 60,
+      "acc_selection": 0.2177795818956769,
+      "acc_within": 0.5363931842805082,
+      "worst_env_val": 0.024350649350649352,
+      "total_parameters": 30676212,
+      "checkpoint_bytes": 368504044
+    },
+    "exact_dense_seed1": {
+      "run_id": "rxrx1_dense_wide_early_canonical_E8_ep60_s1_tail_safe_confirm60_dense_s1_20260802",
+      "wandb_run_id": "dv3di7mt",
+      "epoch": 60,
+      "acc_selection": 0.2061091942358433,
+      "acc_within": 0.5185905643652122,
+      "worst_env_val": 0.022321428571428572,
+      "total_parameters": 30675834,
+      "checkpoint_bytes": 368432734
+    }
+  },
+  "sparse_minus_exact_dense_points": {
+    "ood_val": 1.167038765983358,
+    "id": 1.780261991529597,
+    "worst_experiment": 0.202922077922078
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_epoch_locked_config_identity": true,
+    "objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "milestones": [10, 30, 60],
+    "checkpoint_identity_and_size": true,
+    "fatal_scan_clear": true,
+    "git_dirty": false,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true,
+    "fairness": "exact_total_parameter_matched_with_378_parameter_0.001232_percent_tolerance"
+  },
+  "publication": {
+    "manifests": 2,
+    "hf_remote_verified_files_per_run": 7,
+    "hf_remote_verified_files_total": 14,
+    "prefix": "rxrx1/cell_dino_cp5/tail_safe_confirm60_20260802"
+  },
+  "decision": "seed1_pair_supports_aligned_modest_mean_id_tail_advantage_but_wait_for_locked_seed2_before_final_replication_decision",
+  "interpretation": "epoch30 seed1 advantage persists but contracts on mean OOD; below the five-point target, with positive tail",
+  "sharp_falsifier": "seed2_epoch60_fails_positive_paired_mean_or_tail_direction",
+  "multiplicity": "recipe selected after multiple seed0 screens; one fresh seed final is not a completed replication"
+}
