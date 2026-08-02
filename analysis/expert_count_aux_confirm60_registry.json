@@ -1,0 +1,31 @@
+{
+  "predeclared_at": "2026-08-02T18:12:00-04:00",
+  "campaign": "expert_count_aux_confirm60_20260802",
+  "classification": "locked_fresh_seed_auxiliary_regularization_confirmation_not_sparse_or_routing_specific",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "wandb_group": "rxrx1-cell-dino-expert-count-aux-confirm60-20260802",
+  "hf_prefix": "rxrx1/cell_dino_cp5/expert_count_aux_confirm60_20260802",
+  "fairness_class": "same_canonical_E4_active_compute_total_parameters_seed_data_order_and_schedule_auxiliary_setting_only",
+  "parameter_counts": {
+    "total": 25948404,
+    "active_ffn_including_router": 1183105
+  },
+  "shared_hypothesis": "The seed-0 canonical-E4 tail-safe advantage is a reproducible auxiliary-regularization effect with a consistent worst-experiment direction.",
+  "predicted_signature": "Tail-safe minus zero auxiliary preserves positive mean OOD or worst-experiment accuracy at epochs 30 and 60 with no more than two ID points lost.",
+  "alternative_explanation": "The seed-0 difference is checkpoint noise or generic regularization that exact dense objective controls can explain.",
+  "falsifier": "Either fresh seed loses both mean and worst direction at the locked final milestone, ID loss exceeds two points, or exact dense objective controls reproduce the effect.",
+  "horizon_epochs": 60,
+  "milestones": [10, 30, 60],
+  "pruning_rule": "At epoch 10 retain Pareto tradeoffs because delayed emergence is predeclared; at epoch 30 prune a tail-safe arm only if dominated on OOD validation, ID retention, worst-experiment accuracy, and mechanism signature; no epoch90 without the locked final gate.",
+  "checkpoint_policy": "save exact primary comparator checkpoints at epochs 10, 30, and 60",
+  "result_budget": "four final JSONs, twelve milestone rows, twelve checkpoints, four mechanism rows, four W&B runs, and four checksum manifests",
+  "arms": [
+    {"arm": "canonical_E4_tail_safe_s1", "seed": 1, "balance_w": 0.01, "zloss_w": 0.01, "exact_comparator": "canonical_E4_zero_aux_s1"},
+    {"arm": "canonical_E4_zero_aux_s1", "seed": 1, "balance_w": 0.0, "zloss_w": 0.0, "exact_comparator": "canonical_E4_tail_safe_s1"},
+    {"arm": "canonical_E4_tail_safe_s2", "seed": 2, "balance_w": 0.01, "zloss_w": 0.01, "exact_comparator": "canonical_E4_zero_aux_s2"},
+    {"arm": "canonical_E4_zero_aux_s2", "seed": 2, "balance_w": 0.0, "zloss_w": 0.0, "exact_comparator": "canonical_E4_tail_safe_s2"}
+  ],
+  "routing_claim_guard": "Exact dense objective controls and non-negligible route reliance are required before any routing-specific or sparse-computation claim."
+}
