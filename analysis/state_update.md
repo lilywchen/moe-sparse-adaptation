@@ -655,3 +655,23 @@ mechanistic claim is that no valid predictive effect exists to justify gradient-
 reuse analyses. The consuming artifact is `analysis/hypothesis90_final_validation.json`; all ten
 validated folders are published under the declared Hugging Face prefix and tracked in the fresh
 W&B group.
+
+## New exploratory question: factorial60
+
+The user has authorized a new bounded sweep rather than reuse of the failed canonical gate. The
+scientific question is now whether the previous canonical choice hid a stronger conditional effect
+at a different transformer depth, routing granularity, router geometry, or environment pressure.
+The full 3x2x2x3 MoE factorial is paired with six placement/pressure-matched dense-wide controls
+and a new original reference on one common native-CP5 seed-0 schedule.
+
+This is an appropriate use of the expanded compute because each arm changes a declared mechanism
+and every sparse cell has an explicit fair comparator; it is not evidence that one of 36 searched
+cells will generalize. Multiple-search optimism is the largest validity threat. The falsifier is
+that no cell reaches the locked +5 OOD-validation-point gain with at most two ID points lost (or a
+predeclared consistent worst-experiment improvement). A passing cell is only provisional and must
+be rerun unchanged at seeds 1 and 2. OOD test remains unavailable to the sweep.
+
+The immediate implementation is complete but not yet remotely tested or launched. Five running
+2-H100 containers are available in the portal; the sixth requested container is pending for lack
+of an eligible H100 pair. Job-level GPU freedom, focused/full test success, clean execution commit,
+and dry-run identity are the remaining launch gates.

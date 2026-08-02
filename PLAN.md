@@ -1,5 +1,51 @@
 # RxRx1 sparse-adaptation kill test
 
+## Authorized protocol revision — Cell-DINO factorial60 exploration (2026-08-01)
+
+The completed `hypothesis90` campaign remains a decision-grade negative for its exact canonical
+recipe: seed-0 token top-1 MoE improves OOD validation by only 1.715 points over the exact-total-
+parameter-matched dense-wide comparator and does not improve the worst experiment. It is not
+relabelled. The user has now explicitly authorized a new, broader exploratory question and asked
+that all available H100 capacity be used:
+
+**Was the modest canonical result caused by choosing the wrong sparse placement, routing
+granularity, router geometry, or environment pressure, and is any combination strong enough to
+survive a locked paired confirmation?**
+
+The new `factorial60` campaign revives the original theory-driven factorial on the now-qualified
+native-CP5 Cell-DINO substrate. At seed 0 it runs:
+
+- 36 MoE arms: 3 placements (early/middle/late) x 2 routing units (image/token) x 2 router
+  geometries (linear/cosine) x 3 pressures (global canonical, within-experiment route balancing,
+  experiment-adversarial output invariance);
+- 6 exact-total-parameter-matched dense-wide controls: each placement under canonical and output
+  pressure. Canonical dense controls serve both canonical and route-balanced MoE at the same
+  placement; output-pressure MoE is paired only with output-pressure dense-wide;
+- 1 original-width Cell-DINO reference.
+
+All 43 arms use the same native-CP5 pixels, seed/data order, AdamW LR `1e-4`, weight decay `0.05`,
+batch 64, drop path `0.1`, uniform layer LR, five warmup epochs, 8 experts, top-1 routing, and
+official OOD-validation-only selection. They run for 60 epochs with exact train/ID/OOD-validation/
+worst-experiment milestones at 10, 30, and 60. Every arm saves its final epoch-60 checkpoint;
+original and the six dense comparators also save epochs 10 and 30 so all sparse winners retain a
+reloadable paired anchor. Runs use a fresh W&B group and an isolated Hugging Face prefix. Upload is
+deferred until strict result/checkpoint validation so network transfer never holds an H100 idle.
+
+This is an exploratory factorial, so the number of searched cells must remain visible. Cell-level
+rankings are provisional. A candidate advances only if, against its exact paired dense control at
+the same placement and pressure, it improves OOD validation by at least 5 absolute points while
+losing no more than 2 ID points; a smaller mean gain may advance only if a predeclared consistent
+worst-experiment improvement is present. Advancing freezes the full configuration and launches
+paired seeds 1 and 2; no further tuning may be performed on those confirmation seeds. OOD test
+remains sealed until the separately frozen confirmatory stage.
+
+The 10/30/60 milestones are also operational pruning gates. A scientifically dominated arm may be
+stopped after a complete validated milestone only when its own predeclared delayed-emergence
+alternative is false; released GPUs are immediately refilled from the remaining factorial queue.
+Failures and pruned cells remain in the denominator and are never silently excluded. This revision
+supersedes earlier statements that no broad Cell-DINO sweep was licensed, but does not change or
+erase any earlier negative result.
+
 ## Authorized protocol revision — substrate-strength signal ladder (2026-08-01)
 
 The completed ten-epoch kill campaign remains a valid negative result for its exact recipe; it is

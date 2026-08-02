@@ -1007,3 +1007,34 @@ question is resolved, all 10 result folders are validated and published, no H100
 and the frozen replication threshold is not met. No seed replication, mechanism expansion,
 architecture sweep, or OOD-test evaluation is licensed. A new campaign requires an explicit new
 scientific question rather than reuse of the failed gate.
+
+### 2026-08-01 21:00 ET — user authorizes Cell-DINO factorial60 sweep; launch tree prepared
+
+Classification is `ACTIONABLE`. The user explicitly opened a new exploratory question rather than
+reinterpreting the negative `hypothesis90` gate: test whether placement, routing granularity,
+router geometry, or environment pressure exposes a materially stronger sparse effect on the
+validated native-CP5 Cell-DINO substrate. `PLAN.md` now predeclares the complete seed-0 43-cell
+factorial: 36 MoE arms, six placement/pressure-matched dense-wide controls, and one original
+reference, all under the same 60-epoch schedule with train/ID/OOD-validation/worst-experiment
+milestones at 10/30/60. OOD test remains sealed. A winner remains exploratory until its exact
+configuration is frozen and replicated with paired seeds 1 and 2.
+
+The idempotent launcher `scripts/sweep_rxrx1_cell_dino.py` and focused regression coverage are
+implemented locally. It maintains five disjoint shards, continuously refills two GPUs per shard,
+uses a clean W&B group `rxrx1-cell-dino-factorial60-20260801`, and defers Hugging Face upload until
+strict validation so network transfer does not hold a GPU lease. Every MoE arm saves its epoch-60
+checkpoint; original and all six dense comparators save 10/30/60 anchors. Local bytecode and diff
+checks pass. The local machine lacks the project test dependencies, so the focused and full pytest
+suites remain a mandatory remote launch gate rather than being falsely claimed locally.
+
+Portal inspection shows five existing 2-H100 containers running and `tester6` container 2893 in
+authoritative `Pending` state after exactly one fresh start request. Its scheduler reason is
+`3 Insufficient nvidia.com/gpu`, with two nodes unschedulable and the remaining nodes failing the
+required selector; no duplicate start or container was issued. The five running containers expose
+ten H100 allocations, but their job-level utilization still requires fresh per-container terminal
+inspection before launch. No sweep worker is yet claimed active.
+
+Next: commit and push the clean campaign tree, run focused and full tests in the pinned SciServer
+environment, dry-run all five shards, verify every GPU is free and no duplicate result/process
+exists, then launch the ten initial arms. A completion or pruned milestone immediately refills its
+GPU from the remaining 33 arms.

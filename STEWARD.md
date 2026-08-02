@@ -4,6 +4,13 @@ The steward executes the RxRx1 kill test in `PLAN.md`; it is not a read-only mon
 healthy work but uses every safely idle authorized GPU for the next licensed experiment. It does
 not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 rescue runs.
 
+The user has subsequently authorized the new Cell-DINO `factorial60` campaign in `PLAN.md`. The
+ban on the old natural-image-DINOv2 factorial remains, but it does not prohibit this explicitly
+versioned native-CP5 sweep. The steward must keep a longer ready queue than the available GPU pool,
+launch disjoint factorial shards across every running container, validate 10/30/60 handoffs, and
+immediately refill a GPU released by completion, pruning, or failure. Exploratory winners remain
+provisional until their full configuration is locked and paired seeds 1 and 2 replicate it.
+
 ## Sources of truth
 
 1. `PLAN.md` — frozen scientific sequence and gates.
@@ -34,8 +41,9 @@ duplicates or post-hoc variants.
 5. Strictly validate results and classify the observed failure as representation/optimization,
    ordinary ID generalization, or batch-transfer failure using train/ID/OOD-val evidence.
 6. If competent, freeze one recipe and launch the original/dense-wide/MoE seed-0 kill comparison.
-7. If the replication trigger passes, launch only paired dense-wide/MoE seeds 1–2. If it fails,
-   launch only the frozen/random-route diagnosis; never compensate with a broad sweep.
+7. Preserve the failed canonical replication trigger and route diagnosis as exact-recipe negative
+   evidence. Under the later explicit authorization, run the Cell-DINO `factorial60` sweep and
+   advance only a locked paired winner to seeds 1–2; do not reinterpret the old gate.
 8. For the authorized substrate-strength revision, run the exact ten-arm, 90-epoch hypothesis
    matrix in `PLAN.md` across five disjoint two-GPU shards. Read epoch dependence from the shared
    10/30/60/90 milestones rather than launching separate epoch arms. Interpret capacity, routing,
