@@ -2652,3 +2652,33 @@ without restart. All ten allocated H100s again carry distinct workers. Smoother 
 7 active/1 queued of 8, extreme coverage becomes 4 completed/3 active/1 pruned of 8, ready falls
 from 14 to 13, and backlog remains 27. Publication is not attempted because the already verified
 private-repository storage quota blocker remains in force.
+
+## 2026-08-02 23:54 EDT — Canonical E64 closes tail-adverse; final smoother row refills
+
+The exact canonical-pressure E64 temperature-0.03 epoch-60 objective pair is strict-valid.
+Tail-safe minus zero auxiliary is `+0.132/-0.150/-0.852` OOD-validation/ID/worst-experiment
+points. The mean change is negligible, the worst-experiment effect is adverse, and randomized-
+route reliance is `-0.00010` for tail-safe versus `0.00325` for zero auxiliary. This exact recipe
+is terminal-negative for a material, tail-safe, or routing-mediated benefit; no epoch-90 or fresh-
+seed continuation is licensed.
+
+Both final JSONs match the declared canonical E64 seed-0 configuration, active-compute fairness
+class, 96,865,524 total parameters, 1,206,145 active FFN-plus-router parameters, and epoch-60
+checkpoint identity. Metrics are finite, all four environments and 9,854 OOD-validation examples
+are present, controller exits are rc0, fatal scans are clear, W&B runs `cwzluit9` and `hkh3m1yq`
+are synchronized, selection is `ood_val`, and every held-out field remains null. The result is
+exploratory and multiplicity-exposed; generic regularization or trajectory noise is more plausible
+than useful conditional routing.
+
+Container2859/GPU0 is immediately refilled with the final temperature-0.1 registry row,
+canonical-E64 zero auxiliary. Exact shard 7/8 exposes one unique pending cell; physical-GPU,
+duplicate/result/prune/active, persistent-destination, tracking, checkpoint, and sealed-test guards
+pass. Controller55069 launches worker55074/W&B `3g646u7z`; startup reaches 8,842 MiB, loads 9,854
+OOD-validation samples with test untouched, and is fatal-clear. A missing active marker is repaired
+once to verified worker55074 without restart.
+
+Extreme temperature-0.03 coverage is now 5 completed, 2 active, and 1 pruned of 8. All 8 smoother
+temperature-0.1 rows are active. Ten distinct workers occupy all ten running H100s; ready is 12 and
+backlog 27. tester6/2899 remains scheduler Pending because 11 nodes fail affinity, two are
+unschedulable, and three lack GPU capacity; preemption is unhelpful with no victim. HF publication
+is withheld under the verified private-storage quota blocker. OOD test remains sealed.

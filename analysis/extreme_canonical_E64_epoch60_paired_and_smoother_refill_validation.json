@@ -1,0 +1,92 @@
+{
+  "validated_at": "2026-08-02T23:54:00-04:00",
+  "classification": "strict_exploratory_active_compute_matched_epoch60_pair",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "git_dirty": true,
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-extremeaux-codeeq-d370b70",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "seed": 0,
+  "n_experts": 64,
+  "temperature": 0.03,
+  "pressure": "canonical",
+  "total_parameters": 96865524,
+  "active_ffn_including_router": 1206145,
+  "router_parameters": 24577,
+  "common_checks": {
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "exact_run_config_seed_epoch_identity": true,
+    "same_parameter_counts_and_data_order": true,
+    "per_environment_coverage": 4,
+    "ood_validation_examples": 9854,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "heldout_fields_null": true,
+    "epoch60_checkpoint_present_nonempty": true,
+    "milestone_identity_epoch60": true,
+    "both_controller_rc0": true,
+    "fatal_scan_clear": true,
+    "wandb_synced": true
+  },
+  "epoch60": {
+    "tail_safe": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_extreme_expert_aux60_canonical_E64_tail_safe_20260802",
+      "wandb_run_id": "cwzluit9",
+      "ood_val": 0.20367363507205197,
+      "id": 0.5157588889983257,
+      "worst_experiment": 0.012175324675324676,
+      "route_reliance": -0.00010148163182463477
+    },
+    "no_aux": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_extreme_expert_aux60_canonical_E64_no_aux_20260802",
+      "wandb_run_id": "hkh3m1yq",
+      "ood_val": 0.20235437385833163,
+      "id": 0.5172609081059786,
+      "worst_experiment": 0.020698051948051948,
+      "route_reliance": 0.0032474122183884513
+    },
+    "tail_safe_minus_no_aux_points": {
+      "ood_val": 0.13192612137203352,
+      "id": -0.15020191076529077,
+      "worst_experiment": -0.8522727272727272
+    }
+  },
+  "decision": "terminal_negative_for_material_or_routing_mediated_tail_safe_benefit_in_this_exact_recipe; no_epoch90_or_fresh_seed_license",
+  "interpretation": "The 0.13-point mean increase is paired with a 0.85-point worst-experiment loss and neither router has randomized-route reliance above 0.01. This rules out a material, tail-safe, or routing-mediated benefit for canonical E64 at temperature 0.03 under this exact seed-0 recipe.",
+  "alternative_explanation": "The tiny mean movement is compatible with generic auxiliary regularization or trajectory noise rather than useful conditional computation.",
+  "multiplicity": "This is a seed-0 exploratory comparison after broad architecture, pressure, expert-count, objective, and temperature searches; no population claim is made.",
+  "largest_threat": "Only one exploratory seed is available, but the directionally adverse tail and near-zero route reliance make promotion unjustified even before uncertainty is resolved.",
+  "sharpest_falsifier": "A smoother-temperature exact pair must retain a nonnegative mean and worst-experiment effect at epoch 60 without more than two ID points lost, preferably with route reliance above 0.01; otherwise the smoothing explanation is rejected.",
+  "refill": {
+    "family": "extreme_temperature_aux60_20260802",
+    "arm": "canonical_E64_temp01_no_aux_seed0",
+    "container_id": 2859,
+    "gpu": 0,
+    "controller_pid": 55069,
+    "worker_pid": 55074,
+    "wandb_run_id": "3g646u7z",
+    "preflight": "exact_shard7_of8_one_unique_pending_cell_physical_gpu_free_duplicate_result_prune_active_persistence_tracking_checkpoint_and_sealed_test_guards_pass",
+    "startup": "8842MiB_9854_ood_validation_samples_test_untouched_fatal_clear",
+    "active_marker_repair": "missing_marker_written_once_to_verified_worker55074_without_restart"
+  },
+  "coverage_after_refill": {
+    "extreme_expected": 8,
+    "extreme_completed": 5,
+    "extreme_active": 2,
+    "extreme_pruned": 1,
+    "smoother_expected": 8,
+    "smoother_active": 8,
+    "smoother_queued": 0,
+    "ready_arms": 12,
+    "backlog_hypotheses": 27,
+    "active_gpu_workers": 10,
+    "idle_running_h100s": 0
+  },
+  "publication": {
+    "status": "not_attempted_known_private_repository_storage_quota_blocker",
+    "retry_condition": "private_HF_storage_quota_available",
+    "remote_completion_claim": false
+  }
+}

@@ -1897,3 +1897,25 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   1 queued of 8. Ten allocated H100s are assigned, ready is13, backlog27, and tester6/2899 remains
   scheduler Pending. HF publication is withheld under the already verified private-repository
   storage-quota blocker rather than retried blindly.
+
+## 2026-08-02 23:54 EDT
+
+- Canonical E64 temperature-0.03 tail-safe minus exact zero auxiliary is
+  `+0.132/-0.150/-0.852` OOD/ID/worst points at epoch60. Both strict finals are rc0, fatal-clear,
+  parameter- and seed-matched, cover four environments/9,854 OOD-validation samples, preserve
+  nonempty epoch60 checkpoints, select on `ood_val`, and keep every held-out field null.
+- Tail-safe route reliance is `-0.00010` and zero-auxiliary reliance is `0.00325`. The negligible
+  mean movement, adverse tail, and non-reliant routers make this exact seed-0 recipe terminal-
+  negative for material or routing-mediated benefit. No epoch90 or fresh seed is licensed;
+  multiplicity and the active-compute-only fairness scope remain explicit.
+- The strict artifact is
+  `analysis/extreme_canonical_E64_epoch60_paired_and_smoother_refill_validation.json`.
+- Container2859/GPU0 immediately refills with canonical-E64 temperature0.1 zero auxiliary after
+  exact shard7/8 and all free-GPU, uniqueness, persistence, tracking, checkpoint, and sealed-test
+  guards pass. Controller55069/worker55074/W&B `3g646u7z` reaches 8,842 MiB with 9,854
+  OOD-validation examples, test untouched, and a clear fatal scan. Its absent active marker is
+  repaired once to the verified worker without restart.
+- Extreme coverage is 5 completed/2 active/1 pruned; smoother coverage is 8 active/0 queued.
+  All ten running H100s are assigned distinct workers, ready is12, backlog27, and tester6/2899
+  retains the exact 11-affinity/two-unschedulable/three-insufficient-GPU Pending reason. HF
+  publication remains quota-blocked; OOD test remains sealed.
