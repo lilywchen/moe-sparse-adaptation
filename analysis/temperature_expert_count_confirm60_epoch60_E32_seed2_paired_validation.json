@@ -1,0 +1,16 @@
+{
+  "status": "strict_locked_final_paired",
+  "validated_at": "2026-08-02T20:39:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "git_dirty": true,
+  "seed": 2,
+  "anchor": {"n_experts": 8, "acc_ood_val": 0.20955956971788106, "acc_id": 0.5334630158573821, "worst_env_val": 0.022727272727272728, "route_reliance": 0.00253704079561598},
+  "candidate": {"n_experts": 32, "acc_ood_val": 0.2219403288004871, "acc_id": 0.5400620506254309, "worst_env_val": 0.02353896103896104, "route_reliance": 0.006291861173127661, "total_params": 59043060, "active_ffn_params": 1193857, "router_params": 12289, "environments": 4, "samples": 9854},
+  "candidate_minus_anchor_points": {"ood_val": 1.2380759082606052, "id": 0.6599034768048795, "worst_environment": 0.0811688311688312},
+  "seed1_candidate_minus_anchor_points": {"ood_val": 0.5074081591231988, "id": -0.10095538264552895, "worst_environment": 0.1217532467532468},
+  "decision": "no_epoch90_or_more_seeds_material_gain_below_five_points_and_route_reliance_below_0p01",
+  "multiplicity": "four_bank_sizes_two_fresh_seeds_multiple_milestones_after_seed0_screen"
+}

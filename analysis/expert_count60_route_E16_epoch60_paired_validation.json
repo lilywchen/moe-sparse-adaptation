@@ -1,0 +1,14 @@
+{
+  "status": "strict_exploratory_paired_epoch60_milestone",
+  "validated_at": "2026-08-02T20:43:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "fairness_class": "active_compute_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "seed": 0,
+  "tail_safe": {"acc_ood_val": 0.20468845139029834, "acc_id": 0.5216438491086378, "worst_env_val": 0.019886363636363636, "environments": 4, "samples": 9854},
+  "zero_aux": {"acc_ood_val": 0.20692104729044042, "acc_id": 0.5221363143898355, "worst_env_val": 0.019074675324675324, "environments": 4, "samples": 9854},
+  "tail_safe_minus_zero_aux_points": {"ood_val": -0.223259590014208, "id": -0.04924652811977, "worst_environment": 0.0811688311688312},
+  "decision": "no_epoch90_or_fresh_seeds_tail_gain_tiny_and_mean_negative_final_mechanism_emission_pending",
+  "multiplicity": "seed0_after_broad_expert_count_auxiliary_screen"
+}

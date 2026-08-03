@@ -2404,3 +2404,29 @@ from within-environment balancing. This restores the declared queue to 15 (three
 temperature-0.03 extreme, eight smoother-temperature, four locked auxiliary-confirmation) with
 backlog 27. Its sharp falsifier remains route reliance above 0.01 plus nonnegative matched mean and
 tail without more than two ID points lost. OOD test remains sealed.
+## 2026-08-02 20:43 EDT — Locked E32 closes small-positive; route-E16 tail objective misses mean
+
+The final locked route-E32 seed-2 comparison is strict: E32 minus same-seed E8 is
+`+1.238/+0.660/+0.081` OOD-validation/ID/worst-experiment points. Seed 1 was
+`+0.507/-0.101/+0.122`. Both fresh seeds point positive on mean and tail, but the effect is far
+below the predeclared +5-point material target and route reliance remains only `0.0047--0.0063`.
+The active-compute bank-size family is now 8/8 final. It rules out a large E32 routing-capacity
+effect for this locked recipe; no epoch 90 or additional seeds are licensed.
+
+The broader route-E16 tail-safe pair reaches epoch 60. Tail-safe minus zero auxiliary is
+`-0.223/-0.049/+0.081` OOD/ID/worst points: a tiny tail-only tradeoff, not a mean robustness gain.
+Both workers remain live only for declared final mechanism/result emission. Their next release is
+not licensed for epoch 90 or fresh seeds.
+
+Container2874/GPU0 immediately refills with temperature-0.03 route-E32 zero auxiliary
+(controller62810, worker62815, W&B `l06751x1`) after 7 focused and 127 full tests, exact shard-5/8
+dry run, duplicate/result/marker/physical-GPU guards, persistent destinations and sealed-test
+checks. Five running 2H100 containers therefore retain ten distinct assigned workers and zero
+idle running H100s; tester6/2893 remains scheduler-pending for 11 selector mismatches, two
+unschedulable nodes and three insufficient-GPU nodes. Ready is 14 and backlog 27.
+
+A five-run locked publication bundle passed strict local artifact validation and completed with
+five checksum manifests and 35 remotely listed files under the existing confirmation campaign.
+The initially stale smoother-screen checkout was repaired to the exact committed script, test,
+and eight-cell registry hashes; seven focused tests, the full suite (exit zero), and eight disjoint
+one-cell dry runs pass. OOD test remains sealed.

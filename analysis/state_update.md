@@ -1708,3 +1708,21 @@ tail-safe under controller117930. Commit `71eb1f1` expands the already bounded s
 registry to the eight-cell pressure x bank x auxiliary cross while preserving route shards 0--3.
 Three temperature-0.03 extreme, eight smoother-temperature, and four locked auxiliary-confirmation
 arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeling occurs.
+## 2026-08-02 20:43 EDT
+
+- Locked temperature/expert-count confirmation is 8/8 final. E32 minus E8 at seed 2 is
+  `+1.238/+0.660/+0.081` OOD/ID/worst points; seed 1 is `+0.507/-0.101/+0.122`.
+- Interpretation: a small consistent directional signal survives two fresh seeds, but it is not
+  scientifically material, has route reliance below `0.007`, and does not license epoch 90 or
+  more seeds. Generic bank regularization or optimization remains more plausible than reusable
+  routing specialization.
+- Broader route-E16 tail-safe minus zero auxiliary at epoch 60 is
+  `-0.223/-0.049/+0.081` points. This falsifies a mean-robustness benefit for that exact tail-safe
+  recipe while preserving only a tiny exploratory tail tradeoff.
+- Container2874/GPU0 refilled with extreme route-E32 zero auxiliary, worker62815/W&B `l06751x1`.
+  Ten running H100s are assigned; the two additional authorized H100s remain unavailable because
+  tester6/2893 is scheduler-pending with the unchanged exact reason.
+- Five locked final folders now have five checksum manifests and 35 remotely verified files.
+  The stale smoother-screen checkout was repaired once to exact committed hashes; seven focused
+  tests, the full suite (exit zero), and eight exact one-cell dry runs pass. Selection remains OOD validation, all test fields remain null, and multiplicity
+  spans four bank sizes, two fresh seeds, milestones, and follow-up auxiliary/temperature screens.
