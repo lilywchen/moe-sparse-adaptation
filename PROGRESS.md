@@ -2765,3 +2765,33 @@ milestone, exclusion, promotion, publication, or scientific interpretation is re
 extreme temperature-0.03 family remains terminal-negative for its exact recipes; generic
 regularization or trajectory noise remains the leading explanation, smoother route-E32 epoch 60
 remains the sharp falsifier, multiplicity remains explicit, and OOD test remains sealed.
+
+## 2026-08-03 01:24 EDT — tester6 replacement reconciled and one start leaves it Pending
+
+A fresh authenticated Compute-table read resolves the prior inconsistent existence observations:
+`tester6` replacement container `2899` exists, was created at `2026-08-03 02:13:13.0`, and was
+listed stopped before mutation. Its external container reference is
+`e18249da-8ee0-11f1-a24e-0a580a8201b9`; historical container `2893` is not the current tester6.
+The table also lists `2887`, `2875`, `2874`, `2862`, and `2859` running at container level.
+
+Exactly one authorized start request was issued for `2899`; no creation request was issued. The
+authoritative detail page then reported Kubernetes state `Pending`, `Running=false`, and exit code
+zero. Its exact scheduling constraint is: 11 of 16 nodes fail affinity/selector, two nodes are
+unschedulable, and three have insufficient `nvidia.com/gpu`; preemption is not helpful on 13 nodes
+and finds no victim on three. Both tester6 H100s therefore remain unavailable, and no duplicate
+start or container was created.
+
+The five running containers could not be audited to completion: an attempted `2887` audit file was
+not created, and repeated authenticated console-control timeouts prevented trustworthy PID, GPU,
+epoch, log, checkpoint, fatal-scan, W&B, or HF refreshes. The E4 seed-1 submissions on
+`2887/GPU0` and `2859/GPU1` therefore remain unverified. Current active-worker and idle-H100 counts
+are unknown; the last strict pre-submission map remains eight workers and two then-free devices,
+and is not relabeled as current occupancy. Ready remains 10 and backlog 27.
+
+No scientific evidence moved. The extreme temperature-0.03 family remains terminal-negative for
+its exact recipes; generic regularization or trajectory noise remains more plausible than useful
+conditional routing. Smoother route-E32 epoch 60 remains the sharpest falsifier, the evidence is
+still exploratory and multiplicity-exposed, and OOD test remains sealed. Next automatic action is
+to re-read `2899` once, audit all five running containers separately, and validate the two E4
+seed-1 cells or relaunch only the same guarded cells if absent and physically free. Start `2899`
+again only if a later authoritative table shows it stopped; do not create another tester6.

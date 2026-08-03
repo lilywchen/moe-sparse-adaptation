@@ -1984,3 +1984,22 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
 - No scientific evidence moved. The extreme temperature-0.03 conclusion, generic-regularization
   alternative, smoother route-E32 epoch-60 falsifier, seed/multiplicity caveat, and sealed OOD test
   are unchanged. The largest threat is now operational observability, not a newly observed result.
+
+## 2026-08-03 01:24 EDT
+
+- The fresh authenticated authoritative table reconciles tester6 as replacement container `2899`
+  (external ref `e18249da-8ee0-11f1-a24e-0a580a8201b9`), initially stopped. Exactly one start
+  request was issued and zero create requests were issued. The detail page then reported
+  `Pending`, `Running=false`, exit code zero: 11 nodes fail affinity/selector, two are
+  unschedulable, and three lack `nvidia.com/gpu`; preemption is unhelpful and finds no victims.
+- The five known worker containers remain table-level running, but authenticated console timeouts
+  blocked complete per-container refresh. The attempted `2887` audit artifact was absent. Current
+  process, GPU, epoch, log/checkpoint/result, fatal-scan, W&B, HF, active-worker, and idle-H100 state
+  is therefore unknown rather than inferred. The E4 seed-1 submissions remain unverified; last
+  strict pre-submission accounting is eight workers and two then-free devices. Ready/backlog stay
+  10/27.
+- No result, exclusion, promotion, publication, or interpretation moved. The extreme family is
+  still an exact-recipe negative; generic regularization or trajectory noise remains the leading
+  explanation. The smoother route-E32 epoch-60 final is the sharp falsifier. Multiplicity, seed
+  status, fairness labels, and OOD-test blindness are unchanged; operational observability is the
+  largest current threat.
