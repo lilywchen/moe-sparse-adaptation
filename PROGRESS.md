@@ -3076,3 +3076,26 @@ therefore remains nine active workers and one known idle allocated GPU on `2859/
 last appeared stopped and contributes zero. After login, the immediate licensed sequence is to
 read the repaired remote test/dry-run gate, refill `2859/gpu0`, validate five completed upcycling
 results, and inspect/start tester6 exactly once only if still stopped. OOD test remains sealed.
+
+## 2026-08-03 16:01 EDT — authentication works; five upcycling finals validate and the repaired control fills the idle H100
+
+The in-app SciServer session is authenticated and can reach the Compute dashboard and all five worker
+containers. A fresh per-GPU audit found ten distinct live workers across `2887`, `2875`, `2874`, `2862`, and
+`2859`; zero of the ten currently available H100s are idle. Tester6/2899 received exactly one Start request and
+remains scheduler-Pending because no compatible capacity is available: 11 nodes fail its affinity/selector, two
+are unschedulable, and three lack sufficient GPUs. It contributes zero GPUs and was not restarted or recreated.
+
+The repaired dense-control implementation passes three focused tests, all 133 repository tests, and the exact
+shard-4 dry-run with one planned/one pending cell. Fresh checks showed `2859/gpu0` owned and empty with no
+duplicate process or result. The failed cell was retried exactly once as controller 2458/worker 2478 and verified
+live at 8,831 MiB and 99% utilization under the predeclared controls campaign.
+
+Five seed-0 upcycling epoch-60 results pass strict result, environment, heldout-field, log, provenance, W&B-ID,
+and epoch-10/30/60 checkpoint checks. All have absolute route reliance below `0.0017`, far below the predeclared
+`0.01` specialization signal. Against exact zero-noise comparators, canonical E4 noise 0.01 moves OOD/ID/worst
+by `+0.132/+0.561/+0.162` points; route E4 noise 0.01 moves `-0.558/+0.195/-0.528`; route E8 noise 0.001 moves
+`+0.721/-0.537/+0.203`; and route E8 noise 0.01 moves `+0.304/-0.389/+0.041`. The canonical E8 noise-0.001
+result remains unpaired until its zero-noise comparator finishes. These small mixed exploratory effects do not
+show useful conditional routing and do not justify epoch 90 or fresh seeds. Ordinary initialization/trajectory
+regularization is the leading explanation. Twelve distinct cells remain ready for immediate refill. HF remains
+quota-blocked, the paper is unchanged, multiplicity is explicit, and OOD test remains sealed.

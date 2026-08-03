@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T16:01:00-04:00",
+  "family": "upcycling_noise60_20260803",
+  "classification": "strict_exploratory_seed0_epoch60_wave1_validation_no_promotion",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+  "source_commit": "3eca8fc27e16a2f7e4126c22bfa491b5231b9227",
+  "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/upcycling_noise60_20260803",
+  "wandb_group": "rxrx1-cell-dino-upcycling-noise60-20260803",
+  "hf_prefix": "rxrx1/cell_dino_cp5/upcycling_noise60_20260803",
+  "publication_status": "not_attempted_known_private_repository_storage_quota_blocker",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_sealed": true,
+  "strict_checks": {
+    "results_expected_in_wave": 5,
+    "results_valid": 5,
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "selection_split_exact": true,
+    "test_evaluated_false": true,
+    "all_heldout_test_fields_null": true,
+    "ood_validation_environment_ids": [7, 27, 42, 49],
+    "ood_validation_sample_count_each_run": 9854,
+    "fatal_scan_clear": true,
+    "epoch10_30_60_checkpoint_count_each_run": 3,
+    "checkpoint_bytes_min": 311755175,
+    "checkpoint_bytes_max": 368544204,
+    "wandb_run_ids_present": true,
+    "exact_run_seed_epoch_config_identity": true
+  },
+  "runs": [
+    {
+      "tag": "canonical_E4_temp03_noise0p01_tail_safe",
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_upcycling_noise60_canonical_E4_temp03_noise0p01_tail_safe_20260803",
+      "wandb_run_id": "ify29yqc",
+      "seed": 0,
+      "n_experts": 4,
+      "noise": 0.01,
+      "total_parameters": 25948404,
+      "acc_train": 1.0,
+      "acc_within": 0.5297202797202797,
+      "acc_ood_val": 0.20824030850416075,
+      "worst_experiment_ood_val": 0.018668831168831168,
+      "route_reliance": 0.00142074284554497,
+      "routing_entropy": 0.9999581629952093,
+      "checkpoint_bytes_each": 311772623
+    },
+    {
+      "tag": "canonical_E8_temp03_noise0p001_tail_safe",
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E8k1_ep60_s0_upcycling_noise60_canonical_E8_temp03_noise0p001_tail_safe_20260803",
+      "wandb_run_id": "l5sqfdti",
+      "seed": 0,
+      "n_experts": 8,
+      "noise": 0.001,
+      "total_parameters": 30676212,
+      "acc_train": 1.0,
+      "acc_within": 0.5242292918349256,
+      "acc_ood_val": 0.21788106352750153,
+      "worst_experiment_ood_val": 0.0174512987012987,
+      "route_reliance": 0.00142074284554497,
+      "routing_entropy": 0.9999391332726902,
+      "checkpoint_bytes_each": 368544204
+    },
+    {
+      "tag": "route_E4_temp03_noise0p01_tail_safe",
+      "run_id": "rxrx1_moe_early_token_cosine_route_E4k1_ep60_s0_upcycling_noise60_route_E4_temp03_noise0p01_tail_safe_20260803",
+      "wandb_run_id": "ob43vbot",
+      "seed": 0,
+      "n_experts": 4,
+      "noise": 0.01,
+      "total_parameters": 25948404,
+      "acc_train": 1.0,
+      "acc_within": 0.5273810696345907,
+      "acc_ood_val": 0.20712401055408972,
+      "worst_experiment_ood_val": 0.015016233766233766,
+      "route_reliance": -0.0016237061091942395,
+      "routing_entropy": 0.9999914855205856,
+      "checkpoint_bytes_each": 311755175
+    },
+    {
+      "tag": "route_E8_temp03_noise0p001_tail_safe",
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_upcycling_noise60_route_E8_temp03_noise0p001_tail_safe_20260803",
+      "wandb_run_id": "j7kwbupm",
+      "seed": 0,
+      "n_experts": 8,
+      "noise": 0.001,
+      "total_parameters": 30676212,
+      "acc_train": 1.0,
+      "acc_within": 0.525337145535605,
+      "acc_ood_val": 0.21767810026385223,
+      "worst_experiment_ood_val": 0.019886363636363636,
+      "route_reliance": 0.0005074081591231738,
+      "routing_entropy": 0.99995274172318,
+      "checkpoint_bytes_each": 368524260
+    },
+    {
+      "tag": "route_E8_temp03_noise0p01_tail_safe",
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s0_upcycling_noise60_route_E8_temp03_noise0p01_tail_safe_20260803",
+      "wandb_run_id": "u6ltkm0s",
+      "seed": 0,
+      "n_experts": 8,
+      "noise": 0.01,
+      "total_parameters": 30676212,
+      "acc_train": 1.0,
+      "acc_within": 0.5268147345612134,
+      "acc_ood_val": 0.213517353359042,
+      "worst_experiment_ood_val": 0.018262987012987012,
+      "route_reliance": -0.0008118530545971336,
+      "routing_entropy": 0.9999979181479471,
+      "checkpoint_bytes_each": 368523367
+    }
+  ],
+  "exact_zero_noise_comparisons_points": {
+    "canonical_E4_noise0p01_minus_canonical_E4_zero": {
+      "ood_val": 0.131926121372033,
+      "id": 0.56141042056535,
+      "worst_experiment": 0.1623376623376624,
+      "fairness_class": "active_compute_and_total_parameter_matched_initialization_perturbation_only",
+      "decision": "small_aligned_seed0_gain_below_material_gate_and_route_reliance_below_0p01_no_promotion"
+    },
+    "route_E4_noise0p01_minus_route_E4_zero": {
+      "ood_val": -0.558148975035518,
+      "id": 0.19452378607307,
+      "worst_experiment": -0.5275974025974026,
+      "fairness_class": "active_compute_and_total_parameter_matched_initialization_perturbation_only",
+      "decision": "terminal_negative_for_exact_recipe"
+    },
+    "route_E8_noise0p001_minus_route_E8_zero": {
+      "ood_val": 0.72051958595494,
+      "id": -0.536806474707,
+      "worst_experiment": 0.202922077922078,
+      "fairness_class": "active_compute_and_total_parameter_matched_initialization_perturbation_only",
+      "decision": "small_pareto_gain_below_material_gate_and_route_reliance_below_0p01_no_promotion"
+    },
+    "route_E8_noise0p01_minus_route_E8_zero": {
+      "ood_val": 0.304444895473917,
+      "id": -0.38904757214616,
+      "worst_experiment": 0.0405844155844156,
+      "fairness_class": "active_compute_and_total_parameter_matched_initialization_perturbation_only",
+      "decision": "small_pareto_gain_below_material_gate_and_route_reliance_below_0p01_no_promotion"
+    },
+    "canonical_E8_noise0p001_minus_canonical_E8_zero": {
+      "status": "deferred_exact_zero_noise_comparator_still_running_at_validation_time",
+      "decision": "no_unpaired_effect_claim"
+    }
+  },
+  "mechanism_interpretation": {
+    "predicted_signature_met": false,
+    "maximum_absolute_route_reliance": 0.0016237061091942395,
+    "predeclared_route_reliance_threshold": 0.01,
+    "rules_out": "For these five seed-0 E4/E8 temperature-0.3 cells, 0.001 or 0.01 cloned-expert perturbations do not create measurable conditional specialization by the predeclared route-reliance criterion.",
+    "leading_explanation": "The small mixed metric movements are more consistent with ordinary initialization or trajectory regularization than learned conditional routing.",
+    "sharpest_falsifier": "Remaining E16 and mechanism controls must show an aligned mean-and-tail gain, route reliance above 0.01, and survival under a locked fresh seed; otherwise close this family.",
+    "promotion": "none_to_epoch90_or_fresh_seeds"
+  },
+  "multiplicity": "Five seed-0 exploratory finals selected within a broad prior architecture, objective, temperature, expert-count, and auxiliary search; no population claim and no confirmatory winner."
+}

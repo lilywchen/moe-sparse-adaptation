@@ -2243,3 +2243,30 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
 - Next automatic action: restore authenticated browser control, read the repair gate, retry dense rank 2 exactly
   once on `2859/gpu0` if every guard passes, validate the five completed upcycling results, and start tester6 once
   only if it remains stopped. OOD test remains sealed.
+
+## 2026-08-03 16:01 EDT
+
+- Where we are: the in-app SciServer session is authenticated. All ten currently available H100s across
+  containers 2887/2875/2874/2862/2859 have distinct live workers; no GPU is idle. Tester6/2899 is Pending and
+  contributes zero because the scheduler reports 11 affinity mismatches, two unschedulable nodes, and three
+  nodes with insufficient GPU capacity. Twelve tested cells remain ready and the hypothesis backlog is 26.
+- What moved: exactly one tester6 Start was issued, with no create or duplicate start. The dense-control repair
+  passed 3 focused and 133 full tests plus the exact one-cell dry-run. After free/result/marker/duplicate checks,
+  dense E4 noise-0.01 rank 2 was retried once on `2859/gpu0` as controller2458/worker2478 and verified live.
+  Five upcycling epoch-60 finals were strictly validated with all three checkpoint milestones.
+- What we learned: every validated noisy MoE has absolute route reliance below `0.0017`, so the tested E4/E8
+  perturbations did not create the predeclared specialization signal. Exact noisy-minus-zero comparisons in
+  OOD/ID/worst points are canonical E4 `+0.132/+0.561/+0.162`, route E4 `-0.558/+0.195/-0.528`, route E8
+  noise-0.001 `+0.721/-0.537/+0.203`, and route E8 noise-0.01 `+0.304/-0.389/+0.041`. These small mixed seed-0
+  effects favor ordinary regularization or trajectory noise; none advances to epoch90 or fresh seeds.
+- Correctness/trust: execution commit `4893c964e67477a25a2e3b331dde9c7e641ca669` is a documented
+  code-equivalent checkout; source commit is `3eca8fc27e16a2f7e4126c22bfa491b5231b9227`. Each result is finite,
+  covers OOD-validation environments 7/27/42/49 and 9,854 samples, has null heldout fields, fatal-clear logs,
+  W&B identity, and nonzero epoch10/30/60 checkpoints. OOD test was not accessed. The largest threat is
+  multiplicity plus a still-running exact comparator.
+- Traceable artifacts: `analysis/upcycling_noise60_epoch60_wave1_validation.json`, updated
+  `analysis/upcycling_noise_controls60_dense_variant_repair.json`, and the required steward ledgers.
+- Next automatic action: validate the three remaining upcycling finals and active moderate comparators when they
+  finish, then refill every released GPU from the twelve tested controls. A routing interpretation requires
+  aligned mean/tail movement, reliance above `0.01`, and a locked fresh seed. HF remains quota-blocked; paper
+  unchanged; OOD test sealed.

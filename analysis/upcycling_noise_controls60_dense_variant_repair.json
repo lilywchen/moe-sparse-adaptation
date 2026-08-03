@@ -37,9 +37,11 @@
   },
   "post_repair_remote_gate": {
     "command_submitted": true,
-    "output_observed": false,
-    "reason": "the Chrome browser-control transport reset and then disconnected before command readback",
-    "status": "unverified"
+    "output_observed": true,
+    "focused_tests": "3 passed in 1.28s",
+    "full_suite": "133 passed in 29.92s",
+    "exact_shard_4_dry_run": "one planned and one pending dense_E4_temp03_noise0p01 cell; no result or duplicate",
+    "status": "pass"
   },
   "pool_at_last_strict_audit": {
     "active_workers": 9,
@@ -58,11 +60,25 @@
     "failure_excluded_from_science": true,
     "multiplicity": "mechanism-control sweep is exploratory; any selected winner still requires a locked configuration and fresh seeds"
   },
-  "retry_license": "after authenticated Chrome transport is restored, observe the focused and 133-test full-suite passes plus exact shard-4 one-pending dry-run; verify container 2859 gpu0 remains owned and free and that no result or active marker exists; then retry the exact dense-E4-noise0p01 arm once",
+  "retry_license": "consumed after the repaired focused/full suites, exact shard-4 one-pending dry-run, owned-free GPU, and absent duplicate/result guards all passed",
+  "retry": {
+    "attempt": 1,
+    "launched_at": "2026-08-03T15:56:00-04:00",
+    "container_id": 2859,
+    "gpu": 0,
+    "controller_pid": 2458,
+    "worker_pid": 2478,
+    "controller_log": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/upcycling_noise_controls60_20260803/controller_hb1956_2859_gpu0_control_rank2_retry1.log",
+    "startup": "gpu0_99_percent_8831MiB_worker_live_exact_dense_E4_cell",
+    "wandb_group": "rxrx1-cell-dino-upcycling-noise-controls60-20260803",
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "status": "running_verified"
+  },
   "next_actions": [
-    "read back the post-repair remote gate",
-    "retry the exact failed dense control once if and only if its gate and duplicate guards pass",
-    "validate the five completed upcycling results before interpreting them",
-    "inspect tester6 and start it exactly once only if it remains stopped; never create a duplicate"
+    "monitor the exact retry and validate its epoch-10 milestone",
+    "refill its GPU from the ranked tested control queue immediately after completion or failure",
+    "use the frozen and dense controls to distinguish conditional routing from generic noise",
+    "leave tester6 pending without another start and never create a duplicate"
   ]
 }
