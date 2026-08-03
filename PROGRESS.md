@@ -8,6 +8,33 @@ gate and manuscript table, was pulled into the linked Overleaf project on 2026-0
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
 
+## 2026-08-03 06:48 EDT — canonical E32 final, moderate-bank epoch 10, and refill
+
+- Strict validation closed the canonical E32 temperature-0.3 tail-safe/no-auxiliary pair at epoch
+  60. Tail-safe minus its exact active-compute comparator is `+0.457` OOD-validation points,
+  `+0.488` ID points, and `+0.284` worst-experiment points. One of four environments worsens
+  (`-0.731` points), the epoch-30 tail contrast was negative, and route reliance is only `0.00132`
+  versus `0.00294`. This is a small aligned exploratory difference, not a material, consistent, or
+  routing-mediated effect; it licenses neither epoch 90 nor fresh seeds.
+- Seven available moderate-bank epoch-10 rows and checkpoints pass strict parseability, finite
+  metric, run/epoch identity, fatal-scan, `selection_split=ood_val`, and
+  `test_evaluated=false` checks. Route tail-safe minus no-auxiliary OOD/ID/worst differences are
+  E4 `+0.345/-0.498/-0.122`, E8 `-0.731/-1.770/-0.244`, and E16
+  `+0.599/-0.399/+0.122` points. No row is promoted. The predeclared delayed-emergence exception
+  permits these cells only through epoch 30, where unchanged dominance or a missing competitive
+  mechanism trajectory causes pruning.
+- Container 2859 GPU 0 was immediately refilled with the exact canonical E4 temperature-0.3
+  no-auxiliary comparator (controller `60873`, worker `60878`) after exact shard `7/12` dry-run,
+  duplicate/result/marker, persistence, tracking, checkpoint, and sealed-test guards passed. It is
+  paired with canonical E4 tail-safe on GPU 1. All ten available H100s are assigned; zero are idle.
+  The runnable queue is 12 arms (four remaining moderate-bank cells plus eight tested upcycling
+  cells), with 26 hypotheses in backlog. tester6 replacement 2899 remains scheduler-Pending and
+  contributes no available GPUs.
+- The OOD test remains sealed. W&B streams are live. HF publication was not retried because the
+  known private-storage quota blocker has not cleared. The manuscript was not changed for this
+  multiplicity-exposed seed-0 terminal negative and diagnostic milestone.
+- Trace: `analysis/temperature03_canonical_E32_epoch60_and_moderate_epoch10_refill_validation.json`.
+
 ## Protocol state
 
 - [x] Scientific question and three analyses frozen in `PLAN.md`.

@@ -1,0 +1,109 @@
+{
+  "validated_at": "2026-08-03T06:48:00-04:00",
+  "grade": "strict_exploratory_seed0_active_compute_matched",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_status": "sealed_all_heldout_fields_null_or_absent",
+  "execution": {
+    "result_git_sha_prefix": "8067197",
+    "moderate_checkout_head": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "moderate_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+    "git_dirty": false,
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched"
+  },
+  "canonical_E32_temperature03_epoch60": {
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature03_canonical_aux60_20260803",
+    "parameter_counts": {
+      "total_parameters": 59043060,
+      "active_ffn_including_router": 1193857
+    },
+    "no_aux": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_temperature03_canonical_aux60_canonical_E32_temp03_no_aux_20260803",
+      "acc_selection": 0.20813882687233612,
+      "acc_within": 0.5213729932039791,
+      "worst_env_val": 0.017045454545454544,
+      "route_reliance": 0.002942967792207795,
+      "checkpoint_bytes": [709163485, 709163485, 709163485]
+    },
+    "tail_safe": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_temperature03_canonical_aux60_canonical_E32_temp03_tail_safe_20260803",
+      "acc_selection": 0.2127055003044449,
+      "acc_within": 0.5262483994878361,
+      "worst_env_val": 0.019886363636363636,
+      "route_reliance": 0.0013192612137203352,
+      "checkpoint_bytes": [709220052, 709220052, 709220052]
+    },
+    "tail_safe_minus_no_aux_points": {
+      "ood_val": 0.45666734321087865,
+      "id": 0.48754062838569645,
+      "worst_experiment": 0.28409090909090917,
+      "per_environment": {
+        "7": 1.0154346060113728,
+        "27": -0.7305194805194815,
+        "42": 1.2581168831168832,
+        "49": 0.28409090909090917
+      }
+    },
+    "strict_checks": [
+      "two_exact_jsons_parse_and_required_metrics_are_finite",
+      "run_id_seed_stage_parameter_and_milestone_identity_match",
+      "selection_split_ood_val_test_evaluated_false_and_all_heldout_fields_null",
+      "four_validation_environments_7_27_42_49_present",
+      "three_nonzero_epoch10_30_60_checkpoints_per_arm",
+      "fatal_free_logs_and_wandb_sync_present"
+    ],
+    "decision": "terminal_negative_for_material_consistent_or_routing_mediated_effect_no_epoch90_or_fresh_seed",
+    "interpretation": "small_aligned_final_mean_id_tail_difference_but_env27_worsens_epoch30_tail_was_negative_and_tail_safe_route_reliance_is_only_0p00132"
+  },
+  "moderate_bank_epoch10": {
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/temperature03_moderate_bank_aux60_20260803",
+    "valid_rows": 7,
+    "expected_current_rows": 7,
+    "rows": {
+      "canonical_E4_temp03_tail_safe": {"acc_selection": 0.1310127866856099, "acc_within": 0.3220969171673397, "worst_env_val": 0.016233766233766232, "checkpoint_bytes": 311814653},
+      "route_E4_temp03_no_aux": {"acc_selection": 0.13162167647655773, "acc_within": 0.324239141405496, "worst_env_val": 0.016233766233766232, "checkpoint_bytes": 311757662},
+      "route_E4_temp03_tail_safe": {"acc_selection": 0.1350720519585955, "acc_within": 0.3192406185363932, "worst_env_val": 0.015016233766233766, "checkpoint_bytes": 311759957},
+      "route_E8_temp03_no_aux": {"acc_selection": 0.13831946117698396, "acc_within": 0.3121244952230868, "worst_env_val": 0.017045454545454544, "checkpoint_bytes": 368525918},
+      "route_E8_temp03_tail_safe": {"acc_selection": 0.1310127866856099, "acc_within": 0.29442036836403035, "worst_env_val": 0.01461038961038961, "checkpoint_bytes": 368528469},
+      "route_E16_temp03_no_aux": {"acc_selection": 0.13476760706312158, "acc_within": 0.3204964050034473, "worst_env_val": 0.01461038961038961, "checkpoint_bytes": 482064600},
+      "route_E16_temp03_tail_safe": {"acc_selection": 0.14075502334077533, "acc_within": 0.31650743625274606, "worst_env_val": 0.015827922077922076, "checkpoint_bytes": 482081423}
+    },
+    "tail_safe_minus_no_aux_points": {
+      "route_E4": {"ood_val": 0.345038, "id": -0.497952, "worst_experiment": -0.121753},
+      "route_E8": {"ood_val": -0.730668, "id": -1.770413, "worst_experiment": -0.243506},
+      "route_E16": {"ood_val": 0.598742, "id": -0.398897, "worst_experiment": 0.121753}
+    },
+    "strict_checks": [
+      "seven_jsonl_rows_parse_and_required_metrics_are_finite",
+      "epoch10_selection_split_ood_val_and_test_evaluated_false",
+      "seven_nonzero_epoch010_checkpoints_match_run_ids",
+      "fatal_scan_clear_for_every_corresponding_log"
+    ],
+    "decision": "no_epoch10_prune_because_predeclared_delayed_emergence_is_licensed_only_through_epoch30_and_mechanism_signature_is_not_yet_available",
+    "sharp_epoch30_rule": "prune_any_cell_that_remains_dominated_or_lacks_a_competitive_trajectory_and_continue_to_epoch60_only_if_competitive_or_route_reliance_exceeds_0p01"
+  },
+  "refill": {
+    "container_id": 2859,
+    "gpu": 0,
+    "controller_pid": 60873,
+    "worker_pid": 60878,
+    "arm": "canonical_E4_temp03_no_aux",
+    "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s0_temperature03_moderate_bank_aux60_canonical_E4_temp03_no_aux_20260803",
+    "shard": "7/12",
+    "preflight": "exact_one_cell_dryrun_free_owned_gpu_duplicate_result_and_marker_absent_persistent_destinations_wandb_hf_checkpoint_and_sealed_test_guards_pass",
+    "startup": "gpu0_99_percent_8019_MiB_worker_and_dataloader_tree_live_log_and_active_marker_fresh_no_result_yet",
+    "exact_comparator": "canonical_E4_temp03_tail_safe_on_container2859_gpu1"
+  },
+  "capacity": {
+    "active_h100_workers": 10,
+    "available_h100s": 10,
+    "idle_h100s": 0,
+    "moderate_active": 8,
+    "moderate_queued": 4,
+    "upcycling_queued": 8,
+    "ready_arms": 12,
+    "backlog_hypotheses": 26,
+    "tester6": "container2899_pending_running_false_exit0_same_scheduler_reason_and_zero_available_h100s"
+  },
+  "multiplicity": "exploratory_seed0_after_broad_prior_sweeps_no_winner_is_confirmatory_without_locked_fresh_seeds"
+}

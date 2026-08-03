@@ -2,6 +2,34 @@
 
 Last verified: 2026-08-02 05:16 EDT
 
+## Current handoff — 2026-08-03 06:48 EDT
+
+The canonical E32 temperature-0.3 auxiliary pair is now a strict exploratory epoch-60 terminal
+negative for a material or routing-mediated effect. Tail-safe minus exact no-auxiliary is
+`+0.457/+0.488/+0.284` OOD-validation/ID/worst-experiment points, but environment 27 moves
+`-0.731` points and route reliance falls from `0.00294` to `0.00132`. The result rules out a large,
+consistent-tail, route-dependent benefit for this exact recipe; generic objective regularization
+or trajectory noise remains more plausible. The sharp falsifier is an aligned mean/tail pair with
+route reliance above `0.01` that survives a locked fresh seed.
+
+Seven moderate-bank epoch-10 rows are strict-valid. Route E4, E8, and E16 tail-safe minus
+no-auxiliary OOD/ID/worst differences are respectively `+0.345/-0.498/-0.122`,
+`-0.731/-1.770/-0.244`, and `+0.599/-0.399/+0.122` points. These are diagnostic only. The
+predeclared delayed-emergence exception is retained through epoch 30 because the mechanism
+signature is not yet available; no row is promoted, and unchanged dominance at epoch 30 will be
+pruned.
+
+The E32 release was refilled on container 2859 GPU 0 with canonical E4 temperature-0.3
+no-auxiliary (controller `60873`, worker `60878`) after an exact one-cell dry-run and all ownership,
+duplicate, result, persistence, checkpoint, tracking, and test-blind guards passed. Ten of ten
+available H100s are assigned and zero are idle. Moderate bank is 8 active/4 queued; upcycling is
+0 active/8 queued; ready depth is 12 and backlog depth is 26. tester6 replacement 2899 remains
+Pending with the same scheduler reason and contributes zero available devices. OOD test is sealed,
+HF retry remains blocked on quota, and the paper is unchanged.
+
+Validation artifact:
+`analysis/temperature03_canonical_E32_epoch60_and_moderate_epoch10_refill_validation.json`.
+
 ## Scientific question
 
 When a pretrained vision transformer is fully adapted to scientific images collected across
