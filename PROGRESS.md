@@ -2828,3 +2828,21 @@ preemption. Ready/backlog remain conservatively 10/27. The next action is to rea
 report; only if focused and full suites pass, run exact dry-runs and launch the locked E4 seed-1
 tail-safe/zero-auxiliary pair on verified-free devices with duplicate guards, then fill the next
 verified releases with the predeclared seed-2 pair. OOD test remains sealed.
+
+## 2026-08-03 02:21 EDT — repaired confirmation source passes focused and full local suites
+
+An isolated macOS/arm64 Python 3.9 environment independently reran the repaired source at commit
+`80671979e2bfc88f3e8b6da4aa02bb67ae02be3e`. The three focused registry/refill files pass 18/18,
+and the full suite passes 153/153 in 90.35 seconds. The ten warnings are Pillow `mode` deprecations
+only. This closes the source-level test gate that previously failed solely because the test parser
+split `tail_safe` and `no_aux` labels at every underscore. The validation record is
+`analysis/expert_count_aux_confirm60_local_test_validation.json`.
+
+This is correctness evidence, not scientific evidence or a launch. The previous SciServer
+pre-repair suite already passed 152 tests with only that deterministic parser failure; the submitted
+post-repair remote report remains unread while the user reauthenticates SciServer. The locked E4
+seed-1 and seed-2 auxiliary pairs are now source-test licensed, but each launch still requires a
+fresh authoritative container/GPU audit, duplicate/result/marker checks, the exact one-cell remote
+dry-run, persistent destinations, and sealed-test verification. No current occupancy count is
+claimed from the earlier partial snapshot. Registered ready/backlog remain 12/27. Browser control
+is intentionally paused for user reauthentication; OOD test remains sealed.

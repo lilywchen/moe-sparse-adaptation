@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-03T02:21:42-04:00",
+  "source_commit": "80671979e2bfc88f3e8b6da4aa02bb67ae02be3e",
+  "state_base_commit": "b782d709bac16ad38d692226d936c2bfd6aab886",
+  "repair": {
+    "file": "tests/test_sweep_rxrx1_expert_count.py",
+    "change": "split the pressure/expert/auxiliary tag at most twice",
+    "scope": "test_only_parser_for_auxiliary_labels_containing_underscores"
+  },
+  "environment": {
+    "path": "/tmp/rxrx1-test-8067197",
+    "python": "3.9.6",
+    "pytest": "8.4.2",
+    "torch": "2.8.0",
+    "numpy": "1.26.4",
+    "platform": "macOS_arm64_cpu",
+    "repository_dirty_before_tests": false
+  },
+  "focused": {
+    "files": [
+      "tests/test_sweep_rxrx1_expert_count.py",
+      "tests/test_sweep_rxrx1_expert_count_aux_confirm.py",
+      "tests/test_sweep_rxrx1_router_aux.py"
+    ],
+    "passed": 18,
+    "failed": 0,
+    "duration_seconds": 11.04
+  },
+  "full_suite": {
+    "passed": 153,
+    "failed": 0,
+    "warnings": 10,
+    "warnings_class": "Pillow_mode_deprecation_only",
+    "duration_seconds": 90.35
+  },
+  "remote_context": {
+    "pre_repair_full_suite": "152_passed_1_failed_test_only_parser",
+    "post_repair_sciserver_test_submission": "/home/idies/workspace/hb_tests_8067197_0527_2887.txt",
+    "post_repair_sciserver_readback": "pending_authenticated_browser_recovery",
+    "clean_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-confirm-8067197"
+  },
+  "decision": {
+    "source_test_gate": "pass",
+    "launch_license": "open_after_fresh_remote_gpu_duplicate_and_exact_dry_run_checks",
+    "scientific_claim": false,
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "ood_test_blind": true
+  }
+}

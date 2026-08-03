@@ -2030,3 +2030,18 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   then launch locked E4 seed-1 tail-safe/zero-auxiliary cells on verified-free devices and refill
   remaining verified releases with their predeclared seed-2 pair under duplicate guards. Keep OOD
   test sealed.
+
+## 2026-08-03 02:21 EDT
+
+- Commit `80671979e2bfc88f3e8b6da4aa02bb67ae02be3e` passes 18 focused and 153 full tests in a new
+  isolated local Python 3.9 environment. The full-suite warnings are ten Pillow deprecations only.
+  This independently closes the narrow source-test gate after the remote pre-repair run passed 152
+  tests and failed only the now-repaired underscore parser.
+- Record the exact environment, commands, counts, and gate decision in
+  `analysis/expert_count_aux_confirm60_local_test_validation.json`. This is implementation
+  validation, not an efficacy result; no scientific interpretation, exclusion, promotion, W&B,
+  HF, or OOD-test state changes.
+- All four locked E4 seed-1/2 auxiliary cells return to the runnable queue at the source level.
+  Ready/backlog are 12/27. Launch remains conditional on authenticated remote per-GPU and duplicate
+  audit plus exact one-cell dry-runs. Current active and idle H100 counts are unknown because the
+  user is reauthenticating SciServer; the browser is left untouched during that handoff.
