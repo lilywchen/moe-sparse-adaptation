@@ -1883,3 +1883,17 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   `analysis/extreme_temperature_aux60_canonical_E32_temp01_epoch10_validation.json` now contains
   the exact pair. Both rows pass identity, finite metric, four-environment/9,854-sample, parameter,
   checkpoint, W&B, fatal, OOD-validation, and sealed-test checks. Multiplicity remains explicit.
+- Extreme route-E32 zero auxiliary emits a strict final at `0.20966/0.52233/0.01745`
+  OOD/ID/worst, with all 32 experts used, entropy `0.92833`, route reliance `0.00223`, null held-out
+  fields, W&B sync, controller rc0, and a fatal-clear log. Its tail-safe comparator reliance is
+  `0.00183`; the exact temperature-0.03 pair is therefore terminal-negative for both material and
+  routing-mediated tail-safe benefit. No epoch90 or fresh seeds are licensed.
+- The released container2874/GPU0 immediately starts canonical-E64 temperature-0.1 tail-safe after
+  exact shard6/8, free-GPU, duplicate/result/prune/marker, persistent destination, checkpoint,
+  tracking, and test-blind guards pass. Controller66578/worker66583/W&B `7fnmaxhj` reaches 8,855
+  MiB, loads 9,854 OOD-validation samples with test untouched, and is fatal-clear. A missing active
+  marker is repaired once to verified worker66583 without restart.
+- Extreme coverage is now 4 completed, 3 active, 1 pruned of 8; smoother coverage is 7 active and
+  1 queued of 8. Ten allocated H100s are assigned, ready is13, backlog27, and tester6/2899 remains
+  scheduler Pending. HF publication is withheld under the already verified private-repository
+  storage-quota blocker rather than retried blindly.

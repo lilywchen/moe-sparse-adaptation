@@ -2634,3 +2634,21 @@ emergence was explicitly predeclared; both rows therefore continue only to epoch
 promotion. Together with route-E32's negative epoch-10 contrast and positive epoch-30 reversal,
 this makes a delayed optimization effect more plausible than an immediate benefit, while leaving
 generic regularization and trajectory noise unresolved.
+
+The extreme route-E32 zero-auxiliary worker then emits a strict final and exits rc0. It uses all 32
+experts, but routing entropy is `0.92833` and randomized-route reliance is only `0.00223`; the
+tail-safe comparator is likewise non-reliant at `0.00183`. With the objective pair already
+`-0.233/-0.623/+0.041`, this closes the exact temperature-0.03 route-E32 recipe as a reproducible
+negative for a material or routing-mediated tail-safe benefit. Held-out fields are null, W&B sync
+finishes, and no failure is excluded.
+
+Container2874/GPU0 is immediately refilled with the highest-ranked remaining smoother row,
+canonical-E64 temperature-0.1 tail-safe. Exact shard 6/8 exposes one unique pending cell; the GPU
+has no compute PID, duplicate/result/prune/active guards pass, and the documented code-equivalent
+execution base is `4893c964`. Controller66578 launches worker66583/W&B `7fnmaxhj`; startup reaches
+8,855 MiB, loads 9,854 OOD-validation examples, explicitly leaves test untouched, and has no fatal
+match. The only narrow repair writes the missing active marker once to the verified live worker PID
+without restart. All ten allocated H100s again carry distinct workers. Smoother coverage becomes
+7 active/1 queued of 8, extreme coverage becomes 4 completed/3 active/1 pruned of 8, ready falls
+from 14 to 13, and backlog remains 27. Publication is not attempted because the already verified
+private-repository storage quota blocker remains in force.

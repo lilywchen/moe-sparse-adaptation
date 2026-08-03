@@ -16,6 +16,8 @@
     "selection_split_ood_val": true,
     "test_evaluated_false": true,
     "test_untouched_log_evidence": true,
+    "final_result_json_parseable": true,
+    "heldout_fields_null": true,
     "checkpoint_present_nonempty": true,
     "fatal_scan_clear": true,
     "wandb_sync_active": true
@@ -37,8 +39,13 @@
       "epoch30": {"ood_val": -0.27400040592652775, "id": -0.6106569486851177, "worst_experiment": -0.0405844155844156},
       "epoch60": {"ood_val": -0.23340775319667106, "id": -0.6229685807150664, "worst_experiment": 0.0405844155844156}
     },
-    "available_mechanism": {"tail_safe_route_reliance": 0.001826669372843509, "tail_safe_routing_entropy": 0.9999787049227367},
-    "decision": "terminal_negative_for_a_material_tail_safe_effect_in_this_exact_recipe; no_epoch90_or_fresh_seed_license; preserve_no_aux_final_mechanism_emission_before_gpu_handoff"
+    "final_mechanism": {
+      "tail_safe": {"route_reliance": 0.001826669372843509, "routing_entropy": 0.9999787049227367, "experts_used": 32.0},
+      "no_aux": {"route_reliance": 0.002232595900142076, "routing_entropy": 0.928329947904702, "experts_used": 32.0, "routing_mi_site": 0.008401503163211794, "routing_mi_class": 0.004914868830644771},
+      "both_route_reliance_below_0p01": true
+    },
+    "final_status": {"tail_safe_controller_rc": 0, "no_aux_controller_rc": 0, "both_fatal_clear": true, "both_wandb_synced": true},
+    "decision": "terminal_negative_for_a_material_or_routing_mediated_tail_safe_effect_in_this_exact_recipe; no_epoch90_or_fresh_seed_license; gpu_released_and_refilled"
   },
   "smoother_route_E32_temperature0p1": {
     "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
@@ -61,6 +68,6 @@
   "interpretation": "Temperature 0.1, not the 0.03 extreme recipe, produces an aligned E32 auxiliary effect at epoch 30. This is provisional evidence that smoother optimization may matter, while the final routing mechanism remains unidentified.",
   "alternative_explanation": "The epoch-30 reversal can be generic auxiliary regularization or trajectory noise rather than useful conditional routing.",
   "multiplicity": "Both pairs are seed-0 exploratory follow-ups after broad architecture, objective, pressure, bank-size, and temperature searches; the smoother reversal requires locked fresh-seed confirmation only if it survives epoch 60 with the declared mechanism or tail signature.",
-  "largest_threat": "Final route reliance for the smoother pair is unavailable and the observed 1.21-point mean gain is selected after multiple screens.",
+  "largest_threat": "Final route reliance for the smoother pair is unavailable and its observed 1.21-point mean gain is selected after multiple screens; the extreme pair is no longer mechanism-ambiguous.",
   "next_falsifier": "At epoch 60 the smoother pair must retain a nonnegative mean and worst-experiment effect without more than two ID points lost, preferably with randomized-route reliance above 0.01; otherwise the smoother-routing explanation is rejected."
 }
