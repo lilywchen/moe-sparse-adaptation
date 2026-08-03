@@ -1726,3 +1726,7 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   The stale smoother-screen checkout was repaired once to exact committed hashes; seven focused
   tests, the full suite (exit zero), and eight exact one-cell dry runs pass. Selection remains OOD validation, all test fields remain null, and multiplicity
   spans four bank sizes, two fresh seeds, milestones, and follow-up auxiliary/temperature screens.
+- Route-E16 final emission released two GPUs; they immediately start low-temperature route-E64
+  tail-safe (worker51141/W&B `azo0b8ss`) and zero auxiliary (worker52611/W&B `rs6sqaxa`). Both
+  exact one-cell dry runs and startup/test-blind/fatal checks pass. The low-temperature 8-cell
+  sweep is fully active; 12 exact tested cells remain ready.

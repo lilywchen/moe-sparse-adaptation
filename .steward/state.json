@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_locked_E32_seed2_and_route_E16_epoch60_refill_extreme_route_E32_no_aux_launch_publication_wave4",
-  "last_action_at": "2026-08-02T20:43:00-04:00",
+  "last_action": "refill_two_route_E16_releases_with_extreme_route_E64_pair",
+  "last_action_at": "2026-08-02T21:10:00-04:00",
   "last_verified_commit": "71eb1f1f5ec98838a0911e3459b686a7d0d36f0e",
   "valid_results": 40,
   "expected_results": 20,
@@ -542,8 +542,8 @@
   "expert_count60_canonical_E4_epoch30_tail_safe_minus_zero_aux_points": {"ood_val": 1.7454840674, "id": 0.9873928888, "worst_experiment": 0.2029220779, "decision": "continue_both_to_epoch60_positive_aligned_objective_effect"},
   "extreme_expert_aux60_status": "eight_E32_E64_by_pressure_by_auxiliary_active_compute_matched_seed0_cells_five_active_three_tested_ready",
   "extreme_expert_aux60_expected_results": 8,
-  "extreme_expert_aux60_active_results": 5,
-  "extreme_expert_aux60_queued_results": 3,
+  "extreme_expert_aux60_active_results": 8,
+  "extreme_expert_aux60_queued_results": 0,
   "extreme_expert_aux60_source_commit": "3ac5ef86c804e93f809f0caa347f8b34636cfff0",
   "extreme_expert_aux60_source_tree": "4e43e319cd59eedb6fb716c9ba898e84e52fc6c9",
   "extreme_expert_aux60_code_equivalent_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-extremeaux-codeeq-d370b70",
@@ -563,14 +563,14 @@
   "extreme_temperature_aux60_test_status": "exact_committed_script_test_registry_hashes_repaired_once; seven_focused_pass; full_suite_exit_zero; eight_disjoint_one_cell_dryruns_pass",
   "extreme_temperature_aux60_wandb_group": "rxrx1-cell-dino-extreme-temperature-aux60-20260802",
   "extreme_temperature_aux60_hf_prefix": "rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
-  "ready_arms": 14,
-  "ready_queue_test_status": "two_remaining_temperature0p03_cells_plus_eight_smoother_pressure_cross_cells_plus_four_locked_canonical_E4_auxiliary_fresh_seed_cells; smoother exact committed hashes seven focused full-suite exit zero and eight dryruns pass",
+  "ready_arms": 12,
+  "ready_queue_test_status": "eight_smoother_pressure_cross_cells_plus_four_locked_canonical_E4_auxiliary_fresh_seed_cells; exact committed hashes seven focused full-suite exit zero and eight smoother dryruns pass",
   "ready_queue_registry_commit": "3ac5ef86c804e93f809f0caa347f8b34636cfff0",
   "ready_queue_registry_tree": "4e43e319cd59eedb6fb716c9ba898e84e52fc6c9",
   "ready_queue_addendum_commit": "d5d2b63",
   "backlog_hypotheses": 27,
-  "wandb_current_status": "locked_confirmation_8_of_8_final; broader_route_E16_pair_epoch60_mechanism_emission_live; canonical_E16_pair_live; six_extreme_temperature0p03_arms_live_including_new_route_E32_no_aux_l06751x1",
-  "current_gpu_assignments": {"2887":{"gpu0":{"worker_pid":45603,"arm":"route_E16_tail_safe_seed0","status":"epoch60_mechanism_emission"},"gpu1":{"worker_pid":48233,"arm":"canonical_E16_zero_aux_seed0"}},"2875":{"gpu0":{"worker_pid":116490,"arm":"canonical_E16_tail_safe_seed0"},"gpu1":{"controller_pid":117930,"worker_pid":117935,"arm":"extreme_route_E32_tail_safe_seed0"}},"2874":{"gpu0":{"controller_pid":62810,"worker_pid":62815,"arm":"extreme_route_E32_no_aux_seed0","wandb_run_id":"l06751x1"},"gpu1":{"worker_pid":60308,"arm":"extreme_canonical_E32_tail_safe_seed0"}},"2862":{"gpu0":{"controller_pid":60195,"worker_pid":60206,"arm":"extreme_canonical_E32_no_aux_seed0"},"gpu1":{"controller_pid":60196,"worker_pid":60205,"arm":"extreme_canonical_E64_tail_safe_seed0"}},"2859":{"gpu0":{"controller_pid":51238,"worker_pid":51243,"arm":"extreme_canonical_E64_no_aux_seed0"},"gpu1":{"worker_pid":47671,"arm":"route_E16_zero_aux_seed0","status":"epoch60_mechanism_emission"}}},
+  "wandb_current_status": "locked_confirmation_8_of_8_final; canonical_E16_pair_live; all_eight_extreme_temperature0p03_cells_live_including_route_E64_tail_azo0b8ss_and_noaux_rs6sqaxa",
+  "current_gpu_assignments": {"2887":{"gpu0":{"controller_pid":51136,"worker_pid":51141,"arm":"extreme_route_E64_tail_safe_seed0","wandb_run_id":"azo0b8ss"},"gpu1":{"worker_pid":48233,"arm":"canonical_E16_zero_aux_seed0"}},"2875":{"gpu0":{"worker_pid":116490,"arm":"canonical_E16_tail_safe_seed0"},"gpu1":{"controller_pid":117930,"worker_pid":117935,"arm":"extreme_route_E32_tail_safe_seed0"}},"2874":{"gpu0":{"controller_pid":62810,"worker_pid":62815,"arm":"extreme_route_E32_no_aux_seed0","wandb_run_id":"l06751x1"},"gpu1":{"worker_pid":60308,"arm":"extreme_canonical_E32_tail_safe_seed0"}},"2862":{"gpu0":{"controller_pid":60195,"worker_pid":60206,"arm":"extreme_canonical_E32_no_aux_seed0"},"gpu1":{"controller_pid":60196,"worker_pid":60205,"arm":"extreme_canonical_E64_tail_safe_seed0"}},"2859":{"gpu0":{"controller_pid":51238,"worker_pid":51243,"arm":"extreme_canonical_E64_no_aux_seed0"},"gpu1":{"controller_pid":52606,"worker_pid":52611,"arm":"extreme_route_E64_no_aux_seed0","wandb_run_id":"rs6sqaxa"}}},
   "pending_publication": null,
   "latest_publication": {"status":"strict_complete_remote_verified","runs":5,"manifests":5,"remote_files":35,"files_per_run":7,"family":"temperature_expert_count_confirm60_locked_wave4","hf_prefix":"rxrx1/cell_dino_cp5/temperature_expert_count_confirm60_20260802","report":"/home/idies/workspace/hb_publish_locked_wave4_0035.report.json","execution_commit":"4893c964e67477a25a2e3b331dde9c7e641ca669","git_dirty":true,"selection_split":"ood_val","test_evaluated":false},
   "sixth_container": {
@@ -596,5 +596,5 @@
   "temperature_expert_count_confirm60_epoch60_seed2_E32_minus_E8_points": {"ood_val":1.2380759082606052,"id":0.6599034768048795,"worst_environment":0.0811688311688312},
   "expert_count60_route_E16_epoch60_paired_validation": "analysis/expert_count60_route_E16_epoch60_paired_validation.json",
   "expert_count60_route_E16_epoch60_tail_safe_minus_zero_aux_points": {"ood_val":-0.223259590014208,"id":-0.04924652811977,"worst_environment":0.0811688311688312},
-  "next_gate": "verify_locked_wave4_publication; validate_canonical_E32_tail_safe_at_epoch30_then_pair_with_no_aux; refill_first_physical_release_with_extreme_route_E64_tail_safe_shard6_after_exact_guards; no_epoch90_unless_at_least_five_OOD_points_or_consistent_material_tail_with_route_reliance_above_0p01; keep_ood_test_sealed"
+  "next_gate": "validate_canonical_E32_tail_safe_at_epoch30_then pair_with_no_aux; first physical release launches smoother route_E32_temp01_tail_safe shard0 after exact guards; no_epoch90_unless_at_least_five_OOD_points_or_consistent_material_tail_with_route_reliance_above_0p01; keep_ood_test_sealed"
 }

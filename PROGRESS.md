@@ -2430,3 +2430,11 @@ five checksum manifests and 35 remotely listed files under the existing confirma
 The initially stale smoother-screen checkout was repaired to the exact committed script, test,
 and eight-cell registry hashes; seven focused tests, the full suite (exit zero), and eight disjoint
 one-cell dry runs pass. OOD test remains sealed.
+
+The route-E16 final-emission workers then released container2887/GPU0 and container2859/GPU1.
+Both slots immediately refill with the remaining temperature-0.03 route-E64 pair: tail-safe
+controller51136/worker51141/W&B `azo0b8ss`, and zero-aux controller52606/worker52611/W&B
+`rs6sqaxa`. Exact shard-6/8 and shard-7/8 dry runs each report one unique pending cell; startup
+memory is 8,842/8,844 MiB, W&B sync is active, the 9,854-sample OOD-validation path is loaded,
+test is untouched, and fatal scans are clear. All eight low-temperature cells are now active;
+the tested ready queue remains 12 (eight smoother cells and four locked auxiliary confirmations).
