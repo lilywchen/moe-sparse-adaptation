@@ -2682,3 +2682,31 @@ temperature-0.1 rows are active. Ten distinct workers occupy all ten running H10
 backlog 27. tester6/2899 remains scheduler Pending because 11 nodes fail affinity, two are
 unschedulable, and three lack GPU capacity; preemption is unhelpful with no victim. HF publication
 is withheld under the verified private-storage quota blocker. OOD test remains sealed.
+
+## 2026-08-03 00:36 EDT — Extreme route E64 closes negative; E4 seed-1 refills submitted
+
+The exact route-pressure E64 temperature-0.03 epoch-60 objective pair is strict-valid. Tail-safe
+minus zero auxiliary is `-0.041/-0.468/-0.081` OOD-validation/ID/worst-experiment points. Route
+reliance is `-0.00162` for tail-safe and `0.00020` for zero auxiliary, so neither result supports a
+routing-mediated effect. Both controllers exited rc0, fatal scans are clear, the epoch-60
+checkpoints and 10/30/60 milestones are present, all four environments and 9,854 OOD-validation
+examples are covered, and every held-out field remains null. This exact seed-0 recipe is terminal-
+negative for a material or tail-safe benefit and licenses neither epoch 90 nor fresh seeds.
+
+The temperature-0.03 extreme family therefore closes with seven strict epoch-60 finals and one
+preserved epoch-30 prune, with no active rows. Generic regularization or trajectory noise is more
+plausible than useful conditional routing. The sharp falsifier is the smoother temperature-0.1
+route-E32 final: it must retain aligned mean and tail movement and preferably exceed `0.01` route
+reliance. The result remains exploratory and multiplicity-exposed after broad architecture,
+pressure, bank-size, temperature, and objective searches.
+
+The released container2887/GPU0 and container2859/GPU1 devices were strictly verified free before
+submission. Locked canonical-E4 seed-1 tail-safe and zero-auxiliary confirmation commands were
+then submitted with idempotency guards, using the exact direct code-equivalent configurations after
+private-GitHub transport failed before mutation. Both direct configurations had already passed
+one-cell dry runs and match data order, seed, schedule, active-compute fairness, parameter counts,
+checkpoint policy, W&B group, HF destination, and sealed-test policy. Post-submission PID, GPU,
+startup, and W&B verification is not claimed because SciServer terminal control degraded into a
+bell-output flood. The last strict pool observation is eight active smoother workers and two free
+devices before submission; current occupancy is unknown. Ready is conservatively ten, backlog is
+27, and tester6/2899's last verified state remains Pending for the recorded scheduler constraints.

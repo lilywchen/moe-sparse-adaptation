@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-03T00:36:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "heldout_fields_null": true,
+  "classification": "strict_exploratory_active_compute_matched_seed0_terminal_pair",
+  "execution": {
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/extreme_expert_aux60_20260802",
+    "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "execution_tree": "74e62d3b90ceb24ab1becd18e2a6839b92c4a55c",
+    "code_equivalent_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-extremeaux-codeeq-d370b70",
+    "seed": 0,
+    "epochs": 60,
+    "pressure": "route",
+    "temperature": 0.03,
+    "n_experts": 64,
+    "total_parameters": 96865524,
+    "active_ffn_plus_router_parameters": 1206145,
+    "router_parameters": 24577,
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched"
+  },
+  "pair": {
+    "tail_safe": {
+      "ood_val_accuracy": 0.2042825248629998,
+      "id_accuracy": 0.5151186841327686,
+      "worst_experiment_accuracy": 0.017045454545454544,
+      "route_reliance": -0.0016237061091942395,
+      "routing_entropy": 0.9999803611339733,
+      "wandb_run_id": "azo0b8ss"
+    },
+    "zero_auxiliary": {
+      "ood_val_accuracy": 0.20468845139029834,
+      "id_accuracy": 0.5197971043041466,
+      "worst_experiment_accuracy": 0.017857142857142856,
+      "route_reliance": 0.00020296326364926953,
+      "routing_entropy": 0.9082301570894676,
+      "wandb_run_id": "rs6sqaxa"
+    },
+    "tail_safe_minus_zero_auxiliary_points": {
+      "ood_val": -0.040592652729853906,
+      "id": -0.4678420171377984,
+      "worst_experiment": -0.0811688311688312
+    },
+    "strict_checks": {
+      "json_parseable": true,
+      "finite_required_metrics": true,
+      "selection_split_ood_val": true,
+      "test_evaluated_false": true,
+      "heldout_fields_null": true,
+      "environment_count": 4,
+      "ood_val_samples": 9854,
+      "parameter_identity": true,
+      "milestones_10_30_60_present": true,
+      "epoch60_checkpoints_nonempty": true,
+      "controller_exit_rc0": true,
+      "fatal_scan_clear": true,
+      "wandb_synchronized": true
+    }
+  },
+  "decision": {
+    "status": "terminal_negative_for_material_tail_safe_or_routing_mediated_benefit_in_exact_recipe",
+    "epoch90_licensed": false,
+    "fresh_seed_licensed": false,
+    "most_plausible_explanation": "generic_regularization_or_trajectory_noise",
+    "sharpest_falsifier": "temperature0p1_route_E32_final_retains_aligned_mean_and_tail_and_preferably_route_reliance_above_0p01",
+    "multiplicity": "seed0_after_broad_architecture_pressure_bank_temperature_and_objective_search"
+  },
+  "coverage": {
+    "expected": 8,
+    "valid_finals": 7,
+    "valid_prunes": 1,
+    "active": 0
+  },
+  "refills": [
+    {
+      "arm": "canonical_E4_tail_safe_s1",
+      "container_id": 2887,
+      "gpu": 0,
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s1_expert_count_aux_confirm60_canonical_E4_tail_safe_s1_20260802",
+      "wandb_group": "rxrx1-cell-dino-expert-count-aux-confirm60-20260802",
+      "hf_prefix": "rxrx1/cell_dino_cp5/expert_count_aux_confirm60_20260802",
+      "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+      "total_parameters": 25948404,
+      "active_ffn_plus_router_parameters": 1183105,
+      "submission": "sent_with_idempotency_guard",
+      "verified_running": false,
+      "worker_pid": null,
+      "wandb_run_id": null
+    },
+    {
+      "arm": "canonical_E4_zero_aux_s1",
+      "container_id": 2859,
+      "gpu": 1,
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E4k1_ep60_s1_expert_count_aux_confirm60_canonical_E4_zero_aux_s1_20260802",
+      "wandb_group": "rxrx1-cell-dino-expert-count-aux-confirm60-20260802",
+      "hf_prefix": "rxrx1/cell_dino_cp5/expert_count_aux_confirm60_20260802",
+      "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+      "total_parameters": 25948404,
+      "active_ffn_plus_router_parameters": 1183105,
+      "submission": "sent_with_idempotency_guard",
+      "verified_running": false,
+      "worker_pid": null,
+      "wandb_run_id": null
+    }
+  ],
+  "post_submission_verification": {
+    "status": "blocked",
+    "reason": "sciserver_browser_terminal_transport_bell_flood",
+    "last_verified_pool": {
+      "active_workers": 8,
+      "free_devices": [
+        "container2887_gpu0",
+        "container2859_gpu1"
+      ]
+    },
+    "claim_policy": "no_gpu_saturation_or_launch_success_claim_until_reaudit"
+  }
+}

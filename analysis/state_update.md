@@ -1919,3 +1919,30 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   All ten running H100s are assigned distinct workers, ready is12, backlog27, and tester6/2899
   retains the exact 11-affinity/two-unschedulable/three-insufficient-GPU Pending reason. HF
   publication remains quota-blocked; OOD test remains sealed.
+
+## 2026-08-03 00:36 EDT
+
+- Extreme route-E64 temperature0p03 tail-safe minus exact zero auxiliary is
+  `-0.041/-0.468/-0.081` OOD/ID/worst points at epoch60. Route reliance is `-0.00162/0.00020`;
+  both routers are operationally non-reliant. This exact recipe is terminal-negative for a
+  material, tail-safe, or routing-mediated benefit and licenses no epoch90 or fresh seeds.
+- Both finals pass result/config/seed/parameter/epoch identity, finite metrics, four environments
+  and 9,854 OOD-validation samples, 10/30/60 milestones, nonempty epoch60 checkpoints, controller
+  rc0, fatal scans, W&B synchronization, `selection_split=ood_val`, `test_evaluated=false`, and
+  null held-out fields. The strict artifact is
+  `analysis/extreme_route_E64_epoch60_paired_and_E4_seed1_refills_validation.json`.
+- Extreme temperature0p03 coverage closes at seven strict finals, one valid preserved prune, and
+  zero active rows. Generic regularization or trajectory noise is now more plausible; the sharper
+  falsifier is an aligned smoother route-E32 final with preferably route reliance above `0.01`.
+  The inference is exploratory seed0 and multiplicity-exposed.
+- Container2887/GPU0 and container2859/GPU1 were strictly free after their extreme workers exited.
+  Locked canonical-E4 seed1 tail-safe and zero-auxiliary confirmation commands were submitted with
+  idempotency guards from the code-equivalent execution tree. Post-submission launch verification
+  is pending because SciServer terminal control produced a bell-output flood; no PID, GPU-memory,
+  W&B-run, or saturation claim is made. The last strict observation is eight active smoother
+  workers plus those two free devices before submission. Ready is ten and backlog27.
+- The private-GitHub transport attempt failed before mutation. Direct execution preserves the
+  already dry-run-verified config identity: E4, seed1, 60 epochs, canonical pressure, temperature
+  0.07, identical data order/schedule/parameters, tail-safe `0.01/0.01` versus zero `0/0`, declared
+  W&B/HF destinations, and sealed test. The next action is an exact re-audit of 2887/GPU0 and
+  2859/GPU1; if the guarded submissions are absent, relaunch the same two cells only.
