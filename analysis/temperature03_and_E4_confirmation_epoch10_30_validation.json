@@ -1,0 +1,90 @@
+{
+  "status": "strict_interim_paired_milestones_no_promotion_or_prune",
+  "validated_at": "2026-08-03T04:42:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_commit": "80671979e2bfc88f3e8b6da4aa02bb67ae02be3e",
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-confirm-8067197",
+  "validated_rows": 20,
+  "environment_ids": [7, 27, 42, 49],
+  "environment_counts": [2462, 2464, 2464, 2464],
+  "environment_total": 9854,
+  "pairs": {
+    "canonical_E4_seed1": {
+      "fairness_class": "same_active_compute_total_parameters_seed_data_order_and_schedule_auxiliary_setting_only",
+      "parameters": {"total": 25948404, "active_ffn_including_router": 1183105},
+      "epoch10_tail_safe_minus_zero_aux_points": {"ood_val": -0.10148163182464032, "id": -0.16497586920122265, "worst_experiment": 0.12175324675324661},
+      "epoch30_tail_safe_minus_zero_aux_points": {"ood_val": 0.23340775319667106, "id": -0.5490987885354071, "worst_experiment": -0.1217532467532468},
+      "checkpoint_bytes": {"tail_safe": 311757598, "zero_aux": 311756833},
+      "decision": "continue_locked_confirmation_to_epoch60_no_interim_replication_claim"
+    },
+    "canonical_E4_seed2": {
+      "fairness_class": "same_active_compute_total_parameters_seed_data_order_and_schedule_auxiliary_setting_only",
+      "parameters": {"total": 25948404, "active_ffn_including_router": 1183105},
+      "epoch10_tail_safe_minus_zero_aux_points": {"ood_val": 0.19281510046681716, "id": 0.325027085590468, "worst_experiment": -0.0405844155844156},
+      "epoch30_tail_safe_minus_zero_aux_points": {"ood_val": -0.7712604018672631, "id": -0.7263862897665729, "worst_experiment": 0.0},
+      "checkpoint_bytes": {"tail_safe": 311757598, "zero_aux": 311756833},
+      "decision": "continue_locked_confirmation_to_epoch60_fresh_seed_direction_disagrees_with_seed1"
+    },
+    "route_E32_temperature0p3_seed0": {
+      "fairness_class": "active_compute_matched_same_expert_count_pressure_seed_and_schedule_auxiliary_setting_only",
+      "parameters": {"total": 59043060, "active_ffn_including_router": 1193857},
+      "epoch10_tail_safe_minus_zero_aux_points": {"ood_val": -0.2841485691089912, "id": -0.4900029547916851, "worst_experiment": -0.1217532467532468},
+      "epoch30_tail_safe_minus_zero_aux_points": {"ood_val": 1.6440024355591638, "id": 1.5734265734265729, "worst_experiment": 0.040584415584415424},
+      "checkpoint_bytes": {"tail_safe": 709125578, "zero_aux": 709121875},
+      "decision": "continue_to_epoch60_strongest_current_interim_pair_below_plus5_gate_no_seed_promotion"
+    },
+    "route_E64_temperature0p3_seed0": {
+      "fairness_class": "active_compute_matched_same_expert_count_pressure_seed_and_schedule_auxiliary_setting_only",
+      "parameters": {"total": 96865524, "active_ffn_including_router": 1206145},
+      "epoch10_tail_safe_minus_zero_aux_points": {"ood_val": -0.07103714227724989, "id": -0.09849305623953475, "worst_experiment": 0.0},
+      "epoch30_tail_safe_minus_zero_aux_points": {"ood_val": -0.6900750964075525, "id": 1.1154338619127402, "worst_experiment": 0.08116883116883103},
+      "checkpoint_bytes": {"tail_safe": 1163269322, "zero_aux": 1163264147},
+      "decision": "continue_to_epoch60_pareto_tradeoff_no_promotion"
+    },
+    "canonical_E32_temperature0p3_seed0": {
+      "fairness_class": "active_compute_matched_same_expert_count_pressure_seed_and_schedule_auxiliary_setting_only",
+      "parameters": {"total": 59043060, "active_ffn_including_router": 1193857},
+      "epoch10_tail_safe_minus_zero_aux_points": {"ood_val": -0.10148163182464032, "id": 0.16005121638924535, "worst_experiment": -0.2029220779220778},
+      "epoch30_tail_safe_minus_zero_aux_points": {"ood_val": 0.49725999594073533, "id": -0.7904067763222722, "worst_experiment": -0.36525974025974023},
+      "checkpoint_bytes": {"tail_safe": 709220052, "zero_aux": 709163485},
+      "decision": "continue_to_epoch60_mean_tail_tradeoff_no_promotion"
+    }
+  },
+  "strict_checks": {
+    "jsonl_parseable_and_required_metrics_finite": true,
+    "exact_run_seed_epoch_and_pair_identity": true,
+    "classification_objective_erm": true,
+    "same_pair_parameter_data_order_and_schedule_identity": true,
+    "four_environment_9854_sample_coverage": true,
+    "epoch10_and_epoch30_checkpoint_identity_and_nonzero_size": true,
+    "fatal_scan_bytes": 0,
+    "execution_checkout_clean": true,
+    "all_ten_workers_live_after_validation": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "ood_test_untouched": true
+  },
+  "pool_audit": {
+    "container2887": {"gpu0": "worker57915_7999MiB", "gpu1": "worker57916_8049MiB"},
+    "container2875": {"gpu0": "worker123362_8007MiB_epoch40", "gpu1": "worker123497_8007MiB_epoch40"},
+    "container2874": {"gpu0": "worker68446_8387MiB_epoch43", "gpu1": "worker68447_8381MiB_epoch43"},
+    "container2862": {"gpu0": "worker66574_8903MiB_epoch43", "gpu1": "worker66575_8871MiB_epoch43"},
+    "container2859": {"gpu0": "worker57013_8421MiB_epoch30_milestone", "gpu1": "worker57012_8403MiB_epoch38"},
+    "active_workers": 10,
+    "idle_available_h100s": 0
+  },
+  "tester6": {
+    "container_id": 2899,
+    "status": "Pending",
+    "running": false,
+    "exit_code": 0,
+    "scheduler_reason": "11 affinity_or_selector_mismatch; 2 unschedulable; 3 insufficient_nvidia.com/gpu; preemption not helpful; no victims",
+    "action": "no_restart_no_duplicate_create"
+  },
+  "interpretation": "The temperature-0.3 route-E32 pair has the strongest current epoch-30 auxiliary contrast, but its 1.644-point OOD gain is below the material gate and remains seed-0 exploratory. The locked E4 fresh seeds disagree by epoch 30, so the seed-0 auxiliary signal is not yet reproduced. The other temperature-0.3 pairs are Pareto tradeoffs rather than a consistent tail-safe effect.",
+  "alternative": "The observed reversals are ordinary optimization or regularization trajectories rather than useful conditional routing.",
+  "sharp_falsifier": "At epoch 60 route-E32 temperature-0.3 must retain aligned mean and worst-experiment benefit and show non-negligible route reliance, while the locked E4 fresh seeds must agree in mean or tail direction; otherwise the auxiliary/sparse explanation is rejected for these exact recipes.",
+  "multiplicity": "E4 seeds are locked confirmation of a searched seed-0 cell; temperature-0.3 pairs remain seed-0 exploratory after broad architecture, pressure, expert-count, temperature, and auxiliary searches. No population claim is made."
+}

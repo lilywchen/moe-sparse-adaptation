@@ -2074,3 +2074,30 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   can launch. The first release remains the already remote-ready canonical-E64 temperature-0.3
   tail-safe cell, followed by its exact comparator. OOD test is sealed; HF retry requires restored
   private-storage quota.
+
+## 2026-08-03 04:42 EDT
+
+- Strictly validate 20 paired epoch-10/30 milestone rows from the E4 seed-1/2 confirmation and
+  temperature-0.3 E32/E64 screens. Exact identity, finiteness, ERM objective, four-environment and
+  9,854-sample coverage, nonempty checkpoint, clean commit `80671979`, zero-byte fatal scan,
+  OOD-validation selection, and sealed-test checks pass. The record is
+  `analysis/temperature03_and_E4_confirmation_epoch10_30_validation.json`.
+- Route-E32 temperature-0.3 tail-safe minus zero auxiliary reverses from
+  `-0.284/-0.490/-0.122` OOD/ID/worst points at epoch 10 to
+  `+1.644/+1.573/+0.041` at epoch 30. This is the strongest current interim pair but remains
+  seed-0 exploratory, below +5, and mechanism-unverified. Route-E64 is
+  `-0.690/+1.115/+0.081`; canonical-E32 is `+0.497/-0.790/-0.365` at epoch 30.
+- Locked E4 seed 1 is `+0.233/-0.549/-0.122` at epoch 30, while seed 2 is
+  `-0.771/-0.726/+0.000`. The fresh-seed directions disagree, so the seed-0 auxiliary effect is
+  not reproduced at the interim milestone. Continue all locked rows to epoch 60; no prune,
+  promotion, epoch 90, or population claim is licensed.
+- Audit all five containers independently. Ten distinct workers and ten allocations remain on
+  containers 2887/2875/2874/2862/2859, zero available H100s are idle, and current logs span epochs
+  30--43. Tester6/2899 remains Pending for the unchanged scheduler reason; issue no new start or
+  create. W&B run IDs/groups remain attached to the live workers; HF is not retried under the
+  known private-storage quota blocker.
+- Generic optimization or auxiliary regularization remains more plausible than useful conditional
+  routing. The sharp falsifier is an epoch-60 route-E32 pair with retained aligned mean/tail
+  movement and non-negligible route reliance plus aligned E4 fresh-seed mean or tail direction.
+  Ready/backlog remain 14/27; first release licenses canonical-E64 temperature-0.3 tail-safe then
+  exact zero auxiliary. Multiplicity is explicit and OOD test remains sealed.

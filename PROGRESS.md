@@ -2883,3 +2883,41 @@ still requires transfer, remote focused/full validation, and exact remote per-sh
 launch. The first physical release goes to canonical-E64 temperature-0.3 tail-safe, then its exact
 zero-auxiliary comparator. HF publication remains deferred under the known private-storage quota
 blocker; OOD test remains sealed.
+
+## 2026-08-03 04:42 EDT — twenty locked milestones validate; route-E32 temperature-0.3 leads provisionally
+
+Twenty epoch-10/30 rows from the ten active workers are strict-valid. Every row is finite, exact
+for run/seed/epoch/config, covers environments 7/27/42/49 with 9,854 OOD-validation examples,
+records `selection_split=ood_val` and `test_evaluated=false`, and names a nonempty milestone
+checkpoint. All twenty checkpoints are present at their pair-specific expected sizes; the current
+campaign fatal scan is zero bytes. The clean execution checkout is commit
+`80671979e2bfc88f3e8b6da4aa02bb67ae02be3e`. The validation record is
+`analysis/temperature03_and_E4_confirmation_epoch10_30_validation.json`.
+
+The strongest interim pair is route-pressure E32 at temperature 0.3: tail-safe minus exact
+zero-auxiliary changes from `-0.284/-0.490/-0.122` OOD/ID/worst points at epoch 10 to
+`+1.644/+1.573/+0.041` at epoch 30. This is an exploratory trajectory below the +5 material gate,
+not a promotion. Route-E64 at epoch 30 is `-0.690/+1.115/+0.081`; canonical-E32 is
+`+0.497/-0.790/-0.365`. Both remain Pareto tradeoffs.
+
+The locked E4 fresh seeds disagree at epoch 30. Seed 1 tail-safe minus zero auxiliary is
+`+0.233/-0.549/-0.122` OOD/ID/worst points, while seed 2 is
+`-0.771/-0.726/+0.000`. The seed-0 E4 auxiliary signal is therefore not reproduced at this
+interim milestone. All four locked rows continue unchanged to epoch 60 because the final mechanism
+signature and final confirmation milestone were predeclared; no epoch-90 branch is licensed.
+
+All five worker containers were audited independently. Containers 2887, 2875, 2874, 2862, and
+2859 each retain two distinct owned workers with 7,999--8,903 MiB allocations; current logs range
+through epoch 30--43. Ten workers occupy the ten available H100s and zero are idle. Instantaneous
+zero-utilization samples occurred between kernels/evaluations but each corresponding worker and
+GPU allocation remained present. Tester6/2899 remains `Pending`, `Running=false`, exit zero for
+the unchanged 11 affinity mismatches, two unschedulable nodes, three insufficient-GPU nodes, and
+unhelpful preemption/no victims. No start or create was issued this invocation.
+
+Ready/backlog stay 14/27. The first physical release still launches canonical-E64 temperature-0.3
+tail-safe, followed by its exact zero-auxiliary comparator. The moderate-bank family remains
+release-ineligible until clean remote transfer, focused/full tests, and exact one-cell dry-runs
+pass. Generic optimization or regularization trajectory remains more plausible than conditional
+routing; route-E32 must retain aligned mean/tail movement and show non-negligible final route
+reliance to falsify that explanation. Multiplicity is explicit, HF remains quota-blocked, and OOD
+test is sealed.
