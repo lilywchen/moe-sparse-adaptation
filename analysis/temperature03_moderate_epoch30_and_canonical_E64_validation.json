@@ -1,0 +1,119 @@
+{
+  "validated_at": "2026-08-03T07:43:42-04:00",
+  "classification": "strict exploratory epoch-30 milestone validation; no sparse efficacy or promotion claim",
+  "source_commit": "751dbd3290b9674ab32371c235f880ad63cc5a78",
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_checkout": {
+    "container_2887": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-temp03canon-codeeq-751dbd3",
+    "containers_2875_2874_2862_2859": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+    "status": "documented dirty code-equivalent trees; active workers record the tested execution identity"
+  },
+  "strict_checks": {
+    "json_parseable": true,
+    "finite_acc_selection_acc_within_worst_env_val": true,
+    "exact_run_and_epoch_identity": true,
+    "matching_nonzero_milestone_checkpoints": true,
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "ood_test_fields": null,
+    "fatal_log_hits": 0,
+    "exclusions": []
+  },
+  "moderate_bank": {
+    "expected_epoch10_rows": 8,
+    "valid_epoch10_rows": 8,
+    "expected_epoch30_rows_at_validation": 8,
+    "valid_epoch30_rows": 7,
+    "pending_epoch30_cell": "canonical_E4_temp03_no_aux_s0",
+    "rows": {
+      "canonical_E4_temp03_no_aux_s0": {
+        "epoch10": {"acc_selection": 0.133651309, "acc_within": 0.326135132, "worst_env_val": 0.012987013}
+      },
+      "canonical_E4_temp03_tail_safe_s0": {
+        "epoch10": {"acc_selection": 0.131012787, "acc_within": 0.322096917, "worst_env_val": 0.016233766},
+        "epoch30": {"acc_selection": 0.182058047, "acc_within": 0.458091205, "worst_env_val": 0.013798701}
+      },
+      "route_E4_temp03_no_aux_s0": {
+        "epoch10": {"acc_selection": 0.131621676, "acc_within": 0.324239141, "worst_env_val": 0.016233766},
+        "epoch30": {"acc_selection": 0.180129896, "acc_within": 0.466536984, "worst_env_val": 0.012581169}
+      },
+      "route_E4_temp03_tail_safe_s0": {
+        "epoch10": {"acc_selection": 0.135072052, "acc_within": 0.319240619, "worst_env_val": 0.015016234},
+        "epoch30": {"acc_selection": 0.184493607, "acc_within": 0.466463114, "worst_env_val": 0.019886364}
+      },
+      "route_E8_temp03_no_aux_s0": {
+        "epoch10": {"acc_selection": 0.138319464, "acc_within": 0.312124495, "worst_env_val": 0.017045455},
+        "epoch30": {"acc_selection": 0.177592856, "acc_within": 0.459790210, "worst_env_val": 0.018262987}
+      },
+      "route_E8_temp03_tail_safe_s0": {
+        "epoch10": {"acc_selection": 0.131012787, "acc_within": 0.294420368, "worst_env_val": 0.014610390},
+        "epoch30": {"acc_selection": 0.197280292, "acc_within": 0.474120949, "worst_env_val": 0.014204545}
+      },
+      "route_E16_temp03_no_aux_s0": {
+        "epoch10": {"acc_selection": 0.134767607, "acc_within": 0.320496405, "worst_env_val": 0.014610390},
+        "epoch30": {"acc_selection": 0.180637305, "acc_within": 0.455234906, "worst_env_val": 0.018262987}
+      },
+      "route_E16_temp03_tail_safe_s0": {
+        "epoch10": {"acc_selection": 0.140755023, "acc_within": 0.316507436, "worst_env_val": 0.015827922},
+        "epoch30": {"acc_selection": 0.194134362, "acc_within": 0.465108835, "worst_env_val": 0.015827922}
+      }
+    },
+    "tail_safe_minus_no_aux_points": {
+      "route_E4_epoch10": {"ood_val": 0.345038, "id": -0.499852, "worst_experiment": -0.121753},
+      "route_E4_epoch30": {"ood_val": 0.436371, "id": -0.007387, "worst_experiment": 0.730520},
+      "route_E8_epoch10": {"ood_val": -0.730668, "id": -1.770413, "worst_experiment": -0.243507},
+      "route_E8_epoch30": {"ood_val": 1.968744, "id": 1.433074, "worst_experiment": -0.405844},
+      "route_E16_epoch10": {"ood_val": 0.598742, "id": -0.398897, "worst_experiment": 0.121753},
+      "route_E16_epoch30": {"ood_val": 1.349706, "id": 0.987393, "worst_experiment": -0.243507},
+      "canonical_E4_epoch10": {"ood_val": -0.263852, "id": -0.403822, "worst_experiment": 0.324675}
+    },
+    "decision": "continue route E4, E8, and E16 exact pairs to epoch60 because each retains a competitive mean or tail trajectory; canonical E4 remains unadjudicated until its no-aux epoch30 row arrives; no epoch90 or fresh-seed promotion"
+  },
+  "canonical_E64_temperature03": {
+    "rows": {
+      "no_aux": {
+        "epoch10": {"acc_selection": 0.140146134, "acc_within": 0.311484290, "worst_env_val": 0.015016234},
+        "epoch30": {"acc_selection": 0.183478790, "acc_within": 0.460307298, "worst_env_val": 0.019074675}
+      },
+      "tail_safe": {
+        "epoch10": {"acc_selection": 0.138319464, "acc_within": 0.290456023, "worst_env_val": 0.017045455},
+        "epoch30": {"acc_selection": 0.183884717, "acc_within": 0.446345908, "worst_env_val": 0.017451299}
+      }
+    },
+    "tail_safe_minus_no_aux_points": {
+      "epoch10": {"ood_val": -0.182667, "id": -2.102827, "worst_experiment": 0.202922},
+      "epoch30": {"ood_val": 0.040593, "id": -1.396139, "worst_experiment": -0.162338}
+    },
+    "decision": "continue the locked pair to epoch60 as a predeclared trajectory and mechanism check; the epoch30 mean is effectively tied with ID and worst losses, so no promotion is licensed"
+  },
+  "pool": {
+    "active_workers": 10,
+    "available_h100s": 10,
+    "idle_h100s": 0,
+    "containers": [2887, 2875, 2874, 2862, 2859],
+    "tester6": {
+      "container_id": 2899,
+      "status": "Pending",
+      "running": false,
+      "scheduler_reason": "11 affinity-or-selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unhelpful or no victims",
+      "start_requests_this_invocation": 0,
+      "create_requests_this_invocation": 0
+    }
+  },
+  "queue": {
+    "moderate_active": 8,
+    "moderate_queued": 4,
+    "upcycling_active": 0,
+    "upcycling_queued": 8,
+    "ready_runnable": 12,
+    "backlog_hypotheses": 26
+  },
+  "publication": {
+    "wandb": "live",
+    "hugging_face": "not retried because the known private-storage quota blocker remains",
+    "paper": "unchanged because this is multiplicity-exposed seed-0 exploratory milestone evidence"
+  },
+  "multiplicity": "all comparisons are exploratory after broad architecture, objective, pressure, temperature, and auxiliary searches",
+  "sharpest_falsifier": "an aligned epoch60 mean-and-tail advantage with route reliance above 0.01 that survives a locked fresh seed",
+  "next_refill": "on the first physical release launch canonical_E8_temp03_tail_safe, then its exact no-aux comparator, then the canonical_E16 pair; after the moderate bank consume the ranked upcycling-noise registry; every launch requires a fresh owned GPU and duplicate/result/marker/config/test-blind guards"
+}

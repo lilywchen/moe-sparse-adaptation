@@ -1,6 +1,31 @@
 # Living scientific state
 
-Last verified: 2026-08-02 05:16 EDT
+Last verified: 2026-08-03 07:43 EDT
+
+## Current handoff — 2026-08-03 07:43 EDT
+
+Eight of eight moderate-bank epoch-10 rows and seven of eight currently expected epoch-30 rows are
+strict-valid. The missing canonical E4 no-auxiliary epoch-30 row is an active, non-excluded run.
+Tail-safe minus exact no-auxiliary at epoch 30 is `+0.436/-0.007/+0.731` for route E4,
+`+1.969/+1.433/-0.406` for route E8, and `+1.350/+0.987/-0.244` for route E16 in
+OOD-validation/ID/worst-experiment points. E4 retains the clearest tail signal; E8 and E16 retain
+mean/ID signals but trade away worst-experiment accuracy. All three pairs continue to epoch 60;
+none licenses epoch 90 or fresh seeds.
+
+The canonical E64 temperature-0.3 pair is also strict-valid through epoch 30. Tail-safe minus
+no-auxiliary is `+0.041/-1.396/-0.162` points at epoch 30, an effective mean tie with ID and tail
+losses. It continues only as the locked predeclared epoch-60 trajectory/mechanism check. These
+results weaken a broad claim that tail-safe regularization already yields a robust sparse benefit;
+generic regularization or trajectory effects remain more plausible. The sharp falsifier remains an
+aligned epoch-60 mean-and-tail advantage with route reliance above `0.01` that survives a locked
+fresh seed. All statements are multiplicity-exposed seed-0 exploration.
+
+All ten available H100s are assigned: canonical E64 pair on 2887; route E4 pair on 2875; route E8
+pair on 2874; route E16 pair on 2862; and canonical E4 pair on 2859. Zero are idle. Ready depth is
+12 and backlog depth is 26. tester6 replacement 2899 is Pending with the unchanged scheduler
+reason and contributes no available GPUs. OOD test is sealed; W&B is live; HF retry remains quota-
+blocked; paper unchanged. Validation artifact:
+`analysis/temperature03_moderate_epoch30_and_canonical_E64_validation.json`.
 
 ## Current handoff — 2026-08-03 06:48 EDT
 

@@ -1,12 +1,36 @@
 # Progress ledger
 
-Last verified: 2026-08-02 05:16 EDT on SciServer and GitHub. The paper has not been changed for the
+Last verified: 2026-08-03 07:43 EDT on SciServer and GitHub. The paper has not been changed for the
 new exploratory campaigns because the new result is a multiplicity-exposed seed-0 screen.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-03 07:43 EDT — moderate-bank epoch 30 and canonical E64 milestone
+
+- All eight moderate-bank epoch-10 rows and seven currently available epoch-30 rows pass strict
+  parseability, finite-metric, exact run/epoch, checkpoint, fatal-scan, `selection_split=ood_val`,
+  and `test_evaluated=false` checks. The only missing epoch-30 row is canonical E4 no-auxiliary,
+  which is still training and is therefore not excluded or adjudicated.
+- At epoch 30, tail-safe minus exact no-auxiliary for route E4 is
+  `+0.436/-0.007/+0.731`, route E8 is `+1.969/+1.433/-0.406`, and route E16 is
+  `+1.350/+0.987/-0.244` OOD-validation/ID/worst-experiment points. Each pair retains a distinct
+  mean-or-tail signal, so all continue to the predeclared epoch-60 mechanism adjudication. None is
+  near the `+5` target; no epoch-90 or fresh-seed promotion is licensed.
+- The canonical E64 temperature-0.3 pair also validates at epochs 10 and 30. At epoch 30,
+  tail-safe minus no-auxiliary is `+0.041/-1.396/-0.162` points: effectively tied on mean OOD with
+  ID and worst-experiment losses. The locked pair continues to epoch 60 for its predeclared
+  trajectory/mechanism check, without promotion.
+- Ten of ten available H100s remain assigned across containers 2887, 2875, 2874, 2862, and 2859;
+  zero are idle. The ready queue remains 12 runnable arms and the hypothesis backlog remains 26.
+  tester6 replacement 2899 is still scheduler-Pending for the same affinity/unschedulable/GPU
+  constraints and contributes no available device.
+- OOD test remains sealed, W&B streams are live, HF publication was not retried under the known
+  private-storage quota blocker, and the paper is unchanged for this multiplicity-exposed seed-0
+  milestone. Trace:
+  `analysis/temperature03_moderate_epoch30_and_canonical_E64_validation.json`.
 
 ## 2026-08-03 06:48 EDT — canonical E32 final, moderate-bank epoch 10, and refill
 
