@@ -3,9 +3,10 @@
 
 Completed locked rows show near-zero randomized-route reliance, making routing temperature a
 specific optimization hypothesis rather than an unrestricted hyperparameter search.  This registry
-crosses E32/E64 with tail-safe versus zero router auxiliary loss at temperature 0.1, holding route
-pressure, token top-1 cosine routing, seed, data order, optimizer, and milestones fixed.  The
-temperature-0.03 extreme screen is the predeclared comparator.  OOD test remains sealed.
+crosses route versus canonical pressure, E32/E64, and tail-safe versus zero router auxiliary loss
+at temperature 0.1, holding token top-1 cosine routing, seed, data order, optimizer, and milestones
+fixed.  The temperature-0.03 extreme screen is the predeclared comparator.  OOD test remains
+sealed.  Route cells remain first so expanding the registry does not change their shard identity.
 """
 import os
 import sys
@@ -38,7 +39,7 @@ WANDB_TAGS = (
     "optimization-screen,exploratory,ood-test-blind"
 )
 
-PRESSURE = "route"
+PRESSURES = ("route", "canonical")
 EXPERT_COUNTS = (32, 64)
 TEMPERATURE = 0.1
 AUX_SETTINGS = (
@@ -49,22 +50,23 @@ AUX_SETTINGS = (
 
 def cells(config=CONFIG):
     rows = []
-    fixed = refill._base_overrides(config, PRESSURE)
-    for n_experts in EXPERT_COUNTS:
-        for aux_label, balance_w, zloss_w in AUX_SETTINGS:
-            label = f"route_E{n_experts}_temp01_{aux_label}"
-            overrides = [
-                *fixed,
-                f"model.n_experts={n_experts}",
-                f"model.temperature={TEMPERATURE}",
-                f"losses.balance_w={balance_w}",
-                f"losses.zloss_w={zloss_w}",
-                "analysis.run_mechanism=true",
-                "train.save_checkpoint_epochs=[10,30,60]",
-                f"run_tag=extreme_temperature_aux60_{label}_20260802",
-            ]
-            cfg = apply_overrides(load_config(config), overrides)
-            rows.append((label, overrides, run_id_from(cfg)))
+    for pressure in PRESSURES:
+        fixed = refill._base_overrides(config, pressure)
+        for n_experts in EXPERT_COUNTS:
+            for aux_label, balance_w, zloss_w in AUX_SETTINGS:
+                label = f"{pressure}_E{n_experts}_temp01_{aux_label}"
+                overrides = [
+                    *fixed,
+                    f"model.n_experts={n_experts}",
+                    f"model.temperature={TEMPERATURE}",
+                    f"losses.balance_w={balance_w}",
+                    f"losses.zloss_w={zloss_w}",
+                    "analysis.run_mechanism=true",
+                    "train.save_checkpoint_epochs=[10,30,60]",
+                    f"run_tag=extreme_temperature_aux60_{label}_20260802",
+                ]
+                cfg = apply_overrides(load_config(config), overrides)
+                rows.append((label, overrides, run_id_from(cfg)))
     return rows
 
 

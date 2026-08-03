@@ -6,10 +6,11 @@ from scripts.sweep_rxrx1_router_aux import sharded_rows
 
 def test_extreme_temperature_addendum_is_bounded_unique_and_disjoint():
     rows = sweep.cells()
-    assert len(rows) == 4
-    assert len({run_id for _, _, run_id in rows}) == 4
+    assert len(rows) == 8
+    assert len({run_id for _, _, run_id in rows}) == 8
     assert {tag for tag, _, _ in rows} == {
-        f"route_E{n}_temp01_{aux}"
+        f"{pressure}_E{n}_temp01_{aux}"
+        for pressure in sweep.PRESSURES
         for n in sweep.EXPERT_COUNTS
         for aux, _, _ in sweep.AUX_SETTINGS
     }
@@ -31,7 +32,7 @@ def test_extreme_temperature_addendum_changes_only_predeclared_fields():
         assert cfg["model"]["placement"] == "early"
         assert cfg["model"]["routing_unit"] == "token"
         assert cfg["model"]["geometry"] == "cosine"
-        assert cfg["model"]["pressure"] == sweep.PRESSURE
+        assert cfg["model"]["pressure"] in sweep.PRESSURES
         assert cfg["model"]["top_k"] == 1
         assert cfg["model"]["temperature"] == sweep.TEMPERATURE
         assert cfg["model"]["n_experts"] in sweep.EXPERT_COUNTS
@@ -44,7 +45,7 @@ def test_extreme_temperature_addendum_changes_only_predeclared_fields():
 
 def test_extreme_temperature_addendum_shards_are_one_cell_and_exhaustive():
     rows = sweep.cells()
-    shards = [sharded_rows(rows, index, 4) for index in range(4)]
+    shards = [sharded_rows(rows, index, 8) for index in range(8)]
     assert all(len(shard) == 1 for shard in shards)
     assert {
         run_id for shard in shards for _, _, run_id in shard

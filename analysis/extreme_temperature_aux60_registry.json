@@ -1,8 +1,8 @@
 {
   "predeclared_at": "2026-08-02T19:45:00-04:00",
   "family": "extreme_temperature_aux60_20260802",
-  "question": "Does smoother route temperature restore non-negligible routing reliance and unseen-experiment robustness for extreme E32/E64 banks?",
-  "hypothesis": "Temperature 0.1 reduces brittle expert collapse relative to the locked temperature-0.03 extreme screen.",
+  "question": "Does smoother route temperature restore non-negligible routing reliance and unseen-experiment robustness for extreme E32/E64 banks under route or canonical pressure?",
+  "hypothesis": "Temperature 0.1 reduces brittle expert collapse relative to the locked temperature-0.03 extreme screen, with the pressure cross separating routing smoothness from within-environment balancing.",
   "predicted_signature": "Randomized-route reliance exceeds 0.01 and the matched tail-safe-minus-zero-auxiliary direction is nonnegative on OOD-validation mean and worst-experiment accuracy without more than two ID points lost.",
   "alternative_explanation": "Any score change is generic auxiliary regularization or total-parameter scaling rather than useful conditional routing.",
   "falsifier": "Route reliance remains below 0.01 or the matched mean/tail direction is inconsistent at epochs 30 and 60.",
@@ -16,12 +16,16 @@
   "hf_prefix": "rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
   "selection_split": "ood_val",
   "test_evaluated": false,
-  "result_budget": 4,
+  "result_budget": 8,
   "arms": [
     {"rank": 1, "tag": "route_E32_temp01_tail_safe", "exact_comparator": "route_E32_temp01_no_aux", "n_experts": 32, "temperature": 0.1, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
     {"rank": 2, "tag": "route_E32_temp01_no_aux", "exact_comparator": "route_E32_temp01_tail_safe", "n_experts": 32, "temperature": 0.1, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
     {"rank": 3, "tag": "route_E64_temp01_tail_safe", "exact_comparator": "route_E64_temp01_no_aux", "n_experts": 64, "temperature": 0.1, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 96865524, "active_ffn_including_router": 1206145},
-    {"rank": 4, "tag": "route_E64_temp01_no_aux", "exact_comparator": "route_E64_temp01_tail_safe", "n_experts": 64, "temperature": 0.1, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 96865524, "active_ffn_including_router": 1206145}
+    {"rank": 4, "tag": "route_E64_temp01_no_aux", "exact_comparator": "route_E64_temp01_tail_safe", "n_experts": 64, "temperature": 0.1, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 96865524, "active_ffn_including_router": 1206145},
+    {"rank": 5, "tag": "canonical_E32_temp01_tail_safe", "exact_comparator": "canonical_E32_temp01_no_aux", "n_experts": 32, "temperature": 0.1, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
+    {"rank": 6, "tag": "canonical_E32_temp01_no_aux", "exact_comparator": "canonical_E32_temp01_tail_safe", "n_experts": 32, "temperature": 0.1, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
+    {"rank": 7, "tag": "canonical_E64_temp01_tail_safe", "exact_comparator": "canonical_E64_temp01_no_aux", "n_experts": 64, "temperature": 0.1, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 96865524, "active_ffn_including_router": 1206145},
+    {"rank": 8, "tag": "canonical_E64_temp01_no_aux", "exact_comparator": "canonical_E64_temp01_tail_safe", "n_experts": 64, "temperature": 0.1, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 96865524, "active_ffn_including_router": 1206145}
   ],
-  "multiplicity": "Exploratory four-cell addendum opened after near-zero route reliance in locked E2; any winner requires locked fresh-seed confirmation without further tuning."
+  "multiplicity": "Exploratory eight-cell addendum opened after near-zero route reliance in locked E2; any winner requires locked fresh-seed confirmation without further tuning."
 }
