@@ -1,7 +1,8 @@
 # Progress ledger
 
-Last verified: 2026-08-03 07:43 EDT on SciServer and GitHub. The paper has not been changed for the
-new exploratory campaigns because the new result is a multiplicity-exposed seed-0 screen.
+Last verified: 2026-08-03 14:02 EDT on SciServer and locally; authenticated browser control then
+disconnected before post-repair remote readback. The paper has not been changed because no new
+scientific result passed strict validation.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -3041,3 +3042,26 @@ fully assigned. Tester6/2899 remains Pending for the unchanged scheduler reason,
 create issued. Generic regularization or trajectory noise is the leading explanation; the sharp
 falsifier remains aligned mean-and-tail improvement, route reliance above `0.01`, and locked-seed
 survival. HF is quota-blocked, multiplicity is explicit, and OOD test remains sealed.
+## 2026-08-03 14:02 EDT — nine workers remain active; dense mechanism control receives a narrow Stage-0 repair
+
+Authenticated SciServer access was working and supported a complete fresh audit before the browser-control
+transport disconnected. Five upcycling jobs had completed rather than disappeared during container restarts;
+their persistent results are present but remain unvalidated and support no scientific claim yet. Immediate
+handoffs launched upcycling ranks 6--8 on `2875/gpu1` and both GPUs of `2874`, resumed the guarded canonical-E4
+no-auxiliary comparator on `2862/gpu0`, and launched frozen-router controls on `2862/gpu1` and `2859/gpu1`.
+At the last strict audit, nine of ten H100s in the five allocated worker containers had distinct active workers.
+
+The first dense noise control on `2859/gpu0` failed before training during Stage-0 model construction because
+the predeclared script used the obsolete token `wide`; the accepted exact variant is `dense_wide`. No result was
+created, so this is an implementation failure rather than scientific evidence. The script and its registry test
+were repaired narrowly, transferred with exact hashes, and pass local syntax and diff checks. Before the failure,
+the remote gate had passed three focused tests, 133 full tests, and all fourteen exact one-cell planning dry-runs.
+The post-repair remote test and shard-4 readback was not observed because the Chrome control transport reset and
+then disconnected. The repair record is `analysis/upcycling_noise_controls60_dense_variant_repair.json`.
+
+Container `2859/gpu0` is the one known idle allocated GPU. Its exact retry is licensed only after authenticated
+browser control returns, the repaired focused/full test output and shard-4 one-pending dry-run are observed, and
+fresh free-GPU/result/marker/duplicate guards pass. Tester6/2899 appeared stopped with a Start Container link on
+the latest Compute table and contributed no GPUs; it must be rechecked and started exactly once if still stopped,
+never recreated. Six unaffected frozen/learned controls remain runnable; the six dense controls are test-gated.
+OOD test remains sealed, HF publication remains quota-blocked, and the paper is unchanged.

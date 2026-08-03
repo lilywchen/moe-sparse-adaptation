@@ -1,6 +1,6 @@
 # Living scientific state
 
-Last verified: 2026-08-03 07:43 EDT
+Last verified: 2026-08-03 14:02 EDT
 
 ## Current handoff — 2026-08-03 07:43 EDT
 
@@ -2209,3 +2209,26 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   improvement, route reliance above `0.01`, and locked fresh-seed survival. Tester6/2899 remains
   Pending with no new start/create; HF remains quota-blocked; multiplicity is explicit; OOD test
   stays sealed.
+
+## 2026-08-03 14:02 EDT
+
+- Where we are: nine strictly observed workers occupied ten available H100s across containers 2887, 2875,
+  2874, 2862, and 2859; `2859/gpu0` is idle after a Stage-0 build failure. Tester6/2899 appeared stopped and
+  contributes zero. Six unaffected mechanism controls are ready; six dense controls await repair-gate readback.
+- What moved: five completed upcycling results were recovered from persistent storage; ranks 6--8, one exact
+  moderate-bank comparator, and two frozen-router controls were launched and verified live. Dense rank 2 failed
+  before training, and `wide` was narrowly corrected to `dense_wide` in both source and test.
+- What we learned: no new metric has yet passed strict validation, so the existing scientific interpretation is
+  unchanged. The failure rules out nothing scientifically. Generic optimization/preservation noise remains more
+  plausible than conditional routing; the sharp falsifier remains aligned mean and worst-environment improvement
+  with non-negligible route reliance, followed by locked fresh seeds. Multiplicity remains explicit.
+- Correctness/trust: pre-repair remote checks passed 3 focused and 133 full tests and fourteen exact planning
+  dry-runs. Patched hashes match the remote transfer, and local syntax/diff checks pass, but the post-repair remote
+  suite and exact shard-4 dry-run were submitted without observable readback after browser transport loss. OOD
+  test was not accessed; selection remains OOD validation; no failure was silently excluded.
+- Traceable artifacts: `scripts/sweep_rxrx1_upcycling_noise_controls.py`,
+  `tests/test_sweep_rxrx1_upcycling_noise_controls.py`, and
+  `analysis/upcycling_noise_controls60_dense_variant_repair.json`.
+- Next automatic action: restore authenticated browser control, read the repair gate, retry dense rank 2 exactly
+  once on `2859/gpu0` if every guard passes, validate the five completed upcycling results, and start tester6 once
+  only if it remains stopped. OOD test remains sealed.

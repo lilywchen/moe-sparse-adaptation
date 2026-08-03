@@ -34,7 +34,7 @@ def test_control_variants_and_noise_are_exact():
             assert cfg["model"]["variant"] == "moe_frozen"
             assert cfg["model"]["sym_break_moe"] in {0.001, 0.01}
         else:
-            assert cfg["model"]["variant"] == "wide"
+            assert cfg["model"]["variant"] == "dense_wide"
             assert cfg["model"]["sym_break_moe"] == 0.0
             assert cfg["model"]["sym_break_wide"] in {0.001, 0.01}
 

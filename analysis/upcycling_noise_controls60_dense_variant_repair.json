@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-03T14:02:18-04:00",
+  "family": "upcycling_noise_controls60",
+  "classification": "stage0_implementation_failure_and_narrow_repair_no_scientific_result",
+  "source_base_commit": "52f943d2bc2b349668054eba892ad90956be7a45",
+  "predeclared_source_commit": "04ad526",
+  "failed_arm": {
+    "rank": 2,
+    "container_id": 2859,
+    "gpu": 0,
+    "controller_pid": 445,
+    "worker_pid": 456,
+    "label": "dense_E4_temp03_noise0p01",
+    "shard": "4/14",
+    "stage": "stage0_model_build",
+    "controller_return_code": 1,
+    "error": "variant must be one of original, dense_wide, moe, or moe_frozen; received wide",
+    "training_started": false,
+    "result_created": false,
+    "scientific_exclusion": false
+  },
+  "repair": {
+    "change": "replace model.variant=wide with model.variant=dense_wide and update the exact registry test expectation",
+    "script_sha256": "9247e7abe9162af53bbade75be32c1b22b07d855f2f3cfcd6fc5a5268c4b708a",
+    "test_sha256": "d91f2bb1c71244c6aad60346633df62c4dabc3970f717107d7b230b328fa83da",
+    "registry_sha256": "3d36000e0974c2ecb022acc4a775008557d8b61b7bc48280e6f65324ed186116",
+    "remote_transfer_exact_hash_observed": true,
+    "local_py_compile": "pass",
+    "local_diff_check": "pass"
+  },
+  "pre_repair_remote_gate": {
+    "focused_tests": "3 passed in 1.27s",
+    "full_suite": "133 passed in 27.92s",
+    "dry_runs": "14 of 14 shards each planned exactly one pending cell",
+    "limitation": "the dense rows passed registry planning but failed at model construction because the obsolete variant token was not accepted by the training entry point"
+  },
+  "post_repair_remote_gate": {
+    "command_submitted": true,
+    "output_observed": false,
+    "reason": "the Chrome browser-control transport reset and then disconnected before command readback",
+    "status": "unverified"
+  },
+  "pool_at_last_strict_audit": {
+    "active_workers": 9,
+    "available_h100s": 10,
+    "idle_h100s": 1,
+    "idle_assignment": "container 2859 gpu0",
+    "tester6_container_id": 2899,
+    "tester6_last_table_state": "stopped_start_container_link_visible",
+    "tester6_contribution": 0
+  },
+  "correctness": {
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "ood_test_fields": null,
+    "held_out_test_access": false,
+    "failure_excluded_from_science": true,
+    "multiplicity": "mechanism-control sweep is exploratory; any selected winner still requires a locked configuration and fresh seeds"
+  },
+  "retry_license": "after authenticated Chrome transport is restored, observe the focused and 133-test full-suite passes plus exact shard-4 one-pending dry-run; verify container 2859 gpu0 remains owned and free and that no result or active marker exists; then retry the exact dense-E4-noise0p01 arm once",
+  "next_actions": [
+    "read back the post-repair remote gate",
+    "retry the exact failed dense control once if and only if its gate and duplicate guards pass",
+    "validate the five completed upcycling results before interpreting them",
+    "inspect tester6 and start it exactly once only if it remains stopped; never create a duplicate"
+  ]
+}

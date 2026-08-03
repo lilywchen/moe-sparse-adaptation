@@ -102,7 +102,7 @@ def cells(config=CONFIG):
             dense_label = f"dense_E{n_experts}_temp03_noise{noise_label}"
             dense = [
                 *fixed,
-                "model.variant=wide",
+                "model.variant=dense_wide",
                 f"model.n_experts={n_experts}",
                 f"model.temperature={TEMPERATURE}",
                 "model.sym_break_moe=0.0",
