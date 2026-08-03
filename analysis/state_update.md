@@ -2101,3 +2101,31 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   movement and non-negligible route reliance plus aligned E4 fresh-seed mean or tail direction.
   Ready/backlog remain 14/27; first release licenses canonical-E64 temperature-0.3 tail-safe then
   exact zero auxiliary. Multiplicity is explicit and OOD test remains sealed.
+
+## 2026-08-03 06:19 EDT
+
+- Strictly validate eight paired epoch-60 finals and one unpaired canonical-E32 no-aux level. All
+  nine are finite ERM rows with exact identities, four environments/9,854 OOD-validation samples,
+  24 required pair checkpoints, empty fatal scans, `selection_split=ood_val`,
+  `test_evaluated=false`, and null held-out fields. Record the decision in
+  `analysis/temperature03_epoch60_and_refill_validation.json`.
+- Locked E4 tail-safe minus zero auxiliary is `+0.020/-0.108/-0.122` OOD/ID/worst points at seed 1
+  and `+0.213/+0.175/-0.487` at seed 2. Both fresh seeds have only negligible mean movement, worse
+  tails, and near-zero reliance. The exact recipe is terminal-negative for a reproducible useful
+  auxiliary or sparse-specialization effect; no epoch 90 or more seeds are licensed.
+- Temperature-0.3 route-E32 is `+0.304/-0.187/-0.446` and route-E64
+  `+0.102/+0.468/-0.244` OOD/ID/worst at epoch 60, with near-zero reliance. The E32 epoch-30 signal
+  collapsed. Both exact recipes are terminal-negative and license neither epoch 90 nor fresh seeds.
+  Generic regularization or trajectory noise is the leading explanation; require aligned mean/tail
+  movement plus reliance above `0.01` and locked replication to falsify it.
+- Refill every released device. Current assignments are 2887 canonical-E64 tail/no-aux, 2875
+  route-E4 tail/no-aux, 2874 route-E8 tail/no-aux, 2862 route-E16 tail/no-aux, and 2859
+  canonical-E32 tail plus canonical-E4 tail. Ten active workers occupy all ten H100s in running
+  containers and zero are idle. Tester6/2899 remains Pending for the unchanged scheduler reason;
+  issue no start or create.
+- Predeclare eight noise-upcycling cells at commit
+  `3eca8fc27e16a2f7e4126c22bfa491b5231b9227`. Exact remote copies pass three focused and 130 full
+  tests; all eight shards pass unique one-cell dry-runs. Five moderate-bank and eight upcycling
+  cells give ready/backlog 13/26. First release launches canonical-E4 no-aux, then canonical E8/E16
+  pairs, then noise cells in registry rank order under fresh guards. HF remains quota-blocked,
+  multiplicity is explicit, and OOD test is sealed.

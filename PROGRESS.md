@@ -2921,3 +2921,43 @@ pass. Generic optimization or regularization trajectory remains more plausible t
 routing; route-E32 must retain aligned mean/tail movement and show non-negligible final route
 reliance to falsify that explanation. Multiplicity is explicit, HF remains quota-blocked, and OOD
 test is sealed.
+
+## 2026-08-03 06:19 EDT — eight terminal pairs/confirmations close negative; ten GPUs refill and queue returns to 13
+
+Eight paired epoch-60 finals and one additional unpaired canonical-E32 level pass the strict
+validator. All required metrics are finite, the eight paired rows have identical seed/config/data
+and parameter identity within pair, all nine cover environments 7/27/42/49 and 9,854 OOD-validation
+samples, all 24 required pair checkpoints exist, fatal scans are empty, selection is `ood_val`,
+`test_evaluated=false`, and held-out fields remain null. The record is
+`analysis/temperature03_epoch60_and_refill_validation.json`.
+
+The locked E4 fresh-seed confirmation is terminal-negative for a useful auxiliary effect. Tail-safe
+minus exact zero auxiliary is `+0.020/-0.108/-0.122` OOD/ID/worst points for seed 1 and
+`+0.213/+0.175/-0.487` for seed 2. Both tiny mean signs lose worst-environment accuracy, and route
+reliance stays between roughly `-0.002` and `0.004`. This rules out the seed-0 tail-safe signal as
+a reproducible sparse-specialization or tail-safe effect for the exact recipe; no epoch 90 or more
+seeds are licensed.
+
+The temperature-0.3 route-pressure pairs also close negative. E32 tail-safe minus no auxiliary is
+`+0.304/-0.187/-0.446`, and E64 is `+0.102/+0.468/-0.244` OOD/ID/worst points. Reliance remains
+near zero. The promising E32 epoch-30 movement therefore did not persist to epoch 60. These exact
+E32/E64 recipes license neither epoch 90 nor fresh seeds. A generic regularization or trajectory
+explanation is now more plausible than useful conditional routing; the sharp falsifier remains an
+aligned mean-and-tail epoch-60 pair with route reliance above `0.01`, followed by locked seeds.
+
+Every completion handed off immediately. Container `2887` now runs the canonical-E64
+temperature-0.3 tail/no-aux pair; `2875` route-E4 tail/no-aux; `2874` route-E8 tail/no-aux; `2862`
+route-E16 tail/no-aux; and `2859` canonical-E32 tail plus canonical-E4 tail. Ten distinct workers
+occupy all ten H100s in the five running containers, leaving zero idle available devices.
+Tester6/2899 remains `Pending`, `Running=false`, exit zero for the unchanged scheduler reason; no
+start or create was issued. The canonical-E32 no-aux final is strict-valid but remains unpaired
+until its active tail-safe counterpart finishes.
+
+The moderate bank passes its isolated remote gate and has seven active plus five queued arms.
+Queue depth is replenished by commit `3eca8fc27e16a2f7e4126c22bfa491b5231b9227`, which predeclares
+eight temperature-0.3 noise-upcycling cells against already-running zero-noise anchors. The exact
+remote files pass three focused and 130 full tests, and all eight shards dry-run as one unique
+pending cell. Ready/backlog are 13/26. On the first release, launch canonical-E4 no-aux, then the
+canonical E8/E16 pairs; after those, consume the noise queue in registry rank order under fresh
+GPU/duplicate/result/marker guards. W&B is live, HF remains quota-blocked, multiplicity is explicit,
+and OOD test remains sealed.

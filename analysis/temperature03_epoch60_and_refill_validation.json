@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T06:19:02-04:00",
+  "grade": "strict_epoch60_exploratory_and_locked_confirmation",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "validated_final_results": 9,
+  "paired_final_results": 8,
+  "unpaired_final_results": 1,
+  "strict_checks": {
+    "json_parseable": true,
+    "required_metrics_finite": true,
+    "selection_split_exact": true,
+    "test_evaluated_false": true,
+    "all_heldout_test_fields_null": true,
+    "environment_ids": [7, 27, 42, 49],
+    "ood_validation_samples": 9854,
+    "training_accuracy": 1.0,
+    "milestone_checkpoints_present": 24,
+    "fatal_log_hits": 0,
+    "objective": "erm"
+  },
+  "parameter_identities": [
+    {"experts": 4, "total_parameters": 25948404, "active_ffn_plus_router_parameters": 1183105},
+    {"experts": 32, "total_parameters": 59043060, "active_ffn_plus_router_parameters": 1193857},
+    {"experts": 64, "total_parameters": 96865524, "active_ffn_plus_router_parameters": 1206145}
+  ],
+  "final_levels_points_rounded_4dp": [
+    {"family": "locked_E4_confirmation", "seed": 1, "arm": "tail_safe", "ood_val": 21.4634, "id": 53.2724, "worst_experiment": 2.2321, "route_reliance": 0.00426},
+    {"family": "locked_E4_confirmation", "seed": 1, "arm": "zero_aux", "ood_val": 21.4431, "id": 53.3808, "worst_experiment": 2.3539, "route_reliance": 0.00416},
+    {"family": "locked_E4_confirmation", "seed": 2, "arm": "tail_safe", "ood_val": 21.2604, "id": 53.2429, "worst_experiment": 1.5422, "route_reliance": 0.00193},
+    {"family": "locked_E4_confirmation", "seed": 2, "arm": "zero_aux", "ood_val": 21.0473, "id": 53.0681, "worst_experiment": 2.0292, "route_reliance": -0.00213},
+    {"family": "route_temperature03", "experts": 32, "seed": 0, "arm": "tail_safe", "ood_val": 20.8240, "id": 52.2851, "worst_experiment": 1.7857, "route_reliance": 0.0},
+    {"family": "route_temperature03", "experts": 32, "seed": 0, "arm": "no_aux", "ood_val": 20.5196, "id": 52.4722, "worst_experiment": 2.2321, "route_reliance": -0.00051},
+    {"family": "route_temperature03", "experts": 64, "seed": 0, "arm": "tail_safe", "ood_val": 20.8951, "id": 52.0807, "worst_experiment": 1.7045, "route_reliance": 0.00071},
+    {"family": "route_temperature03", "experts": 64, "seed": 0, "arm": "no_aux", "ood_val": 20.7936, "id": 51.6128, "worst_experiment": 1.9481, "route_reliance": 0.00294},
+    {"family": "canonical_temperature03", "experts": 32, "seed": 0, "arm": "no_aux_unpaired", "ood_val": 20.8139, "id": 52.1373, "worst_experiment": 1.7045, "route_reliance": 0.00294}
+  ],
+  "tail_safe_minus_exact_control_points_rounded_4dp": {
+    "locked_E4_seed1": {"ood_val": 0.0203, "id": -0.1084, "worst_experiment": -0.1218},
+    "locked_E4_seed2": {"ood_val": 0.2131, "id": 0.1748, "worst_experiment": -0.4870},
+    "route_E32_temperature03": {"ood_val": 0.3044, "id": -0.1871, "worst_experiment": -0.4464},
+    "route_E64_temperature03": {"ood_val": 0.1015, "id": 0.4679, "worst_experiment": -0.2436}
+  },
+  "decisions": {
+    "locked_E4_confirmation": "terminal_negative_for_a_useful_or_tail_safe_auxiliary_effect_in_this_exact_recipe; both fresh seeds have only tiny positive mean OOD signs, both lose worst-environment accuracy, and reliance is near zero; no epoch90 or further replication is licensed",
+    "route_E32_temperature03": "terminal_negative_for_sustained_smoothing_or_routing_mediated_benefit; the epoch30 mean signal collapsed and the final tail worsened; no epoch90 or fresh seed is licensed",
+    "route_E64_temperature03": "terminal_negative_for_sustained_smoothing_or_routing_mediated_benefit; final changes are small, tail-negative, and reliance is near zero; no epoch90 or fresh seed is licensed",
+    "canonical_E32_temperature03_no_aux": "strict_unpaired_level_only; withhold paired effect until the active tail-safe counterpart completes"
+  },
+  "interpretation": {
+    "rules_out": "a material, reproducible, route-mediated or tail-safe advantage from the exact E4 auxiliary recipe and the exact route-E32/E64 temperature0.3 recipes",
+    "leading_explanation": "generic regularization or trajectory noise rather than useful conditional specialization",
+    "sharp_falsifier": "a predeclared matched pair that preserves positive mean and worst-environment movement at epoch60 with route reliance above 0.01, followed by locked fresh-seed confirmation",
+    "multiplicity": "the route-temperature pairs remain seed0 exploratory after a broad architecture, objective, temperature, bank-size, and auxiliary search; the E4 rows are locked fresh-seed confirmation"
+  },
+  "pool_audit": {
+    "available_running_containers": [2887, 2875, 2874, 2862, 2859],
+    "active_h100_workers": 10,
+    "idle_available_h100s": 0,
+    "tester6": {
+      "container_id": 2899,
+      "historical_requested_id": 2893,
+      "status": "Pending",
+      "running": false,
+      "exit_code": 0,
+      "scheduler_reason": "11 affinity_or_selector_mismatch; 2 unschedulable; 3 insufficient_GPU; preemption_unhelpful_or_no_victims",
+      "action_this_invocation": "inspect_only_no_start_no_create"
+    },
+    "assignments": {
+      "2887": {"gpu0": "canonical_E64_temperature03_tail_safe", "gpu1": "canonical_E64_temperature03_no_aux"},
+      "2875": {"gpu0": "route_E4_temperature03_tail_safe", "gpu1": "route_E4_temperature03_no_aux"},
+      "2874": {"gpu0": "route_E8_temperature03_tail_safe", "gpu1": "route_E8_temperature03_no_aux"},
+      "2862": {"gpu0": "route_E16_temperature03_tail_safe", "gpu1": "route_E16_temperature03_no_aux"},
+      "2859": {"gpu0": "canonical_E32_temperature03_tail_safe", "gpu1": "canonical_E4_temperature03_tail_safe"}
+    }
+  },
+  "refill_and_queue": {
+    "moderate_bank_active": 7,
+    "moderate_bank_queued": 5,
+    "upcycling_noise_queued": 8,
+    "ready_runnable_total": 13,
+    "backlog_hypotheses": 26,
+    "moderate_remote_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+    "remote_execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "remote_tests": {"upcycling_focused_passed": 3, "full_suite_passed": 130},
+    "upcycling_exact_one_cell_dryruns_passed": 8,
+    "upcycling_source_commit": "3eca8fc27e16a2f7e4126c22bfa491b5231b9227",
+    "upcycling_file_sha256": {
+      "script": "4540f9cb09205c51549054910cada2b54ccbdd6e886b5049e5d9b13f1cff905f",
+      "test": "4161e238fb044bc9ea34951d646826402218abe0de77a11ba77e5d608fc91d61",
+      "registry": "b5b7e3e67833e7a2bb70786b289c38cd517b192f94aa7d813ec71478e899aaaa"
+    },
+    "next_physical_refill": "first released H100 takes canonical_E4_temperature03_no_aux; subsequent releases take canonical_E8_tail_safe, canonical_E8_no_aux, canonical_E16_tail_safe, canonical_E16_no_aux; then the noise-upcycling queue in registry rank order",
+    "launch_condition": "fresh owned-GPU, duplicate/result/marker checks, exact registered config and seed, persistent destinations, and sealed OOD test"
+  },
+  "tracking": {
+    "wandb": "live groups and run IDs verified for all ten active workers",
+    "hf": "not retried because the known private-storage quota blocker remains",
+    "paper": "not updated in this invocation"
+  }
+}
