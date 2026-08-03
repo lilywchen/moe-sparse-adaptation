@@ -1874,3 +1874,12 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   It launches immediately when extreme route-E32 zero auxiliary completes final emission. The
   smoother pair's epoch60 mean/tail direction and route reliance above `0.01` are the sharpest
   falsifier; OOD test remains sealed.
+- Canonical-E32 temperature-0.1 zero auxiliary reaches epoch10 and closes the exact early pair:
+  tail-safe minus zero auxiliary is `-0.254/-1.347/-0.487` OOD/ID/worst points. Tail-safe is
+  dominated on every observed axis, but the predeclared epoch10 rule also requires a routing-
+  mechanism signature that is unavailable until final evaluation. Both rows continue only to
+  epoch30; no prune, promotion, efficacy claim, or confirmation license is issued.
+- The existing strict artifact
+  `analysis/extreme_temperature_aux60_canonical_E32_temp01_epoch10_validation.json` now contains
+  the exact pair. Both rows pass identity, finite metric, four-environment/9,854-sample, parameter,
+  checkpoint, W&B, fatal, OOD-validation, and sealed-test checks. Multiplicity remains explicit.

@@ -2626,3 +2626,11 @@ ten allocated H100s; tester6/2899 remains Pending for 11 affinity mismatches, tw
 nodes, and three insufficient-GPU nodes. The exact shard-6/8 dry run for the next refill,
 canonical-E64 temperature-0.1 tail-safe, reports one unique pending cell. Ready remains 14 and
 backlog 27.
+
+The smoother canonical-E32 zero-auxiliary comparator then reaches epoch 10. Tail-safe minus exact
+zero auxiliary is `-0.254/-1.347/-0.487` OOD/ID/worst points, so the auxiliary row is dominated on
+all three currently observed axes. Routing reliance is not available at this horizon and delayed
+emergence was explicitly predeclared; both rows therefore continue only to epoch 30, without
+promotion. Together with route-E32's negative epoch-10 contrast and positive epoch-30 reversal,
+this makes a delayed optimization effect more plausible than an immediate benefit, while leaving
+generic regularization and trajectory noise unresolved.

@@ -1,6 +1,6 @@
 {
-  "validated_at": "2026-08-02T23:18:00-04:00",
-  "classification": "strict_exploratory_active_compute_milestone_with_secondary_pressure_contrast",
+  "validated_at": "2026-08-02T23:35:00-04:00",
+  "classification": "strict_exploratory_active_compute_exact_auxiliary_pair_with_secondary_pressure_contrast",
   "selection_split": "ood_val",
   "test_evaluated": false,
   "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
@@ -37,7 +37,31 @@
     "per_environment_counts": {"7": 2462, "27": 2464, "42": 2464, "49": 2464},
     "checkpoint": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_extreme_temperature_aux60_canonical_E32_temp01_tail_safe_20260802.epoch010.pt",
     "checkpoint_bytes": 709160864,
-    "decision": "continue_unchanged_to_epoch30_under_predeclared_rule; exact_no_auxiliary_comparator_has_not_reached_epoch10_so_no_auxiliary_effect_claim"
+    "decision": "continue_unchanged_to_epoch30_under_predeclared_delayed_mechanism_rule"
+  },
+  "canonical_E32_temp01_no_aux_epoch10": {
+    "run_id": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_extreme_temperature_aux60_canonical_E32_temp01_no_aux_20260802",
+    "wandb_run_id": "21dzaiwc",
+    "seed": 0,
+    "epoch": 10,
+    "temperature": 0.1,
+    "n_experts": 32,
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+    "total_parameters": 59043060,
+    "active_ffn_including_router": 1193857,
+    "ood_val": 0.1320276030038563,
+    "id": 0.31500541711809316,
+    "worst_experiment": 0.020698051948051948,
+    "per_environment_counts": {"7": 2462, "27": 2464, "42": 2464, "49": 2464},
+    "checkpoint": "rxrx1_moe_early_token_cosine_canonical_E32k1_ep60_s0_extreme_temperature_aux60_canonical_E32_temp01_no_aux_20260802.epoch010.pt",
+    "checkpoint_bytes": 709139177,
+    "decision": "continue_unchanged_to_epoch30_as_exact_control"
+  },
+  "exact_canonical_auxiliary_effect_epoch10": {
+    "comparison": "canonical_E32_temperature0p1_tail_safe_minus_no_aux_seed0",
+    "predeclared_exact_comparator": true,
+    "tail_safe_minus_no_aux_points": {"ood_val": -0.253704079561598, "id": -1.3468925440756396, "worst_experiment": -0.4870129870129872},
+    "decision": "tail_safe_is_dominated_on_all_three_observed_axes_but_routing_reliance_is_not_yet_available; continue_only_to_epoch30_under_the_predeclared_delayed_mechanism_rule_no_promotion"
   },
   "secondary_tail_safe_pressure_contrast_epoch10": {
     "comparison": "route_pressure_minus_canonical_pressure_at_E32_temperature0p1_tail_safe_seed0",
@@ -48,6 +72,6 @@
     "interpretation": "route pressure has no early mean or ID advantage and only a 0.081-point worst-experiment tradeoff; the exact auxiliary contrasts remain the primary estimands"
   },
   "multiplicity": "Seed-0 exploratory milestone after broad architecture, objective, bank-size, pressure, and temperature searches; the pressure subtraction is secondary and not a predeclared exact comparator.",
-  "largest_threat": "The exact canonical zero-auxiliary epoch-10 comparator is not yet available, routing reliance is only measured at the final horizon, and the secondary pressure contrast is multiplicity-exposed.",
-  "next_falsifier": "At epoch 30 the exact route and canonical auxiliary pairs must show aligned OOD mean or worst-experiment improvement, and final randomized-route reliance must exceed 0.01 without more than two ID points lost."
+  "largest_threat": "Routing reliance is only measured at the final horizon, and both the exact auxiliary pair and secondary pressure contrast are multiplicity-exposed seed-0 observations.",
+  "next_falsifier": "At epoch 30 the exact canonical auxiliary pair must reverse to an aligned OOD mean or worst-experiment improvement, and final randomized-route reliance must exceed 0.01 without more than two ID points lost."
 }
