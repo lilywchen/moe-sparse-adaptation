@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "classification": "RUNNING_WITH_SCISERVER_AUTH_AND_BROWSER_CONTROL_BLOCKER",
-  "last_action": "reconcile_authoritative_compute_table_attempt_tester6_start_once_and_preserve_unverified_pool_state",
-  "last_action_at": "2026-08-03T00:49:08-04:00",
+  "classification": "RUNNING_WITH_SCISERVER_BROWSER_CONTROL_BLOCKER_AND_TESTER6_ABSENT",
+  "last_action": "verify_tester6_absent_prepare_replacement_form_without_submission_and_preserve_unverified_pool_state",
+  "last_action_at": "2026-08-03T01:06:33-04:00",
   "last_verified_commit": "751dbd3290b9674ab32371c235f880ad63cc5a78",
   "valid_results": 49,
   "expected_results": 20,
@@ -584,16 +584,19 @@
   "latest_publication": {"status":"strict_complete_remote_verified","runs":2,"manifests":2,"remote_files":14,"files_per_run":7,"family":"expert_count60_route_E16_pair","hf_prefix":"rxrx1/cell_dino_cp5/expert_count60_20260802","report":"/home/idies/workspace/hb_publish_route_E16_pair_0112.report.json","execution_commit":"4893c964e67477a25a2e3b331dde9c7e641ca669","git_dirty":true,"selection_split":"ood_val","test_evaluated":false},
   "sixth_container": {
     "name": "tester6",
-    "container_id": 2893,
-    "external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
+    "container_id": null,
+    "historical_container_id": 2893,
+    "historical_external_ref": "8bf4e9aa-8dc8-11f1-a24e-0a580a8201b9",
     "domain": "Interactive 2H100 GPU",
     "image": "GPU-Essesials",
-    "status": "stopped_in_authoritative_compute_table_then_one_start_attempt_redirected_to_signed_out_page_outcome_unverified",
-    "running": null,
+    "status": "absent_from_authoritative_compute_table_replacement_form_prepared_but_not_submitted",
+    "running": false,
     "scheduler_reason": null,
-    "duplicate_guard": "authoritative_table_lists_only_tester6_2893_and_no_2899; exactly_one_start_attempt_this_invocation; do_not_repeat_or_recreate_until_reverified",
-    "current_refresh": "verification_blocked_by_unauthenticated_in_app_session_and_unavailable_chrome_control",
-    "start_attempts_this_invocation": 1,
+    "duplicate_guard": "authoritative_table_lists_neither_2893_nor_2899; zero_create_submissions_this_invocation; re_read_table_before_exactly_one_create_if_still_absent",
+    "current_refresh": "authenticated_table_and_form_verified_then_repeated_chrome_control_disconnects_blocked_create_and_per_container_audit",
+    "start_attempts_this_invocation": 0,
+    "create_submissions_this_invocation": 0,
+    "prepared_form": "tester6_interactive_2H100_GPU_GPU_Essesials_persistent_scratch_data_vol",
     "replacement_2899_present_in_authoritative_table": false
   },
   "steward_automation_status": "active_15min_factorial_sweep_contract_continuous_ready_queue_refill_validation_wandb_hf_and_tester6_capacity_check",
@@ -661,5 +664,5 @@
   "temperature03_canonical_aux60_queued_results": 4,
   "temperature03_canonical_aux60_wandb_group": "rxrx1-cell-dino-temperature03-canonical-aux60-20260803",
   "temperature03_canonical_aux60_hf_prefix": "rxrx1/cell_dino_cp5/temperature03_canonical_aux60_20260803",
-  "next_gate": "validate_canonical_E32_temperature0p1_exact_auxiliary_epoch30_reversal_or_dominance_and_smoother_route_E32_epoch60_mean_tail_and_route_reliance_before_any_confirmation_license; next_release_launch_highest_ranked_locked_canonical_E4_fresh_seed_or_temperature0p3_control_after_exact_preflight; if_tester6_starts_use_both_gpus_after_exact_preflight; retry_all_quota_blocked_publications_only_after_private_HF_storage_quota_is_available; keep_ood_test_sealed"
+  "next_gate": "restore_authenticated_stable_control_and_re_read_authoritative_table; if_tester6_still_absent_submit_exactly_one_tester6_2H100_create_then_record_scheduler_state; audit_every_container_and_gpu; validate_E4_seed1_submissions_or_same_cell_guarded_relaunch_only_if_absent_and_physically_free; validate_smoother_route_E32_epoch60_before_any_confirmation_license; retry_quota_blocked_publication_only_after_private_HF_storage_quota_is_available; keep_ood_test_sealed"
 }

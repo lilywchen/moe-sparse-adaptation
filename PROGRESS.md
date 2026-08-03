@@ -2740,3 +2740,28 @@ Next automatic action: restore an authenticated remote-control path, re-read the
 verify `2893` once, then inspect every running container separately. On `2887/GPU0` and
 `2859/GPU1`, validate the submitted E4 cells or, only if absent and physically free, relaunch those
 same guarded cells. Do not start or create another tester6 copy.
+
+## 2026-08-03 01:06 EDT — tester6 is absent; replacement form prepared but not submitted
+
+Authenticated SciServer control briefly recovered. The authoritative Compute table listed only
+the five known 2H100 containers (`2887`, `2875`, `2874`, `2862`, `2859`), all with container-level
+status `running`. Neither historical tester6 `2893` nor attempted replacement `2899` was present.
+This supersedes the prior stopped-row observation for current container existence, but it does not
+establish any per-GPU occupancy or worker health.
+
+Under the pre-authorized create-once-if-absent rule, the new-container form was opened and verified
+as `tester6`, `Interactive 2H100 GPU`, automatically selected `GPU-Essesials`, with persistent,
+scratch, and data-vol mounted. Repeated Chrome-control disconnects occurred before the final Create
+action, and the local computer-control fallback also failed to attach. Therefore zero create
+submissions were made, no replacement ID exists, and no duplicate can have been created by this
+invocation. The next invocation must first re-read the authoritative table; only if tester6 is still
+absent may it submit exactly one replacement creation.
+
+The per-container terminal audit could not proceed after the connection dropped. The E4 seed-1
+submissions on `2887/GPU0` and `2859/GPU1` remain unverified. Pool accounting stays explicitly at
+the last strict pre-submission observation: eight smoother workers and two then-free devices;
+current active and idle counts are unknown. Ready remains 10 and backlog 27. No new result,
+milestone, exclusion, promotion, publication, or scientific interpretation is recorded. The
+extreme temperature-0.03 family remains terminal-negative for its exact recipes; generic
+regularization or trajectory noise remains the leading explanation, smoother route-E32 epoch 60
+remains the sharp falsifier, multiplicity remains explicit, and OOD test remains sealed.

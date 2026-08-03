@@ -1967,3 +1967,20 @@ than reusable conditional routing. The sharp falsifier is retained mean/tail ben
 route-E32 epoch 60, preferably with route reliance above `0.01`. Multiplicity remains explicit,
 no exclusions change, and OOD test remains sealed. The next action is authenticated per-container
 re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch of the two E4 rows.
+
+## 2026-08-03 01:06 EDT
+
+- Authenticated Compute-table access briefly recovered. Only containers `2887`, `2875`, `2874`,
+  `2862`, and `2859` are listed, each at container-level status `running`. Neither historical
+  tester6 `2893` nor replacement `2899` exists in the authoritative table.
+- The absent-container create form was configured once as `tester6` on `Interactive 2H100 GPU`
+  with `GPU-Essesials` and the expected persistent/scratch/data-vol mounts. Browser control dropped
+  before Create, the UI fallback could not attach, and no submission occurred. There is no new
+  container ID and no duplicate action. Re-audit the table before one licensed create submission.
+- Per-GPU processes, utilization, epochs, logs, checkpoints, result freshness, fatal scans, W&B,
+  and HF state could not be inspected after control disconnected. The E4 seed-1 submissions remain
+  unverified; last-strict pool accounting remains eight workers plus two then-free devices, not a
+  current occupancy claim. Ready is 10 and backlog is 27.
+- No scientific evidence moved. The extreme temperature-0.03 conclusion, generic-regularization
+  alternative, smoother route-E32 epoch-60 falsifier, seed/multiplicity caveat, and sealed OOD test
+  are unchanged. The largest threat is now operational observability, not a newly observed result.
