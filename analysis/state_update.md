@@ -1805,3 +1805,29 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   Local strict validation passed and one tail-safe checksum manifest exists, but remote coverage is
   only three small tail-safe files out of fourteen expected pair files. No completion is claimed;
   retry only after storage quota becomes available.
+
+## 2026-08-02 23:01 EDT
+
+- The strict temperature-0.03 route-E32 pair changes from `+0.213/-1.248/+0.000` tail-safe minus
+  zero auxiliary at epoch 10 to `-0.274/-0.611/-0.041` at epoch 30. Tail-safe finishes rc0 at
+  `0.20733/0.51610/0.01786` OOD/ID/worst with entropy `0.99998` and route reliance `0.00183`.
+  This falsifies its delayed routing-specialization signature; the exact epoch-60 auxiliary effect
+  is withheld until zero auxiliary finishes.
+- Route E64 reverses at epoch 30 to `+0.568/+0.628/-0.041`; it remains a small mean/ID versus tail
+  tradeoff and continues to epoch 60 without promotion. Smoother route-E32 temperature 0.1 is
+  dominated at epoch 10 by `-0.294/-1.539/-0.041`, but retains only the predeclared epoch-30
+  delayed-mechanism license.
+- Canonical-E32 zero auxiliary and canonical-E64 tail-safe close strict-valid epoch-60 finals at
+  `0.20773/0.52539/0.01542` and `0.20367/0.51576/0.01218`. Both are unpaired terminal levels,
+  not objective effects. Result/config/seed/parameter/epoch identity, finite metrics, four
+  environments/9,854 samples, checkpoints, controller rc0, fatal scans, OOD-validation selection,
+  and null held-out fields pass.
+- Container2862 GPU0/GPU1 refills with smoother route-E64 no auxiliary
+  (63477/63497/W&B `lwy5zr93`) and canonical-E32 tail-safe (63561/63582/W&B `c8obo0tz`).
+  Container2875/GPU1 later refills with smoother canonical-E32 no auxiliary
+  (121334/121339/W&B `21dzaiwc`). Ten distinct H100 workers are assigned and zero running H100s
+  are idle. tester6/2899 remains Pending for the unchanged exact scheduler reason.
+- Commit `751dbd3` adds four canonical-pressure temperature-0.3 controls. Six focused and 130 full
+  tests pass in an isolated commit-4893 execution-base checkout; all four one-cell dry runs pass.
+  Ready is 14 and backlog 27. OOD test remains sealed; every new comparison is exploratory and
+  multiplicity-exposed.

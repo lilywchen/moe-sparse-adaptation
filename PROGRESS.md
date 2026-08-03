@@ -2540,3 +2540,40 @@ private repository storage limit is reached. The remote folder therefore contain
 tail-safe result, log, and milestone stream (3 of 14 expected pair files); zero auxiliary has no
 remote files and no local manifest yet. No completion is claimed and no blind retry is allowed. The
 retry license is restored only when private storage quota becomes available.
+
+## 2026-08-02 23:01 EDT — Three strict finals, a third refill, and canonical temperature controls
+
+Temperature-0.03 route E32 tail-safe reverses from an epoch-10 mean-only tradeoff to three-axis
+domination at epoch 30: tail-safe minus zero auxiliary is `-0.274/-0.611/-0.041`
+OOD-validation/ID/worst points. Its already-near-final worker is preserved through declared final
+emission and exits rc0 at `0.20733/0.51610/0.01786`; routing entropy is `0.99998` and randomized-
+route reliance is only `0.00183`. This rules out delayed routing specialization for that exact
+tail-safe row, but its zero-auxiliary final is still active, so the epoch-60 objective effect remains
+withheld. Route E64 instead reverses by epoch 30 to a small `+0.568/+0.628/-0.041` mean/ID/tail
+tradeoff and continues to epoch 60 without promotion. The smoother route-E32 temperature-0.1 pair
+is dominated at epoch 10 by `-0.294/-1.539/-0.041`, but continues only through its predeclared
+epoch-30 delayed-mechanism adjudication.
+
+Two additional temperature-0.03 rows close strict-valid: canonical-E32 zero auxiliary at
+`0.20773/0.52539/0.01542`, and canonical-E64 tail-safe at `0.20367/0.51576/0.01218`. Both controller
+logs end rc0, fatal scans are clear, milestone/checkpoint identities pass, all four environments
+and 9,854 OOD-validation examples are present, and every held-out field remains null. Canonical E32
+has no epoch-60 pair because its tail-safe row was validly pruned at epoch 30; canonical E64 remains
+unpaired until zero auxiliary finishes. None licenses epoch 90 or fresh seeds.
+
+The two released container2862 GPUs immediately refill with route-E64 temperature-0.1 zero
+auxiliary (controller63477/worker63497/W&B `lwy5zr93`) and canonical-E32 temperature-0.1 tail-safe
+(controller63561/worker63582/W&B `c8obo0tz`). A later route-E32 tail-safe release on
+container2875/GPU1 immediately refills with canonical-E32 temperature-0.1 zero auxiliary
+(controller121334/worker121339/W&B `21dzaiwc`). Exact one-cell shards, free physical devices,
+duplicate/result/prune/active guards, persistent destinations, OOD-validation loading, sealed-test
+checks, and fatal scans pass. All ten running H100s again carry distinct workers; tester6/2899
+remains scheduler Pending for the exact recorded affinity, unschedulable-node, and GPU-capacity
+reason.
+
+Commit `751dbd3` predeclares four canonical-pressure temperature-0.3 E32/E64 x auxiliary controls,
+so any route-pressure temperature-0.3 movement can be separated from generic smoothing. In the
+isolated execution-base checkout, six focused tests, all 130 tests, and four exact one-cell dry runs
+pass. After three refills, ready is 14: two remaining temperature-0.1 cells, four locked E4 fresh-
+seed cells, four route-pressure temperature-0.3 cells, and four canonical-pressure temperature-0.3
+controls. Backlog remains 27; OOD test is sealed and multiplicity remains explicit.

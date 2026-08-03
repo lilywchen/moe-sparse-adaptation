@@ -1,0 +1,100 @@
+{
+  "validated_at": "2026-08-02T23:01:00-04:00",
+  "classification": "strict_exploratory_active_compute_milestones_and_unpaired_finals",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "git_dirty": true,
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-extremeaux-codeeq-d370b70",
+  "common_checks": {
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "per_environment_coverage": 4,
+    "ood_validation_examples": 9854,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "heldout_accuracy_null": true,
+    "heldout_per_environment_null": true,
+    "fatal_scan_clear": true,
+    "parameter_counts_match_registry": true
+  },
+  "pairs": {
+    "extreme_route_E32": {
+      "temperature": 0.03,
+      "n_experts": 32,
+      "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12949056220824032, "id": 0.29653796907318036, "worst_experiment": 0.015422077922077922},
+        "no_aux": {"ood_val": 0.12735944793992288, "id": 0.3090219639515414, "worst_experiment": 0.015422077922077922},
+        "tail_safe_minus_no_aux_points": {"ood_val": 0.2131114268317441, "id": -1.2483994878361049, "worst_experiment": 0.0}
+      },
+      "epoch30": {
+        "tail_safe": {"ood_val": 0.1823624923888776, "id": 0.4584359302669162, "worst_experiment": 0.01461038961038961},
+        "no_aux": {"ood_val": 0.1851024964481429, "id": 0.4645424997537674, "worst_experiment": 0.015016233766233766},
+        "tail_safe_minus_no_aux_points": {"ood_val": -0.27400040592652775, "id": -0.6106569486851177, "worst_experiment": -0.0405844155844156}
+      },
+      "tail_safe_epoch60_final": {
+        "ood_val": 0.20732697381773899,
+        "id": 0.516103614695164,
+        "worst_experiment": 0.017857142857142856,
+        "routing_entropy": 0.9999787049227367,
+        "route_reliance": 0.001826669372843509,
+        "experts_used": 32.0,
+        "checkpoint_bytes": 709118236,
+        "controller_rc": 0
+      },
+      "decision": "tail_safe_is_dominated_at_epoch30_and_final_route_reliance_is_below_0p01; preserve_unpaired_final_and_withhold_epoch60_objective_effect_until_no_aux_final; no_promotion"
+    },
+    "extreme_route_E64": {
+      "temperature": 0.03,
+      "n_experts": 64,
+      "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12908463568094175, "id": 0.28791982665222104, "worst_experiment": 0.012987012987012988},
+        "no_aux": {"ood_val": 0.14014613354982747, "id": 0.31017925736235596, "worst_experiment": 0.013392857142857142},
+        "tail_safe_minus_no_aux_points": {"ood_val": -1.1061497868885717, "id": -2.225943071013492, "worst_experiment": -0.040584415584415424}
+      },
+      "epoch30": {
+        "tail_safe": {"ood_val": 0.18855287193018064, "id": 0.4597655865261499, "worst_experiment": 0.015016233766233766},
+        "no_aux": {"ood_val": 0.1828699005480008, "id": 0.4534866541908795, "worst_experiment": 0.015422077922077922},
+        "tail_safe_minus_no_aux_points": {"ood_val": 0.5682971382179824, "id": 0.6278932335270382, "worst_experiment": -0.0405844155844156}
+      },
+      "decision": "continue_both_to_epoch60_small_mean_and_id_reversal_with_tiny_worst_experiment_cost_no_promotion"
+    },
+    "smoother_route_E32": {
+      "temperature": 0.1,
+      "n_experts": 32,
+      "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12502537040795617, "id": 0.3001083423618635, "worst_experiment": 0.016639610389610388, "checkpoint_bytes": 709133112},
+        "no_aux": {"ood_val": 0.1279683377308707, "id": 0.31549788239929083, "worst_experiment": 0.017045454545454544, "checkpoint_bytes": 709129281},
+        "tail_safe_minus_no_aux_points": {"ood_val": -0.2942967322914547, "id": -1.5389540037427318, "worst_experiment": -0.0405844155844156}
+      },
+      "decision": "continue_to_epoch30_under_predeclared_smoother_router_delayed_mechanism_rule_despite_three_axis_epoch10_dominance"
+    }
+  },
+  "strict_unpaired_epoch60_finals": {
+    "extreme_canonical_E32_no_aux": {
+      "ood_val": 0.20773290034503755,
+      "id": 0.5253865852457402,
+      "worst_experiment": 0.015422077922077922,
+      "total_parameters": 59043060,
+      "active_ffn_including_router": 1193857,
+      "checkpoint_bytes": 709124301,
+      "controller_rc": 0,
+      "decision": "terminal_absolute_control_level_no_paired_epoch60_effect_because_tail_safe_was_predeclared_pruned_at_epoch30"
+    },
+    "extreme_canonical_E64_tail_safe": {
+      "ood_val": 0.20367363507205197,
+      "id": 0.5157588889983257,
+      "worst_experiment": 0.012175324675324676,
+      "total_parameters": 96865524,
+      "active_ffn_including_router": 1206145,
+      "checkpoint_bytes": 1163272836,
+      "controller_rc": 0,
+      "decision": "strict_unpaired_final_wait_exact_no_aux_final_no_effect_claim"
+    }
+  },
+  "multiplicity": "All rows are seed-0 exploratory follow-ups after broad architecture, objective, bank-size, and temperature searches; no population claim or fresh-seed promotion is made.",
+  "largest_threat": "The selected configurations are multiplicity-exposed and most final route reliance is near zero; remaining exact epoch-60 comparators are required before auxiliary-effect attribution."
+}
