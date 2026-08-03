@@ -2599,3 +2599,30 @@ The result is exploratory seed 0 after multiple pressure, temperature, bank-size
 architecture screens. The leading alternative remains generic optimization or auxiliary
 regularization. The sharp falsifier is aligned exact auxiliary-pair movement at epoch 30 plus final
 route reliance above `0.01` without more than two ID points lost.
+
+## 2026-08-02 23:31 EDT — Smoother E32 reverses positively at epoch 30; extreme E32 closes negative
+
+Two exact active-compute route-E32 auxiliary pairs pass strict milestone validation. At temperature
+0.03, tail-safe minus zero auxiliary closes epoch 60 at `-0.233/-0.623/+0.041`
+OOD-validation/ID/worst-experiment points. Across epochs 10/30/60 its mean effect is
+`+0.213/-0.274/-0.233`, while the tail effect is `0.000/-0.041/+0.041`; the already validated
+tail-safe route reliance is only `0.00183`. This is terminal-negative for a material tail-safe
+effect in that exact recipe. No epoch 90 or fresh seed is licensed; the live zero-auxiliary worker
+is retained only for declared final mechanism/result emission before immediate refill.
+
+At temperature 0.1, the exact route-E32 pair instead reverses from
+`-0.294/-1.539/-0.041` at epoch 10 to `+1.208/+0.731/+0.365` points at epoch 30. The aligned
+mean, ID, and tail direction survives the delayed-emergence gate and licenses both rows to continue
+unchanged to epoch 60. It remains below the +5-point material target and does not license epoch 90
+or fresh seeds. Smoother optimization is now more plausible than the extreme-temperature recipe,
+but generic auxiliary regularization or trajectory noise remains an alternative until final route
+reliance is available.
+
+All four milestone rows match exact run/config/seed/epoch and registry parameter identities, contain
+finite ERM metrics, cover four environments and 9,854 OOD-validation examples, have nonempty
+checkpoints, active W&B streams, fatal-clear logs, `selection_split=ood_val`, and
+`test_evaluated=false` with explicit test-untouched logging. Ten distinct workers still occupy the
+ten allocated H100s; tester6/2899 remains Pending for 11 affinity mismatches, two unschedulable
+nodes, and three insufficient-GPU nodes. The exact shard-6/8 dry run for the next refill,
+canonical-E64 temperature-0.1 tail-safe, reports one unique pending cell. Ready remains 14 and
+backlog 27.

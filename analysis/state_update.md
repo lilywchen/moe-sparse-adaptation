@@ -1851,3 +1851,26 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
 - Multiplicity remains explicit. The next automatic validations are canonical-E32 exact
   tail-safe/no-aux at epoch 10 and route-E32 exact tail-safe/no-aux at epoch 30. The next released
   GPU launches canonical-E64 temperature-0.1 tail-safe after exact preflight; OOD test stays sealed.
+
+## 2026-08-02 23:31 EDT
+
+- Extreme route-E32 temperature-0.03 tail-safe minus exact zero auxiliary is
+  `-0.233/-0.623/+0.041` OOD/ID/worst points at epoch 60. The mean effect is negative at epochs 30
+  and 60, the tiny tail direction flips, and tail-safe route reliance is `0.00183`. This exact
+  recipe is terminal-negative for a material routing-mediated tail-safe effect; no epoch90 or fresh
+  seed is licensed. Final zero-aux mechanism/result emission remains live and is not excluded.
+- Smoother route-E32 temperature-0.1 reverses from `-0.294/-1.539/-0.041` at epoch 10 to
+  `+1.208/+0.731/+0.365` at epoch 30. This aligned provisional result licenses continuation of the
+  exact pair to epoch60 under the declared delayed-emergence rule, but is below +5 and does not yet
+  license confirmation seeds or epoch90.
+- The strict artifact is
+  `analysis/extreme_route_E32_epoch60_and_smoother_route_E32_epoch30_validation.json`. Exact
+  identity, finite metrics, four environments/9,854 samples, parameter pairing, checkpoints, W&B,
+  fatal-clear logs, OOD-validation selection, and sealed-test checks pass.
+- All five running containers still have two live workers and 10/10 allocated H100s remain
+  assigned. tester6/2899 is unchanged Pending for 11 affinity, two unschedulable, and three
+  insufficient-GPU constraints. Ready remains14 and backlog27.
+- Canonical-E64 temperature-0.1 tail-safe shard6/8 is dry-run verified as one unique pending cell.
+  It launches immediately when extreme route-E32 zero auxiliary completes final emission. The
+  smoother pair's epoch60 mean/tail direction and route reliance above `0.01` are the sharpest
+  falsifier; OOD test remains sealed.

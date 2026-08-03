@@ -1,0 +1,66 @@
+{
+  "validated_at": "2026-08-02T23:31:00-04:00",
+  "classification": "strict_exploratory_active_compute_paired_milestones",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "git_dirty": true,
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-extremeaux-codeeq-d370b70",
+  "common_checks": {
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "exact_run_config_seed_epoch_identity": true,
+    "same_parameter_counts_and_data_order_within_pair": true,
+    "per_environment_coverage": 4,
+    "ood_validation_examples": 9854,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "test_untouched_log_evidence": true,
+    "checkpoint_present_nonempty": true,
+    "fatal_scan_clear": true,
+    "wandb_sync_active": true
+  },
+  "extreme_route_E32_temperature0p03": {
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+    "seed": 0,
+    "n_experts": 32,
+    "temperature": 0.03,
+    "total_parameters": 59043060,
+    "active_ffn_including_router": 1193857,
+    "epoch60": {
+      "tail_safe": {"ood_val": 0.20732697381773899, "id": 0.516103614695164, "worst_experiment": 0.017857142857142856, "checkpoint_bytes": 709118236},
+      "no_aux": {"ood_val": 0.2096610513497057, "id": 0.5223333005023146, "worst_experiment": 0.0174512987012987, "checkpoint_bytes": 709114597},
+      "tail_safe_minus_no_aux_points": {"ood_val": -0.23340775319667106, "id": -0.6229685807150664, "worst_experiment": 0.0405844155844156}
+    },
+    "trajectory_tail_safe_minus_no_aux_points": {
+      "epoch10": {"ood_val": 0.2131114268317441, "id": -1.2483994878361049, "worst_experiment": 0.0},
+      "epoch30": {"ood_val": -0.27400040592652775, "id": -0.6106569486851177, "worst_experiment": -0.0405844155844156},
+      "epoch60": {"ood_val": -0.23340775319667106, "id": -0.6229685807150664, "worst_experiment": 0.0405844155844156}
+    },
+    "available_mechanism": {"tail_safe_route_reliance": 0.001826669372843509, "tail_safe_routing_entropy": 0.9999787049227367},
+    "decision": "terminal_negative_for_a_material_tail_safe_effect_in_this_exact_recipe; no_epoch90_or_fresh_seed_license; preserve_no_aux_final_mechanism_emission_before_gpu_handoff"
+  },
+  "smoother_route_E32_temperature0p1": {
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+    "seed": 0,
+    "n_experts": 32,
+    "temperature": 0.1,
+    "total_parameters": 59043060,
+    "active_ffn_including_router": 1193857,
+    "epoch30": {
+      "tail_safe": {"ood_val": 0.19890399837629388, "id": 0.469073180340786, "worst_experiment": 0.021103896103896104, "checkpoint_bytes": 709133112},
+      "no_aux": {"ood_val": 0.18682768418916176, "id": 0.4617600709150005, "worst_experiment": 0.0174512987012987, "checkpoint_bytes": 709129281},
+      "tail_safe_minus_no_aux_points": {"ood_val": 1.207631418713212, "id": 0.7313109425785502, "worst_experiment": 0.3652597402597404}
+    },
+    "trajectory_tail_safe_minus_no_aux_points": {
+      "epoch10": {"ood_val": -0.2942967322914547, "id": -1.5389540037427318, "worst_experiment": -0.0405844155844156},
+      "epoch30": {"ood_val": 1.207631418713212, "id": 0.7313109425785502, "worst_experiment": 0.3652597402597404}
+    },
+    "decision": "continue_both_unchanged_to_epoch60_under_predeclared_delayed_emergence_rule; aligned_reversal_is_competitive_but_below_the_5_point_material_target_and_not_a_seed_or_epoch90_promotion"
+  },
+  "interpretation": "Temperature 0.1, not the 0.03 extreme recipe, produces an aligned E32 auxiliary effect at epoch 30. This is provisional evidence that smoother optimization may matter, while the final routing mechanism remains unidentified.",
+  "alternative_explanation": "The epoch-30 reversal can be generic auxiliary regularization or trajectory noise rather than useful conditional routing.",
+  "multiplicity": "Both pairs are seed-0 exploratory follow-ups after broad architecture, objective, pressure, bank-size, and temperature searches; the smoother reversal requires locked fresh-seed confirmation only if it survives epoch 60 with the declared mechanism or tail signature.",
+  "largest_threat": "Final route reliance for the smoother pair is unavailable and the observed 1.21-point mean gain is selected after multiple screens.",
+  "next_falsifier": "At epoch 60 the smoother pair must retain a nonnegative mean and worst-experiment effect without more than two ID points lost, preferably with randomized-route reliance above 0.01; otherwise the smoother-routing explanation is rejected."
+}
