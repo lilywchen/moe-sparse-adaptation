@@ -2296,3 +2296,26 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   finish, then refill every released GPU from the twelve tested controls. A routing interpretation requires
   aligned mean/tail movement, reliance above `0.01`, and a locked fresh seed. HF remains quota-blocked; paper
   unchanged; OOD test sealed.
+
+## 2026-08-03 18:04 EDT
+
+- Strictly validate the repaired dense E4 noise-0.01 control at epoch 30. It reaches
+  `0.177187/0.460160/0.014205` OOD/ID/worst, with finite ERM metrics, exact identity, all four
+  OOD-validation environments and 9,854 samples, a 297.3 MB checkpoint, fatal-clear log,
+  `selection_split=ood_val`, and `test_evaluated=false`. Record the row in
+  `analysis/upcycling_noise_controls60_dense_E4_epoch30_validation.json`.
+- Learned E4 minus dense-wide is `+1.806/+0.086/+0.649` OOD/ID/worst points at epoch 30; learned
+  minus frozen-router is `+0.538/-0.544/+0.365`. The aligned dense comparison is provisional and
+  below the material threshold. Final learned route reliance is `0.00142`, so no routing mechanism
+  or replication claim follows and no epoch-90/fresh-seed run is promoted.
+- Ten distinct controller identities remain without exit and their persistent trainlogs are fresh:
+  2887 has the canonical-E8 pair at epoch 25; 2875 canonical-E16 tail at 25 and dense-E8-0.001 at
+  28; 2874 frozen/dense E8-0.01 at 28; 2862 learned/frozen E16-0.001 at 28; 2859 dense E4 at 38
+  and dense E16 at 28. Zero of ten available H100 assignments is idle. Exact instantaneous GPU
+  memory was not refreshed because the Jupyter terminal keyboard bridge did not execute; prior
+  memory values remain historical, while fresh logs plus no controller exits establish liveness.
+- Tester6/2899 remains Pending/Running=false for 11 affinity mismatches, two unschedulable nodes,
+  three insufficient-GPU nodes, and unhelpful preemption/no victims. Issue no start or create.
+  Ready/backlog remain 12/26. Continue every locked comparison to epoch 60, validate/refill the
+  first release immediately, keep multiplicity explicit, leave HF quota-blocked, and keep the OOD
+  test sealed.

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "TEN_OF_TEN_AVAILABLE_H100S_ACTIVE_EIGHT_UPCYCLING_FINALS_STRICT_VALID_TWO_FROZEN_CONTROLS_VALID_SIX_MATCHED_CONTROLS_REFILLED",
-  "last_action": "validate_three_remaining_upcycling_one_moderate_and_two_frozen_control_finals_then_refill_six_releases_with_E8_E16_mechanism_controls",
-  "last_action_at": "2026-08-03T16:56:00-04:00",
+  "last_action": "audit_all_containers_validate_dense_E4_epoch30_and_continue_ten_locked_workers",
+  "last_action_at": "2026-08-03T18:04:00-04:00",
   "last_verified_commit": "80671979e2bfc88f3e8b6da4aa02bb67ae02be3e",
   "valid_results": 84,
   "expected_results": 9,
@@ -12,8 +12,8 @@
   "verified_idle_h100s_partial": 0,
   "gpu_accounting_scope": "fresh complete audit of all five allocated worker containers and ten H100s at 2026-08-03T16:51-04:00; tester6_2899 remains scheduler_pending and contributes zero",
   "sciserver_resource_map": "containers2887_2875_2874_2862_2859 each hold two distinct owned workers; ten_of_ten currently available H100s active; tester6_2899 pending and contributes zero",
-  "current_gpu_assignments_as_of": "2026-08-03T16:51:00-04:00",
-  "current_gpu_assignments_currentness": "fresh_complete_per_gpu_audit",
+  "current_gpu_assignments_as_of": "2026-08-03T18:02:00-04:00",
+  "current_gpu_assignments_currentness": "fresh_complete_per_controller_and_persistent_trainlog_audit; instantaneous_nvidia_smi_refresh_unavailable",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -585,7 +585,7 @@
   "ready_queue_registry_tree": "4e43e319cd59eedb6fb716c9ba898e84e52fc6c9",
   "ready_queue_addendum_commit": "d5d2b63",
   "backlog_hypotheses": 26,
-  "wandb_current_status": "ten workers have distinct declared run identities and live process plus GPU memory observations; eight upcycling finals, two frozen-router controls, and canonical E4 no-aux are strict-valid; no new HF publication under the known quota blocker",
+  "wandb_current_status": "ten workers have distinct declared run identities, no controller exits, and minute-fresh trainlogs at epochs25_to38; eight upcycling finals, two frozen-router finals, canonical E4 no-aux, and dense E4 epoch30 are strict-valid; no new HF publication under the known quota blocker",
   "current_gpu_assignments": {"2887":{"gpu0":{"worker_pid":65727,"arm":"canonical_E8_temp03_tail_safe_s0","wandb_group":"rxrx1-cell-dino-temperature03-moderate-bank-aux60-20260803","status":"live_8039MiB"},"gpu1":{"worker_pid":65726,"arm":"canonical_E8_temp03_no_aux_s0","wandb_group":"rxrx1-cell-dino-temperature03-moderate-bank-aux60-20260803","status":"live_8039MiB"}},"2875":{"gpu0":{"worker_pid":130148,"arm":"canonical_E16_temp03_tail_safe_s0","wandb_group":"rxrx1-cell-dino-temperature03-moderate-bank-aux60-20260803","status":"live_8157MiB"},"gpu1":{"worker_pid":134391,"arm":"dense_E8_temp03_noise0p001_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_10007MiB"}},"2874":{"gpu0":{"worker_pid":79562,"arm":"frozen_E8_temp03_noise0p01_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_7995MiB"},"gpu1":{"worker_pid":79727,"arm":"dense_E8_temp03_noise0p01_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_10004MiB"}},"2862":{"gpu0":{"worker_pid":3161,"arm":"learned_E16_temp03_noise0p001_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_8053MiB"},"gpu1":{"worker_pid":3326,"arm":"frozen_E16_temp03_noise0p001_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_8027MiB"}},"2859":{"gpu0":{"worker_pid":2478,"controller_pid":2458,"arm":"dense_E4_temp03_noise0p01_control_retry1","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_8831MiB_gpu100_percent"},"gpu1":{"worker_pid":3862,"arm":"dense_E16_temp03_noise0p001_control","wandb_group":"rxrx1-cell-dino-upcycling-noise-controls60-20260803","status":"live_12361MiB_gpu99_percent"}}},
   "extreme_route_E64_epoch60_paired_validation": "analysis/extreme_route_E64_epoch60_paired_and_E4_seed1_refills_validation.json",
   "extreme_route_E64_epoch60_tail_safe_minus_no_aux_points": {"ood_val":-0.040592652729853906,"id":-0.4678420171377984,"worst_experiment":-0.0811688311688312,"decision":"terminal_negative_no_epoch90_or_fresh_seed_license"},
@@ -731,6 +731,9 @@
   "upcycling_noise_controls60_active_results": 7,
   "upcycling_noise_controls60_ready_results": 5,
   "upcycling_noise_controls60_valid_results": 2,
+  "upcycling_noise_controls60_dense_E4_epoch30_validation": "analysis/upcycling_noise_controls60_dense_E4_epoch30_validation.json",
+  "upcycling_noise_controls60_dense_E4_epoch30_learned_minus_dense_points": {"ood_val":1.8063730464785877,"id":0.08618142420959707,"worst_experiment":0.6493506493506493},
+  "upcycling_noise_controls60_live_epoch_map": {"2887_gpu0":25,"2887_gpu1":25,"2875_gpu0":25,"2875_gpu1":28,"2874_gpu0":28,"2874_gpu1":28,"2862_gpu0":28,"2862_gpu1":28,"2859_gpu0":38,"2859_gpu1":28},
   "upcycling_noise_controls60_test_gated_results": 0,
   "upcycling_noise_controls60_gate": "postrepair remote source passes three focused and 133 full tests and exact shard4 one_pending dryrun; failed dense rank2 retried once after free_duplicate_result_marker guards and verified live",
   "upcycling_noise_controls60_dense_repair": "analysis/upcycling_noise_controls60_dense_variant_repair.json",
@@ -740,5 +743,5 @@
   "upcycling_noise60_mechanism_status": "all eight seed0 E4_E8_E16 finals strict-valid; completed learned-minus-frozen E4 and E8 contrasts show small mean gains with worst-experiment losses; route E16 noisy-minus-zero is plus0p142_ood minus0p128_id plus0p284_worst; ordinary initialization_or_trajectory_regularization still leads; no epoch90_or_fresh_seed promotion",
   "queue_depth_exception": null,
   "browser_transport_status": "in_app_browser_authenticated_and_currently_controls_sciserver_compute_and_jupyter_sessions",
-  "next_gate": "validate dense_E4_retry and six active E8_E16 learned_frozen_dense controls at completion; refill every release from twelve ranked ready arms; require aligned mean_tail gain route_reliance_above0p01 and locked fresh seed before promotion; retry HF only after quota available; keep OOD test sealed"
+  "next_gate": "validate dense_E4 epoch60 and six active E8_E16 learned_frozen_dense controls at completion; refill every release from twelve ranked ready arms; require aligned mean_tail gain route_reliance_above0p01 and locked fresh seed before promotion; retry HF only after quota available; keep OOD test sealed"
 }

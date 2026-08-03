@@ -3124,3 +3124,31 @@ result remains unpaired until its zero-noise comparator finishes. These small mi
 show useful conditional routing and do not justify epoch 90 or fresh seeds. Ordinary initialization/trajectory
 regularization is the leading explanation. Twelve distinct cells remain ready for immediate refill. HF remains
 quota-blocked, the paper is unchanged, multiplicity is explicit, and OOD test remains sealed.
+
+## 2026-08-03 18:04 EDT — dense E4 control validates at epoch 30; all ten workers continue
+
+The repaired exact-total-parameter-matched dense E4 noise-0.01 control now has a strict-valid
+epoch-30 milestone and a 297.3 MB checkpoint. Metrics are 17.719% OOD validation, 46.016% ID, and
+1.420% on the worst held-out experiment. The row is finite ERM, matches the exact run/seed/epoch,
+covers environments 7/27/42/49 with 9,854 samples, uses `selection_split=ood_val`, records
+`test_evaluated=false`, and has no fatal-log signature. Its controller has not exited and its fresh
+run log has advanced through epoch 38. The validation record is
+`analysis/upcycling_noise_controls60_dense_E4_epoch30_validation.json`.
+
+At the same milestone, the learned E4 noisy router exceeds dense-wide by
+`+1.806/+0.086/+0.649` OOD/ID/worst-experiment points and exceeds the frozen-router control by
+`+0.538/-0.544/+0.365`. This is an encouraging aligned interim difference against dense, but it is
+well below five points, the learned arm's final route reliance is only `0.00142`, and the dense
+comparator is unfinished. It therefore does not establish useful conditional routing and licenses
+no epoch-90 or fresh-seed run. Ordinary initialization or trajectory effects remain the leading
+explanation until the exact epoch-60 comparison closes.
+
+All ten available workers remain assigned with fresh persistent logs and no controller exits:
+the E8/E16 zero-noise comparators are at epoch 25, six newly launched E8/E16 controls are at epoch
+28, dense E4 is at epoch 38, and dense E16 is at epoch 28. This maps to two workers each on
+2887/2875/2874/2862/2859 and zero idle available H100s. The browser terminal keyboard bridge did
+not execute a fresh `nvidia-smi`, so current liveness is based on per-container controller identity
+plus minute-fresh trainlogs; prior exact memory figures are not relabelled as current. Tester6/2899
+remains Pending for the unchanged scheduler reason, with no start or create issued. Ready/backlog
+remain 12/26, W&B streams are live, HF remains quota-blocked, the paper is unchanged, and the OOD
+test remains sealed.

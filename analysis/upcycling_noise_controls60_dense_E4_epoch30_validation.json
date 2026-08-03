@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T18:04:00-04:00",
+  "family": "upcycling_noise_controls60_20260803",
+  "classification": "strict_exploratory_seed0_epoch30_exact_total_parameter_control_interim",
+  "run_id": "rxrx1_dense_wide_early_canonical_E4_ep60_s0_upcycling_noise_controls60_dense_E4_temp03_noise0p01_20260803",
+  "tag": "dense_E4_temp03_noise0p01",
+  "seed": 0,
+  "n_experts_equivalent_bank": 4,
+  "noise": 0.01,
+  "fairness_class": "exact_total_parameter_matched_within_0p1_percent_not_active_compute_matched",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_sealed": true,
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+  "source_commit": "04ad526",
+  "strict_checks": {
+    "milestone_jsonl_parseable": true,
+    "milestone_epochs_present": [10, 30],
+    "finite_required_metrics": true,
+    "exact_run_seed_epoch_identity": true,
+    "classification_objective": "erm",
+    "selection_split_exact": true,
+    "test_evaluated_false": true,
+    "ood_validation_environment_ids": [7, 27, 42, 49],
+    "ood_validation_sample_count": 9854,
+    "epoch30_checkpoint_exists": true,
+    "epoch30_checkpoint_ui_size": "297.3 MB",
+    "fatal_scan_clear": true,
+    "controller_exit_observed": false,
+    "fresh_trainlog_latest_epoch": 38
+  },
+  "epoch30": {
+    "acc_train": 0.9991127760252366,
+    "acc_within": 0.46015955875110803,
+    "acc_ood_val": 0.177186929165821,
+    "worst_experiment_ood_val": 0.014204545454545454,
+    "per_env_ood_val": {
+      "7": 0.16043866774979693,
+      "27": 0.4054383116883117,
+      "42": 0.1286525974025974,
+      "49": 0.014204545454545454
+    },
+    "per_env_n": {"7": 2462, "27": 2464, "42": 2464, "49": 2464}
+  },
+  "paired_differences_points": {
+    "learned_router_minus_dense_wide": {
+      "ood_val": 1.8063730464785877,
+      "id": 0.08618142420959707,
+      "worst_experiment": 0.6493506493506493
+    },
+    "learned_router_minus_frozen_router": {
+      "ood_val": 0.537852648670592,
+      "id": -0.5441741357234298,
+      "worst_experiment": 0.3652597402597404
+    },
+    "dense_wide_minus_frozen_router": {
+      "ood_val": -1.2685203978079955,
+      "id": -0.6303555599330268,
+      "worst_experiment": -0.284090909090909
+    }
+  },
+  "interpretation": {
+    "status": "provisional_interim",
+    "what_it_rules_out": "At epoch 30 the learned E4 noisy router is not explained by an already-superior dense-wide noisy control, because the learned arm is 1.806 OOD-validation points and 0.649 worst-experiment points higher.",
+    "what_it_does_not_establish": "The difference is below the predeclared material threshold, the learned arm's final route reliance is only 0.00142, and the dense comparator has not reached epoch 60.",
+    "leading_explanation": "Ordinary initialization or trajectory effects remain more plausible than useful conditional specialization until the exact epoch-60 dense comparison closes.",
+    "sharpest_falsifier": "The learned arm must retain an aligned mean-and-tail advantage over both dense and frozen controls at epoch 60 with route reliance above 0.01, then survive a locked fresh seed.",
+    "promotion": "none"
+  },
+  "pool_snapshot": {
+    "active_workers": 10,
+    "idle_h100s": 0,
+    "available_worker_containers": [2887, 2875, 2874, 2862, 2859],
+    "latest_epochs": {
+      "2887_gpu0_canonical_E8_tail": 25,
+      "2887_gpu1_canonical_E8_noaux": 25,
+      "2875_gpu0_canonical_E16_tail": 25,
+      "2875_gpu1_dense_E8_noise0p001": 28,
+      "2874_gpu0_frozen_E8_noise0p01": 28,
+      "2874_gpu1_dense_E8_noise0p01": 28,
+      "2862_gpu0_learned_E16_noise0p001": 28,
+      "2862_gpu1_frozen_E16_noise0p001": 28,
+      "2859_gpu0_dense_E4_noise0p01_retry1": 38,
+      "2859_gpu1_dense_E16_noise0p001": 28
+    },
+    "ready_queue": 12,
+    "hypothesis_backlog": 26
+  },
+  "tester6": {
+    "container_id": 2899,
+    "status": "Pending",
+    "running": false,
+    "start_requests_this_invocation": 0,
+    "create_requests_this_invocation": 0,
+    "reason": "11 affinity_or_selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unhelpful or no victims"
+  },
+  "trust_limitation": "The Jupyter terminal keyboard bridge did not execute a fresh nvidia-smi command. Liveness is instead based on per-container controller identities with no exits plus shared persistent trainlogs updated within the invocation. Exact memory figures remain those from the prior strict audit and are not relabelled as current.",
+  "multiplicity": "Exploratory seed-0 interim after broad architecture, objective, pressure, temperature, expert-count, auxiliary, noise, and control searches; no confirmatory or population claim."
+}
