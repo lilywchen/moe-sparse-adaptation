@@ -1,0 +1,37 @@
+{
+  "predeclared_at": "2026-08-03T10:18:00-04:00",
+  "family": "upcycling_noise60_20260803",
+  "question": "Can small expert symmetry-breaking noise overcome cloned-expert degeneracy and create useful conditional specialization without destroying the Cell-DINO starting representation?",
+  "hypothesis": "A 0.001 or 0.01 relative perturbation of cloned expert input weights will increase randomized-router reliance and reduce dead-expert behavior relative to the active zero-noise temperature-0.3 anchors, while retaining ID and improving mean or worst-experiment OOD validation.",
+  "predicted_signature": "Noise 0.001 at E8, or noise 0.01 at one adjacent bank, produces route reliance above 0.01 by epoch 30 with an OOD-validation or worst-experiment improvement and no more than two ID points lost versus the exact shared zero-noise anchor.",
+  "alternative_explanation": "Any gain is ordinary weight-noise regularization rather than conditional specialization; pressure-matched zero-noise anchors and route-reliance diagnostics separate these explanations.",
+  "falsifier": "All noisy arms retain route reliance at or below 0.01, lose ID, or fail to improve mean or worst-experiment OOD validation versus their pressure-, bank-, objective-, seed-, and schedule-matched zero-noise anchors.",
+  "fairness_class": "active_compute_and_total_parameter_matched_initialization_perturbation_only",
+  "seed": 0,
+  "horizon": 60,
+  "milestones": [10, 30, 60],
+  "pruning_rule": "At epoch 10 prune a noisy arm dominated by its shared zero-noise anchor on OOD validation, ID retention, worst-experiment accuracy, and route reliance unless differentiation is increasing. Continue to epoch 60 only for a competitive epoch-30 trajectory or route reliance above 0.01.",
+  "checkpoint_policy": "save epochs 10, 30, and 60 for every arm reaching the milestone",
+  "wandb_group": "rxrx1-cell-dino-upcycling-noise60-20260803",
+  "hf_prefix": "rxrx1/cell_dino_cp5/upcycling_noise60_20260803",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "result_budget": 8,
+  "parameter_counts": {
+    "E4": {"total_parameters": 25948404, "active_ffn_including_router": 1183105},
+    "E8": {"total_parameters": 30676212, "active_ffn_including_router": 1184641},
+    "E16": {"total_parameters": 40131828, "active_ffn_including_router": 1187713}
+  },
+  "shared_anchor_family": "temperature03_moderate_bank_aux60_20260803 zero-noise tail-safe cells",
+  "arms": [
+    {"rank": 1, "tag": "route_E4_temp03_noise0p01_tail_safe", "pressure": "route", "n_experts": 4, "sym_break_moe": 0.01, "exact_comparator": "route_E4_temp03_tail_safe"},
+    {"rank": 2, "tag": "canonical_E4_temp03_noise0p01_tail_safe", "pressure": "canonical", "n_experts": 4, "sym_break_moe": 0.01, "exact_comparator": "canonical_E4_temp03_tail_safe"},
+    {"rank": 3, "tag": "route_E8_temp03_noise0p001_tail_safe", "pressure": "route", "n_experts": 8, "sym_break_moe": 0.001, "exact_comparator": "route_E8_temp03_tail_safe"},
+    {"rank": 4, "tag": "canonical_E8_temp03_noise0p001_tail_safe", "pressure": "canonical", "n_experts": 8, "sym_break_moe": 0.001, "exact_comparator": "canonical_E8_temp03_tail_safe"},
+    {"rank": 5, "tag": "route_E8_temp03_noise0p01_tail_safe", "pressure": "route", "n_experts": 8, "sym_break_moe": 0.01, "exact_comparator": "route_E8_temp03_tail_safe"},
+    {"rank": 6, "tag": "canonical_E8_temp03_noise0p01_tail_safe", "pressure": "canonical", "n_experts": 8, "sym_break_moe": 0.01, "exact_comparator": "canonical_E8_temp03_tail_safe"},
+    {"rank": 7, "tag": "route_E16_temp03_noise0p01_tail_safe", "pressure": "route", "n_experts": 16, "sym_break_moe": 0.01, "exact_comparator": "route_E16_temp03_tail_safe"},
+    {"rank": 8, "tag": "canonical_E16_temp03_noise0p01_tail_safe", "pressure": "canonical", "n_experts": 16, "sym_break_moe": 0.01, "exact_comparator": "canonical_E16_temp03_tail_safe"}
+  ],
+  "multiplicity": "Exploratory eight-arm symmetry-breaking screen opened after broad router, pressure, expert-count, temperature, and auxiliary searches; no winner is confirmatory without locked fresh seeds and a matched dense noise control."
+}
