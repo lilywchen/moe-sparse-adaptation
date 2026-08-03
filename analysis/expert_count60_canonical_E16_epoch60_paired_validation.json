@@ -1,0 +1,42 @@
+{
+  "status": "strict_exploratory_paired_epoch60_final_terminal_effect",
+  "validated_at": "2026-08-02T22:23:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "seed": 0,
+  "n_experts": 16,
+  "parameters": {
+    "total": 40131828,
+    "active_ffn_including_router": 1187713
+  },
+  "epoch30": {
+    "tail_safe": {"ood_val": 0.1779987822204181, "id": 0.4615630848025214, "worst_environment": 0.018668831168831168, "checkpoint_bytes": 482049925},
+    "zero_aux": {"ood_val": 0.18307286381165008, "id": 0.42918349256377425, "worst_environment": 0.014204545454545454, "checkpoint_bytes": 482047054},
+    "tail_safe_minus_zero_aux_points": {"ood_val": -0.507408159123198, "id": 3.237959223874715, "worst_environment": 0.4464285714285714}
+  },
+  "epoch60": {
+    "tail_safe": {"train": 1.0, "ood_val": 0.20874771666328396, "id": 0.5228503890475722, "worst_environment": 0.02150974025974026, "environments": 4, "samples": 9854, "checkpoint_bytes": 482049925},
+    "zero_aux": {"train": 1.0, "ood_val": 0.20692104729044042, "id": 0.5177533733871762, "worst_environment": 0.020698051948051948, "environments": 4, "samples": 9854, "checkpoint_bytes": 482047054},
+    "tail_safe_minus_zero_aux_points": {"ood_val": 0.182666937284354, "id": 0.5097015660396, "worst_environment": 0.0811688311688312}
+  },
+  "mechanism": {
+    "tail_safe_final": true,
+    "tail_safe_experts_used": 16.0,
+    "tail_safe_routing_entropy": 0.9999501437462192,
+    "tail_safe_route_reliance": -0.0005074081591232016,
+    "zero_aux_final": true,
+    "zero_aux_experts_used": 16.0,
+    "zero_aux_routing_entropy": 0.9519529932124796,
+    "zero_aux_route_reliance": 0.0027400040592652497,
+    "zero_aux_randomized_routes_acc": 0.20418104323117517
+  },
+  "checks": "exact paired run/config/seed/epoch identity; equal parameters, data order, optimizer and horizon; finite ERM and mechanism metrics; four environments and 9854 samples per row; nonempty epoch60 checkpoints; both logs fatal-clear; both controllers rc0; OOD-validation selection and held-out test untouched",
+  "decision": "terminal_negative_for_material_canonical_E16_tail_safe_effect_no_epoch90_or_fresh_seed_license",
+  "interpretation": "Tail-safe pressure reverses its epoch30 mean deficit but closes with only +0.183 OOD, +0.510 ID and +0.081 worst-experiment points. The effect is far below the material gate, and both completed routers are diffuse and non-reliant, so generic regularization or trajectory noise is more plausible than conditional routing.",
+  "alternative": "The small aligned terminal difference is seed-0 noise or generic auxiliary regularization.",
+  "sharp_falsifier": "A locked fresh-seed pair would need a clearly predeclared consistent worst-experiment improvement or at least +5 OOD points with at most two ID points lost and non-negligible route reliance; this screen does not license that experiment.",
+  "multiplicity": "seed0_objective_pair_after_broad_architecture_bank_auxiliary_and_temperature_searches"
+}

@@ -1783,3 +1783,25 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
 - Ten running H100s are assigned again, ready is 14, and backlog is 27. The exact smoother pair is
   now live; its epoch-10 subtraction is the next decision point. OOD test remains sealed and no
   final efficacy claim is made.
+
+## 2026-08-02 22:23 EDT
+
+- Canonical-E16 tail-safe minus zero auxiliary closes at epoch 60 with
+  `+0.183/+0.510/+0.081` OOD/ID/worst points. This is a small aligned terminal reversal, not a
+  material win. Tail-safe and zero auxiliary both finish non-reliant (`-0.00051` and `0.00274`),
+  with controller rc0 and fatal-clear logs. The exact recipe receives no epoch-90 or fresh-seed
+  license.
+- tester6/2893 was absent. Exactly one replacement tester6/2899 was created and exactly one start
+  request issued. It remains Pending because 11 nodes fail affinity, two are unschedulable, and
+  three have insufficient GPU capacity; preemption is unhelpful with no victim. Do not create or
+  start another copy.
+- The released container2887/GPU1 immediately starts route-E64 temperature-0.1 tail-safe after
+  exact shard2/8 and all duplicate/result/physical-GPU/persistent/checkpoint/tracking/test-blind
+  guards pass. Controller53230/worker53250/W&B `qpo0u4ao` reaches 8,844 MiB and loads 9,854
+  OOD-validation examples with test untouched. Five running containers again carry ten distinct
+  workers; ready is 13 and backlog 27. The paired route-E64 zero-auxiliary row is next. Multiplicity
+  is explicit and OOD test remains sealed.
+- Canonical-E16 publication is blocked after one attempt by the private repository storage limit.
+  Local strict validation passed and one tail-safe checksum manifest exists, but remote coverage is
+  only three small tail-safe files out of fourteen expected pair files. No completion is claimed;
+  retry only after storage quota becomes available.

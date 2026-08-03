@@ -2508,3 +2508,35 @@ are declared, and startup loads 9,854 OOD-validation samples with test untouched
 PID without restart. Ten distinct workers again occupy the ten running H100s; ready is 14 and
 backlog 27. The next gate is the exact smoother pair at epoch 10, while the next release receives
 the highest-ranked remaining temperature-0.1 cell.
+
+## 2026-08-02 22:23 EDT — Canonical E16 closes tiny-aligned; tester6 recreated; GPU refilled
+
+The exact canonical-E16 epoch-60 objective pair is now strict-valid. Tail-safe minus zero auxiliary
+is `+0.183/+0.510/+0.081` OOD-validation/ID/worst-experiment points, reversing the epoch-30 mean
+deficit but remaining far below the material `+5`-point gate. Both final routers are non-reliant:
+tail-safe has entropy `0.99995` and route reliance `-0.00051`, while zero auxiliary has entropy
+`0.95195` and reliance `0.00274`. Both controllers exited rc0 with fatal-clear logs. This screen is
+terminal-negative for a material routing-mediated effect; no epoch-90 or fresh-seed continuation is
+licensed.
+
+The old tester6 record (container2893) was absent from the authenticated Compute table. Under the
+standing absent-container rule, exactly one replacement named tester6 was created as container2899
+and exactly one start request was issued. It is scheduler Pending, not Running: 11 nodes fail the
+affinity/selector, two are unschedulable, and three lack GPU capacity; preemption is not helpful and
+has no victim. No duplicate exists and no second create/start is permitted.
+
+The zero-auxiliary release on container2887/GPU1 immediately starts route-E64 temperature-0.1
+tail-safe after exact shard 2/8 reports one pending unique row and the result/prune/active,
+physical-GPU, persistent-destination, checkpoint, tracking, and sealed-test guards pass.
+Controller53230 launches worker53250/W&B `qpo0u4ao`; the model holds 8,844 MiB and loads 9,854
+OOD-validation examples with test untouched. All five running 2H100 containers again expose ten
+distinct live GPU workers, so zero running H100s are unassigned. Ready is 13 and backlog is 27. The
+next release receives the paired route-E64 temperature-0.1 zero-auxiliary arm. OOD test remains
+sealed and the seed-0 contrast is explicitly multiplicity-exposed.
+
+The canonical-E16 publication attempt passed local strict validation and created the tail-safe
+checksum manifest, then the remote service rejected the first checkpoint with HTTP 400 because the
+private repository storage limit is reached. The remote folder therefore contains only the
+tail-safe result, log, and milestone stream (3 of 14 expected pair files); zero auxiliary has no
+remote files and no local manifest yet. No completion is claimed and no blind retry is allowed. The
+retry license is restored only when private storage quota becomes available.
