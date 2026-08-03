@@ -2210,6 +2210,17 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   Pending with no new start/create; HF remains quota-blocked; multiplicity is explicit; OOD test
   stays sealed.
 
+## 2026-08-03 14:39 EDT
+
+- The in-app browser transport is healthy enough to reach the BNL SciServer login portal, but its
+  separate profile is signed out. The federated login page is visible for the user.
+- No scientific result, exclusion, promotion, container action, or publication occurred. Preserve
+  the last strict nine-active/one-idle snapshot as historical rather than current.
+- Once the user completes the one-time in-app login, audit all containers first; then read the dense
+  repair gate, refill `2859/gpu0` under exact guards, validate five upcycling results, and start
+  tester6 once only if it is still stopped. OOD test remains sealed.
+
+
 ## 2026-08-03 14:02 EDT
 
 - Where we are: nine strictly observed workers occupied ten available H100s across containers 2887, 2875,

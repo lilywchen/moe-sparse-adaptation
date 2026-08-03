@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "NINE_OF_TEN_ALLOCATED_H100S_ACTIVE_ONE_DENSE_CONTROL_STAGE0_FAILURE_NARROW_REPAIR_POSTREPAIR_REMOTE_GATE_UNOBSERVED",
-  "last_action": "audit_all_containers_recover_five_unvalidated_upcycling_results_refill_six_workers_launch_controls_and_repair_dense_variant_token",
-  "last_action_at": "2026-08-03T14:02:18-04:00",
+  "last_action": "verify_in_app_browser_transport_reaches_sciserver_and_handoff_one_time_federated_login",
+  "last_action_at": "2026-08-03T14:39:13-04:00",
   "last_verified_commit": "80671979e2bfc88f3e8b6da4aa02bb67ae02be3e",
   "valid_results": 73,
   "expected_results": 9,
@@ -13,7 +13,7 @@
   "gpu_accounting_scope": "strict_complete_last_observation_of_all_five_allocated_worker_containers_and_ten_H100s_before_browser_transport_loss; tester6_2899_stopped_at_last_compute_table_observation_and_contributes_zero",
   "sciserver_resource_map": "containers2887_2875_2874_2862 each hold two distinct owned workers; container2859 gpu1 holds one frozen control and gpu0 is idle after a pretraining stage0 build failure; nine_of_ten allocated H100s active; tester6_2899 last appeared stopped and contributes zero",
   "current_gpu_assignments_as_of": "2026-08-03T17:52:00Z_last_strict_before_browser_transport_loss",
-  "current_gpu_assignments_currentness": "strict_last_observation_not_live_after_chrome_browser_control_disconnect",
+  "current_gpu_assignments_currentness": "historical_last_strict_observation_not_current; in_app_sciserver_profile_signed_out",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -733,6 +733,7 @@
   "upcycling_noise_controls60_test_gated_results": 6,
   "upcycling_noise_controls60_gate": "pre-repair exact remote transfer passes three focused and 133 full tests plus fourteen exact planning dryruns; dense rank2 then fails pretraining because variant wide is obsolete; narrow dense_wide repair transferred with exact hashes; postrepair remote suite and shard4 readback unobserved after Chrome transport disconnect",
   "upcycling_noise_controls60_dense_repair": "analysis/upcycling_noise_controls60_dense_variant_repair.json",
-  "queue_depth_exception": "six unaffected frozen_or_learned controls remain runnable while six dense controls require postrepair readback; one allocated GPU idle after exact Stage0 failure and browser control is unavailable; refill immediately after repaired gate or with highest-ranked unaffected control when authenticated control returns",
-  "next_gate": "restore authenticated Chrome browser control; read back repaired focused and 133-full suite plus exact shard4 one-pending dryrun; verify container2859 gpu0 free and result/marker/duplicate absent then retry dense rank2 exactly once; validate five completed upcycling results before interpretation; start tester6 exactly once only if it remains stopped and never duplicate create; retry HF only after quota available; keep OOD test sealed"
+  "queue_depth_exception": "six unaffected frozen_or_learned controls remain runnable while six dense controls require postrepair readback; last known allocated idle gpu2859_gpu0 cannot be refilled until the user completes one-time federated login in the reachable in-app browser profile",
+  "browser_transport_status": "in_app_browser_reaches_BNL_SciServer_login_portal_without_timeout_but_separate_profile_is_signed_out; login_tab_left_visible_for_user",
+  "next_gate": "after one-time in-app federated login audit every container and GPU; read repaired focused and 133-full suite plus exact shard4 one-pending dryrun; verify container2859 gpu0 free and result/marker/duplicate absent then retry dense rank2 exactly once; validate five completed upcycling results before interpretation; start tester6 exactly once only if it remains stopped and never duplicate create; retry HF only after quota available; keep OOD test sealed"
 }

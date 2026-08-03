@@ -3065,3 +3065,14 @@ fresh free-GPU/result/marker/duplicate guards pass. Tester6/2899 appeared stoppe
 the latest Compute table and contributed no GPUs; it must be rechecked and started exactly once if still stopped,
 never recreated. Six unaffected frozen/learned controls remain runnable; the six dense controls are test-gated.
 OOD test remains sealed, HF publication remains quota-blocked, and the paper is unchanged.
+
+## 2026-08-03 14:39 EDT — in-app SciServer transport works; one-time in-app login is required
+
+The in-app browser reached the BNL SciServer login portal without a transport timeout. Its browser
+profile is separate from Chrome and is not authenticated, so the Compute and Jupyter audit cannot
+continue until the user completes the federated login once in the in-app tab now left open. No
+container, job, result, publication, or scientific state changed. The last strict pool snapshot
+therefore remains nine active workers and one known idle allocated GPU on `2859/gpu0`; tester6/2899
+last appeared stopped and contributes zero. After login, the immediate licensed sequence is to
+read the repaired remote test/dry-run gate, refill `2859/gpu0`, validate five completed upcycling
+results, and inspect/start tester6 exactly once only if still stopped. OOD test remains sealed.
