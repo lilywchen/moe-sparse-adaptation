@@ -1,0 +1,48 @@
+{
+  "status": "strict_exploratory_unpaired_epoch60_final_artifact",
+  "validated_at": "2026-08-02T22:05:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_git_dirty": false,
+  "run_id": "rxrx1_moe_early_token_cosine_canonical_E16k1_ep60_s0_expert_count60_canonical_E16_tail_safe_20260802",
+  "seed": 0,
+  "variant": "moe",
+  "pressure": "canonical",
+  "classification_objective": "erm",
+  "n_experts": 16,
+  "top_k": 1,
+  "parameters": {
+    "total": 40131828,
+    "router": 6145,
+    "active_ffn_including_router": 1187713
+  },
+  "epoch60": {
+    "train": 1.0,
+    "id": 0.5228503890475722,
+    "ood_val": 0.20874771666328396,
+    "worst_environment": 0.02150974025974026,
+    "environments": 4,
+    "samples": 9854,
+    "checkpoint_bytes": 482049925
+  },
+  "mechanism": {
+    "experts_used": 16.0,
+    "routing_entropy": 0.9999501437462192,
+    "routing_mi_site": 0.004136828235990157,
+    "routing_mi_class": 0.0028722687715476394,
+    "randomized_routes_acc": 0.20925512482240716,
+    "route_reliance": -0.0005074081591232016,
+    "site_leakage": 0.7023145108338805,
+    "class_decodability": 0.4286769533814839
+  },
+  "checks": "final JSON parseable; exact run/config/seed/epoch identity; finite ERM metrics; four environments and 9854 OOD-validation samples; 10/30/60 checkpoints all present at 482049925 bytes; result provenance and W&B run lbxzw1ou recorded; fatal scan clear; held-out fields null and test_evaluated false",
+  "exact_comparator": "canonical_E16_no_aux_seed0",
+  "comparator_status": "active_and_not_yet_at_epoch60_final",
+  "decision": "withhold_auxiliary_effect_until_exact_comparator_final_no_epoch90_or_fresh_seed_license",
+  "interpretation": "The essentially zero route reliance and near-maximal routing entropy make conditional routing an implausible explanation for this absolute result. Generic auxiliary regularization remains the leading mechanism, but the exact objective effect is not identified until the zero-auxiliary row finishes.",
+  "sharp_falsifier": "The exact zero-auxiliary final is worse on mean and worst-experiment accuracy by a consistent material margin while mechanism evidence changes away from diffuse non-reliant routing.",
+  "multiplicity": "seed0_broader_bank_auxiliary_row_after_architecture_objective_bank_and_temperature_searches"
+}

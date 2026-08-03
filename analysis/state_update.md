@@ -1769,3 +1769,17 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   manifests and fourteen remotely listed files. tester6/2893 was not mutated; its last exact
   scheduler-Pending reason is retained. Selection is OOD validation, test is sealed, and every new
   contrast is seed-0 exploratory after multiple prior screens.
+
+## 2026-08-02 22:05 EDT
+
+- Canonical-E16 tail-safe emits a strict final artifact at `0.20875/0.52285/0.02151`
+  OOD/ID/worst with route reliance `-0.00051`, routing entropy `0.99995`, and all 16 experts used.
+  Its exact zero-auxiliary final is absent, so objective attribution remains withheld.
+- Its physical release is immediately handed to route-E32 temperature-0.1 zero auxiliary on
+  container2875/GPU0, controller119744/worker119749/W&B `v8b72q7p`. Exact shard 1/8 dry run reports
+  one pending cell; startup reaches 8,304 MiB, loads 9,854 OOD-validation examples, leaves test
+  untouched, and has no fatal match. One missing active marker is repaired to the live worker PID
+  without restart.
+- Ten running H100s are assigned again, ready is 14, and backlog is 27. The exact smoother pair is
+  now live; its epoch-10 subtraction is the next decision point. OOD test remains sealed and no
+  final efficacy claim is made.

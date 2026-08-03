@@ -2490,3 +2490,21 @@ files. All ten running H100s still have distinct live workers; ready remains 15 
 tester6/2893 received no duplicate mutation; its last exact state remains scheduler Pending for
 eleven selector mismatches, two unschedulable nodes, and three insufficient-GPU nodes. OOD test is
 sealed and all new rows remain multiplicity-exposed seed-0 exploration.
+
+## 2026-08-02 22:05 EDT — Canonical E16 releases; exact smoother comparator refills
+
+Canonical-E16 tail-safe completes its final mechanism row at
+`0.20875/0.52285/0.02151` OOD-validation/ID/worst-experiment accuracy. All sixteen experts are used,
+but routing entropy is `0.99995` and randomized-route reliance is `-0.00051`; this makes conditional
+routing an implausible explanation for the absolute result. Its exact zero-auxiliary comparator is
+still active and not final, so the auxiliary effect remains unidentified and no epoch-90 or fresh-
+seed continuation is licensed.
+
+The released container2875/GPU0 immediately starts the exact smoother route-E32 temperature-0.1
+zero-auxiliary comparator (controller119744, worker119749, W&B `v8b72q7p`). Exact shard 1/8 exposes
+one unique pending cell, the physical GPU is free, persistent result/checkpoint/W&B/HF destinations
+are declared, and startup loads 9,854 OOD-validation samples with test untouched. The worker reaches
+8,304 MiB with a clear fatal scan. A missing active marker is repaired once to the verified worker
+PID without restart. Ten distinct workers again occupy the ten running H100s; ready is 14 and
+backlog 27. The next gate is the exact smoother pair at epoch 10, while the next release receives
+the highest-ranked remaining temperature-0.1 cell.
