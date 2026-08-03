@@ -1,0 +1,59 @@
+{
+  "status": "strict_exploratory_paired_milestone_wave",
+  "validated_at": "2026-08-02T21:55:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_git_dirty": true,
+  "seed": 0,
+  "temperature": 0.03,
+  "checks": {
+    "identity": "exact run/config/seed/milestone pair identity",
+    "metrics": "finite ERM metrics",
+    "environment_coverage": "four environments and 9854 samples per row",
+    "checkpoint": "present nonempty milestone checkpoint",
+    "fatal_scan": "clear for every active stream",
+    "selection": "OOD validation only",
+    "test": "test_evaluated false and OOD-test fields absent/null"
+  },
+  "pairs": {
+    "canonical_E64": {
+      "parameters": {"total": 96865524, "active_ffn_including_router": 1206145},
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12735944793992288, "id": 0.29274598640795824, "worst_environment": 0.015016233766233766, "checkpoint_bytes": 1163272836},
+        "zero_aux": {"ood_val": 0.14359650903186524, "id": 0.3094898059686792, "worst_environment": 0.017045454545454544, "checkpoint_bytes": 1163267597},
+        "tail_safe_minus_zero_aux_points": {"ood_val": -1.623706109194236, "id": -1.674381956072096, "worst_environment": -0.2029220779220778}
+      },
+      "epoch30": {
+        "tail_safe": {"ood_val": 0.18733509234828497, "id": 0.45818969762631734, "worst_environment": 0.015016233766233766, "checkpoint_bytes": 1163272836},
+        "zero_aux": {"ood_val": 0.18591434950274, "id": 0.44605042844479464, "worst_environment": 0.012581168831168832, "checkpoint_bytes": 1163267597},
+        "tail_safe_minus_zero_aux_points": {"ood_val": 0.142074284554497, "id": 1.21392691815227, "worst_environment": 0.2435064935064934}
+      },
+      "decision": "continue_both_rows_to_epoch60_small_aligned_epoch30_reversal_no_promotion"
+    },
+    "route_E32": {
+      "parameters": {"total": 59043060, "active_ffn_including_router": 1193857},
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12949056220824032, "id": 0.29653796907318036, "worst_environment": 0.015422077922077922, "checkpoint_bytes": 709118236},
+        "zero_aux": {"ood_val": 0.12735944793992288, "id": 0.3090219639515414, "worst_environment": 0.015422077922077922, "checkpoint_bytes": 709114597},
+        "tail_safe_minus_zero_aux_points": {"ood_val": 0.213111426831744, "id": -1.248399487836104, "worst_environment": 0.0}
+      },
+      "decision": "continue_both_rows_to_epoch30_pareto_tradeoff_no_promotion"
+    },
+    "route_E64": {
+      "parameters": {"total": 96865524, "active_ffn_including_router": 1206145},
+      "epoch10": {
+        "tail_safe": {"ood_val": 0.12908463568094175, "id": 0.28791982665222104, "worst_environment": 0.012987012987012988, "checkpoint_bytes": 1163258972},
+        "zero_aux": {"ood_val": 0.14014613354982747, "id": 0.31017925736235596, "worst_environment": 0.013392857142857142, "checkpoint_bytes": 1163253797},
+        "tail_safe_minus_zero_aux_points": {"ood_val": -1.106149786888572, "id": -2.225943071013492, "worst_environment": -0.0405844155844154}
+      },
+      "decision": "continue_both_rows_to_epoch30_because_routing_reliance_signature_is_not_yet_available_and_delayed_emergence_was_predeclared"
+    }
+  },
+  "interpretation": "Tail-safe pressure is not consistently beneficial at epoch 10: route E64 is dominated, route E32 trades a small mean gain for ID loss, and canonical E64 initially loses on all axes. Canonical E64 reverses to small aligned gains at epoch 30, so trajectory dependence remains plausible and no family-wide prune is justified.",
+  "alternative": "The reversals and small gains are seed-0 optimization noise or generic auxiliary regularization rather than conditional routing.",
+  "sharp_falsifier": "At epoch 60 the surviving pair lacks nonnegative mean and worst-experiment effects, or final mechanism analysis shows route reliance at or below 0.01, dead experts, or unstable routing.",
+  "multiplicity": "seed0_extreme_bank_auxiliary_screen_after_multiple_architecture_objective_and_temperature_searches"
+}

@@ -2466,3 +2466,27 @@ collection-only import repair. Ready is therefore 15 (seven remaining temperatur
 locked E4 auxiliary confirmations, four temperature-0.3 cells); backlog remains 27. The route-E16
 pair passed strict publication validation and its two-run/14-file upload is active but is not counted
 complete until both manifests and the remote report exist. OOD test remains sealed.
+
+## 2026-08-02 21:55 EDT — Extreme-bank early wave is mixed; canonical E64 reverses at epoch 30
+
+Three exact temperature-0.03 active-compute pairs pass strict epoch-10 validation. Tail-safe minus
+zero auxiliary is `+0.213/-1.248/+0.000` OOD-validation/ID/worst-experiment points for route E32,
+`-1.106/-2.226/-0.041` for route E64, and `-1.624/-1.674/-0.203` for canonical E64. The route-E64
+row is dominated at this milestone, but its final routing-reliance signature is unavailable and
+delayed emergence was predeclared, so no unsupported prune is made. Route E32 is a Pareto tradeoff.
+
+Canonical E64 then reverses at epoch 30: tail-safe minus zero auxiliary becomes
+`+0.142/+1.214/+0.244` points. The aligned effect is small and seed-0 exploratory, so both rows
+continue to epoch 60 without promotion. This trajectory weakens a simple always-harmful auxiliary
+story but does not establish sparse robustness; generic regularization or optimization noise
+remains the leading alternative. The sharp falsifier is loss of mean/tail direction at epoch 60 or
+route reliance at or below `0.01`.
+
+The smoother route-E32 temperature-0.1 tail-safe row reaches a strict absolute epoch-10 level of
+`0.12503/0.30011/0.01664` OOD/ID/worst. Its exact zero-auxiliary comparator is tested and queued but
+not yet launched, so no effect, prune, or promotion is claimed. The next physical release launches
+that comparator. The route-E16 publication report now verifies two manifests and fourteen remote
+files. All ten running H100s still have distinct live workers; ready remains 15 and backlog 27.
+tester6/2893 received no duplicate mutation; its last exact state remains scheduler Pending for
+eleven selector mismatches, two unschedulable nodes, and three insufficient-GPU nodes. OOD test is
+sealed and all new rows remain multiplicity-exposed seed-0 exploration.

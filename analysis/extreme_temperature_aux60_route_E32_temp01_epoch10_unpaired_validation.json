@@ -1,0 +1,33 @@
+{
+  "status": "strict_exploratory_unpaired_epoch10_milestone",
+  "validated_at": "2026-08-02T21:55:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_git_dirty": true,
+  "seed": 0,
+  "run_id": "rxrx1_moe_early_token_cosine_route_E32k1_ep60_s0_extreme_temperature_aux60_route_E32_temp01_tail_safe_20260802",
+  "n_experts": 32,
+  "temperature": 0.1,
+  "balance_weight": 0.01,
+  "zloss_weight": 0.01,
+  "parameters": {"total": 59043060, "active_ffn_including_router": 1193857},
+  "epoch10": {
+    "train": 0.4562795741324921,
+    "id": 0.3001083423618635,
+    "ood_val": 0.12502537040795617,
+    "worst_environment": 0.016639610389610388,
+    "environments": 4,
+    "samples": 9854,
+    "checkpoint_bytes": 709133112
+  },
+  "checks": "exact run/config/seed/milestone identity, finite ERM metrics, four environments and 9854 samples, nonempty checkpoint, live worker, clear fatal scan, OOD-validation selection, and sealed test pass",
+  "exact_comparator": "route_E32_temp01_no_aux",
+  "comparator_status": "tested_and_queued_not_yet_launched",
+  "decision": "continue_unchanged_and_launch_exact_comparator_on_the_next_physical_release_no_effect_prune_or_promotion_claim",
+  "interpretation": "This is an absolute smoother-routing level only. Without the exact zero-auxiliary row, neither auxiliary benefit nor sparse robustness is identified.",
+  "sharp_falsifier": "The exact comparator removes any mean-or-tail advantage or final route reliance remains at or below 0.01.",
+  "multiplicity": "seed0_optimization_addendum_after_broad_architecture_and_auxiliary_searches"
+}

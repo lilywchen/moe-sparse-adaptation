@@ -1751,3 +1751,21 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
 - The route-E16 two-run publication passed strict local validation and is uploading; it remains
   pending until two manifests and 14 remotely listed files are verified. tester6/2893 was not
   mutated; direct portal inspection is login-blocked and its last exact scheduler reason is retained.
+
+## 2026-08-02 21:55 EDT
+
+- Strict epoch-10 active-compute pairs are now available for temperature-0.03 route E32, route E64,
+  and canonical E64. Tail-safe minus zero auxiliary is respectively
+  `+0.213/-1.248/+0.000`, `-1.106/-2.226/-0.041`, and
+  `-1.624/-1.674/-0.203` OOD-validation/ID/worst points.
+- Canonical E64 reverses at epoch 30 to `+0.142/+1.214/+0.244`; both rows continue to epoch 60
+  without promotion. Route E64 is not pruned at epoch 10 because its declared routing-reliance
+  signature is not yet available and the delayed-effect exception remains open.
+- Smoother route-E32 temperature-0.1 tail-safe is strict-valid but unpaired at epoch 10 with
+  absolute `0.12503/0.30011/0.01664` OOD/ID/worst. Its exact zero-auxiliary comparator is the first
+  refill on a physical release; no auxiliary effect is identified yet.
+- Five live 2H100 containers still expose ten distinct GPU workers and zero unassigned running
+  H100s. Ready remains 15 and backlog 27. The route-E16 publication is now verified complete at two
+  manifests and fourteen remotely listed files. tester6/2893 was not mutated; its last exact
+  scheduler-Pending reason is retained. Selection is OOD validation, test is sealed, and every new
+  contrast is seed-0 exploratory after multiple prior screens.
