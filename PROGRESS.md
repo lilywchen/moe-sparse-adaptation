@@ -2438,3 +2438,31 @@ controller51136/worker51141/W&B `azo0b8ss`, and zero-aux controller52606/worker5
 memory is 8,842/8,844 MiB, W&B sync is active, the 9,854-sample OOD-validation path is loaded,
 test is untouched, and fatal scans are clear. All eight low-temperature cells are now active;
 the tested ready queue remains 12 (eight smoother cells and four locked auxiliary confirmations).
+
+## 2026-08-02 21:34 EDT — Canonical E32 tail-safe is pruned; smoother routing refills; queue restored
+
+Two exact active-compute pairs reach strict epoch-30 milestones. For canonical E16, tail-safe minus
+zero auxiliary is `-0.507/+3.238/+0.446` OOD-validation/ID/worst points. This is a Pareto
+tradeoff, not a mean robustness gain; both rows continue unchanged to epoch 60 because improved ID
+and tail remain inside the predeclared objective. For temperature-0.03 canonical E32, tail-safe is
+dominated at both epochs 10 and 30, with the epoch-30 difference
+`-0.690/-0.982/-0.203`. The delayed-emergence exception is exhausted, so only that tail-safe row is
+pruned after preserving its valid epoch-30 checkpoint and a typed prune record.
+
+Container2874/GPU1 immediately refills with the highest-ranked smoother-routing row, route-E32
+temperature 0.1 tail-safe (controller64174, worker64179, W&B `0ibgay6f`). Exact identity and
+duplicate/result/marker/physical-GPU guards, persistent destinations, sealed-test checks, and the
+one-cell dry run pass; the worker is verified at epoch 5 and 8,372 MiB with a clear fatal scan.
+All ten available H100s again have distinct assignments and none of the five running containers is
+idle. tester6/2893 could not be directly re-read because the new portal session requires login; no
+credential was entered and no duplicate start/create was issued. Its last exact verified state
+remains scheduler Pending for 11 affinity mismatches, two unschedulable nodes, and three
+insufficient-GPU nodes.
+
+Commit `a77b57b` adds both strict paired validations and a terminal four-cell route-pressure
+temperature-0.3 addendum across E32/E64 and tail-safe/zero auxiliary. In its isolated execution-base
+checkout, three focused tests, all 127 tests, and four exact one-cell dry runs pass after one
+collection-only import repair. Ready is therefore 15 (seven remaining temperature-0.1 cells, four
+locked E4 auxiliary confirmations, four temperature-0.3 cells); backlog remains 27. The route-E16
+pair passed strict publication validation and its two-run/14-file upload is active but is not counted
+complete until both manifests and the remote report exist. OOD test remains sealed.

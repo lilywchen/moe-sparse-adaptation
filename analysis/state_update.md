@@ -1730,3 +1730,24 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   tail-safe (worker51141/W&B `azo0b8ss`) and zero auxiliary (worker52611/W&B `rs6sqaxa`). Both
   exact one-cell dry runs and startup/test-blind/fatal checks pass. The low-temperature 8-cell
   sweep is fully active; 12 exact tested cells remain ready.
+
+## 2026-08-02 21:34 EDT
+
+- Canonical E16 tail-safe minus zero auxiliary at epoch 30 is
+  `-0.507/+3.238/+0.446` OOD/ID/worst points: a strict Pareto tradeoff. Both rows continue to epoch
+  60 without promotion under the declared tail objective.
+- Temperature-0.03 canonical E32 tail-safe is dominated at epochs 10 and 30; the epoch-30 difference
+  is `-0.690/-0.982/-0.203`. Its valid checkpoint is preserved, the row is predeclared-pruned, and
+  this exact auxiliary recipe is ruled out. Generic regularization remains more plausible than
+  tail-safe routing; the sharp falsifier is a smoother-temperature row with route reliance above
+  `0.01` and an aligned mean-or-tail gain.
+- Container2874/GPU1 refills with smoother route-E32 temperature-0.1 tail-safe, worker64179/W&B
+  `0ibgay6f`; epoch 5, 8,372 MiB, and no fatal match are verified. Ten distinct H100 workers are
+  assigned, zero running H100s are idle.
+- Commit `a77b57b` records the validations and a four-cell temperature-0.3 route-only addendum.
+  Three focused tests, the 127-test suite, and four exact one-cell dry runs pass in an isolated
+  checkout. Ready is 15, backlog 27. Selection remains OOD validation; test is untouched; all
+  results are seed-0 exploratory and multiplicity-exposed.
+- The route-E16 two-run publication passed strict local validation and is uploading; it remains
+  pending until two manifests and 14 remotely listed files are verified. tester6/2893 was not
+  mutated; direct portal inspection is login-blocked and its last exact scheduler reason is retained.
