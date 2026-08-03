@@ -1,0 +1,63 @@
+{
+  "status": "seven_of_eight_locked_epoch60_finals_strict_valid_small_mean_gains_below_material_gate_tail_inconsistent",
+  "validated_at": "2026-08-02T20:08:00-04:00",
+  "family": "temperature_expert_count_confirm60_20260802",
+  "coverage": {
+    "epoch10": "8/8",
+    "epoch30": "8/8",
+    "epoch60": "7/8",
+    "final_results": "7/8",
+    "still_active": ["route_E32_seed2"]
+  },
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "reference": "route_E8 at the same seed, data order, pressure, schedule, placement, routing unit, geometry, and active expert width",
+  "rows": [
+    {"seed": 1, "n_experts": 2, "ood_val": 0.2125025370407956, "id": 0.531567024524771, "worst_experiment": 0.020292207792207792, "route_reliance": 0.002232595900142076, "wandb_run_id": "28k2fboh", "total_params": 23584500},
+    {"seed": 1, "n_experts": 8, "ood_val": 0.21087883093160137, "id": 0.5362700679602088, "worst_experiment": 0.021915584415584416, "route_reliance": 0.006799269332250862, "wandb_run_id": "qsbm21cg", "total_params": 30676212},
+    {"seed": 1, "n_experts": 16, "ood_val": 0.2165618023137812, "id": 0.5384615384615384, "worst_experiment": 0.02556818181818182, "route_reliance": 0.011467424396184284, "wandb_run_id": "gviobuj4", "total_params": 40131828},
+    {"seed": 1, "n_experts": 32, "ood_val": 0.21595291252283336, "id": 0.5352605141337535, "worst_experiment": 0.023133116883116884, "route_reliance": 0.004668155063933421, "wandb_run_id": "6cmjnu32", "total_params": 59043060},
+    {"seed": 2, "n_experts": 2, "ood_val": 0.21666328394560586, "id": 0.532822810991825, "worst_experiment": 0.019886363636363636, "route_reliance": -0.0006088897909478364, "wandb_run_id": "l7vkvk81", "total_params": 23584500},
+    {"seed": 2, "n_experts": 8, "ood_val": 0.20955956971788106, "id": 0.5334630158573821, "worst_experiment": 0.022727272727272728, "route_reliance": 0.00253704079561598, "wandb_run_id": "kkkemsr0", "total_params": 30676212},
+    {"seed": 2, "n_experts": 16, "ood_val": 0.21615587578648265, "id": 0.5343986998916577, "worst_experiment": 0.01948051948051948, "route_reliance": 0.003348893850213114, "wandb_run_id": "abcjy5pp", "total_params": 40131828}
+  ],
+  "paired_effects_points": {
+    "seed1_E2_minus_E8": {"ood_val": 0.16237061091942395, "id": -0.4703043435437815, "worst_experiment": -0.1623376623376624},
+    "seed2_E2_minus_E8": {"ood_val": 0.7103714227724794, "id": -0.0640204865557048, "worst_experiment": -0.28409090909090917},
+    "seed1_E16_minus_E8": {"ood_val": 0.5682971382179824, "id": 0.21914705013296176, "worst_experiment": 0.3652597402597404},
+    "seed2_E16_minus_E8": {"ood_val": 0.6596306068601593, "id": 0.09356840342755746, "worst_experiment": -0.3246753246753248},
+    "seed1_E32_minus_E8": {"ood_val": 0.5074081591231988, "id": -0.10095538264552895, "worst_experiment": 0.1217532467532468}
+  },
+  "strict_checks": {
+    "json_parseable_and_finite": true,
+    "exact_run_seed_expert_config_identity": true,
+    "controller_rc0": true,
+    "fatal_scan_clear": true,
+    "classification_objective": "erm",
+    "environment_ids": [7, 27, 42, 49],
+    "environment_total": 9854,
+    "checkpoints_10_30_60_present": true,
+    "milestone60_identity": true,
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "all_ood_test_fields_null": true,
+    "execution_git_sha": "4893c96",
+    "execution_git_dirty": true,
+    "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+    "provenance_label": "documented_code_equivalent_tree_preserved_not_relabeled_clean"
+  },
+  "decision": {
+    "E2": "No promotion: both fresh seeds are below the +5 OOD-validation target, lose worst-experiment accuracy, and have negligible route reliance.",
+    "E16": "No promotion: mean OOD gain is directionally consistent but only 0.568 and 0.660 points; the worst-experiment direction flips and route reliance is small.",
+    "E32": "No promotion yet: seed1 is only +0.507 OOD points with small tail gain and negligible route reliance; seed2 final remains active.",
+    "next_question": "Complete E32 seed2, then test whether extreme-bank auxiliary and smoother-temperature controls produce non-negligible route reliance rather than generic regularization."
+  },
+  "alternative_explanation": "Small score shifts arise from parameter-bank regularization or optimization noise rather than reusable conditional routing.",
+  "sharpest_falsifier": "A predeclared extreme/smoother cell must exceed 0.01 route reliance and improve matched OOD-validation mean and worst-experiment accuracy without losing more than two ID points; otherwise routing specialization is not supported.",
+  "multiplicity": "Four bank sizes, two fresh seeds, multiple milestones, and auxiliary/temperature follow-ups were inspected; these locked effects are confirmation evidence for their exact recipes, not a population estimate or a newly tuned winner.",
+  "publication": {
+    "previously_verified_runs": 3,
+    "newly_validated_runs_in_transfer": 4,
+    "hf_prefix": "rxrx1/cell_dino_cp5/temperature_expert_count_confirm60_20260802",
+    "status": "strict_local_and_persistent_validation_passed; remote checksum verification pending completion of the active large-checkpoint transfer"
+  }
+}

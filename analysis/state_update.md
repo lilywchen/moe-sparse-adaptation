@@ -1665,3 +1665,46 @@ canonical-E16 zero auxiliary as controller48228/worker48233/W&B `f7unxpd2` after
 dry-run and all result/marker/duplicate/physical-GPU/persistence/tracking/test-blind guards. The
 missing marker is repaired once without restart. All four broader E16 cells are now complete or
 active; ready is 12, backlog 27, active workers 10, idle running H100s 0.
+
+## 2026-08-02 19:49 EDT — E2 seed-2 tradeoff, extreme refill, and bounded queue expansion
+
+The locked seed-2 E2-minus-E8 epoch-60 effect is `+0.710/-0.064/-0.284` OOD/ID/worst points.
+E2 is a strict published final (`rc=0`, W&B `l7vkvk81`, route reliance `-0.00061`, seven remote
+files); E8 remains live for its final mechanism/result. The mean–tail conflict blocks promotion
+and leaves generic regularization/total-parameter scaling as the leading alternatives.
+
+The released container2874/GPU1 starts canonical-E32 tail-safe from the temperature-0.03 extreme
+screen as controller60303/worker60308/W&B `pbtc6tm0`. Exact shard-0/8 dry run and all launch guards
+pass; the sole repair writes the missing marker to the verified worker PID. Current assignments are
+2887 45603/48233; 2875 116490/112826; 2874 58240/60308; 2862 57545/56371; 2859 44982/47671.
+
+Commit `345ff7b` adds four explicitly bounded temperature-0.1 route E32/E64 tail-safe/zero-aux
+arms. Code-equivalent transport hashes are `13713cf8...` (script), `76eb431d...` (test), and
+`ce36d222...` (registry); five focused and 127 full tests pass, and four exact dry runs each expose
+one unique pending cell. Ready queue is 15, backlog 27, active workers 10, idle running H100s 0.
+This addendum is licensed by near-zero completed route reliance and is falsified if reliance stays
+below 0.01 or matched mean/tail direction remains inconsistent. OOD test stays sealed.
+
+## 2026-08-02 20:08 EDT — Locked epoch-60 bank-size matrix is 7/8 and rules out material E2/E16 effects
+
+Seven locked finals pass exact result/config/seed identity, finite ERM metrics, four environments
+and 9,854 OOD-validation examples, three checkpoints, epoch-60 milestone identity, controller
+`rc=0`, fatal scans, null held-out fields, and provenance checks. The normalized record is
+`analysis/temperature_expert_count_confirm60_epoch60_paired_wave3_validation.json`. Execution
+continues to report `git_sha=4893c96`, `git_dirty=true`; the documented code-equivalent tree is
+`fee4c45d00ea38e209a913f69ca9b0db62338b39`, and it is not relabeled clean.
+
+Against exact route-E8 same-seed anchors, E2 gains only `+0.162` and `+0.710` OOD points while
+losing worst-experiment accuracy by `-0.162/-0.284`; E16 gains `+0.568/+0.660` OOD points with
+tail effects `+0.365/-0.325`. These are locked fresh-seed negatives for the +5 material-effect
+criterion, not evidence that every sparse recipe fails. E32 seed1 is similarly small at
+`+0.507/-0.101/+0.122`; seed2 remains active. Route reliance across completed rows remains at or
+near zero except E16 seed1's still-small `0.01147`, favoring generic regularization or optimization
+noise over reusable routing. Multiplicity across bank sizes and milestones remains explicit.
+
+All four released GPUs receive the next ranked disjoint extreme arms: 2862 GPU0/1 workers
+60206/60205, 2859 GPU0 canonical-E64 no-aux under controller51238, and 2875 GPU1 route-E32
+tail-safe under controller117930. Commit `71eb1f1` expands the already bounded smoother-temperature
+registry to the eight-cell pressure x bank x auxiliary cross while preserving route shards 0--3.
+Three temperature-0.03 extreme, eight smoother-temperature, and four locked auxiliary-confirmation
+arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeling occurs.

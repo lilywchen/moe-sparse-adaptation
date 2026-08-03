@@ -2356,3 +2356,51 @@ W&B `f7unxpd2`) after the same 4-focused/124-full test evidence, an exact shard-
 run, and all launch guards. Its missing marker is repaired once to worker48233 without restart.
 The broader E16 pair is now fully active, all ten running H100s are assigned, and the ready queue
 is exactly 12: eight extreme-auxiliary plus four locked auxiliary-confirmation cells.
+
+## 2026-08-02 19:49 EDT — Seed-2 E2 is a mean–tail tradeoff; extreme E32 tail-safe refills
+
+Route-E2 seed 2 exits `rc=0` and strict-publishes one manifest/seven files. Against its exact
+route-E8 seed-2 epoch-60 anchor, E2 minus E8 is `+0.710/-0.064/-0.284` OOD/ID/worst points. The
+mean improves with negligible ID loss, but worst-experiment accuracy declines; E2 route reliance
+is effectively zero at `-0.00061`. This is a locked one-seed Pareto tradeoff, not a robust sparse
+win. Seed-1 pairing and the E8 seed-2 final mechanism row remain required.
+
+Container2874/GPU1 immediately starts the highest-ranked extreme-auxiliary arm,
+canonical-E32 tail-safe at temperature 0.03 (controller60303, worker60308, W&B `pbtc6tm0`). Its
+exact shard-0/8 dry run, result/prune/active/duplicate and physical-GPU guards, persistent tracking,
+checkpoint, and sealed-test checks pass; a missing marker is repaired once without restart. The
+startup log loads 9,854 OOD-validation samples with test untouched and has no fatal match.
+
+Because that refill would leave only 11 ready arms, a separate clean checkout opens a bounded
+four-cell smoother-routing addendum: route E32/E64 at temperature 0.1 crossed with tail-safe and
+zero auxiliary. The exact source is commit `345ff7b`; five focused tests, the 127-test suite, four
+disjoint one-cell dry runs, checksum-verified code-equivalent transport, and a complete registry
+pass. The queue is restored to 15 (seven remaining temperature-0.03 extreme cells, four smoother-
+routing cells, four locked auxiliary-confirmation cells), backlog 27, and ten H100s assigned.
+
+## 2026-08-02 20:08 EDT — Seven locked finals close the E2/E16 question; four GPUs refill
+
+Route-E8 seeds 1/2, route-E16 seed 2, and route-E32 seed 1 are now strict finals. Together with the
+three prior finals this gives 8/8 epoch-10, 8/8 epoch-30, and 7/8 epoch-60/final coverage; only
+route-E32 seed 2 remains active. Exact same-seed effects versus route-E8 are E2 seed1/2
+`+0.162/-0.470/-0.162` and `+0.710/-0.064/-0.284`, E16 seed1/2
+`+0.568/+0.219/+0.365` and `+0.660/+0.094/-0.325`, and E32 seed1
+`+0.507/-0.101/+0.122` OOD/ID/worst points. E2 and E16 are therefore below the +5-point material
+target in both fresh seeds; E2 loses tail twice, and E16's tail direction flips. Route reliance is
+small (`-0.00061` to `0.01147`). Neither bank size advances to epoch 90 or more seeds. The leading
+alternative is generic bank regularization/optimization noise rather than reusable routing.
+
+The four releases are refilled immediately with temperature-0.03 extreme arms: container2862
+GPU0 canonical-E32 no-aux controller60195/worker60206, container2862 GPU1 canonical-E64 tail-safe
+controller60196/worker60205, container2859 GPU0 canonical-E64 no-aux controller51238, and
+container2875 GPU1 route-E32 tail-safe controller117930. Exact one-cell dry runs passed before
+launch; the first two workers were verified at 8,394/8,848 MiB. The other six previously assigned
+workers remain live at their audits, so all ten running H100s are assigned and none is idle.
+
+Four launches reduced ready capacity to 11. Commit `71eb1f1` expands the bounded temperature-0.1
+screen without changing the original route-cell shard identities: canonical/route pressure x
+E32/E64 x tail-safe/no-auxiliary is now eight cells. The pressure cross separates smoother routing
+from within-environment balancing. This restores the declared queue to 15 (three remaining
+temperature-0.03 extreme, eight smoother-temperature, four locked auxiliary-confirmation) with
+backlog 27. Its sharp falsifier remains route reliance above 0.01 plus nonnegative matched mean and
+tail without more than two ID points lost. OOD test remains sealed.

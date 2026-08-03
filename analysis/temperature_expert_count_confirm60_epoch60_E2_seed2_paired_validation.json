@@ -1,0 +1,63 @@
+{
+  "validated_at": "2026-08-02T19:49:00-04:00",
+  "campaign": "temperature_expert_count_confirm60_20260802",
+  "classification": "locked_fresh_seed_strict_epoch60_paired_active_compute_tradeoff_provisional",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "execution_base_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_tree": "fee4c45d00ea38e209a913f69ca9b0db62338b39",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "seed": 2,
+  "epoch": 60,
+  "rows": {
+    "route_E2": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E2k1_ep60_s2_temperature_expert_count_confirm60_route_E2_s2_20260802",
+      "ood_val": 0.21666328394560586,
+      "id": 0.532822810991825,
+      "worst_experiment": 0.019886363636363636,
+      "route_reliance": -0.0006088897909478364,
+      "total_parameters": 23584500,
+      "active_ffn_including_router": 1182337,
+      "checkpoint_bytes": 283365884,
+      "wandb_run_id": "l7vkvk81",
+      "controller_exit_code": 0,
+      "final_result_complete": true,
+      "hf_remote_files": 7
+    },
+    "route_E8": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E8k1_ep60_s2_temperature_expert_count_confirm60_route_E8_s2_20260802",
+      "ood_val": 0.20955956971788106,
+      "id": 0.5334630158573821,
+      "worst_experiment": 0.022727272727272728,
+      "total_parameters": 30676212,
+      "active_ffn_including_router": 1184641,
+      "checkpoint_bytes": 368517372,
+      "wandb_run_id": "kkkemsr0",
+      "final_result_complete": false
+    }
+  },
+  "E2_minus_E8_points": {
+    "ood_val": 0.7103714227724794,
+    "id": -0.0640204865557048,
+    "worst_experiment": -0.28409090909090917
+  },
+  "strict_checks": {
+    "exact_run_config_seed_epoch_pairing": true,
+    "finite_erm_metrics": true,
+    "environment_ids": [7, 27, 42, 49],
+    "environment_counts": [2462, 2464, 2464, 2464],
+    "environment_total": 9854,
+    "checkpoint_identity_and_size": true,
+    "E2_controller_exit_zero_and_fatal_scan_clear": true,
+    "E2_manifest_and_remote_listing_verified": true,
+    "E8_worker_live_for_final_mechanism_result": true,
+    "selection_split_ood_val": true,
+    "ood_test_blind": true
+  },
+  "decision": "record_mean_tail_tradeoff_continue_no_promotion_wait_for_seed1_pair_and_E8_seed2_final_mechanism",
+  "interpretation": "At locked seed 2, E2 improves mean OOD validation by 0.710 points with negligible ID loss but loses 0.284 worst-experiment points. This is a Pareto tradeoff, not a robust bank-size win.",
+  "alternative": "The mean gain is seed-specific regularization or total-parameter scaling; E2 route reliance is effectively zero.",
+  "falsifier": "A useful small-bank routing effect requires seed-1 persistence or a consistent worst-experiment benefit plus non-negligible route reliance; the current seed-2 row does not provide either.",
+  "multiplicity": "One paired fresh seed after a multi-bank, multi-milestone seed-0 screen; population and exact-total-parameter claims are not licensed."
+}
