@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-03T02:02:38-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "heldout_fields_null": true,
+  "classification": "strict_exploratory_active_compute_matched_seed0_terminal_pair",
+  "execution": {
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
+    "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "execution_dirty": true,
+    "seed": 0,
+    "epochs": 60,
+    "pressure": "route",
+    "temperature": 0.1,
+    "n_experts": 64,
+    "total_parameters": 96865524,
+    "active_ffn_plus_router_parameters": 1206145,
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched"
+  },
+  "pair": {
+    "tail_safe": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E64k1_ep60_s0_extreme_temperature_aux60_route_E64_temp01_tail_safe_20260802",
+      "ood_val_accuracy": 0.20945808808605643,
+      "id_accuracy": 0.5200187136806855,
+      "worst_experiment_accuracy": 0.01948051948051948,
+      "train_accuracy": 1.0,
+      "route_reliance": -0.00020296326364926953,
+      "routing_entropy": 0.9999613030940024,
+      "experts_used": 64,
+      "wandb_run_id": "qpo0u4ao"
+    },
+    "zero_auxiliary": {
+      "run_id": "rxrx1_moe_early_token_cosine_route_E64k1_ep60_s0_extreme_temperature_aux60_route_E64_temp01_no_aux_20260802",
+      "ood_val_accuracy": 0.209864014613355,
+      "id_accuracy": 0.5194277553432483,
+      "worst_experiment_accuracy": 0.022727272727272728,
+      "train_accuracy": 1.0,
+      "route_reliance": 0.0032474122189744425,
+      "routing_entropy": 0.9114595301665938,
+      "experts_used": 64,
+      "wandb_run_id": "lwy5zr93"
+    },
+    "tail_safe_minus_zero_auxiliary_points": {
+      "ood_val": -0.040592652729856,
+      "id": 0.05909583374372,
+      "worst_experiment": -0.3246753246753248,
+      "route_reliance": -0.003450375482623712
+    },
+    "strict_checks": {
+      "json_parseable": true,
+      "finite_required_metrics": true,
+      "selection_split_ood_val": true,
+      "test_evaluated_false": true,
+      "heldout_fields_null": true,
+      "environment_count": 4,
+      "ood_val_samples": 9854,
+      "environment_samples": [2462, 2464, 2464, 2464],
+      "parameter_identity": true,
+      "milestones_10_30_60_present": true,
+      "epoch10_30_60_checkpoints_nonempty": true,
+      "fatal_scan_clear": true,
+      "wandb_ids_present_but_remote_state_not_reverified_this_invocation": true
+    }
+  },
+  "decision": {
+    "status": "terminal_negative_for_material_tail_safe_or_routing_mediated_benefit_in_exact_recipe",
+    "epoch90_licensed": false,
+    "fresh_seed_licensed": false,
+    "most_plausible_explanation": "generic_regularization_or_trajectory_noise",
+    "sharpest_falsifier": "another_predeclared_smoother_pair_retains_aligned_mean_and_tail_movement_with_route_reliance_above_0p01",
+    "multiplicity": "seed0_after_broad_architecture_objective_pressure_bank_temperature_and_auxiliary_searches"
+  },
+  "operational_handoff": {
+    "confirmation_launch_status": "withheld_pending_readback_of_repaired_focused_and_full_test_run",
+    "test_repair_commit": "80671979e2bfc88f3e8b6da4aa02bb67ae02be3e",
+    "clean_sciserver_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-confirm-8067197",
+    "test_output": "/home/idies/workspace/hb_tests_8067197_0527_2887.txt",
+    "test_status": "submitted_but_completion_unverified_after_browser_control_interruption"
+  }
+}

@@ -2795,3 +2795,36 @@ still exploratory and multiplicity-exposed, and OOD test remains sealed. Next au
 to re-read `2899` once, audit all five running containers separately, and validate the two E4
 seed-1 cells or relaunch only the same guarded cells if absent and physically free. Start `2899`
 again only if a later authoritative table shows it stopped; do not create another tester6.
+
+## 2026-08-03 02:02 EDT — smoother route-E64 closes negative; confirmation test gate repaired
+
+The smoother temperature-0.1 route-E64 tail-safe and zero-auxiliary epoch-60 finals now form a
+strict seed-0 active-compute pair. Tail-safe minus zero auxiliary is `-0.041/+0.059/-0.325`
+OOD-validation/ID/worst-experiment points. Both runs cover four environments and 9,854 validation
+examples, preserve nonempty epoch-10/30/60 checkpoints, select on `ood_val`, leave test unevaluated
+with held-out fields null, and use identical 96,865,524 total and 1,206,145 active FFN-plus-router
+parameters. Route reliance is `-0.00020` versus `0.00325`; this is terminal-negative for a
+material, tail-safe, or routing-mediated benefit in the exact recipe. No epoch 90 or fresh seed is
+licensed. Generic regularization or trajectory noise is more plausible, subject to the explicit
+multiplicity caveat after broad architecture, pressure, bank-size, temperature, and objective
+searches. The strict record is
+`analysis/smoother_route_E64_epoch60_paired_validation.json`.
+
+The prior E4 confirmation submissions are absent on the devices that could be checked. A clean
+SciServer clone of local commit `867788d` exposed one test-only parser error: tags containing
+`tail_safe` or `no_aux` were split into too many fields. The narrow `split("_", 2)` repair is
+committed and pushed as `80671979e2bfc88f3e8b6da4aa02bb67ae02be3e`; its complete bundle is in a
+new clean SciServer checkout. Focused and full test execution was submitted there, but completion
+could not be read after the authenticated browser session was interrupted. No E4 confirmation run
+is claimed or launched under this unverified test gate.
+
+The strict partial GPU map is: `2887/GPU0` and `2887/GPU1` idle at 0 MiB; `2862/GPU0` occupied by
+PID 66583 at 8,867 MiB and `2862/GPU1` idle at 0 MiB; `2859/GPU0` idle at 0 MiB and `2859/GPU1`
+occupied by PID 121339 at 8,407 MiB. Containers `2874` and `2875` remain table-level running but
+were not audited per GPU, so pool-wide active and idle counts are unknown; four H100s are strictly
+verified idle, not a saturation claim. Tester6/2899 remains Pending after the single start request
+with 11 affinity mismatches, two unschedulable nodes, three insufficient-GPU nodes, and no useful
+preemption. Ready/backlog remain conservatively 10/27. The next action is to read the repaired test
+report; only if focused and full suites pass, run exact dry-runs and launch the locked E4 seed-1
+tail-safe/zero-auxiliary pair on verified-free devices with duplicate guards, then fill the next
+verified releases with the predeclared seed-2 pair. OOD test remains sealed.

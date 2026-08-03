@@ -2003,3 +2003,30 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   explanation. The smoother route-E32 epoch-60 final is the sharp falsifier. Multiplicity, seed
   status, fairness labels, and OOD-test blindness are unchanged; operational observability is the
   largest current threat.
+
+## 2026-08-03 02:02 EDT
+
+- Strictly validate the smoother temperature-0.1 route-E64 epoch-60 pair. Tail-safe minus exact
+  zero auxiliary is `-0.041/+0.059/-0.325` OOD/ID/worst points; reliance is
+  `-0.00020/0.00325`. The pair is a terminal exact-recipe negative and licenses neither epoch 90
+  nor fresh seeds. Generic regularization or trajectory noise remains more plausible; another
+  predeclared smoother pair with aligned mean/tail movement and reliance above `0.01` is the sharp
+  falsifier. This remains exploratory seed 0 and multiplicity-exposed.
+- The validation artifact is `analysis/smoother_route_E64_epoch60_paired_validation.json`.
+  Both JSONs are finite, cover four environments/9,854 samples, preserve epoch-10/30/60
+  checkpoints, have identical active-compute parameter identity, select on OOD validation, and
+  keep test unevaluated with held-out fields null. W&B run IDs are present, but remote W&B state
+  was not reverified after browser interruption. No failure is excluded and HF publication is not
+  attempted under the known private-storage quota blocker.
+- Repair only the expert-confirmation registry test parser from unrestricted underscore splitting
+  to `split("_", 2)`. Commit `80671979e2bfc88f3e8b6da4aa02bb67ae02be3e` is pushed and transferred
+  as a complete bundle to a clean SciServer checkout. Focused and full tests were submitted, but
+  their completion is unverified; therefore no E4 confirmation launch is licensed yet.
+- Partial strict capacity accounting finds four idle H100s: both devices on `2887`, `2862/GPU1`,
+  and `2859/GPU0`. `2862/GPU0` is occupied by PID 66583 at 8,867 MiB and `2859/GPU1` by PID 121339
+  at 8,407 MiB. `2874` and `2875` are unaudited per GPU this invocation, so pool-wide occupancy is
+  unknown. Tester6/2899 remains scheduler-Pending. Ready/backlog remain 10/27.
+- Next: read the repaired test report, require focused plus full-suite pass, run exact dry-runs,
+  then launch locked E4 seed-1 tail-safe/zero-auxiliary cells on verified-free devices and refill
+  remaining verified releases with their predeclared seed-2 pair under duplicate guards. Keep OOD
+  test sealed.
