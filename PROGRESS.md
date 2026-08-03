@@ -3012,3 +3012,32 @@ pending cell. Ready/backlog are 13/26. On the first release, launch canonical-E4
 canonical E8/E16 pairs; after those, consume the noise queue in registry rank order under fresh
 GPU/duplicate/result/marker guards. W&B is live, HF remains quota-blocked, multiplicity is explicit,
 and OOD test remains sealed.
+
+## 2026-08-03 09:21 EDT — four temperature-0.3 pairs close negative; nine releases refill immediately
+
+Four completed epoch-60 pairs and one unpaired canonical-E4 tail-safe final pass the strict
+validator. The paired tail-safe-minus-no-auxiliary OOD/ID/worst changes are
+`+0.375/+0.347/+0.122` for canonical E64, `+0.660/+0.409/-0.122` for route E4,
+`+0.700/+0.379/-0.487` for route E8, and `+0.396/+0.534/-0.162` for route E16. All
+route-reliance magnitudes remain below `0.005`. These exact seed-0 recipes are terminal-negative
+for a material or routing-mediated tail-safe benefit and license neither epoch 90 nor fresh seeds.
+Canonical E4 tail-safe is strict-valid at `0.20692/0.52411/0.01705` OOD/ID/worst, but its
+pairwise effect remains withheld until the active no-auxiliary row finishes. The complete record is
+`analysis/temperature03_moderate_epoch60_and_upcycling_refill_validation.json`.
+
+Every released device was refilled after an exact one-cell dry-run. Container 2887 runs the
+canonical-E8 tail/no-aux pair, 2875 the canonical-E16 pair, 2874 the route/canonical E4
+noise-0.01 pair, 2862 the route/canonical E8 noise-0.001 pair, and 2859 canonical-E4 no-aux plus
+route-E8 noise-0.01. Ten distinct workers occupy the ten available H100s and zero are idle. A
+missing active marker was restored once for each verified live worker without a restart. New logs
+are fatal-clear, W&B is initialized, and startup remains OOD-validation-only with test untouched.
+
+Five moderate-bank rows remain active and seven are final; five upcycling rows are active and
+three remain ready. A 14-arm learned-router/frozen-router/dense-noise mechanism-control family is
+predeclared at commit `04ad526`, with local syntax, JSON, and diff checks passing. Its remote
+transfer, focused/full tests, and 14 exact dry-runs remain a launch gate because Chrome control
+dropped after the transfer attempt; those 14 are not counted runnable. The pool is nevertheless
+fully assigned. Tester6/2899 remains Pending for the unchanged scheduler reason, with no start or
+create issued. Generic regularization or trajectory noise is the leading explanation; the sharp
+falsifier remains aligned mean-and-tail improvement, route reliance above `0.01`, and locked-seed
+survival. HF is quota-blocked, multiplicity is explicit, and OOD test remains sealed.

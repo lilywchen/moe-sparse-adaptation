@@ -2182,3 +2182,30 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   cells give ready/backlog 13/26. First release launches canonical-E4 no-aux, then canonical E8/E16
   pairs, then noise cells in registry rank order under fresh guards. HF remains quota-blocked,
   multiplicity is explicit, and OOD test is sealed.
+
+## 2026-08-03 09:21 EDT
+
+- Strictly validate canonical-E64 and route-E4/E8/E16 temperature-0.3 epoch-60 pairs plus the
+  unpaired canonical-E4 tail-safe final. All rows pass exact identity, finiteness,
+  four-environment/9,854-sample coverage, 10/30/60 checkpoint, fatal-clear,
+  `selection_split=ood_val`, `test_evaluated=false`, and null held-out-field checks. Record them in
+  `analysis/temperature03_moderate_epoch60_and_upcycling_refill_validation.json`.
+- Tail-safe minus no auxiliary is `+0.375/+0.347/+0.122` for canonical E64,
+  `+0.660/+0.409/-0.122` for route E4, `+0.700/+0.379/-0.487` for route E8, and
+  `+0.396/+0.534/-0.162` for route E16 OOD/ID/worst points. All reliance magnitudes are below
+  `0.005`; close these exact recipes without epoch 90 or fresh seeds. Keep canonical-E4 effect
+  unpaired until its no-aux final.
+- Refill nine released devices: 2887 canonical-E8 pair; 2875 canonical-E16 pair; 2874 E4
+  route/canonical noise-0.01; 2862 E8 route/canonical noise-0.001; and 2859/GPU1 route-E8
+  noise-0.01. Container2859/GPU0 continues canonical-E4 no auxiliary. Ten workers are active and
+  zero available H100s are idle. Restore missing active markers once to the verified live workers
+  without restarting them.
+- Predeclare 14 noise-mechanism controls at commit `04ad526`: learned-router anchors, frozen-router
+  sparse controls, and dense-wide noise controls under separately labeled active-compute and
+  exact-total-parameter estimands. Local syntax/JSON/diff checks pass. Do not count the 14 as
+  runnable until authenticated remote transfer, focused/full tests, and every exact one-cell
+  dry-run pass; Chrome transport loss leaves three currently runnable upcycling rows.
+- Generic regularization or trajectory noise now leads. Falsify it only with aligned mean/tail
+  improvement, route reliance above `0.01`, and locked fresh-seed survival. Tester6/2899 remains
+  Pending with no new start/create; HF remains quota-blocked; multiplicity is explicit; OOD test
+  stays sealed.

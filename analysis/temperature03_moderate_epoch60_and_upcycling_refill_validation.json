@@ -1,0 +1,105 @@
+{
+  "validated_at": "2026-08-03T09:21:14-04:00",
+  "classification": "strict_seed0_exploratory_epoch60_validation_and_execution_handoff",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "heldout_test_fields": null,
+  "ood_test_sealed": true,
+  "strict_checks": {
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "heldout_fields_null": true,
+    "per_environment_coverage": {"environments": 4, "samples": 9854},
+    "parameter_identity_within_pairs": true,
+    "milestone_identity": 60,
+    "checkpoint_epochs": [10, 30, 60],
+    "fatal_log_scan_clear": true,
+    "controller_done_for_finals": true
+  },
+  "paired_finals": {
+    "canonical_E64_temperature03": {
+      "tail_safe": {"ood_val": 0.20905216155875786, "id": 0.5221609376538954, "worst_experiment": 0.020292207792207792, "route_reliance": -0.0005074, "routing_entropy": 0.999914},
+      "no_aux": {"ood_val": 0.2052973411812462, "id": 0.5186890574214518, "worst_experiment": 0.019074675324675324, "route_reliance": 0.0026385, "routing_entropy": 0.926395},
+      "tail_safe_minus_no_aux_points": {"ood_val": 0.375482, "id": 0.347188, "worst_experiment": 0.121753},
+      "decision": "terminal_negative_no_epoch90_or_fresh_seed"
+    },
+    "route_E4_temperature03": {
+      "tail_safe": {"ood_val": 0.2127055003044449, "id": 0.52543583177386, "worst_experiment": 0.02029220779220779, "route_reliance": 0.0010148163182464032, "routing_entropy": 0.999885785815903},
+      "no_aux": {"ood_val": 0.2061091942358433, "id": 0.5213483699399193, "worst_experiment": 0.021509740259740258, "route_reliance": 0.0006088897909478364, "routing_entropy": 0.9826365330973459},
+      "tail_safe_minus_no_aux_points": {"ood_val": 0.6596306008680159, "id": 0.40874618339407087, "worst_experiment": -0.1217532467532468},
+      "decision": "terminal_negative_no_epoch90_or_fresh_seed"
+    },
+    "route_E8_temperature03": {
+      "tail_safe": {"ood_val": 0.21047290440430283, "id": 0.530705210282675, "worst_experiment": 0.017857142857142856, "route_reliance": 0.0009133, "routing_entropy": 0.9998177},
+      "no_aux": {"ood_val": 0.20347067180840267, "id": 0.526913227617453, "worst_experiment": 0.022727272727272728, "route_reliance": 0.0016237, "routing_entropy": 0.9479265},
+      "tail_safe_minus_no_aux_points": {"ood_val": 0.700223, "id": 0.379198, "worst_experiment": -0.487013},
+      "decision": "terminal_negative_no_epoch90_or_fresh_seed"
+    },
+    "route_E16_temperature03": {
+      "tail_safe": {"ood_val": 0.2111832758270753, "id": 0.5262483994878361, "worst_experiment": 0.019074675324675324, "route_reliance": 0.00010148, "routing_entropy": 0.9999347},
+      "no_aux": {"ood_val": 0.20722549218591435, "id": 0.5209051511868413, "worst_experiment": 0.020698051948051948, "route_reliance": 0.00426223, "routing_entropy": 0.9525237},
+      "tail_safe_minus_no_aux_points": {"ood_val": 0.395778, "id": 0.534325, "worst_experiment": -0.162338},
+      "decision": "terminal_negative_no_epoch90_or_fresh_seed"
+    }
+  },
+  "strict_unpaired_final": {
+    "canonical_E4_temperature03_tail_safe": {
+      "ood_val": 0.20692104729044042,
+      "id": 0.5241061755146262,
+      "worst_experiment": 0.017045454545454544,
+      "route_reliance": -0.000811850545971336,
+      "routing_entropy": 0.999967001351799,
+      "checkpoint_bytes_each": 311814653,
+      "decision": "hold_pairwise_claim_until_no_aux_final"
+    }
+  },
+  "interpretation": {
+    "ruled_out": "A material or routing-mediated tail-safe advantage for the four completed temperature-0.3 epoch-60 recipes.",
+    "most_plausible_explanation": "Generic regularization or optimization-trajectory noise rather than useful conditional specialization.",
+    "sharpest_falsifier": "An aligned mean-and-tail OOD-validation improvement with route reliance above 0.01 that survives a locked fresh seed and its exact comparator.",
+    "multiplicity": "All rows are exploratory seed-0 comparisons selected after broad architecture, objective, pressure, temperature, auxiliary, and expert-bank searches."
+  },
+  "pool_handoff": {
+    "active_workers": 10,
+    "idle_h100s": 0,
+    "assignments": {
+      "2887": {"gpu0": {"worker_pid": 65727, "arm": "canonical_E8_temp03_tail_safe", "memory_mib": 8030}, "gpu1": {"worker_pid": 65726, "arm": "canonical_E8_temp03_no_aux", "memory_mib": 8030}},
+      "2875": {"gpu0": {"worker_pid": 130148, "arm": "canonical_E16_temp03_tail_safe", "memory_mib": 8044}, "gpu1": {"worker_pid": 130145, "arm": "canonical_E16_temp03_no_aux", "memory_mib": 8044}},
+      "2874": {"gpu0": {"worker_pid": 74325, "arm": "route_E4_temp03_noise0p01_tail_safe", "memory_mib": 7962}, "gpu1": {"worker_pid": 74259, "arm": "canonical_E4_temp03_noise0p01_tail_safe", "memory_mib": 7962}},
+      "2862": {"gpu0": {"worker_pid": 72397, "arm": "route_E8_temp03_noise0p001_tail_safe", "memory_mib": 8012}, "gpu1": {"worker_pid": 72396, "arm": "canonical_E8_temp03_noise0p001_tail_safe", "memory_mib": 8012}},
+      "2859": {"gpu0": {"worker_pid": 60878, "arm": "canonical_E4_temp03_no_aux", "memory_mib": 8010}, "gpu1": {"worker_pid": 62798, "arm": "route_E8_temp03_noise0p01_tail_safe", "memory_mib": 8008}}
+    },
+    "active_marker_repair": "A missing active marker was restored once for each of the ten verified live workers without restarting any run.",
+    "launch_preflight": "Each new shard produced exactly one planned and one pending cell after free-owned-GPU, duplicate-result, persistence, tracking, checkpoint, configuration, and sealed-test checks.",
+    "startup_validation": "All new logs were fatal-clear, initialized W&B, and reported 9854 OOD-validation samples with test untouched."
+  },
+  "queue": {
+    "moderate_active": 5,
+    "moderate_completed_finals": 7,
+    "upcycling_active": 5,
+    "upcycling_ready_remaining": 3,
+    "noise_control_family_predeclared": 14,
+    "noise_control_family_status": "local_syntax_json_and_diff_checks_pass_remote_transfer_test_and_dryrun_gated_after_chrome_transport_loss",
+    "backlog_hypotheses": 26
+  },
+  "tester6": {
+    "container_id": 2899,
+    "historical_requested_id": 2893,
+    "status": "Pending",
+    "running": false,
+    "start_requests_this_invocation": 0,
+    "create_requests_this_invocation": 0,
+    "scheduler_reason": "11 affinity-or-selector mismatch; 2 unschedulable; 3 insufficient nvidia.com/gpu; preemption unhelpful with no victims"
+  },
+  "provenance": {
+    "remote_execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "remote_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+    "moderate_script_sha256": "4d652c25035f74e270b7857c65955f493ece026b06944bf340b13570cc57d5e2",
+    "upcycling_script_sha256": "4540f9cb09205c51549054910cada2b54ccbdd6e886b5049e5d9b13f1cff905f",
+    "hf_publication": "not_attempted_known_private_storage_quota_blocker",
+    "wandb": "live",
+    "paper": "unchanged"
+  }
+}
