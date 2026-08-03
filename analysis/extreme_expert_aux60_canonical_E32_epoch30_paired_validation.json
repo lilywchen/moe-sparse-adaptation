@@ -1,0 +1,25 @@
+{
+  "status": "strict_exploratory_paired_epoch30_milestone_pruned",
+  "validated_at": "2026-08-02T21:21:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "seed": 0,
+  "n_experts": 32,
+  "temperature": 0.03,
+  "total_parameters": 59043060,
+  "active_ffn_including_router": 1193857,
+  "epoch10": {
+    "tail_safe": {"acc_ood_val": 0.12857722752181855, "acc_id": 0.2979414951245937, "worst_env_val": 0.015422077922077922},
+    "zero_aux": {"acc_ood_val": 0.1340572356403491, "acc_id": 0.31549788239929083, "worst_env_val": 0.016639610389610388}
+  },
+  "epoch30": {
+    "tail_safe": {"acc_ood_val": 0.17556322305662675, "acc_id": 0.4571555205358022, "worst_env_val": 0.012175324675324676, "environments": 4, "samples": 9854},
+    "zero_aux": {"acc_ood_val": 0.18246397402070225, "acc_id": 0.46698020289569586, "worst_env_val": 0.014204545454545454, "environments": 4, "samples": 9854},
+    "tail_safe_minus_zero_aux_points": {"ood_val": -0.69007509640755, "id": -0.982468235989366, "worst_environment": -0.2029220779220778}
+  },
+  "decision": "prune_tail_safe_after_dominance_on_all_three_axes_at_epochs10_and30_delayed_emergence_exception_exhausted",
+  "exclusion": "stopped_after_valid_epoch30_checkpoint_not_missing_or_failed",
+  "multiplicity": "seed0_extreme_expert_bank_auxiliary_screen"
+}

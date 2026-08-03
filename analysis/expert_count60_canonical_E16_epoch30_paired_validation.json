@@ -1,0 +1,17 @@
+{
+  "status": "strict_exploratory_paired_epoch30_milestone",
+  "validated_at": "2026-08-02T21:18:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "seed": 0,
+  "n_experts": 16,
+  "total_parameters": 40131828,
+  "active_ffn_including_router": 1187713,
+  "tail_safe": {"acc_ood_val": 0.1779987822204181, "acc_id": 0.4615630848025214, "worst_env_val": 0.018668831168831168, "environments": 4, "samples": 9854, "checkpoint_bytes": 482049925},
+  "zero_aux": {"acc_ood_val": 0.18307286381165008, "acc_id": 0.42918349256377425, "worst_env_val": 0.014204545454545454, "environments": 4, "samples": 9854, "checkpoint_bytes": 482047054},
+  "tail_safe_minus_zero_aux_points": {"ood_val": -0.507408159123198, "id": 3.237959223874715, "worst_environment": 0.4464285714285714},
+  "decision": "continue_both_to_epoch60_as_predeclared_pareto_tradeoff_no_promotion",
+  "multiplicity": "seed0_after_broad_expert_count_auxiliary_screen"
+}
