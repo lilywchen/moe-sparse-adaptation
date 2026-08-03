@@ -1,13 +1,38 @@
 # Progress ledger
 
-Last verified: 2026-08-03 14:02 EDT on SciServer and locally; authenticated browser control then
-disconnected before post-repair remote readback. The paper has not been changed because no new
-scientific result passed strict validation.
+Last verified: 2026-08-03 16:56 EDT on SciServer and locally. Ten of ten currently available H100s
+are assigned; tester6 remains scheduler-Pending and contributes no GPU. The paper has not been
+changed because the new results remain exploratory seed-0 mechanism evidence.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-03 16:56 EDT — upcycling wave two, first frozen controls, and six-arm refill
+
+- Six new epoch-60 rows pass exact 10/30/60 milestone, finite-metric, four-environment/9,854-sample,
+  checkpoint, controller-exit, fatal-scan, `selection_split=ood_val`, and `test_evaluated=false`
+  checks: the final three upcycling arms, frozen E4 and E8 controls, and canonical E4 no-auxiliary.
+  All eight predeclared noisy-upcycling arms are now strict-valid.
+- The route E16 noisy arm minus its exact zero-noise anchor is only
+  `+0.142/-0.128/+0.284` OOD-validation/ID/worst-experiment points. Learned E4 noise `0.01`
+  minus frozen routing is `+0.375/+0.785/-0.122`; learned E8 noise `0.001` minus frozen routing is
+  `+1.005/+0.628/-0.244`. The learned routers retain small mean advantages but lose tail accuracy,
+  while prior route reliance is below `0.01`. This does not support useful conditional
+  specialization and licenses neither epoch 90 nor fresh seeds.
+- Canonical E4 tail-safe minus no-auxiliary is `+0.203/+0.254/+0.203` points, a small aligned
+  objective effect well below a material result. Exact zero-noise comparators for canonical E8 and
+  E16 remain active, so those noisy-arm effects are not claimed.
+- Six released GPUs were dry-run as exactly one unique pending cell each and refilled with dense E8
+  noise `0.001`, frozen/dense E8 noise `0.01`, and learned/frozen/dense E16 noise `0.001`
+  controls. Together with the repaired dense E4 retry and three zero-noise anchors, all ten
+  available H100s are active; zero are idle. Ready depth remains 12 and backlog depth 26.
+- tester6 replacement 2899 is still authoritative-detail `Pending` with the unchanged
+  affinity/unschedulable/insufficient-GPU reason; the dashboard's stopped label did not trigger a
+  duplicate start. OOD test remains sealed, W&B is live, HF retry remains quota-blocked, and the
+  paper is unchanged. Trace:
+  `analysis/upcycling_noise60_epoch60_wave2_and_controls_validation.json`.
 
 ## 2026-08-03 07:43 EDT — moderate-bank epoch 30 and canonical E64 milestone
 

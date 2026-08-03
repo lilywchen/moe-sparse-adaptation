@@ -1,6 +1,32 @@
 # Living scientific state
 
-Last verified: 2026-08-03 14:02 EDT
+Last verified: 2026-08-03 16:56 EDT
+
+## Current handoff — 2026-08-03 16:56 EDT
+
+All eight noisy-upcycling seed-0 epoch-60 arms are now strict-valid. The last three have OOD/ID/
+worst-experiment levels of `21.788/52.792/1.786%` for canonical E8 noise `0.01`,
+`21.260/52.497/2.192%` for route E16 noise `0.01`, and `21.271/52.391/1.339%` for canonical E16
+noise `0.01`. Route E16 noise minus its exact zero-noise anchor is only
+`+0.142/-0.128/+0.284` points. Canonical E8 and E16 noisy effects remain unpaired while their
+exact zero-noise anchors run.
+
+The first frozen-router controls are also strict-valid. Learned E4 noise `0.01` minus frozen is
+`+0.375/+0.785/-0.122` OOD/ID/worst points; learned E8 noise `0.001` minus frozen is
+`+1.005/+0.628/-0.244`. Small mean gains paired with worst-experiment losses and previously tiny
+route reliance favor ordinary initialization or optimization-trajectory effects over useful
+conditional specialization. Dense controls are still required before closing that explanation.
+Canonical E4 tail-safe minus no-auxiliary is a small `+0.203/+0.254/+0.203` points and is not
+advanced.
+
+Six freed GPUs were immediately refilled with the exact E8/E16 learned, frozen, and dense
+mechanism controls. Current assignments are: 2887 canonical E8 zero-noise pair; 2875 canonical E16
+tail-safe plus dense E8 noise `0.001`; 2874 frozen/dense E8 noise `0.01`; 2862 learned/frozen E16
+noise `0.001`; 2859 repaired dense E4 noise `0.01` retry plus dense E16 noise `0.001`. Ten of ten
+available H100s are active and zero are idle. Ready depth is 12, backlog depth 26, tester6 2899 is
+still scheduler-Pending, OOD test is sealed, W&B is live, HF is quota-blocked, and the paper is
+unchanged. Validation artifact:
+`analysis/upcycling_noise60_epoch60_wave2_and_controls_validation.json`.
 
 ## Current handoff — 2026-08-03 07:43 EDT
 

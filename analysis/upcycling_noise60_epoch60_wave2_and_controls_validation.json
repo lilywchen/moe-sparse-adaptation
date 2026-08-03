@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T16:56:00-04:00",
+  "classification": "strict_exploratory_seed0_epoch60_wave2_plus_initial_mechanism_controls_no_promotion",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_sealed": true,
+  "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+  "execution_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-moderate-codeeq-c38311d",
+  "strict_checks": {
+    "new_epoch60_results_expected": 6,
+    "new_epoch60_results_valid": 6,
+    "jsonl_parseable": true,
+    "milestone_epochs_exact": [10, 30, 60],
+    "finite_required_metrics": true,
+    "selection_split_exact": true,
+    "test_evaluated_false": true,
+    "ood_validation_environment_ids": [7, 27, 42, 49],
+    "ood_validation_sample_count_each_run": 9854,
+    "checkpoint_exists_and_nonzero": true,
+    "checkpoint_bytes_min": 311776198,
+    "checkpoint_bytes_max": 482084873,
+    "controller_exit_zero": true,
+    "fatal_scan_clear": true,
+    "exact_seed_epoch_config_identity": true
+  },
+  "new_runs": [
+    {
+      "family": "upcycling_noise60_20260803",
+      "tag": "canonical_E8_temp03_noise0p01_tail_safe",
+      "seed": 0,
+      "n_experts": 8,
+      "total_parameters": 30676212,
+      "acc_ood_val": 0.21788106352750153,
+      "acc_within": 0.5279227814439083,
+      "worst_experiment_ood_val": 0.017857142857142856,
+      "checkpoint_bytes": 368542159,
+      "comparison_status": "exact_zero_noise_canonical_E8_anchor_still_running_no_effect_claim"
+    },
+    {
+      "family": "upcycling_noise60_20260803",
+      "tag": "route_E16_temp03_noise0p01_tail_safe",
+      "seed": 0,
+      "n_experts": 16,
+      "total_parameters": 40131828,
+      "acc_ood_val": 0.21260401867262024,
+      "acc_within": 0.5249679897567221,
+      "worst_experiment_ood_val": 0.021915584415584416,
+      "checkpoint_bytes": 482061729
+    },
+    {
+      "family": "upcycling_noise60_20260803",
+      "tag": "canonical_E16_temp03_noise0p01_tail_safe",
+      "seed": 0,
+      "n_experts": 16,
+      "total_parameters": 40131828,
+      "acc_ood_val": 0.2127055003044449,
+      "acc_within": 0.5239091894021471,
+      "worst_experiment_ood_val": 0.013392857142857142,
+      "checkpoint_bytes": 482084873,
+      "comparison_status": "exact_zero_noise_canonical_E16_anchor_still_running_no_effect_claim"
+    },
+    {
+      "family": "upcycling_noise_controls60_20260803",
+      "tag": "frozen_E4_temp03_noise0p01_tail_safe",
+      "seed": 0,
+      "n_experts": 4,
+      "fairness_class": "total_parameter_and_active_compute_matched_router_trainability_control",
+      "acc_ood_val": 0.20448548812664907,
+      "acc_within": 0.5218654584851768,
+      "worst_experiment_ood_val": 0.019886363636363636,
+      "checkpoint_bytes": 311804484
+    },
+    {
+      "family": "upcycling_noise_controls60_20260803",
+      "tag": "frozen_E8_temp03_noise0p001_tail_safe",
+      "seed": 0,
+      "n_experts": 8,
+      "fairness_class": "total_parameter_and_active_compute_matched_router_trainability_control",
+      "acc_ood_val": 0.2078343819768622,
+      "acc_within": 0.5179503594996553,
+      "worst_experiment_ood_val": 0.019886363636363636,
+      "checkpoint_bytes": 368566587
+    },
+    {
+      "family": "temperature03_moderate_bank_aux60_20260803",
+      "tag": "canonical_E4_temp03_no_aux",
+      "seed": 0,
+      "n_experts": 4,
+      "acc_ood_val": 0.20489141465394764,
+      "acc_within": 0.5215699793164582,
+      "worst_experiment_ood_val": 0.015016233766233766,
+      "checkpoint_bytes": 311776198
+    }
+  ],
+  "paired_differences_points": {
+    "route_E16_noise0p01_minus_exact_zero_noise": {
+      "ood_val": 0.14207428455449422,
+      "id": -0.1280409731113985,
+      "worst_experiment": 0.28409090909090917,
+      "decision": "small_mixed_seed0_difference_no_epoch90_or_fresh_seed"
+    },
+    "learned_E4_noise0p01_minus_frozen_router": {
+      "ood_val": 0.37548203775116806,
+      "id": 0.7854821235102838,
+      "worst_experiment": -0.1217532467532468,
+      "decision": "small_mean_and_id_difference_with_tail_loss_dense_control_pending"
+    },
+    "learned_E8_noise0p001_minus_frozen_router": {
+      "ood_val": 1.0046681550639343,
+      "id": 0.6278932335270326,
+      "worst_experiment": -0.2435064935064936,
+      "decision": "submaterial_mean_difference_with_tail_loss_dense_control_pending"
+    },
+    "canonical_E4_tail_safe_minus_no_aux": {
+      "ood_val": 0.20296326364927786,
+      "id": 0.2536196198168028,
+      "worst_experiment": 0.2029220779220778,
+      "decision": "small_aligned_objective_effect_no_epoch90_or_fresh_seed"
+    }
+  },
+  "interpretation": {
+    "rules_out": "For the completed seed-0 E4 and E8 frozen-router controls, learned routing does not yield an aligned mean-and-tail advantage; the E16 noisy route cell differs only slightly from its exact zero-noise anchor.",
+    "leading_explanation": "Ordinary optimization trajectory or initialization effects remain more plausible than useful conditional specialization. Learned routers retain small mean advantages over frozen controls but lose worst-experiment accuracy, and previously measured route reliance is far below 0.01.",
+    "sharpest_falsifier": "The active exact-total-parameter dense controls must fail to reproduce the learned-minus-frozen movement, the remaining learned cells must show route reliance above 0.01, and the aligned effect must survive a locked fresh seed.",
+    "promotion": "none_to_epoch90_or_fresh_seeds"
+  },
+  "pool_handoff": {
+    "active_workers": 10,
+    "idle_h100s": 0,
+    "new_control_workers": 6,
+    "dense_E4_repair_retry_active": true,
+    "ready_queue": 12,
+    "hypothesis_backlog": 26
+  },
+  "publication": {
+    "wandb": "live",
+    "hf": "not_retried_known_private_storage_quota_blocker",
+    "paper": "unchanged_no_confirmatory_result"
+  },
+  "multiplicity": "All rows are exploratory seed-0 comparisons selected after broad architecture, objective, pressure, temperature, expert-count, auxiliary, and noise searches; no population or confirmatory claim."
+}
