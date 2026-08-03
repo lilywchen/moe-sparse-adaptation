@@ -2045,3 +2045,32 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   Ready/backlog are 12/27. Launch remains conditional on authenticated remote per-GPU and duplicate
   audit plus exact one-cell dry-runs. Current active and idle H100 counts are unknown because the
   user is reauthenticating SciServer; the browser is left untouched during that handoff.
+
+## 2026-08-03 03:12 EDT
+
+- Strictly validate the canonical-pressure temperature-0.1 E64 epoch-60 pair. Tail-safe minus
+  zero auxiliary is `-0.477/+0.192/+0.203` OOD/ID/worst points and route reliance is
+  `-0.000812/0.000609`. The exact recipe is terminal-negative for a material or routing-mediated
+  benefit and licenses neither epoch 90 nor fresh seeds. Generic regularization or trajectory
+  noise remains more plausible; a predeclared pair with aligned mean/tail movement and reliance
+  above `0.01` is the sharp falsifier. Seed-0 multiplicity remains explicit.
+- Read the repaired SciServer test gate at commit `80671979`: 18 focused and 153 full tests pass.
+  Exact one-cell dry-runs for the four E4 confirmations, four route-pressure temperature-0.3 rows,
+  and four canonical-pressure temperature-0.3 rows each report one planned/one pending cell.
+- Launch and post-verify ten disjoint workers. `2887` runs E4 seed-1 tail/no-aux; `2875` runs E4
+  seed-2 tail/no-aux; `2874` runs route-E32 temperature-0.3 tail/no-aux; `2862` runs route-E64
+  temperature-0.3 tail/no-aux; and `2859` runs canonical-E32 temperature-0.3 tail/no-aux. All ten
+  workers have owned PIDs, 7,999–8,875 MiB allocations, fresh W&B IDs, exact groups, active markers,
+  9,854 OOD-validation samples, and test-untouched lines; fatal scans are clear. Active/idle is
+  10/0 across the currently available five containers.
+- Re-read tester6/2899 after launch. It remains Pending/Running=false/exit0 for the unchanged 11
+  affinity mismatches, two unschedulable nodes, three insufficient-GPU nodes, and unhelpful
+  preemption/no victims. Exactly one start and zero create requests were issued this invocation;
+  no further action is licensed while Pending.
+- Predeclare `temperature03_moderate_bank_aux60_20260803`: route/canonical x E4/E8/E16 x
+  tail-safe/no-auxiliary, active-compute matched, seed 0, milestones 10/30/60, distinct W&B group
+  and HF prefix. Nine focused and 156 full local tests pass; boundary one-cell dry-runs pass.
+  Ready/backlog become 14/27, with remote transfer/test/dry-run still required before these twelve
+  can launch. The first release remains the already remote-ready canonical-E64 temperature-0.3
+  tail-safe cell, followed by its exact comparator. OOD test is sealed; HF retry requires restored
+  private-storage quota.

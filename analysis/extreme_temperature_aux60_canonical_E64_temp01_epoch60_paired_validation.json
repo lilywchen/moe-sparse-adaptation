@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-03T03:12:00-04:00",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "heldout_fields_null": true,
+  "classification": "strict_exploratory_active_compute_matched_seed0_terminal_pair",
+  "execution": {
+    "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
+    "execution_commit": "4893c964e67477a25a2e3b331dde9c7e641ca669",
+    "execution_dirty": true,
+    "seed": 0,
+    "epochs": 60,
+    "pressure": "canonical",
+    "temperature": 0.1,
+    "n_experts": 64,
+    "total_parameters": 96865524,
+    "active_ffn_plus_router_parameters": 1206145,
+    "fairness_class": "active_compute_matched_not_exact_total_parameter_matched"
+  },
+  "pair": {
+    "tail_safe": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_extreme_temperature_aux60_canonical_E64_temp01_tail_safe_20260802",
+      "ood_val_accuracy": 0.202252892226507,
+      "id_accuracy": 0.5197971043041466,
+      "worst_experiment_accuracy": 0.019074675324675324,
+      "train_accuracy": 1.0,
+      "route_reliance": -0.0008118530545971336,
+      "routing_entropy": 0.9999579184945869,
+      "experts_used": 64,
+      "wandb_run_id": "7fnmaxhj"
+    },
+    "zero_auxiliary": {
+      "run_id": "rxrx1_moe_early_token_cosine_canonical_E64k1_ep60_s0_extreme_temperature_aux60_canonical_E64_temp01_no_aux_20260802",
+      "ood_val_accuracy": 0.20702252892226508,
+      "id_accuracy": 0.5178764897074756,
+      "worst_experiment_accuracy": 0.017045454545454544,
+      "train_accuracy": 1.0,
+      "route_reliance": 0.0006088897909478364,
+      "routing_entropy": 0.9078498239924014,
+      "experts_used": 64,
+      "wandb_run_id": "3g646u7z"
+    },
+    "tail_safe_minus_zero_auxiliary_points": {
+      "ood_val": -0.476963669575808,
+      "id": 0.1920614596671,
+      "worst_experiment": 0.202922077922078,
+      "route_reliance": -0.00142074284554497
+    },
+    "strict_checks": {
+      "json_parseable": true,
+      "finite_required_metrics": true,
+      "selection_split_ood_val": true,
+      "test_evaluated_false": true,
+      "heldout_fields_null": true,
+      "environment_count": 4,
+      "ood_val_samples": 9854,
+      "environment_samples": [
+        2462,
+        2464,
+        2464,
+        2464
+      ],
+      "parameter_identity": true,
+      "milestones_10_30_60_present": true,
+      "epoch10_30_60_checkpoints_nonempty": true,
+      "controller_exit_rc0": true,
+      "fatal_scan_clear": true,
+      "wandb_synchronized": true
+    }
+  },
+  "decision": {
+    "status": "terminal_negative_for_material_tail_safe_or_routing_mediated_benefit_in_exact_recipe",
+    "epoch90_licensed": false,
+    "fresh_seed_licensed": false,
+    "most_plausible_explanation": "generic_regularization_or_trajectory_noise",
+    "sharpest_falsifier": "a_predeclared_pair_retains_aligned_mean_and_tail_movement_with_route_reliance_above_0p01",
+    "multiplicity": "seed0_after_broad_architecture_objective_pressure_bank_temperature_and_auxiliary_searches"
+  }
+}

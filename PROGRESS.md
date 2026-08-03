@@ -2846,3 +2846,40 @@ fresh authoritative container/GPU audit, duplicate/result/marker checks, the exa
 dry-run, persistent destinations, and sealed-test verification. No current occupancy count is
 claimed from the earlier partial snapshot. Registered ready/backlog remain 12/27. Browser control
 is intentionally paused for user reauthentication; OOD test remains sealed.
+
+## 2026-08-03 03:12 EDT — canonical-E64 smoother pair closes negative; ten H100s refill cleanly
+
+The canonical-pressure E64 temperature-0.1 epoch-60 pair is now strict-valid. Tail-safe minus exact
+zero auxiliary is `-0.477/+0.192/+0.203` OOD-validation/ID/worst-experiment points. Route reliance
+is `-0.000812` versus `0.000609`, so the small tail movement is not evidence of conditional
+routing. Both finals are finite, cover four environments and 9,854 validation examples, have
+identical 96,865,524 total and 1,206,145 active FFN-plus-router parameters, preserve epoch-10/30/60
+checkpoints, synchronize W&B, select only on `ood_val`, leave test unevaluated, and keep held-out
+fields null. This is a terminal seed-0 active-compute negative for a material or routing-mediated
+benefit in the exact recipe; neither epoch 90 nor fresh seeds is licensed. The record is
+`analysis/extreme_temperature_aux60_canonical_E64_temp01_epoch60_paired_validation.json`.
+
+The repaired remote gate is also complete: commit `80671979e2bfc88f3e8b6da4aa02bb67ae02be3e`
+passes 18 focused and 153 full SciServer tests. Exact one-cell dry-runs for all twelve then-ready
+cells report one planned and one pending cell. The five running worker containers were separately
+audited before and after launch. All ten available H100s now run distinct owned jobs with fresh
+logs, exact active PIDs, W&B IDs/groups, 7,999–8,875 MiB allocations, and the explicit 9,854-sample
+OOD-validation/test-untouched startup line. Container/GPU allocation is: `2887` E4 seed-1
+tail-safe/zero-aux; `2875` E4 seed-2 tail-safe/zero-aux; `2874` route-E32 temperature-0.3
+tail-safe/zero-aux; `2862` route-E64 temperature-0.3 tail-safe/zero-aux; and `2859` canonical-E32
+temperature-0.3 tail-safe/zero-aux. There are ten active workers and zero idle available H100s.
+
+Tester6 replacement `2899` was re-read after the launches and remains `Pending`, `Running=false`,
+exit zero with the unchanged scheduler reason: 11 nodes fail affinity/selector, two are
+unschedulable, three have insufficient GPU, and preemption is unhelpful with no victims. This
+invocation issued exactly one start and zero creates; no retry or duplicate is licensed while it is
+Pending.
+
+Queue depth is restored by predeclaring the twelve-cell E4/E8/E16 route/canonical x
+tail-safe/zero-auxiliary temperature-0.3 family. Nine focused and 156 full local tests pass, and
+boundary shards 0 and 11 each dry-run as one unique pending cell. Together with the two still
+queued canonical-E64 temperature-0.3 controls, ready is 14 and backlog remains 27. The new family
+still requires transfer, remote focused/full validation, and exact remote per-shard dry-runs before
+launch. The first physical release goes to canonical-E64 temperature-0.3 tail-safe, then its exact
+zero-auxiliary comparator. HF publication remains deferred under the known private-storage quota
+blocker; OOD test remains sealed.

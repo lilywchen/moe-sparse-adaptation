@@ -1,0 +1,40 @@
+{
+  "predeclared_at": "2026-08-03T03:12:00-04:00",
+  "family": "temperature03_moderate_bank_aux60_20260803",
+  "question": "Does temperature 0.3 have a bounded E4/E8/E16 optimum under route or canonical pressure, rather than helping only extreme E32/E64 expert banks?",
+  "hypothesis": "If router smoothing interacts with bank size, a moderate expert bank will retain broader route use and improve OOD validation or worst-experiment accuracy relative to its exact tail-safe/no-auxiliary comparator without losing more than two ID points.",
+  "predicted_signature": "At least one E4/E8/E16 pressure pair shows stable epoch-30-to-60 aligned mean-or-tail movement and route reliance above 0.01, while adjacent bank sizes give an ordered response.",
+  "alternative_explanation": "Any movement in the extreme-bank temperature-0.3 screen is objective regularization, pressure balancing, or trajectory noise rather than conditional routing.",
+  "falsifier": "All moderate banks remain near-zero in route reliance or fail to retain an aligned mean-or-tail advantage through epoch 60 under both pressures.",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "seed": 0,
+  "horizon": 60,
+  "milestones": [10, 30, 60],
+  "pruning_rule": "At epoch 10, prune a cell dominated on OOD validation, ID retention, worst-experiment accuracy, and mechanism signature; allow delayed emergence only through epoch 30. Continue to epoch 60 only for a competitive trajectory or route reliance above 0.01.",
+  "checkpoint_policy": "save epochs 10, 30, and 60 for every arm that reaches the milestone",
+  "wandb_group": "rxrx1-cell-dino-temperature03-moderate-bank-aux60-20260803",
+  "hf_prefix": "rxrx1/cell_dino_cp5/temperature03_moderate_bank_aux60_20260803",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "result_budget": 12,
+  "parameter_counts": {
+    "E4": {"total_parameters": 25948404, "active_ffn_including_router": 1183105},
+    "E8": {"total_parameters": 30676212, "active_ffn_including_router": 1184641},
+    "E16": {"total_parameters": 40131828, "active_ffn_including_router": 1187713}
+  },
+  "arms": [
+    {"rank": 1, "tag": "route_E4_temp03_tail_safe", "exact_comparator": "route_E4_temp03_no_aux", "cross_pressure_comparator": "canonical_E4_temp03_tail_safe", "pressure": "route", "n_experts": 4, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 2, "tag": "route_E4_temp03_no_aux", "exact_comparator": "route_E4_temp03_tail_safe", "cross_pressure_comparator": "canonical_E4_temp03_no_aux", "pressure": "route", "n_experts": 4, "balance_w": 0.0, "zloss_w": 0.0},
+    {"rank": 3, "tag": "route_E8_temp03_tail_safe", "exact_comparator": "route_E8_temp03_no_aux", "cross_pressure_comparator": "canonical_E8_temp03_tail_safe", "pressure": "route", "n_experts": 8, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 4, "tag": "route_E8_temp03_no_aux", "exact_comparator": "route_E8_temp03_tail_safe", "cross_pressure_comparator": "canonical_E8_temp03_no_aux", "pressure": "route", "n_experts": 8, "balance_w": 0.0, "zloss_w": 0.0},
+    {"rank": 5, "tag": "route_E16_temp03_tail_safe", "exact_comparator": "route_E16_temp03_no_aux", "cross_pressure_comparator": "canonical_E16_temp03_tail_safe", "pressure": "route", "n_experts": 16, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 6, "tag": "route_E16_temp03_no_aux", "exact_comparator": "route_E16_temp03_tail_safe", "cross_pressure_comparator": "canonical_E16_temp03_no_aux", "pressure": "route", "n_experts": 16, "balance_w": 0.0, "zloss_w": 0.0},
+    {"rank": 7, "tag": "canonical_E4_temp03_tail_safe", "exact_comparator": "canonical_E4_temp03_no_aux", "cross_pressure_comparator": "route_E4_temp03_tail_safe", "pressure": "canonical", "n_experts": 4, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 8, "tag": "canonical_E4_temp03_no_aux", "exact_comparator": "canonical_E4_temp03_tail_safe", "cross_pressure_comparator": "route_E4_temp03_no_aux", "pressure": "canonical", "n_experts": 4, "balance_w": 0.0, "zloss_w": 0.0},
+    {"rank": 9, "tag": "canonical_E8_temp03_tail_safe", "exact_comparator": "canonical_E8_temp03_no_aux", "cross_pressure_comparator": "route_E8_temp03_tail_safe", "pressure": "canonical", "n_experts": 8, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 10, "tag": "canonical_E8_temp03_no_aux", "exact_comparator": "canonical_E8_temp03_tail_safe", "cross_pressure_comparator": "route_E8_temp03_no_aux", "pressure": "canonical", "n_experts": 8, "balance_w": 0.0, "zloss_w": 0.0},
+    {"rank": 11, "tag": "canonical_E16_temp03_tail_safe", "exact_comparator": "canonical_E16_temp03_no_aux", "cross_pressure_comparator": "route_E16_temp03_tail_safe", "pressure": "canonical", "n_experts": 16, "balance_w": 0.01, "zloss_w": 0.01},
+    {"rank": 12, "tag": "canonical_E16_temp03_no_aux", "exact_comparator": "canonical_E16_temp03_tail_safe", "cross_pressure_comparator": "route_E16_temp03_no_aux", "pressure": "canonical", "n_experts": 16, "balance_w": 0.0, "zloss_w": 0.0}
+  ],
+  "multiplicity": "Exploratory twelve-cell bank-size by pressure by objective screen predeclared before any temperature-0.3 milestone; no winner is confirmatory without a locked fresh seed."
+}
