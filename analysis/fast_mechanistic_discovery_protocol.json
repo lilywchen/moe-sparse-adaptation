@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "authorized_at": "2026-08-03T19:55:00-04:00",
+  "status": "prospective_protocol_only_no_new_scientific_result",
+  "objective": "Find a causally active sparse architecture with high information per GPU-hour before granting long training.",
+  "why_changed": {
+    "canonical_moe_minus_dense_ood_points_epochs_10_30_60_90": [-0.416, 2.781, 2.547, 1.715],
+    "current_route_reliance_summary": "usually below one absolute accuracy point and below 0.005 in recent temperature/noise screens",
+    "inference": "long training mainly improves shared representations while most tested routers remain weakly causal"
+  },
+  "prospective_allocation": {
+    "finish_existing": "only healthy jobs already near a declared checkpoint; validate and release",
+    "do_not_restart": "stalled or failed 60/90-epoch exploratory arms solely for matrix completion",
+    "new_default_horizon_epochs": [0, 2, 5, 10],
+    "long_horizons_are_earned": [30, 60, 90]
+  },
+  "stages": [
+    {
+      "stage": "D0",
+      "budget": "saved-checkpoint diagnostic",
+      "question": "At which of the 12 FFNs do training-experiment gradients reproducibly conflict?",
+      "comparisons": "highest-conflict layer or layers versus a low-conflict placebo",
+      "outputs": ["pairwise_gradient_cosine", "conflict_rate", "gradient_norm", "uncertainty_across_balanced_minibatches"]
+    },
+    {
+      "stage": "D1",
+      "budget": "2 epochs",
+      "question": "Can routing become causally active before the shared backbone dominates?",
+      "comparisons": ["learned_router_moe", "frozen_router_moe", "equal_budget_dense", "one_sparse_ffn", "two_conflict_localized_sparse_ffns", "staged_router_expert_unfreezing"],
+      "outputs": ["route_reliance", "expert_usage", "routing_entropy", "augmentation_route_stability", "gradient_conflict_change"]
+    },
+    {
+      "stage": "D2",
+      "budget": "5 epochs",
+      "continue_if": "noncollapsed routing and either paired OOD/tail movement or strong causal mechanism evidence"
+    },
+    {
+      "stage": "D3",
+      "budget": "10 epochs",
+      "continue_to_30_if": {
+        "accuracy_route": "at least +2 OOD-validation points versus the proper dense comparator with no worst-experiment loss, or a predeclared worst-experiment improvement",
+        "mechanism_route": "route reliance at least 0.01, at least two materially used experts, and reproducible cross-experiment gradient-conflict reduction",
+        "id_retention": "no more than 2 absolute ID points lost"
+      }
+    }
+  ],
+  "first_three_bounded_questions": [
+    "Does conflict-localized placement beat arbitrary early/middle/late placement?",
+    "Does replacing two measured conflict-peak FFNs create a materially stronger routing effect than replacing one FFN?",
+    "Does staged upcycling create route reliance and expert specialization without erasing Cell-DINO representations?"
+  ],
+  "fairness": "Every sparse arm has a placement-, objective-, data-order-, and budget-matched dense control; exact-total-parameter and active-compute claims remain separate.",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_sealed": true,
+  "multiplicity": "All discovery screens are exploratory; a winner is locked before fresh-seed confirmation."
+}

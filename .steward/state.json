@@ -743,5 +743,11 @@
   "upcycling_noise60_mechanism_status": "all eight seed0 E4_E8_E16 finals strict-valid; completed learned-minus-frozen E4 and E8 contrasts show small mean gains with worst-experiment losses; route E16 noisy-minus-zero is plus0p142_ood minus0p128_id plus0p284_worst; ordinary initialization_or_trajectory_regularization still leads; no epoch90_or_fresh_seed promotion",
   "queue_depth_exception": null,
   "browser_transport_status": "in_app_browser_authenticated_and_currently_controls_sciserver_compute_and_jupyter_sessions",
-  "next_gate": "validate dense_E4 epoch60 and six active E8_E16 learned_frozen_dense controls at completion; refill every release from twelve ranked ready arms; require aligned mean_tail gain route_reliance_above0p01 and locked fresh seed before promotion; retry HF only after quota available; keep OOD test sealed"
+  "next_gate": "finish only healthy near-checkpoint existing jobs; do not restart stalled long exploratory arms for completeness; implement and test all-layer gradient-conflict diagnostics, then launch 2/5/10-epoch learned_frozen_dense one-versus-two conflict-localized sparse-FFN screens; epoch30 requires paired signal plus route_reliance_above0p01 noncollapsed usage and conflict reduction; keep OOD test sealed",
+  "prospective_search_policy": "fast_mechanistic_discovery",
+  "prospective_default_horizons": [0, 2, 5, 10],
+  "long_horizon_default_disabled": true,
+  "fast_mechanistic_protocol": "analysis/fast_mechanistic_discovery_protocol.json",
+  "fast_extension_requirements": {"paired_ood_points": 2.0, "max_id_loss_points": 2.0, "route_reliance": 0.01, "noncollapsed_experts": 2, "gradient_conflict_reduction_required": true},
+  "protocol_updated_at": "2026-08-03T19:55:00-04:00"
 }

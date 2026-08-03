@@ -2319,3 +2319,18 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   Ready/backlog remain 12/26. Continue every locked comparison to epoch 60, validate/refill the
   first release immediately, keep multiplicity explicit, leave HF quota-blocked, and keep the OOD
   test sealed.
+
+## 2026-08-03 19:55 EDT — fast mechanistic discovery becomes prospective default
+
+- The user explicitly redirected prospective compute away from broad 60--90 epoch search. Existing
+  validated long-run evidence is preserved exactly; the change affects only future allocation.
+- The leading explanation is now sharp enough to test quickly: a single converted FFN rarely
+  develops causal routing, while shared backbone adaptation supplies most of the eventual accuracy.
+  The next discriminator is therefore all-layer experiment-stratified gradient conflict followed
+  by one-versus-two conflict-localized sparse FFNs, not another temperature or expert-count sweep.
+- A new arm starts with saved-checkpoint diagnostics, then 2/5/10 epochs. It earns epoch 30 only
+  through both paired accuracy/tail evidence and a mechanism signature: route reliance at least
+  `0.01`, noncollapsed expert use, and reproducible gradient-conflict reduction. This keeps the
+  canonical delayed-emergence lesson visible without funding inert routers to epoch 60 by default.
+- No live compute, result, publication, or paper state is claimed by this protocol update. OOD test
+  remains sealed. Trace: `analysis/fast_mechanistic_discovery_protocol.json`.

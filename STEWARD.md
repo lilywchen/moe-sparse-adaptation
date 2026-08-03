@@ -1,5 +1,18 @@
 # Autonomous RxRx1 research steward contract
 
+## Fast-first scheduling override (2026-08-03)
+
+Prospectively, long seed-0 training is no longer the default search unit. Preserve healthy jobs
+already near a declared checkpoint, but do not restart stalled long-horizon arms or refill a GPU
+with another 60/90-epoch recipe unless it passed the fast mechanistic funnel in `PLAN.md`.
+
+Refill priority is now: all-layer gradient-conflict diagnostics from saved checkpoints; two-epoch
+learned/frozen/dense mechanism triples at measured conflict peaks and placebo layers; five-epoch
+single-versus-multiple sparse-FFN and staged-upcycling screens; then ten-epoch exact pairs. A long
+extension requires route reliance of at least one absolute accuracy point, noncollapsed expert
+usage, reproducible conflict reduction, and paired accuracy/tail evidence. Training loss and GPU
+occupancy never license extension.
+
 The steward executes the RxRx1 kill test in `PLAN.md`; it is not a read-only monitor. It protects
 healthy work but uses every safely idle authorized GPU for the next licensed experiment. It does
 not launch new Camelyon17 work, the old 36-cell factorial, or additional DINOv2 rescue runs.

@@ -1,5 +1,38 @@
 # RxRx1 sparse-adaptation kill test
 
+## Authorized protocol revision — fast mechanistic discovery (2026-08-03)
+
+The user has explicitly deprioritized additional broad 60--90 epoch exploration. Existing healthy
+jobs that are already close to a declared checkpoint may finish because their marginal cost is
+small, but a stalled or failed long-horizon arm must not be restarted merely to complete a matrix.
+No new seed-0 recipe receives a 60- or 90-epoch budget until it first shows a short-horizon causal
+signature that conditional computation is doing useful work.
+
+The new discovery funnel is:
+
+1. **Zero/short-training localization.** Use saved original Cell-DINO checkpoints to measure
+   experiment-stratified gradient cosine, conflict rate, and norm at all 12 transformer FFNs.
+   Training experiments only are used for gradients. Repeat enough balanced minibatches to
+   identify a reproducible conflict peak and a low-conflict placebo layer.
+2. **Two-epoch mechanism smoke.** At the conflict peak, compare function-preserving learned MoE,
+   frozen-router MoE, and equal-budget dense controls. Cross one sparse FFN against a two-FFN
+   conflict-localized intervention, and test staged router/expert unfreezing. Record route
+   randomization, expert usage, entropy, augmentation stability, and pre/post gradient conflict.
+3. **Five-epoch discriminator.** Continue only arms with valid, noncollapsed routing and either
+   early paired OOD/tail movement or a strong causal mechanism signature. Use exact paired data
+   order and controls; do not select on training loss.
+4. **Ten-epoch confirmation screen.** A new recipe may exceed ten epochs only if it satisfies at
+   least one accuracy route and the mechanism route: (a) at least +2 OOD-validation points versus
+   its proper dense comparator with no worst-experiment loss, or a predeclared tail improvement;
+   and (b) at least 1 absolute point route reliance, at least two materially used experts, and a
+   reproducible reduction in cross-experiment gradient conflict. ID loss must not exceed 2 points.
+5. **Long training is earned, not default.** Only a locked paired survivor receives epoch 30. Epoch
+   60 and fresh seeds require persistence at 30; epoch 90 remains final adjudication only.
+
+This revision does not invalidate completed long-run evidence. It changes prospective allocation:
+the search now prioritizes information per GPU-hour and directly tests why one sparse FFN should
+help. OOD test remains sealed, and all short-screen winners remain exploratory.
+
 ## Authorized protocol revision — Cell-DINO factorial60 exploration (2026-08-01)
 
 The completed `hypothesis90` campaign remains a decision-grade negative for its exact canonical

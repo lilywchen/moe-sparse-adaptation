@@ -9,6 +9,25 @@ gate and manuscript table, was pulled into the linked Overleaf project on 2026-0
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
 
+## 2026-08-03 19:55 EDT — prospective search pivots to fast mechanistic discovery
+
+- The user explicitly deprioritized additional broad 60--90 epoch exploration. Completed evidence
+  is unchanged, but future allocation now uses saved-checkpoint diagnostics and 2/5/10-epoch
+  screens. A healthy job already near a declared checkpoint may finish; a stalled long exploratory
+  arm is not restarted merely for matrix completeness.
+- The first question is where gradients from different training experiments conflict across all 12
+  Cell-DINO FFNs. The next bounded architecture comparison is one versus two sparse FFNs placed at
+  measured conflict peaks, each paired with learned-router, frozen-router, and equal-budget dense
+  controls. Staged router/expert unfreezing is crossed only after the exact smoke tests pass.
+- Accuracy alone does not decide at epoch 2 or 5 because the canonical sparse trajectory emerged
+  late. An arm must show causal routing: route reliance at least 1 point, multiple materially used
+  experts, reproducible conflict reduction, and either paired mean/tail movement or a predeclared
+  tail signature. Only then may it reach epoch 30; epoch 60/90 is no longer default search compute.
+- This is a protocol change, not a new result or live pool audit. OOD validation remains the
+  exploratory selection split, OOD test remains sealed, and exact-total-parameter versus
+  active-compute claims remain separate. Trace:
+  `analysis/fast_mechanistic_discovery_protocol.json`.
+
 ## 2026-08-03 16:56 EDT — upcycling wave two, first frozen controls, and six-arm refill
 
 - Six new epoch-60 rows pass exact 10/30/60 milestone, finite-metric, four-environment/9,854-sample,
