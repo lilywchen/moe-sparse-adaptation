@@ -1,0 +1,51 @@
+{
+  "predeclared_at": "2026-08-03T13:10:00-04:00",
+  "family": "upcycling_noise_controls60_20260803",
+  "question": "Does any benefit from function-preserving expert noise require a learned conditional router, rather than frozen random routing or ordinary dense parameter-noise regularization?",
+  "hypothesis": "A genuinely conditional upcycling effect will exceed both a frozen-router MoE control and an exact-total-parameter-matched dense-wide noise control at the same bank size and noise scale, with route reliance above 0.01 and no more than two ID points lost.",
+  "predicted_signature": "The learned MoE improves OOD-validation mean or worst-experiment accuracy over both controls from epoch 30 to 60 while frozen routing and dense-wide noise do not reproduce its route reliance.",
+  "alternative_explanation": "Symmetry-breaking acts as generic optimization noise or ensemble-like total capacity, so frozen-router or dense-wide controls reproduce the apparent gain.",
+  "falsifier": "Frozen-router or dense-wide controls match the learned-MoE movement, or every learned/noise cell remains at route reliance at or below 0.01.",
+  "seed": 0,
+  "horizon": 60,
+  "milestones": [10, 30, 60],
+  "pruning_rule": "At epoch 10 prune a control dominated on OOD validation, ID retention, worst-experiment accuracy, and its predeclared mechanism signature unless differentiation is increasing; continue to 60 only for a competitive epoch-30 trajectory or route reliance above 0.01.",
+  "checkpoint_policy": "save epochs 10, 30, and 60 for every arm reaching the milestone",
+  "wandb_group": "rxrx1-cell-dino-upcycling-noise-controls60-20260803",
+  "hf_prefix": "rxrx1/cell_dino_cp5/upcycling_noise_controls60_20260803",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "result_budget": 14,
+  "shared_learned_anchors": {
+    "E4_noise0p01": "upcycling_noise60 canonical_E4_temp03_noise0p01_tail_safe",
+    "E8_noise0p001": "upcycling_noise60 canonical_E8_temp03_noise0p001_tail_safe",
+    "E8_noise0p01": "upcycling_noise60 canonical_E8_temp03_noise0p01_tail_safe",
+    "E16_noise0p01": "upcycling_noise60 canonical_E16_temp03_noise0p01_tail_safe"
+  },
+  "fairness_estimands": {
+    "learned_vs_frozen": "total_parameter_and_active_compute_matched_router_trainability_control",
+    "learned_vs_dense": "exact_total_parameter_matched_within_0p1_percent_not_active_compute_matched"
+  },
+  "parameter_counts": {
+    "E4": {"moe_total_parameters": 25948404, "moe_active_ffn_including_router": 1183105},
+    "E8": {"moe_total_parameters": 30676212, "moe_active_ffn_including_router": 1184641},
+    "E16": {"moe_total_parameters": 40131828, "moe_active_ffn_including_router": 1187713}
+  },
+  "arms": [
+    {"rank": 1, "tag": "frozen_E4_temp03_noise0p01_tail_safe", "variant": "moe_frozen", "n_experts": 4, "noise": 0.01, "exact_comparator": "shared learned E4 noise0p01"},
+    {"rank": 2, "tag": "dense_E4_temp03_noise0p01", "variant": "wide", "n_experts": 4, "noise": 0.01, "exact_comparator": "shared learned E4 noise0p01"},
+    {"rank": 3, "tag": "frozen_E8_temp03_noise0p001_tail_safe", "variant": "moe_frozen", "n_experts": 8, "noise": 0.001, "exact_comparator": "shared learned E8 noise0p001"},
+    {"rank": 4, "tag": "dense_E8_temp03_noise0p001", "variant": "wide", "n_experts": 8, "noise": 0.001, "exact_comparator": "shared learned E8 noise0p001"},
+    {"rank": 5, "tag": "frozen_E8_temp03_noise0p01_tail_safe", "variant": "moe_frozen", "n_experts": 8, "noise": 0.01, "exact_comparator": "shared learned E8 noise0p01"},
+    {"rank": 6, "tag": "dense_E8_temp03_noise0p01", "variant": "wide", "n_experts": 8, "noise": 0.01, "exact_comparator": "shared learned E8 noise0p01"},
+    {"rank": 7, "tag": "frozen_E16_temp03_noise0p01_tail_safe", "variant": "moe_frozen", "n_experts": 16, "noise": 0.01, "exact_comparator": "shared learned E16 noise0p01"},
+    {"rank": 8, "tag": "dense_E16_temp03_noise0p01", "variant": "wide", "n_experts": 16, "noise": 0.01, "exact_comparator": "shared learned E16 noise0p01"},
+    {"rank": 9, "tag": "learned_E4_temp03_noise0p001_tail_safe", "variant": "moe", "n_experts": 4, "noise": 0.001, "exact_comparator": "frozen/dense E4 noise0p001"},
+    {"rank": 10, "tag": "frozen_E4_temp03_noise0p001_tail_safe", "variant": "moe_frozen", "n_experts": 4, "noise": 0.001, "exact_comparator": "learned E4 noise0p001"},
+    {"rank": 11, "tag": "dense_E4_temp03_noise0p001", "variant": "wide", "n_experts": 4, "noise": 0.001, "exact_comparator": "learned E4 noise0p001"},
+    {"rank": 12, "tag": "learned_E16_temp03_noise0p001_tail_safe", "variant": "moe", "n_experts": 16, "noise": 0.001, "exact_comparator": "frozen/dense E16 noise0p001"},
+    {"rank": 13, "tag": "frozen_E16_temp03_noise0p001_tail_safe", "variant": "moe_frozen", "n_experts": 16, "noise": 0.001, "exact_comparator": "learned E16 noise0p001"},
+    {"rank": 14, "tag": "dense_E16_temp03_noise0p001", "variant": "wide", "n_experts": 16, "noise": 0.001, "exact_comparator": "learned E16 noise0p001"}
+  ],
+  "multiplicity": "Exploratory mechanism-control family opened after broad architecture, pressure, expert-count, temperature, auxiliary, and noise searches; no winner is confirmatory without a locked fresh seed."
+}
