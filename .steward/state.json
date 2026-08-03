@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "classification": "RUNNING_HEALTHY",
-  "last_action": "validate_extreme_route_milestones_and_three_finals_refill_three_releases_and_restore_ready_queue_with_canonical_temperature03_controls",
-  "last_action_at": "2026-08-02T23:01:00-04:00",
+  "last_action": "validate_canonical_E32_temperature0p1_tail_safe_epoch10_and_secondary_pressure_contrast",
+  "last_action_at": "2026-08-02T23:18:00-04:00",
   "last_verified_commit": "751dbd3290b9674ab32371c235f880ad63cc5a78",
   "valid_results": 46,
   "expected_results": 20,
@@ -556,7 +556,7 @@
   "extreme_expert_aux60_test_status": "focused_semantic_pass_124_full_tests_pass_exact_direct_dry_run_eight_unique_cells_after_one_narrow_direct_execution_bootstrap_repair",
   "extreme_expert_aux60_wandb_group": "rxrx1-cell-dino-extreme-expert-aux60-20260802",
   "extreme_expert_aux60_hf_prefix": "rxrx1/cell_dino_cp5/extreme_expert_aux60_20260802",
-  "extreme_temperature_aux60_status": "eight_route_canonical_by_E32_E64_by_auxiliary_temperature0p1_active_compute_matched_seed0_cells_six_active_two_tested_ready; route_E32_epoch10_pair_strict_and_dominated_tail_safe_continues_to_epoch30_only_under_predeclared_delayed_mechanism_rule",
+  "extreme_temperature_aux60_status": "eight_route_canonical_by_E32_E64_by_auxiliary_temperature0p1_active_compute_matched_seed0_cells_six_active_two_tested_ready; route_E32_exact_auxiliary_pair_epoch10_strict_and_dominated_tail_safe_continues_to_epoch30; canonical_E32_tail_safe_epoch10_strict_unpaired; secondary_route_minus_canonical_tail_safe_is_minus0p447_ood_minus0p143_id_plus0p081_worst",
   "extreme_temperature_aux60_expected_results": 8,
   "extreme_temperature_aux60_active_results": 6,
   "extreme_temperature_aux60_queued_results": 2,
@@ -624,6 +624,9 @@
   "extreme_expert_aux60_route_E32_tail_safe_epoch60_final": {"ood_val":0.20732697381773899,"id":0.516103614695164,"worst_experiment":0.017857142857142856,"routing_entropy":0.9999787049227367,"route_reliance":0.001826669372843509,"experts_used":32.0,"controller_rc":0,"decision":"no_promotion_delayed_routing_specialization_falsified_wait_exact_no_aux_final_for_objective_effect"},
   "extreme_expert_aux60_unpaired_finals": {"canonical_E32_no_aux":{"ood_val":0.20773290034503755,"id":0.5253865852457402,"worst_experiment":0.015422077922077922,"controller_rc":0},"canonical_E64_tail_safe":{"ood_val":0.20367363507205197,"id":0.5157588889983257,"worst_experiment":0.012175324675324676,"controller_rc":0}},
   "extreme_temperature_aux60_route_E32_epoch10_tail_safe_minus_no_aux_points": {"ood_val":-0.2942967322914547,"id":-1.5389540037427318,"worst_experiment":-0.0405844155844156,"decision":"continue_to_epoch30_only_under_predeclared_delayed_mechanism_rule"},
+  "extreme_temperature_aux60_canonical_E32_temp01_epoch10_validation": "analysis/extreme_temperature_aux60_canonical_E32_temp01_epoch10_validation.json",
+  "extreme_temperature_aux60_canonical_E32_temp01_tail_safe_epoch10": {"ood_val":0.12949056220824032,"id":0.30153649167733676,"worst_experiment":0.015827922077922076,"checkpoint_bytes":709160864,"decision":"continue_to_epoch30_unpaired_exact_no_auxiliary_epoch10_pending"},
+  "extreme_temperature_aux60_E32_temp01_tail_safe_route_minus_canonical_epoch10_points": {"ood_val":-0.4465191800284152,"id":-0.14281493154732483,"worst_experiment":0.0811688311688312,"predeclared_exact_comparator":false,"decision":"secondary_pressure_contrast_no_early_mean_advantage_no_prune_no_promotion"},
   "extreme_expert_aux60_route_E64_epoch30_tail_safe_minus_no_aux_points": {"ood_val":0.5682971382179824,"id":0.6278932335270382,"worst_experiment":-0.0405844155844156,"decision":"continue_to_epoch60_small_mean_id_tail_tradeoff_no_promotion"},
   "extreme_temperature_aux60_route_E64_no_aux_launch": {"container_id":2862,"gpu":0,"controller_pid":63477,"worker_pid":63497,"wandb_run_id":"lwy5zr93","preflight":"exact_shard3_of8_one_pending_physical_gpu_free_duplicate_result_prune_active_persistence_tracking_checkpoint_and_sealed_test_guards_pass","status":"running_fatal_clear_9854_ood_validation_samples_test_untouched"},
   "extreme_temperature_aux60_canonical_E32_tail_safe_launch": {"container_id":2862,"gpu":1,"controller_pid":63561,"worker_pid":63582,"wandb_run_id":"c8obo0tz","preflight":"exact_shard4_of8_one_pending_physical_gpu_free_duplicate_result_prune_active_persistence_tracking_checkpoint_and_sealed_test_guards_pass","status":"running_fatal_clear_9854_ood_validation_samples_test_untouched"},
@@ -639,5 +642,5 @@
   "temperature03_canonical_aux60_queued_results": 4,
   "temperature03_canonical_aux60_wandb_group": "rxrx1-cell-dino-temperature03-canonical-aux60-20260803",
   "temperature03_canonical_aux60_hf_prefix": "rxrx1/cell_dino_cp5/temperature03_canonical_aux60_20260803",
-  "next_gate": "validate_route_E32_temperature0p03_no_aux_final_and_smoother_route_E32_epoch30_immediately; on_next_release_launch_canonical_E64_temp01_tail_safe_then_no_aux; if_tester6_starts_use_both_gpus_after_exact_preflight; retry_canonical_E16_publication_only_after_private_HF_storage_quota_is_available; require_route_reliance_above0p01_and_aligned_mean_or_tail_without_more_than2_ID_points_for_promotion; keep_ood_test_sealed"
+  "next_gate": "validate_route_E32_temperature0p03_no_aux_final_canonical_E32_temperature0p1_exact_auxiliary_epoch10_pair_and_route_E32_temperature0p1_exact_auxiliary_epoch30_pair_immediately; on_next_release_launch_canonical_E64_temp01_tail_safe_then_no_aux; if_tester6_starts_use_both_gpus_after_exact_preflight; retry_canonical_E16_publication_only_after_private_HF_storage_quota_is_available; require_route_reliance_above0p01_and_aligned_mean_or_tail_without_more_than2_ID_points_for_promotion; keep_ood_test_sealed"
 }

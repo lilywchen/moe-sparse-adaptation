@@ -2577,3 +2577,25 @@ isolated execution-base checkout, six focused tests, all 130 tests, and four exa
 pass. After three refills, ready is 14: two remaining temperature-0.1 cells, four locked E4 fresh-
 seed cells, four route-pressure temperature-0.3 cells, and four canonical-pressure temperature-0.3
 controls. Backlog remains 27; OOD test is sealed and multiplicity remains explicit.
+
+## 2026-08-02 23:18 EDT — Canonical smoother E32 reaches epoch 10; early pressure contrast is flat
+
+Canonical-pressure E32 temperature 0.1 tail-safe reaches a strict epoch-10 milestone at
+`0.12949/0.30154/0.01583` OOD-validation/ID/worst-experiment accuracy. Against the already valid
+route-pressure tail-safe row at the same E32, temperature, seed, parameter counts, data order, and
+horizon, route minus canonical is `-0.447/-0.143/+0.081` points. This secondary pressure contrast
+has no early mean or ID advantage and only a tiny tail tradeoff; it is not the registry's exact
+auxiliary comparator, so no auxiliary-effect claim or prune is made. Both rows continue unchanged
+to epoch 30, and the exact canonical zero-auxiliary epoch-10 row remains pending.
+
+Both milestone JSONs are finite and parseable, cover four environments and 9,854 OOD-validation
+examples, select on `ood_val`, declare `test_evaluated=false`, have nonempty epoch-10 checkpoints,
+match the predeclared E32 parameter counts, and have live W&B sync and fatal-clear logs explicitly
+stating that test is untouched. All five running 2H100 containers retain ten distinct worker PIDs;
+zero allocated H100s are unassigned. tester6/2899 remains scheduler Pending for the unchanged
+11-affinity, two-unschedulable, three-insufficient-GPU reason. Ready remains 14 and backlog 27.
+
+The result is exploratory seed 0 after multiple pressure, temperature, bank-size, objective, and
+architecture screens. The leading alternative remains generic optimization or auxiliary
+regularization. The sharp falsifier is aligned exact auxiliary-pair movement at epoch 30 plus final
+route reliance above `0.01` without more than two ID points lost.

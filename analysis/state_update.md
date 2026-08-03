@@ -1831,3 +1831,23 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   tests pass in an isolated commit-4893 execution-base checkout; all four one-cell dry runs pass.
   Ready is 14 and backlog 27. OOD test remains sealed; every new comparison is exploratory and
   multiplicity-exposed.
+
+## 2026-08-02 23:18 EDT
+
+- Canonical-pressure E32 temperature-0.1 tail-safe is strict-valid at epoch 10 with
+  `0.12949/0.30154/0.01583` OOD/ID/worst. The same-seed, same-E32, same-temperature secondary
+  route-pressure minus canonical-pressure contrast is `-0.447/-0.143/+0.081` points.
+- This is not the registry's exact auxiliary comparator. It therefore supports only the provisional
+  statement that route pressure has no early mean advantage; it does not identify the auxiliary
+  effect, justify a prune, or license promotion. Both rows continue to epoch 30, while canonical
+  E32 zero auxiliary remains live until its exact epoch-10 subtraction is available.
+- Exact identity, finite metrics, four environments/9,854 samples, registry parameter counts,
+  epoch-10 checkpoints, W&B sync, fatal-clear logs, OOD-validation selection, and sealed-test
+  checks pass. The artifact is
+  `analysis/extreme_temperature_aux60_canonical_E32_temp01_epoch10_validation.json`.
+- Containers2887/2875/2874/2862/2859 each retain two distinct live GPU workers; 10/10 allocated
+  H100s are assigned and none is idle. tester6/2899 is still Pending for 11 affinity mismatches,
+  two unschedulable nodes, and three insufficient-GPU nodes. Ready is 14 and backlog 27.
+- Multiplicity remains explicit. The next automatic validations are canonical-E32 exact
+  tail-safe/no-aux at epoch 10 and route-E32 exact tail-safe/no-aux at epoch 30. The next released
+  GPU launches canonical-E64 temperature-0.1 tail-safe after exact preflight; OOD test stays sealed.
