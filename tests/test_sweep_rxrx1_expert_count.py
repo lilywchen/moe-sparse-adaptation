@@ -81,7 +81,7 @@ def test_extreme_expert_aux_is_complete_bounded_and_disjoint():
 
 def test_extreme_expert_aux_locks_low_temperature_and_schedule():
     for tag, overrides, run_id in extreme.cells():
-        pressure, expert_label, aux_label = tag.split("_")
+        pressure, expert_label, aux_label = tag.split("_", 2)
         cfg = apply_overrides(load_config(extreme.CONFIG), overrides)
         assert cfg["seed"] == 0
         assert cfg["stage"] == 1
