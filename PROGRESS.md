@@ -2710,3 +2710,33 @@ startup, and W&B verification is not claimed because SciServer terminal control 
 bell-output flood. The last strict pool observation is eight active smoother workers and two free
 devices before submission; current occupancy is unknown. Ready is conservatively ten, backlog is
 27, and tester6/2899's last verified state remains Pending for the recorded scheduler constraints.
+
+## 2026-08-03 00:49 EDT — SciServer table reconciliation; launch state remains unclaimed
+
+The authoritative Compute table listed five running containers (`2887`, `2875`, `2874`, `2862`,
+`2859`) and `tester6` container `2893` as stopped. It did not list the previously recorded
+replacement `2899`. This corrects the operational registry; it does not change any scientific
+result or authorize a duplicate container.
+
+Exactly one start request was attempted for the stopped `2893`, as required. The request redirected
+to a signed-out page and its outcome could not be verified. Chrome itself is running and its Codex
+extension/native host pass local diagnostics, but the browser-control connection is unavailable;
+the in-app session is unauthenticated. No claim is made that `2893` started or that either H100 is
+available.
+
+The two guarded E4 seed-1 submissions remain unverified. Pool accounting therefore stays at the
+last strict pre-submission observation: eight smoother workers active and `2887/GPU0` plus
+`2859/GPU1` free before submission. Current occupancy, launch PIDs, W&B state, milestones, and
+fatal scans are unknown rather than inferred. Ready remains 10 and backlog 27.
+
+There is no new scientific evidence. The extreme temperature-0.03 family remains closed at seven
+strict finals and one valid prune; its route-E64 terminal contrast remains
+`-0.041/-0.468/-0.081` OOD/ID/worst points with non-reliant routers. Generic regularization or
+trajectory noise remains more plausible than reusable conditional routing; the smoother
+route-E32 epoch-60 pair remains the sharp falsifier. Multiplicity is explicit and OOD test stays
+sealed.
+
+Next automatic action: restore an authenticated remote-control path, re-read the Compute table,
+verify `2893` once, then inspect every running container separately. On `2887/GPU0` and
+`2859/GPU1`, validate the submitted E4 cells or, only if absent and physically free, relaunch those
+same guarded cells. Do not start or create another tester6 copy.

@@ -1946,3 +1946,24 @@ arms restore ready to 15; backlog is 27. No OOD-test access or efficacy relabeli
   0.07, identical data order/schedule/parameters, tail-safe `0.01/0.01` versus zero `0/0`, declared
   W&B/HF destinations, and sealed test. The next action is an exact re-audit of 2887/GPU0 and
   2859/GPU1; if the guarded submissions are absent, relaunch the same two cells only.
+
+## 2026-08-03 00:49 EDT
+
+The authoritative SciServer Compute table now lists the five known worker containers as running
+and tester6 `2893` as stopped; replacement `2899` is absent. Exactly one start attempt for `2893`
+redirected to an unauthenticated page, so its outcome is unknown. Local diagnostics show Chrome,
+the Codex extension, and the native host are installed and healthy, but the browser-control
+connection is unavailable. This is an operational reconciliation and blocker, not scientific
+evidence.
+
+The E4 seed-1 tail-safe and zero-auxiliary submissions remain unverified. No PID, memory, W&B,
+milestone, fatal-scan, or saturation claim is made. The last strict pool state remains eight active
+smoother workers and two free devices before submission; current occupancy is unknown. Ready and
+backlog counts remain 10 and 27.
+
+The scientific interpretation is unchanged: the extreme temperature-0.03 family is terminal-
+negative for its exact recipes, and generic regularization or trajectory noise is more plausible
+than reusable conditional routing. The sharp falsifier is retained mean/tail benefit at smoother
+route-E32 epoch 60, preferably with route reliance above `0.01`. Multiplicity remains explicit,
+no exclusions change, and OOD test remains sealed. The next action is authenticated per-container
+re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch of the two E4 rows.
