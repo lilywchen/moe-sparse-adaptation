@@ -1,0 +1,27 @@
+{
+  "predeclared_at": "2026-08-02T22:53:00-04:00",
+  "family": "temperature03_canonical_aux60_20260803",
+  "question": "Does temperature 0.3 help extreme expert banks under canonical pressure, separating generic router smoothing from the active route-pressure addendum?",
+  "hypothesis": "If smoothing rather than within-experiment route pressure drives any temperature-0.3 gain, matched canonical-pressure E32/E64 cells will show similar routing reliance and OOD-validation trajectories.",
+  "predicted_signature": "Temperature-0.3 canonical cells retain nondead expert use and route reliance above 0.01; their paired tail-safe versus no-aux effect and their cross-pressure difference are stable by epochs 30 and 60.",
+  "alternative_explanation": "Any route-pressure movement is caused by within-experiment balancing or generic optimization noise rather than router smoothing.",
+  "falsifier": "Canonical cells remain collapsed or differ materially from matched route-pressure cells while the route cells improve, or neither pressure exceeds the locked lower-temperature trajectory.",
+  "fairness_class": "active_compute_matched_not_exact_total_parameter_matched",
+  "seed": 0,
+  "horizon": 60,
+  "milestones": [10, 30, 60],
+  "pruning_rule": "At epoch 10, prune a cell dominated on OOD validation, ID retention, worst-experiment accuracy, and its predeclared mechanism signature; allow delayed emergence only through epoch 30. Continue to epoch 60 only if trajectory or route reliance remains competitive.",
+  "checkpoint_policy": "save epochs 10, 30, and 60 for every arm that reaches the milestone",
+  "wandb_group": "rxrx1-cell-dino-temperature03-canonical-aux60-20260803",
+  "hf_prefix": "rxrx1/cell_dino_cp5/temperature03_canonical_aux60_20260803",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "result_budget": 4,
+  "arms": [
+    {"rank": 1, "tag": "canonical_E32_temp03_tail_safe", "exact_comparator": "canonical_E32_temp03_no_aux", "cross_pressure_comparator": "route_E32_temp03_tail_safe", "n_experts": 32, "temperature": 0.3, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
+    {"rank": 2, "tag": "canonical_E32_temp03_no_aux", "exact_comparator": "canonical_E32_temp03_tail_safe", "cross_pressure_comparator": "route_E32_temp03_no_aux", "n_experts": 32, "temperature": 0.3, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 59043060, "active_ffn_including_router": 1193857},
+    {"rank": 3, "tag": "canonical_E64_temp03_tail_safe", "exact_comparator": "canonical_E64_temp03_no_aux", "cross_pressure_comparator": "route_E64_temp03_tail_safe", "n_experts": 64, "temperature": 0.3, "balance_w": 0.01, "zloss_w": 0.01, "total_parameters": 96865524, "active_ffn_including_router": 1206145},
+    {"rank": 4, "tag": "canonical_E64_temp03_no_aux", "exact_comparator": "canonical_E64_temp03_tail_safe", "cross_pressure_comparator": "route_E64_temp03_no_aux", "n_experts": 64, "temperature": 0.3, "balance_w": 0.0, "zloss_w": 0.0, "total_parameters": 96865524, "active_ffn_including_router": 1206145}
+  ],
+  "multiplicity": "Exploratory four-cell pressure-control family added before any temperature-0.3 results; all claims remain descriptive until locked fresh-seed confirmation."
+}
