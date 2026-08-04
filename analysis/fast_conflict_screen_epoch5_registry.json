@@ -22,15 +22,15 @@
   "checkpoint_policy": "save epochs 2 and 5 plus result, milestones, train log, config, and manifest",
   "result_budget": "epoch 5 only; continue a small family-leading fraction to epoch 10 only after strict paired and mechanism validation",
   "arms": [
-    {"arm_id":"high11_learned_ep5","blocks":[11],"variant":"moe","comparator":"high11_dense_ep5 and high11_frozen_ep5","status":"running","assignment":"2887_gpu0","worker_pid":78348},
-    {"arm_id":"high11_frozen_ep5","blocks":[11],"variant":"moe_frozen","comparator":"high11_learned_ep5","status":"running","assignment":"2887_gpu1","worker_pid":78351},
-    {"arm_id":"high11_dense_ep5","blocks":[11],"variant":"dense_wide","comparator":"high11_learned_ep5","status":"running","assignment":"2875_gpu1","worker_pid":143190},
-    {"arm_id":"high10_11_learned_ep5","blocks":[10,11],"variant":"moe","comparator":"high10_11_dense_ep5 and high10_11_frozen_ep5","status":"running","assignment":"2874_gpu1","worker_pid":89264},
-    {"arm_id":"high10_11_frozen_ep5","blocks":[10,11],"variant":"moe_frozen","comparator":"high10_11_learned_ep5","status":"running","assignment":"2862_gpu0","worker_pid":13962},
-    {"arm_id":"high10_11_dense_ep5","blocks":[10,11],"variant":"dense_wide","comparator":"high10_11_learned_ep5","status":"running","assignment":"2862_gpu1","worker_pid":13965},
-    {"arm_id":"low1_learned_ep5","blocks":[1],"variant":"moe","comparator":"low1_dense_ep5 and low1_frozen_ep5","status":"running","assignment":"2859_gpu0","worker_pid":13997},
-    {"arm_id":"low1_dense_ep5","blocks":[1],"variant":"dense_wide","comparator":"low1_learned_ep5","status":"running","assignment":"2859_gpu1","worker_pid":14000},
-    {"arm_id":"low1_frozen_ep5","blocks":[1],"variant":"moe_frozen","comparator":"low1_learned_ep5","status":"ready","assignment":null,"worker_pid":null}
+    {"arm_id":"high11_learned_ep5","blocks":[11],"variant":"moe","comparator":"high11_dense_ep5 and high11_frozen_ep5","status":"validated","assignment":"2887_gpu0","worker_pid":78348},
+    {"arm_id":"high11_frozen_ep5","blocks":[11],"variant":"moe_frozen","comparator":"high11_learned_ep5","status":"validated","assignment":"2887_gpu1","worker_pid":78351},
+    {"arm_id":"high11_dense_ep5","blocks":[11],"variant":"dense_wide","comparator":"high11_learned_ep5","status":"validated","assignment":"2875_gpu1","worker_pid":143190},
+    {"arm_id":"high10_11_learned_ep5","blocks":[10,11],"variant":"moe","comparator":"high10_11_dense_ep5 and high10_11_frozen_ep5","status":"validated_and_promoted_to_epoch10","assignment":"2874_gpu1","worker_pid":89264},
+    {"arm_id":"high10_11_frozen_ep5","blocks":[10,11],"variant":"moe_frozen","comparator":"high10_11_learned_ep5","status":"validated_and_promoted_to_epoch10","assignment":"2862_gpu0","worker_pid":13962},
+    {"arm_id":"high10_11_dense_ep5","blocks":[10,11],"variant":"dense_wide","comparator":"high10_11_learned_ep5","status":"validated_and_promoted_to_epoch10","assignment":"2862_gpu1","worker_pid":13965},
+    {"arm_id":"low1_learned_ep5","blocks":[1],"variant":"moe","comparator":"low1_dense_ep5 and low1_frozen_ep5","status":"validated","assignment":"2859_gpu0","worker_pid":13997},
+    {"arm_id":"low1_dense_ep5","blocks":[1],"variant":"dense_wide","comparator":"low1_learned_ep5","status":"validated","assignment":"2859_gpu1","worker_pid":14000},
+    {"arm_id":"low1_frozen_ep5","blocks":[1],"variant":"moe_frozen","comparator":"low1_learned_ep5","status":"running_in_continuation_campaign","assignment":"2887_gpu0","worker_pid":81901}
   ],
   "multiplicity": "Exploratory seed-0 localization, intervention-depth, router-state, and horizon screen; any winner requires locked hyperparameters and fresh seeds."
 }

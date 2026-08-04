@@ -1,5 +1,30 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 01:17 EDT
+
+Ten new milestones are strict-valid: eight epoch-5 placement/depth/router-state rows and the two
+block-10 epoch-2 controls. The promising family is the two-FFN blocks10+11 intervention. Learned
+sparse reaches `2.994%` OOD validation versus `2.882%` frozen and `1.796%` equal-total-parameter
+dense, a `+1.197`-point learned-minus-dense result but only `+0.112` learned-minus-frozen. Block11
+learned (`2.405%`) and the block1 placebo (`1.705%`) are each `-0.233` points below their dense
+controls. Routing uses 8/8 experts with high entropy, but randomized-route reliance remains below
+`0.0022`. This makes two-layer expert partitioning or structured regularization the leading
+explanation; adaptive learned routing is not yet established. This is exploratory seed 0 with
+multiplicity, not a confirmed effect. Trace: `analysis/fast_conflict_epoch5_validation.json`.
+
+The sharp falsifier is the matched epoch-10 blocks10+11 triplet: sparse must retain its dense
+advantage, block10 and the completed block1 placebo must not reproduce the same nonspecific effect,
+and any learned-routing claim requires a stable learned-over-frozen gap plus materially increased
+route reliance. All OOD-test fields remain null and OOD test was not accessed.
+
+All ten schedulable H100s are occupied by the missing placebo control, the complete block10
+epoch-5 triplet, and learned/frozen/dense epoch-10 triplets at blocks10+11 and block11. Exact
+assignments are recorded in `analysis/fast_conflict_continuation_registry.json`. Each GPU has one
+owned compute process, persistent logs, checkpoints at 2/5 or 2/5/10, a fresh W&B group, and zero
+HF retries while private storage quota remains exhausted. tester6/2899 remains Pending with no GPU.
+A preflighted 12-arm router-dynamics ready queue and 24-hypothesis backlog are available for each
+release. Trace: `analysis/fast_conflict_ready_queue_registry.json`.
+
 ## Current handoff — 2026-08-04 00:18 EDT
 
 Ten of ten corrected epoch-2 conflict-localized results are strict-valid. At high-conflict block 11,

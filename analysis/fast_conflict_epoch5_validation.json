@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T01:17:00-04:00",
+  "classification": "strict_valid_seed0_epoch5_diagnostic_and_continuation_launch",
+  "source_commit": "813015d2309cec6a49bbc886c18230e5b26b502c",
+  "execution_commit": "3b898c2fe0c3445ca65826a2b5a692aae475e143",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected": 10,
+    "valid": 10,
+    "invalid": 0,
+    "environments": [7, 27, 42, 49],
+    "samples": 9854
+  },
+  "artifact_checks": {
+    "json_parseable": 10,
+    "finite_required_metrics": 10,
+    "exact_block_identity": 10,
+    "parameter_counts_valid": 10,
+    "checkpoint_complete": 10,
+    "manifest_present": 10,
+    "fatal_clear": 10
+  },
+  "path_repair": {
+    "arms": ["high10_frozen_ep2", "high10_dense_ep2"],
+    "reason": "The two launch commands omitted --results-dir and wrote to the persistent default results directory.",
+    "action": "Copy the existing result, checkpoint, milestone, train-log, and manifest artifacts without overwrite into the declared campaign root.",
+    "source_values_changed": false
+  },
+  "epoch5": {
+    "high10_11": {
+      "learned": {"ood_val": 0.029937081388268724, "id": 0.039717324928592534, "worst": 0.011363636363636364, "route_reliance": 0.001623706109194236, "experts_used": 8, "routing_entropy": 0.998797664428038},
+      "frozen": {"ood_val": 0.028820783438197686, "id": 0.03917561311927509, "worst": 0.007305194805194805, "route_reliance": 0.0013192612137203144, "experts_used": 8, "routing_entropy": 0.99749989240208},
+      "dense": {"ood_val": 0.017962248832961235, "id": 0.024278538363045405, "worst": 0.006904955320877335},
+      "learned_minus_dense_points": {"ood_val": 1.1974832555307489, "id": 1.543878656554713, "worst": 0.44586810427590286},
+      "learned_minus_frozen_points": {"ood_val": 0.1116297950071038, "id": 0.05417118093174442, "worst": 0.4058441558441559}
+    },
+    "high11": {
+      "learned": {"ood_val": 0.02405114674243962, "id": 0.035728356150891365, "worst": 0.008928571428571428, "route_reliance": 0.0008118530545971198, "experts_used": 8, "routing_entropy": 0.9982889799119162},
+      "frozen": {"ood_val": 0.019078546783032273, "id": 0.026863981089333203, "worst": 0.007711038961038961, "route_reliance": 0.0021311142683174376, "experts_used": 8, "routing_entropy": 0.9964517051947275},
+      "dense": {"ood_val": 0.026385224274406333, "id": 0.0380921895006402, "worst": 0.008928571428571428},
+      "learned_minus_dense_points": -0.2334077531376714,
+      "learned_minus_frozen_points": 0.4972599959407346
+    },
+    "low1_placebo": {
+      "learned": {"ood_val": 0.017048914146539477, "id": 0.024450901211464593, "worst": 0.006493506493506494, "route_reliance": 0.0003044448954739182, "experts_used": 8, "routing_entropy": 0.9998310436365961},
+      "dense": {"ood_val": 0.01938299167850619, "id": 0.02782428838766867, "worst": 0.005681818181818182},
+      "learned_minus_dense_points": -0.23340775319667128,
+      "frozen_status": "running_as_the_missing_epoch5_placebo_control"
+    }
+  },
+  "interpretation": "The two-FFN blocks10+11 intervention is the first clearly promising short-horizon family: learned and frozen sparse models both exceed the equal-total-parameter dense control, while the one-FFN block11 and low-conflict block1 learned variants do not. The small learned-minus-frozen increment and route reliance below 0.002 make fixed expert partitioning or multi-layer structured regularization more plausible than useful learned conditional routing at this milestone.",
+  "largest_threat": "This is exploratory seed 0 after multiple placement and router-state comparisons, and epoch5 accuracy is still low; the apparent two-layer advantage may be trajectory noise or a fixed-partition effect.",
+  "sharp_falsifier": "At epoch10, the blocks10+11 triplet must retain a sparse-over-dense advantage with healthy routing; the block10 triplet and completed block1 placebo must not reproduce an equally large nonspecific effect. A learned-routing claim additionally requires a stable learned-over-frozen gap and materially larger route reliance.",
+  "multiplicity": "Exploratory seed-0 selection over placement, one-versus-two FFNs, router state, and horizon; any winner requires locked fresh seeds."
+}

@@ -3280,3 +3280,41 @@ tests pass; a new full remote suite was blocked by the SciServer checkout's GitH
 prompt, so no credential was entered. Evidence, registries, source repair, and ledgers were pushed
 in GitHub commit `5c305f8696e4a7a823d6a32ae07b0f6b66a47cb3`. OOD test remains sealed and the
 manuscript is unchanged.
+
+## 2026-08-04 01:17 EDT — two conflict-localized FFNs show the first promising short signal; ten follow-ups launch
+
+Eight epoch-5 rows and the two block-10 epoch-2 controls are strict-valid. Every row parses, is
+finite, uses the exact requested blocks and parameter class, covers environments 7/27/42/49 with
+9,854 OOD-validation samples, has its required checkpoint/log/manifest companions, is fatal-clear,
+records `selection_split=ood_val` and `test_evaluated=false`, and leaves OOD test sealed. The two
+block-10 controls had written to the persistent default results directory because their launch
+commands omitted `--results-dir`; their existing files were copied without overwrite into the
+declared campaign root. No scientific value changed. Trace:
+`analysis/fast_conflict_epoch5_validation.json`.
+
+The strongest epoch-5 comparison is the two-FFN intervention at blocks 10+11. Learned sparse is
+`2.994%` OOD validation versus `2.882%` frozen sparse and `1.796%` equal-total-parameter dense:
+learned-minus-dense is `+1.197` points and learned-minus-frozen is only `+0.112` points. Its worst-
+environment advantage over dense is `+0.446` points. In contrast, block-11 learned is `2.405%`
+versus `2.639%` dense, and the block-1 placebo learned is `1.705%` versus `1.938%` dense. All sparse
+rows use 8/8 experts with entropy at least `0.996`, but randomized-route reliance is only
+`0.00030--0.00213`. The most plausible current explanation is therefore a useful two-layer expert
+partition or structured regularization effect, with only weak evidence that the learned router is
+doing more than a fixed partition. This is exploratory seed-0 evidence after multiple comparisons,
+not a confirmed performance claim.
+
+All ten schedulable H100s were free after the short batch and were immediately refilled. Exact
+assignments are: 2887 GPU0/1 `low1_frozen_ep5` / `high10_learned_ep5`; 2875 GPU0/1
+`high10_frozen_ep5` / `high10_dense_ep5`; 2874 GPU0/1 blocks10+11 learned/frozen epoch10; 2862
+GPU0/1 blocks10+11 dense epoch10 / block11 learned epoch10; 2859 GPU0/1 block11 frozen/dense
+epoch10. Each GPU has one owned Python compute process and roughly 7.9--11.8 GB allocated; startup
+logs identify 33 training experiments, 9,854 OOD-validation images, a fresh W&B group, and explicit
+test blindness. Empty PID markers caused by outer-shell expansion were repaired from the live GPU
+process table. Trace: `analysis/fast_conflict_continuation_registry.json`.
+
+The continuation passed ten unique config/run-ID checks, five representative exact model builds,
+and a finite `2x1139` real-data forward dry run after one narrow batch-unpacking repair. A separate
+12-arm ready queue of bounded load-balance, temperature, symmetry-breaking, top-2, and image-router
+screens also passes unique-ID and representative build preflight. The next release takes the
+highest-ranked nonduplicate arm from `analysis/fast_conflict_ready_queue_registry.json`. No HF
+retry was made because the private storage quota is unchanged; the paper remains unchanged.
