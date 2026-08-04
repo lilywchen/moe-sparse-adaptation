@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "created_at": "2026-08-04T11:24:00-04:00",
-  "updated_at": "2026-08-04T11:54:00-04:00",
+  "updated_at": "2026-08-04T13:10:00-04:00",
   "campaign": "fast_conflict_ready_queue_20260804",
   "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
   "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
@@ -39,8 +39,10 @@
       "wandb_destination": "ready/twoffn_E2_cosine_top2_learned_ep5",
       "hf_destination": "ready/twoffn_E2_cosine_top2_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2899_gpu0"
+      "status": "validated_pruned",
+      "assignment": "2899_gpu0_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_token_cosine_canonical_E2k2_ep5_s0_fastready_twoffn_E2_cosine_top2_learned_ep5_c68bc80.json",
+      "decision": "do_not_advance_epoch5_mean_id_and_mechanism_fail"
     },
     {
       "arm_id": "twoffn_E2_cosine_top2_frozen_ep5",
@@ -60,8 +62,10 @@
       "wandb_destination": "ready/twoffn_E2_cosine_top2_frozen_ep5",
       "hf_destination": "ready/twoffn_E2_cosine_top2_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2899_gpu1"
+      "status": "validated_control",
+      "assignment": "2899_gpu1_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_token_cosine_canonical_E2k2_ep5_s0_fastready_twoffn_E2_cosine_top2_frozen_ep5_c68bc80.json",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E32_cosine_top2_learned_ep5",
@@ -81,7 +85,9 @@
       "wandb_destination": "ready/twoffn_E32_cosine_top2_learned_ep5",
       "hf_destination": "ready/twoffn_E32_cosine_top2_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu0",
+      "launch_pid": 109046
     },
     {
       "arm_id": "twoffn_E32_cosine_top2_frozen_ep5",
@@ -101,7 +107,9 @@
       "wandb_destination": "ready/twoffn_E32_cosine_top2_frozen_ep5",
       "hf_destination": "ready/twoffn_E32_cosine_top2_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu1",
+      "launch_pid": 109047
     },
     {
       "arm_id": "twoffn_E16_image_learned_ep5",
@@ -121,7 +129,9 @@
       "wandb_destination": "ready/twoffn_E16_image_learned_ep5",
       "hf_destination": "ready/twoffn_E16_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2862_gpu0",
+      "launch_pid": 47844
     },
     {
       "arm_id": "twoffn_E16_image_frozen_ep5",
@@ -141,7 +151,9 @@
       "wandb_destination": "ready/twoffn_E16_image_frozen_ep5",
       "hf_destination": "ready/twoffn_E16_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2862_gpu1",
+      "launch_pid": 47845
     },
     {
       "arm_id": "twoffn_E2_noise0001_learned_ep5",
@@ -161,7 +173,9 @@
       "wandb_destination": "ready/twoffn_E2_noise0001_learned_ep5",
       "hf_destination": "ready/twoffn_E2_noise0001_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2859_gpu0",
+      "launch_pid": 45496
     },
     {
       "arm_id": "twoffn_E2_noise0001_frozen_ep5",
@@ -181,7 +195,9 @@
       "wandb_destination": "ready/twoffn_E2_noise0001_frozen_ep5",
       "hf_destination": "ready/twoffn_E2_noise0001_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2859_gpu1",
+      "launch_pid": 45497
     },
     {
       "arm_id": "twoffn_E4_noise0001_learned_ep5",
@@ -201,7 +217,9 @@
       "wandb_destination": "ready/twoffn_E4_noise0001_learned_ep5",
       "hf_destination": "ready/twoffn_E4_noise0001_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2899_gpu0",
+      "launch_pid": 6319
     },
     {
       "arm_id": "twoffn_E4_noise0001_frozen_ep5",
@@ -221,7 +239,9 @@
       "wandb_destination": "ready/twoffn_E4_noise0001_frozen_ep5",
       "hf_destination": "ready/twoffn_E4_noise0001_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2899_gpu1",
+      "launch_pid": 6320
     },
     {
       "arm_id": "twoffn_E16_noise0001_learned_ep5",

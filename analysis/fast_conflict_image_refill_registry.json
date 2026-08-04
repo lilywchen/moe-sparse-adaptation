@@ -28,8 +28,10 @@
       "wandb_destination": "ready/twoffn_E2_image_learned_ep5",
       "hf_destination": "ready/twoffn_E2_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2862_gpu0"
+      "status": "validated_pruned",
+      "assignment": "2862_gpu0_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_image_cosine_canonical_E2k1_ep5_s0_fastready_twoffn_E2_image_learned_ep5_c68bc80.json",
+      "decision": "do_not_advance_epoch5_tail_and_mechanism_fail"
     },
     {
       "arm_id": "twoffn_E2_image_frozen_ep5",
@@ -49,8 +51,10 @@
       "wandb_destination": "ready/twoffn_E2_image_frozen_ep5",
       "hf_destination": "ready/twoffn_E2_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2862_gpu1"
+      "status": "validated_control",
+      "assignment": "2862_gpu1_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_image_cosine_canonical_E2k1_ep5_s0_fastready_twoffn_E2_image_frozen_ep5_c68bc80.json",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E4_image_learned_ep5",
@@ -70,8 +74,10 @@
       "wandb_destination": "ready/twoffn_E4_image_learned_ep5",
       "hf_destination": "ready/twoffn_E4_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2887_gpu0"
+      "status": "validated_pruned",
+      "assignment": "2887_gpu0_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_image_cosine_canonical_E4k1_ep5_s0_fastready_twoffn_E4_image_learned_ep5_c68bc80.json",
+      "decision": "do_not_advance_epoch5_mean_id_and_mechanism_fail"
     },
     {
       "arm_id": "twoffn_E4_image_frozen_ep5",
@@ -91,8 +97,10 @@
       "wandb_destination": "ready/twoffn_E4_image_frozen_ep5",
       "hf_destination": "ready/twoffn_E4_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2887_gpu1"
+      "status": "validated_control",
+      "assignment": "2887_gpu1_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_image_cosine_canonical_E4k1_ep5_s0_fastready_twoffn_E4_image_frozen_ep5_c68bc80.json",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E32_image_learned_ep5",
@@ -112,8 +120,10 @@
       "wandb_destination": "ready/twoffn_E32_image_learned_ep5",
       "hf_destination": "ready/twoffn_E32_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2859_gpu0"
+      "status": "validated_pruned",
+      "assignment": "2859_gpu0_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_image_cosine_canonical_E32k1_ep5_s0_fastready_twoffn_E32_image_learned_ep5_c68bc80.json",
+      "decision": "do_not_advance_epoch5_tail_id_and_mechanism_fail"
     },
     {
       "arm_id": "twoffn_E32_image_frozen_ep5",
@@ -133,8 +143,10 @@
       "wandb_destination": "ready/twoffn_E32_image_frozen_ep5",
       "hf_destination": "ready/twoffn_E32_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2859_gpu1"
+      "status": "validated_control",
+      "assignment": "2859_gpu1_completed",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_image_cosine_canonical_E32k1_ep5_s0_fastready_twoffn_E32_image_frozen_ep5_c68bc80.json",
+      "decision": "mandatory_control_complete"
     }
   ],
   "multiplicity": "Exploratory seed-0 router screen; any apparent winner remains provisional until locked fresh-seed confirmation."

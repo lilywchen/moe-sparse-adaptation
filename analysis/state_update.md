@@ -2693,3 +2693,30 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   `analysis/fast_conflict_router_dynamics_epoch5_wave8_endpoints_validation.json`,
   `analysis/fast_conflict_handoff_incident_20260804.json`, and
   `analysis/fast_conflict_ready_queue_registry.json`.
+
+## 2026-08-04 13:10 EDT — wave-11 image/cosine endpoints and depth-control refill
+
+- Eight rows are strict-valid at epoch 5. Learned-minus-frozen OOD/ID/worst points are E2 image
+  `+0.609/+1.320/-0.284`, E4 image `-0.477/-0.827/+0.000`, E32 image
+  `+0.071/-0.182/-0.162`, and E2 cosine top-2 `-0.781/-1.475/+0.122`. All learned route-
+  reliance values and learned-minus-frozen reliance gaps remain far below the predeclared `0.01`
+  mechanism threshold. No pair advances.
+- Eight released H100s were refilled without duplication: 2887 has E32 cosine-top-2 learned/frozen,
+  2862 E16 image learned/frozen, 2859 E2 tiny-noise learned/frozen, and tester6/2899 E4 tiny-noise
+  learned/frozen. Zero H100s in running containers are idle. Containers 2874/2875 remain stopped
+  after one start request apiece; four authorized H100s are scheduler-unavailable because of
+  affinity/selector mismatch, unschedulable nodes, and insufficient GPU capacity.
+- Eight exact-built one-FFN block-11 learned/frozen controls join the remaining four E16/E32 tiny-
+  noise arms, restoring ready/backlog to `12/24`. The depth screen directly asks whether replacing
+  two adjacent FFNs was too disruptive; its outcome cannot be pooled with the within-architecture
+  learned/frozen estimand.
+- Accepted rows use clean execution `818fc8a`, matching seed/data order, four environments and
+  9,854 OOD-validation samples, finite fields, epoch-2/5 checkpoints, synced W&B records, and null
+  heldout-test fields. The abbreviated SHA was accepted only after unambiguous prefix normalization.
+  OOD test remains sealed; HF remains quota-blocked and the paper is unchanged.
+- Most plausible explanation: fixed expert partitioning or ordinary short-run optimization, with
+  seed-0 trajectory noise still possible. Sharp falsifier: a one- or two-FFN family with aligned
+  learned-over-frozen mean/tail gains, route reliance above `0.01`, noncollapsed use, and no more
+  than two ID points lost. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave11_image_cosine_and_refill_validation.json`
+  and `analysis/fast_conflict_ready_queue_hb13_depth_extension_registry.json`.

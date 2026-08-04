@@ -3618,3 +3618,37 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
 - **Next automatic action:** restore 2874 Jupyter visibility and validate the exact-build extension;
   recover ownership on 2862/2859 before retrying their noise pairs. The top-2 learned/frozen pairs
   advance only if mean and tail improve together and learned route reliance exceeds `0.01`.
+
+## 2026-08-04 13:10 EDT — image routing and E2 cosine top-2 close; eight short refills active
+
+- **Where we are:** eight new endpoint rows form four strict-valid epoch-5 learned/frozen pairs.
+  Four running containers (2887, 2862, 2859, and tester6/2899) have all eight H100s assigned and
+  zero running-container GPUs idle. Containers 2874/2875 remain stopped after one start request
+  each because the scheduler reports affinity/selector mismatch, two unschedulable nodes, and
+  insufficient GPU capacity; their four authorized H100s are unavailable rather than idle.
+  Twelve exact-built arms are ready and the hypothesis backlog remains 24.
+- **What moved:** E2/E4/E32 image-routing and E2 cosine-top-2 learned/frozen pairs finalized with
+  finite metrics, four environments/9,854 samples, epoch-2/5 artifacts, clean `818fc8a`, fatal-clear
+  logs, W&B sync, OOD-validation selection, and null heldout fields. All eight released GPUs were
+  immediately refilled: 2887 runs E32 cosine-top-2, 2862 E16 image routing, 2859 E2 tiny-noise,
+  and 2899 E4 tiny-noise, each as learned/frozen pairs. Eight one-FFN block-11 controls were exact-
+  built to restore ready depth.
+- **What we learned:** E2 image learned-minus-frozen is `+0.609/+1.320/-0.284` OOD/ID/worst-
+  experiment points, but learned route reliance is `0.00091` lower. E4 image is
+  `-0.477/-0.827/+0.000`, and E32 image is `+0.071/-0.182/-0.162`; neither has reliance near
+  `0.01`. E2 cosine-top-2 is `-0.781/-1.475/+0.122`, with a negative reliance gap. None advances.
+  Image coherence and E2 smoothing therefore do not establish useful adaptive routing at epoch 5;
+  fixed partitions, ordinary optimization, or seed-0 trajectory noise remain more plausible.
+- **Correctness/trust:** these are exploratory seed-0 paired results after multiple searches, not
+  fresh-seed confirmations. Learned and frozen rows share data order and parameter/compute class
+  within each pair; one-versus-two-FFN depth claims will remain labeled separately. OOD test is
+  sealed. The largest threat is multiplicity plus early-horizon variance.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_router_dynamics_epoch5_wave11_image_cosine_and_refill_validation.json`,
+  `analysis/fast_conflict_ready_queue_hb13_depth_extension_registry.json`, updated image/HB12
+  registries, and steward ledgers. HF is disabled because private quota is blocked; the manuscript
+  is unchanged.
+- **Next automatic action:** strict-validate the four active learned/frozen pairs at epoch 2/5 and
+  refill each release with the one-FFN block-11 controls. Continue beyond epoch 5 only for a small
+  family leader with aligned mean and tail improvement, learned route reliance above `0.01`, no
+  collapsed routing, and no more than two ID points lost.
