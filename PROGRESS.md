@@ -3477,3 +3477,39 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
 - **Next automatic action:** validate the E4 top-2 and matched frozen-noise/image controls at
   completion, then the linear pairs. Continue only a configuration that establishes both a useful
   learned-over-frozen effect and route dependence above `0.01` without losing tail performance.
+
+## 2026-08-04 05:20 EDT — matched controls weaken the routing story; six configuration mismatches repaired transparently
+
+- **Where we are:** four new epoch-5 rows are strict-valid. Ten short workers occupy all ten usable
+  H100s: 2887 runs corrected E4 linear learned/frozen; 2875 corrected E16 top-2 learned/frozen;
+  2874 E8 linear top-2 learned/frozen; 2862 corrected E8 linear top-1 learned/frozen; and 2859 E16
+  linear top-1 learned/frozen. Zero usable H100s are idle. Four exact-built E2/E32 linear controls
+  restore the runnable queue to 12; backlog remains 24. tester6/2899 remains scheduler-Pending.
+- **What moved:** E4 top-2 learned/frozen and the frozen noise/image controls finalized with finite
+  metrics, four environments/9,854 samples, epoch-2/5 checkpoints, clean `818fc8a`, fatal-clear
+  logs, OOD-validation selection, and null heldout fields. Result metadata exposed that six other
+  completed attempts had silently retained E8/cosine defaults because repeated `--override` flags
+  were parsed incorrectly. Those six are preserved and explicitly excluded from their intended
+  E16/E4/linear claims. One class-wide narrow repair relaunched them with a single override list;
+  four independent linear pairs filled the other releases. All ten repaired/new identities were
+  verified from their live W&B names and startup logs.
+- **What we learned:** E4 top-2 learned/frozen OOD is `2.496/2.679%`; learned is `-0.183` OOD,
+  `-0.131` ID, and `-0.203` worst-environment points below frozen, with lower route reliance.
+  Noise-0.001 learned/frozen is `3.258/3.065%` OOD: only `+0.193` mean and `+0.066` ID points,
+  while worst environment is `-0.041` and the reliance gap is only `+0.00041`. Image learned/frozen
+  is `2.659/2.517%`: `+0.142/+0.039/+0.162` OOD/ID/worst points, but learned reliance is lower.
+  These controls make fixed partitioning or ordinary optimization regularization more plausible
+  than useful adaptive conditional computation at this short horizon.
+- **Correctness/trust:** all accepted rows are exploratory seed 0 after multiple searches. The six
+  mismatched attempts are never pooled or silently discarded; each has an intended identity,
+  observed identity, exclusion consumer, and corrected r1 rerun in the validation artifact. The
+  repaired launch uses the exact live execution tree at clean `818fc8a`. OOD test remains sealed.
+  The largest threat is early-horizon/multiplicity noise plus route reliance staying below `0.01`.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_router_dynamics_epoch5_wave6_controls_and_config_exclusions.json`, the
+  updated ready registry, and steward ledgers. W&B is synced; HF remains quota-blocked and the
+  manuscript is unchanged.
+- **Next automatic action:** strict-validate the five corrected/new linear or top-2 pairs at their
+  first completed checkpoint, refill each release from the 12-arm queue, and promote nothing unless
+  learned routing gives a materially larger paired mean-plus-tail advantage with reliance above
+  `0.01` and noncollapsed expert use.

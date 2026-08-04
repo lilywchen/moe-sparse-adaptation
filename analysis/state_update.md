@@ -2578,3 +2578,29 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   falsifier: useful adaptive routing must produce a materially larger mean-plus-tail learned edge
   and route dependence above `0.01`. Trace:
   `analysis/fast_conflict_router_dynamics_epoch5_wave5_expert_count_validation.json`.
+
+## 2026-08-04 05:20 EDT — top-2, noise, and image frozen controls validate; intended-config mismatch is contained
+
+- E4 top-2 learned/frozen are strict-valid at `2.496/2.679%` OOD validation,
+  `3.922/4.053%` ID, and `0.812/1.015%` worst experiment. Learned-minus-frozen is
+  `-0.183/-0.131/-0.203` points and learned route reliance is lower. Top-2 smoothing with four
+  experts therefore does not reveal useful adaptive routing.
+- Noise-0.001 learned/frozen is `3.258/3.065%` OOD, `4.415/4.348%` ID, and
+  `0.974/1.015%` worst experiment. The small `+0.193` mean edge comes with a `-0.041` tail change
+  and only `+0.00041` route-reliance difference. Image learned/frozen is `2.659/2.517%` OOD and
+  has a small positive mean/tail contrast, but learned reliance is lower. Neither control supports
+  a causal learned-routing interpretation.
+- Six completed attempts were discovered from result metadata to have the wrong intended expert
+  count or router geometry because the command used repeated `--override` flags with an `nargs=*`
+  parser. They are preserved as configuration-mismatch failures and excluded from E16/E4/linear
+  claims. One bounded repair relaunched corrected E4 linear, E16 top-2, and E8 linear-top-1 pairs
+  using a single complete override list and distinct r1 run tags.
+- The remaining four GPUs launched E8 linear top-2 and E16 linear top-1 learned/frozen pairs. All
+  ten live identities match intent, use clean execution `818fc8a`, share seed/data order within
+  pairs, write persistent epoch-2/5 artifacts, and leave the OOD test untouched. E2/E32 linear
+  learned/frozen pairs exact-build in the live tree, preserving ready/backlog at `12/24`.
+- The leading explanation is fixed partitioning or ordinary optimization regularization. The
+  sharpest falsifier is a corrected linear/top-2 pair with a materially larger learned mean-plus-
+  tail advantage, reliance above `0.01`, and noncollapsed usage. Multiplicity and the epoch-5
+  horizon remain the largest threats. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave6_controls_and_config_exclusions.json`.

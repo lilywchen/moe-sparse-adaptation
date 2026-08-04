@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T05:20:00-04:00",
+  "classification": "exploratory_seed0_epoch5_matched_router_controls_with_explicit_configuration_exclusions",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "new_valid_rows": 4,
+    "new_valid_pairs": 3,
+    "configuration_mismatch_attempts_excluded": 6,
+    "environments": 4,
+    "ood_val_samples": 9854,
+    "milestones": [2, 5],
+    "checkpoints_per_valid_arm": 2,
+    "fatal_log_matches": 0
+  },
+  "valid_rows": {
+    "twoffn_E4_top2_learned_ep5": {
+      "ood_val": 0.024964481428861377,
+      "id": 0.03922485964739486,
+      "worst": 0.008116883116883116,
+      "train": 0.04197062302839117,
+      "route_reliance": 0.0014207428455449561,
+      "routing_entropy": 0.9994812837874312,
+      "experts_used": 4,
+      "total_params": 29494645,
+      "active_ffn_params": 4729346,
+      "status": "validated_pruned"
+    },
+    "twoffn_E4_top2_frozen_ep5": {
+      "ood_val": 0.026791150801704893,
+      "id": 0.0405298926425687,
+      "worst": 0.010146103896103896,
+      "train": 0.04431190851735016,
+      "route_reliance": 0.002334077531966714,
+      "routing_entropy": 0.9963300093678641,
+      "experts_used": 4,
+      "total_params": 29494645,
+      "active_ffn_params": 4729346,
+      "status": "validated_control"
+    },
+    "twoffn_noise001_frozen_ep5": {
+      "ood_val": 0.0306474528110412,
+      "id": 0.043484684329754754,
+      "worst": 0.010146103896103896,
+      "train": 0.050300670347003154,
+      "route_reliance": 0.002029632636492796,
+      "routing_entropy": 0.9994221345239408,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_control"
+    },
+    "twoffn_image_frozen_ep5": {
+      "ood_val": 0.025167444692510657,
+      "id": 0.03602383531960997,
+      "worst": 0.006087662337662338,
+      "train": 0.04039333596214511,
+      "route_reliance": 0.002942967322914554,
+      "routing_entropy": 0.998463519864756,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_control"
+    }
+  },
+  "paired_contrasts_points": {
+    "E4_top2_learned_minus_frozen": {
+      "ood_val": -0.1826669372843516,
+      "id": -0.130503299517384,
+      "worst": -0.202922077922078,
+      "route_reliance_gap": -0.0009133346864217579
+    },
+    "noise001_learned_minus_frozen": {
+      "ood_val": 0.1928151004668156,
+      "id": 0.0664828129616856,
+      "worst": -0.0405844155844155,
+      "route_reliance_gap": 0.0004059265272985563
+    },
+    "image_learned_minus_frozen": {
+      "ood_val": 0.1420742845544956,
+      "id": 0.0393972224958139,
+      "worst": 0.1623376623376623,
+      "route_reliance_gap": -0.0002029632636492801
+    }
+  },
+  "excluded_configuration_attempts": [
+    {
+      "intended_arm": "twoffn_E16_top2_learned_ep5",
+      "observed_identity": {"variant": "moe", "n_experts": 8, "top_k": 2, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe", "n_experts": 16, "top_k": 2, "geometry": "cosine"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as E16 evidence or pool with the corrected E16 pair.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    },
+    {
+      "intended_arm": "twoffn_E16_top2_frozen_ep5",
+      "observed_identity": {"variant": "moe_frozen", "n_experts": 8, "top_k": 2, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe_frozen", "n_experts": 16, "top_k": 2, "geometry": "cosine"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as E16 evidence or pool with the corrected E16 pair.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    },
+    {
+      "intended_arm": "twoffn_E4_linear_learned_ep5",
+      "observed_identity": {"variant": "moe", "n_experts": 8, "top_k": 1, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe", "n_experts": 4, "top_k": 1, "geometry": "linear"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as E4 or linear-router evidence.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    },
+    {
+      "intended_arm": "twoffn_E4_linear_frozen_ep5",
+      "observed_identity": {"variant": "moe_frozen", "n_experts": 8, "top_k": 1, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe_frozen", "n_experts": 4, "top_k": 1, "geometry": "linear"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as E4 or linear-router evidence.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    },
+    {
+      "intended_arm": "twoffn_linear_top1_learned_ep5",
+      "observed_identity": {"variant": "moe", "n_experts": 8, "top_k": 1, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe", "n_experts": 8, "top_k": 1, "geometry": "linear"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as linear-router evidence.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    },
+    {
+      "intended_arm": "twoffn_linear_top1_frozen_ep5",
+      "observed_identity": {"variant": "moe_frozen", "n_experts": 8, "top_k": 1, "geometry": "cosine"},
+      "intended_identity": {"variant": "moe_frozen", "n_experts": 8, "top_k": 1, "geometry": "linear"},
+      "reason": "Repeated --override occurrences were parsed with nargs=*; only the final occurrence was retained.",
+      "consumer_exclusion": "Do not consume as linear-router evidence.",
+      "repair": "Relaunched once with one --override followed by the complete override list and an r1 run tag."
+    }
+  ],
+  "repair_validation": {
+    "scope": "one narrow class-wide launch-command repair",
+    "rule": "one --override flag followed by every dotted override",
+    "corrected_reruns": 6,
+    "new_disjoint_arms": 4,
+    "running_workers": 10,
+    "idle_usable_h100s": 0,
+    "startup_fatal_matches": 0,
+    "observed_live_identities_match_intent": true,
+    "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804"
+  },
+  "ready_queue_extension": {
+    "exact_execution_tree": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-finalizer-87d1fe9",
+    "exact_execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+    "exact_builds": 4,
+    "errors": 0,
+    "blocks": [10, 11],
+    "geometry": "linear",
+    "arms": {
+      "E2_learned": {"variant": "moe", "n_experts": 2, "total_params": 24766837, "active_ffn_params": 2364674, "router_params": 1538},
+      "E2_frozen": {"variant": "moe_frozen", "n_experts": 2, "total_params": 24766837, "active_ffn_params": 2364674, "router_params": 1538},
+      "E32_learned": {"variant": "moe", "n_experts": 32, "total_params": 95683957, "active_ffn_params": 2387714, "router_params": 24578},
+      "E32_frozen": {"variant": "moe_frozen", "n_experts": 32, "total_params": 95683957, "active_ffn_params": 2387714, "router_params": 24578}
+    },
+    "ready_runnable_after_extension": 12,
+    "backlog_hypotheses": 24
+  },
+  "interpretation": "E4 top-2 adaptive routing is worse than its frozen control. Noise 0.001 and image routing retain only small learned-over-frozen mean differences, and neither produces a strong randomized-route dependence signal. Fixed expert partitions or ordinary optimization regularization remain more plausible than useful adaptive conditional computation at epoch 5.",
+  "alternative_explanation": "A useful learned router may require a different geometry or expert-bank size; the corrected linear E4/E8/E16 and E8 top-2 pairs are the immediate bounded tests.",
+  "sharp_falsifier": "A corrected linear or top-2 learned/frozen pair must show a materially larger mean-plus-tail learned advantage and route reliance above 0.01 without collapse; otherwise this short family is not promoted.",
+  "multiplicity": "All short screens are exploratory seed 0 after many comparisons. Configuration-mismatch attempts are preserved but excluded from intended-configuration claims; corrected winners would still require locked fresh-seed confirmation.",
+  "publication": {"wandb": "synced", "hf": "blocked_private_repository_storage_limit_no_retry", "paper": "unchanged"}
+}
