@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T23:18:46-04:00",
+  "campaign": "fast_conflict_screen_20260804",
+  "classification": "configuration_dispatch_failure_preserved_no_placement_claim",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "requested_key": "model.ffn_block_indices",
+  "consumed_key_before_repair": "model.block_indices",
+  "fallback_actually_used": "legacy_middle_placement_block_6",
+  "affected_results": [
+    {"arm_id":"high11_learned_ep2","requested_blocks":[11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.913,"id_pct":1.251,"worst_experiment_pct":0.487},
+    {"arm_id":"high11_frozen_ep2","requested_blocks":[11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.873,"id_pct":1.061,"worst_experiment_pct":0.325},
+    {"arm_id":"high11_dense_ep2","requested_blocks":[11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.812,"id_pct":0.872,"worst_experiment_pct":0.528},
+    {"arm_id":"low1_learned_ep2","requested_blocks":[1],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.923,"id_pct":1.022,"worst_experiment_pct":0.446},
+    {"arm_id":"low1_frozen_ep2","requested_blocks":[1],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.934,"id_pct":1.113,"worst_experiment_pct":0.487},
+    {"arm_id":"low1_dense_ep2","requested_blocks":[1],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.832,"id_pct":1.017,"worst_experiment_pct":0.325},
+    {"arm_id":"high10_11_learned_ep2","requested_blocks":[10,11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.983,"id_pct":1.184,"worst_experiment_pct":0.528},
+    {"arm_id":"high10_11_frozen_ep2","requested_blocks":[10,11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":1.076,"id_pct":1.263,"worst_experiment_pct":0.365},
+    {"arm_id":"high10_11_dense_ep2","requested_blocks":[10,11],"actual_blocks":[6],"n_blocks_converted":1,"ood_val_pct":0.883,"id_pct":0.950,"worst_experiment_pct":0.284}
+  ],
+  "unaffected_anchor": {"arm_id":"original_ep2","actual_blocks":[],"ood_val_pct":1.147,"id_pct":1.519,"worst_experiment_pct":0.406,"status":"valid_very_early_anchor"},
+  "routing_observation": "All sparse runs used 8/8 experts with entropy near 0.99, but randomized-route differences were only about -0.051 to +0.051 percentage points.",
+  "exclusion": "The nine intervention rows are excluded from conflict-localized placement, placebo, and one-versus-two-FFN comparisons. They may only be described as actual block-6 epoch-2 observations.",
+  "what_this_rules_out": "Nothing about blocks 11, 1, 10+11, or intervention depth; those models were not constructed.",
+  "repair_github_commit": "813015d2309cec6a49bbc886c18230e5b26b502c"
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T23:18:46-04:00",
+  "classification": "dispatch_repair_validated_and_corrected_epoch2_screen_running",
+  "github_commit": "813015d2309cec6a49bbc886c18230e5b26b502c",
+  "sciserver_execution_commit": "3b898c2fe0c3445ca65826a2b5a692aae475e143",
+  "checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-gradient-profile-564b661",
+  "repair": "Model construction and run naming now consume one fail-closed canonical helper accepting block_indices or ffn_block_indices and rejecting disagreement.",
+  "tests": {"focused_passed":37,"full_passed":109,"failures":0},
+  "preflight": {
+    "configs_built":12,
+    "requested_and_constructed": {"block11":[11],"block1_placebo":[1],"blocks10_11":[10,11],"block10_followup":[10]},
+    "one_ffn_moe_total":30676212,
+    "one_ffn_dense_total":30675834,
+    "two_ffn_moe_total":38950261,
+    "two_ffn_dense_total":38949505,
+    "unique_run_ids":true,
+    "sealed_test_assertions_passed":true
+  },
+  "campaign": "fast_conflict_screen_dispatchfix_20260804",
+  "local_registry": "analysis/fast_conflict_screen_dispatchfix_registry.json",
+  "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/fast_conflict_screen_dispatchfix_20260804",
+  "wandb_group": "rxrx1-cell-dino-fast-conflict-dispatchfix-20260804",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "running_assignments": {
+    "2887_gpu0":"high11_learned_ep2",
+    "2887_gpu1":"high11_frozen_ep2",
+    "2875_gpu0":"high11_dense_ep2",
+    "2875_gpu1":"high10_11_learned_ep2",
+    "2874_gpu0":"high10_11_frozen_ep2",
+    "2874_gpu1":"high10_11_dense_ep2",
+    "2862_gpu0":"low1_learned_ep2",
+    "2862_gpu1":"low1_frozen_ep2",
+    "2859_gpu0":"low1_dense_ep2",
+    "2859_gpu1":"high10_learned_ep2"
+  },
+  "ready_refills": ["high10_frozen_ep2","high10_dense_ep2"],
+  "retired_stalled_jobs": {
+    "count":3,
+    "reason":"GPU memory held with zero instantaneous utilization and no train-log advance for roughly 12 hours",
+    "preservation":"Existing logs and partial artifacts retained; no long-horizon restart."
+  },
+  "correctness": "Ten launch processes were live, all ten H100s showed active allocations/utilization during startup, logs identified 33 train experiments and 9,854 OOD-validation samples, and explicitly stated test untouched.",
+  "next_action": "Validate each corrected epoch-2 triplet, refill first with the block-10 frozen and dense controls, and advance only information-bearing paired families to epoch 5."
+}

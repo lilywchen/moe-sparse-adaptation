@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-08-03T23:18:46-04:00",
+  "campaign": "fast_conflict_screen_dispatchfix_20260804",
+  "github_commit": "813015d2309cec6a49bbc886c18230e5b26b502c",
+  "execution_commit": "3b898c2fe0c3445ca65826a2b5a692aae475e143",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "seed": 0,
+  "horizon": 2,
+  "wandb_group": "rxrx1-cell-dino-fast-conflict-dispatchfix-20260804",
+  "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/fast_conflict_screen_dispatchfix_20260804",
+  "remote_registry": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/fast_conflict_screen_dispatchfix_20260804/dispatchfix_registry.json",
+  "shared_question": "Does learned conditional routing help more at measured high-conflict FFNs than a low-conflict placebo, a frozen router, or nearly equal-total-parameter dense capacity?",
+  "arms": [
+    {"arm_id":"high11_learned_ep2","blocks":[11],"variant":"moe","role":"primary learned one-FFN high-conflict arm","comparator_family":["high11_frozen_ep2","high11_dense_ep2"],"status":"running","assignment":"2887_gpu0"},
+    {"arm_id":"high11_frozen_ep2","blocks":[11],"variant":"moe_frozen","role":"fixed-routing control","comparator_family":["high11_learned_ep2"],"status":"running","assignment":"2887_gpu1"},
+    {"arm_id":"high11_dense_ep2","blocks":[11],"variant":"dense_wide","role":"nearly equal-total-parameter dense control","comparator_family":["high11_learned_ep2"],"status":"running","assignment":"2875_gpu0"},
+    {"arm_id":"high10_11_learned_ep2","blocks":[10,11],"variant":"moe","role":"primary learned two-FFN high-conflict arm","comparator_family":["high10_11_frozen_ep2","high10_11_dense_ep2"],"status":"running","assignment":"2875_gpu1"},
+    {"arm_id":"high10_11_frozen_ep2","blocks":[10,11],"variant":"moe_frozen","role":"two-FFN fixed-routing control","comparator_family":["high10_11_learned_ep2"],"status":"running","assignment":"2874_gpu0"},
+    {"arm_id":"high10_11_dense_ep2","blocks":[10,11],"variant":"dense_wide","role":"two-FFN nearly equal-total-parameter dense control","comparator_family":["high10_11_learned_ep2"],"status":"running","assignment":"2874_gpu1"},
+    {"arm_id":"low1_learned_ep2","blocks":[1],"variant":"moe","role":"learned low-conflict placebo","comparator_family":["low1_frozen_ep2","low1_dense_ep2","high11_learned_ep2"],"status":"running","assignment":"2862_gpu0"},
+    {"arm_id":"low1_frozen_ep2","blocks":[1],"variant":"moe_frozen","role":"placebo fixed-routing control","comparator_family":["low1_learned_ep2"],"status":"running","assignment":"2862_gpu1"},
+    {"arm_id":"low1_dense_ep2","blocks":[1],"variant":"dense_wide","role":"placebo dense control","comparator_family":["low1_learned_ep2"],"status":"running","assignment":"2859_gpu0"},
+    {"arm_id":"high10_learned_ep2","blocks":[10],"variant":"moe","role":"single-layer localization follow-up","comparator_family":["high10_frozen_ep2","high10_dense_ep2","high11_learned_ep2"],"status":"running","assignment":"2859_gpu1"},
+    {"arm_id":"high10_frozen_ep2","blocks":[10],"variant":"moe_frozen","role":"first refill fixed-routing control","comparator_family":["high10_learned_ep2"],"status":"ready","assignment":null},
+    {"arm_id":"high10_dense_ep2","blocks":[10],"variant":"dense_wide","role":"second refill dense control","comparator_family":["high10_learned_ep2"],"status":"ready","assignment":null}
+  ],
+  "parameter_counts": {"one_ffn_moe":30676212,"one_ffn_dense":30675834,"one_ffn_gap":378,"two_ffn_moe":38950261,"two_ffn_dense":38949505,"two_ffn_gap":756},
+  "milestone_rule": "Epoch 2 checks construction, optimization, routing health, and early paired ordering. It is not a final accuracy answer. Complete block-10 controls refill first; only paired, noncollapsed, information-bearing families may continue to epoch 5.",
+  "multiplicity": "Exploratory seed-0 placement, intervention-depth, and routing-state screen. Any eventual winner requires a locked configuration and fresh seeds."
+}

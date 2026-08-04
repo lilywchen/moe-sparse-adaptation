@@ -1,5 +1,21 @@
 # Living scientific state
 
+## Current handoff — 2026-08-03 23:18 EDT
+
+The intended conflict-localized screen had a fail-closed correctness problem: all nine intervention
+rows requested blocks 11, 1, or 10+11 but actually constructed the legacy middle block 6. The rows
+are preserved and explicitly excluded from placement and intervention-depth claims; they rule out
+nothing about the intended layers. The unaffected original epoch-2 anchor remains a valid but very
+early reference. Trace: `analysis/fast_conflict_screen_epoch2_dispatch_failure.json`.
+
+The dispatch repair is on GitHub at `813015d`; clean SciServer execution commit `3b898c2` passes
+37 focused and 109 full tests plus 12 exact model builds. Ten corrected two-epoch arms are live on
+2887/2875/2874/2862/2859 with zero idle H100s: complete learned/frozen/dense triplets at block 11,
+blocks 10+11, and placebo block 1, plus a learned block-10 follow-up. The block-10 frozen/dense
+controls are next. No corrected efficacy result exists yet; selection is OOD validation, all OOD-
+test fields remain null, and OOD test is sealed. Trace:
+`analysis/fast_conflict_screen_dispatch_repair_validation.json`.
+
 Last verified: 2026-08-03 16:56 EDT
 
 ## Current handoff — 2026-08-03 16:56 EDT

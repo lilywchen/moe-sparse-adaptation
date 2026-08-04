@@ -3221,3 +3221,28 @@ usable GPUs and two authorized GPUs currently unavailable. Twelve fully specifie
 follow-ups and 24 mechanism hypotheses are ready in
 `analysis/fast_conflict_screen_registry.json`. The next completed epoch-2 triplet is validated as a
 pair before its leading family receives epoch 5; no broad 60- or 90-epoch search will be restarted.
+
+## 2026-08-03 23:18 EDT — layer-dispatch failure preserved, repaired, and ten corrected epoch-2 searches launched
+
+The first epoch-2 screen completed, but strict result inspection found that all nine non-original
+rows recorded `block_indices=[6]` and `n_blocks_converted=1`. The launch registry requested block
+11, block 1, or blocks 10+11 through `model.ffn_block_indices`, while end-to-end construction still
+read the older `model.block_indices` key and silently used the legacy middle placement. Those nine
+rows are preserved as actual block-6 observations but excluded from every placement, placebo, and
+one-versus-two-FFN comparison. Their 0.812--1.076% OOD-validation levels and near-zero randomized-
+route differences are too early and cannot answer the intended question. The original-width epoch-2
+anchor is unaffected. Trace: `analysis/fast_conflict_screen_epoch2_dispatch_failure.json`.
+
+GitHub commit `813015d2309cec6a49bbc886c18230e5b26b502c` makes naming and model construction share one
+fail-closed block-index resolver. The clean code-equivalent SciServer commit
+`3b898c2fe0c3445ca65826a2b5a692aae475e143` passes 37 focused and 109 full tests. Twelve exact
+preflight builds confirmed blocks 11, 1, 10+11, and 10, unique run IDs, and the expected one-/two-
+FFN parameter totals. Three legacy epoch-60 holders with no log advance for about 12 hours were
+recorded, stopped, and not restarted.
+
+Ten corrected epoch-2 processes now occupy all ten available H100s: the learned/frozen/dense block-11
+triplet; learned/frozen/dense blocks-10+11 triplet; learned/frozen/dense block-1 placebo triplet; and
+a learned block-10 localization follow-up. Block-10 frozen and dense controls are the first two
+refills. All use seed 0, matched data order, a fresh W&B group, persistent results/checkpoints,
+OOD-validation selection, and sealed OOD test. No corrected accuracy result exists yet. Trace:
+`analysis/fast_conflict_screen_dispatch_repair_validation.json`.
