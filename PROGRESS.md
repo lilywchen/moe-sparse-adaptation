@@ -3318,3 +3318,5 @@ and a finite `2x1139` real-data forward dry run after one narrow batch-unpacking
 screens also passes unique-ID and representative build preflight. The next release takes the
 highest-ranked nonduplicate arm from `analysis/fast_conflict_ready_queue_registry.json`. No HF
 retry was made because the private storage quota is unchanged; the paper remains unchanged.
+Validated evidence and launch registries were pushed in GitHub commit
+`f4ff4b5ab3ef52cd3336801487175e0defdf763b`.

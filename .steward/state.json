@@ -797,6 +797,7 @@
   "fast_conflict_epoch5_ready": [],
   "fast_conflict_epoch5_assignments": {},
   "fast_conflict_epoch5_validation": "analysis/fast_conflict_epoch5_validation.json",
+  "fast_conflict_epoch5_evidence_github_commit": "f4ff4b5ab3ef52cd3336801487175e0defdf763b",
   "fast_conflict_epoch5_twoffn_learned_minus_dense_points": {"ood_val":1.1974832555307489,"id":1.543878656554713,"worst_experiment":0.44586810427590286},
   "fast_conflict_epoch5_twoffn_learned_minus_frozen_points": {"ood_val":0.1116297950071038,"id":0.05417118093174442,"worst_experiment":0.4058441558441559},
   "fast_conflict_epoch5_interpretation": "two_conflict_localized_ffns_show_a_promising_sparse_over_dense_signal_but_most_of_it_is_shared_with_frozen_routing_and_route_reliance_is_below0p0022",
