@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
-  "classification": "FAST_CONFLICT_WAVE7_VALID10_NO_ROUTER_PROMOTION_REFILLED_ACTIVE10_READY12",
-  "last_action": "validate_corrected_linear_top2_pairs_prune_all_refill_five_endpoint_pairs_exact_build_next_ten_restore_ready12",
-  "last_action_at": "2026-08-04T06:42:00-04:00",
-  "last_verified_commit": "86c8ff606c433e727371e423bdb25419e9c2a069",
-  "valid_results": 122,
-  "expected_results": 10,
-  "active_gpu_workers": 6,
+  "classification": "FAST_CONFLICT_WAVE10_RECOVERED2_VALID_NO_PROMOTION_COSINE2_IMAGE6_READY12",
+  "last_action": "validate_E32_top2_checkpoint_recovery_prune_pair_refill_tester6_with_E2_cosine_top2_restore_ready12",
+  "last_action_at": "2026-08-04T11:54:00-04:00",
+  "last_verified_commit": "746a8770bc1460370699ec2ed36a143526bd0a26",
+  "valid_results": 132,
+  "expected_results": 8,
+  "active_gpu_workers": 8,
   "idle_h100s": 0,
-  "verified_active_gpu_workers_partial": 6,
+  "verified_active_gpu_workers_partial": 8,
   "verified_idle_h100s_partial": 0,
-  "gpu_accounting_scope": "fresh partial audit through 2026-08-04T08:42-04:00; six intended workers verified across 2887_2875_2874; four devices in 2862_2859 retain allocations without visible owners and are unavailable; tester6_2899 scheduler_pending and contributes zero",
-  "sciserver_resource_map": "2887_2875_2874 each have two verified short-run assignments; 2862_2859 have four unsafe unowned allocations after pre_epoch0 failures; tester6_2899 pending and contributes zero",
-  "current_gpu_assignments_as_of": "2026-08-04T06:42:00-04:00",
-  "current_gpu_assignments_currentness": "fresh complete per-container owner, PID, GPU memory/utilization, log, result, checkpoint, fatal, W&B, HF, and queue audit",
+  "gpu_accounting_scope": "fresh complete audit through 2026-08-04T11:54-04:00; all eight H100s in running containers have assigned image-routing or cosine-top2 work; four H100s in 2874_2875 are scheduler-Pending and unavailable",
+  "sciserver_resource_map": "2899 runs E2 cosine-top2 learned_frozen; 2887 runs E4 image learned_frozen; 2862 runs E2 image learned_frozen; 2859 runs E32 image learned_frozen; 2874_2875 each Pending after one start request with affinity_unschedulable_insufficient_gpu reason",
+  "current_gpu_assignments_as_of": "2026-08-04T11:54:00-04:00",
+  "current_gpu_assignments_currentness": "fresh complete per-container process, GPU memory/utilization, latest persistent artifacts, fatal/log, W&B, HF, queue, and scheduler audit",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
   "expected_rxrx1_rescue_results": 4,
@@ -1397,86 +1397,34 @@
   "extreme_temperature_aux60_test_status": "exact_committed_script_test_registry_hashes_repaired_once; seven_focused_pass; full_suite_exit_zero; eight_disjoint_one_cell_dryruns_pass",
   "extreme_temperature_aux60_wandb_group": "rxrx1-cell-dino-extreme-temperature-aux60-20260802",
   "extreme_temperature_aux60_hf_prefix": "rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
-  "ready_arms": 6,
-  "ready_arms_runnable_without_repaired_test_readback": 6,
+  "ready_arms": 12,
+  "ready_arms_runnable_without_repaired_test_readback": 12,
   "ready_arms_confirmation_test_gated": 0,
-  "ready_queue_test_status": "current registry contains two ready E4-image controls and four retry-ready E2/E32 noise arms; eight intended extension builds remain unverified after 2874 Jupyter outage",
+  "ready_queue_test_status": "twelve unique result-absent real Cell-DINO exact builds pass for E2_E32 cosine-top2, E16 image, and E2_E4_E16 tiny-noise learned_frozen pairs; blocks10_11 milestones2_5; no data or OOD-test access",
   "ready_queue_registry_commit": "751dbd3290b9674ab32371c235f880ad63cc5a78",
   "ready_queue_registry_tree": "4e43e319cd59eedb6fb716c9ba898e84e52fc6c9",
   "ready_queue_addendum_commit": "d5d2b63",
   "backlog_hypotheses": 24,
-  "wandb_current_status": "ten matched endpoint screens are assigned in rxrx1-cell-dino-router-dynamics-short-20260804; ten corrected/new epoch5 rows are strict-valid; no pair is promoted; HF publication remains blocked only by private-repository storage quota with no retry",
+  "wandb_current_status": "six image-routing workers and two E2 cosine-top2 workers are live in rxrx1-cell-dino-router-dynamics-short-20260804; ten endpoint rows including two recovered E32 top2 finals are strict-valid and no pair is promoted; HF is disabled for new runs while quota is blocked",
   "current_gpu_assignments": {
+    "2899": {
+      "gpu0": {"arm": "twoffn_E2_cosine_top2_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"},
+      "gpu1": {"arm": "twoffn_E2_cosine_top2_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"}
+    },
     "2887": {
-      "gpu0": {
-        "worker_pid": null,
-        "arm": "twoffn_E4_linear_learned_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      },
-      "gpu1": {
-        "worker_pid": null,
-        "arm": "twoffn_E4_linear_frozen_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      }
-    },
-    "2875": {
-      "gpu0": {
-        "worker_pid": null,
-        "arm": "twoffn_E16_top2_learned_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      },
-      "gpu1": {
-        "worker_pid": null,
-        "arm": "twoffn_E16_top2_frozen_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      }
-    },
-    "2874": {
-      "gpu0": {
-        "worker_pid": null,
-        "arm": "twoffn_linear_top2_learned_ep5",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      },
-      "gpu1": {
-        "worker_pid": null,
-        "arm": "twoffn_linear_top2_frozen_ep5",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      }
+      "gpu0": {"arm": "twoffn_E4_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"},
+      "gpu1": {"arm": "twoffn_E4_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"}
     },
     "2862": {
-      "gpu0": {
-        "worker_pid": null,
-        "arm": "twoffn_linear_top1_learned_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      },
-      "gpu1": {
-        "worker_pid": null,
-        "arm": "twoffn_linear_top1_frozen_ep5_r1",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      }
+      "gpu0": {"arm": "twoffn_E2_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"},
+      "gpu1": {"arm": "twoffn_E2_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"}
     },
     "2859": {
-      "gpu0": {
-        "worker_pid": null,
-        "arm": "twoffn_E16_linear_learned_ep5",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      },
-      "gpu1": {
-        "worker_pid": null,
-        "arm": "twoffn_E16_linear_frozen_ep5",
-        "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
-        "status": "live_identity_verified"
-      }
-    }
+      "gpu0": {"arm": "twoffn_E32_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"},
+      "gpu1": {"arm": "twoffn_E32_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "status": "running"}
+    },
+    "2875": {"status": "scheduler_pending_after_one_start_request", "reason": "11 affinity_or_selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unavailable"},
+    "2874": {"status": "scheduler_pending_after_one_start_request", "reason": "11 affinity_or_selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unavailable"}
   },
   "extreme_route_E64_epoch60_paired_validation": "analysis/extreme_route_E64_epoch60_paired_and_E4_seed1_refills_validation.json",
   "extreme_route_E64_epoch60_tail_safe_minus_no_aux_points": {
@@ -1555,12 +1503,12 @@
     "created_at": "2026-08-03 02:13:13.0",
     "domain": "Interactive 2H100 GPU",
     "image": "GPU-Essesials",
-    "status": "Pending",
-    "running": false,
+    "status": "running",
+    "running": true,
     "exit_code": 0,
-    "scheduler_reason": "0/16 nodes available: 11 affinity_or_selector mismatch, 2 unschedulable, 3 insufficient_nvidia_gpu; preemption not helpful on 13 and no victims on 3",
-    "duplicate_guard": "replacement_2899 is present and pending after exactly one start; do not start again and never create a duplicate",
-    "current_refresh": "authoritative detail remains Pending at 2026-08-04T05:07-04:00 with Running=false ExitCode=0; scheduler reason unchanged and no duplicate start issued",
+    "scheduler_reason": null,
+    "duplicate_guard": "replacement_2899 is present and running; never create or start a duplicate",
+    "current_refresh": "authoritative table reports running at 2026-08-04T11:24-04:00; both GPUs inspected and assigned to E32 top2 checkpoint recovery",
     "start_attempts_this_invocation": 0,
     "create_submissions_this_invocation": 0,
     "prepared_form": null,
@@ -2270,8 +2218,8 @@
   "fast_conflict_continuation_terminal_milestones": {
     "expected": 10,
     "valid": 10,
-    "full_results_recovered_valid": 4,
-    "full_results_excluded_pending_recovery": 6,
+    "full_results_recovered_valid": 6,
+    "full_results_excluded_pending_recovery": 4,
     "terminal_checkpoints": 10,
     "validation": "analysis/fast_conflict_epoch10_milestone_validation.json",
     "recovered_validation": "analysis/fast_conflict_recovered_finals_validation.json"
@@ -2315,15 +2263,18 @@
     "ood_test_batches_iterated": 0
   },
   "fast_conflict_ready_queue_registry": "analysis/fast_conflict_ready_queue_registry.json",
-  "fast_conflict_ready_queue_count": 6,
-  "fast_conflict_ready_active": 6,
+  "fast_conflict_image_refill_registry": "analysis/fast_conflict_image_refill_registry.json",
+  "fast_conflict_ready_queue_count": 12,
+  "fast_conflict_ready_active": 8,
   "fast_conflict_ready_assignments": {
-    "2887_gpu0": "twoffn_E2_linear_top2_learned_ep5",
-    "2887_gpu1": "twoffn_E2_linear_top2_frozen_ep5",
-    "2875_gpu0": "twoffn_E4_linear_top2_learned_ep5",
-    "2875_gpu1": "twoffn_E4_linear_top2_frozen_ep5",
-    "2874_gpu0": "twoffn_E32_linear_top2_learned_ep5",
-    "2874_gpu1": "twoffn_E32_linear_top2_frozen_ep5"
+    "2899_gpu0": "twoffn_E2_cosine_top2_learned_ep5",
+    "2899_gpu1": "twoffn_E2_cosine_top2_frozen_ep5",
+    "2887_gpu0": "twoffn_E4_image_learned_ep5",
+    "2887_gpu1": "twoffn_E4_image_frozen_ep5",
+    "2862_gpu0": "twoffn_E2_image_learned_ep5",
+    "2862_gpu1": "twoffn_E2_image_frozen_ep5",
+    "2859_gpu0": "twoffn_E32_image_learned_ep5",
+    "2859_gpu1": "twoffn_E32_image_frozen_ep5"
   },
   "fast_conflict_ready_wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
   "fast_conflict_ready_queue_preflight": {
@@ -2339,8 +2290,8 @@
         10,
         11
       ],
-      "expected": 10,
-      "valid": 10,
+      "expected": 14,
+      "valid": 14,
       "errors": 0,
       "unique_run_ids": true,
       "E2_top2_total": 24766837,
@@ -2352,7 +2303,9 @@
       "E32_top1_total": 95683957,
       "E32_top1_active": 2387714,
       "E4_image_total": 29494645,
-      "E4_image_active": 2366210
+      "E4_image_active": 2366210,
+      "E32_noise0001_total": 95683957,
+      "E32_noise0001_active": 2387714
     }
   },
   "fast_conflict_router_dynamics_wave1_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave1_validation.json",
@@ -2418,36 +2371,32 @@
   },
   "available_gpu_pool": {
     "running_containers": [
+      2899,
       2887,
-      2875,
-      2874,
       2862,
       2859
     ],
-    "usable_h100s": 6,
-    "active_workers": 6,
+    "usable_h100s": 8,
+    "active_workers": 8,
     "idle_usable_h100s": 0,
-    "authorized_but_unavailable_h100s": 6,
-    "blocked_by_unowned_allocations": [
-      "2862_gpu0",
-      "2862_gpu1",
-      "2859_gpu0",
-      "2859_gpu1"
-    ]
+    "authorized_but_unavailable_h100s": 4,
+    "blocked_by_unowned_allocations": []
   },
   "tester6": {
     "container_id": 2899,
-    "status": "Pending",
-    "running": false,
+    "status": "running",
+    "running": true,
     "exit_code": 0,
     "start_requests_this_invocation": 0,
     "create_requests_this_invocation": 0,
     "last_start_request": "prior_invocation_exactly_once",
-    "scheduler_reason": "11 affinity_or_selector_mismatch; 2 unschedulable; 3 insufficient_gpu; preemption_unhelpful_or_no_victims"
+    "scheduler_reason": null,
+    "gpu0": "twoffn_E2_cosine_top2_learned_ep5",
+    "gpu1": "twoffn_E2_cosine_top2_frozen_ep5"
   },
-  "largest_current_threat": "epoch5_seed0_multiplicity_and_every_endpoint_learned_route_reliance_below0p002; Jupyter visibility is lost on 2874 and four GPU allocations have no visible owner",
-  "next_gate": "restore 2874 visibility and inspect existing work; validate exact-build queue extension if present; retry E2/E32 noise pairs only after GPU ownership is unambiguous; require aligned mean-tail gain and learned reliance above0p01; OOD test sealed",
-  "last_material_update": "2026-08-04T08:42:00-04:00",
+  "largest_current_threat": "epoch5_seed0_multiplicity_and no learned router yet combines aligned mean_tail improvement with route reliance above0p01; four authorized H100s remain scheduler-unavailable",
+  "next_gate": "validate image-routing and cosine-top2 epoch2_5 milestones; refill every release from the exact-built ready12; require aligned mean-tail gain, ID loss at most2 points, and learned reliance above0p01; OOD test sealed",
+  "last_material_update": "2026-08-04T11:54:00-04:00",
   "fast_conflict_router_dynamics_wave7_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave7_corrected_linear_top2_validation.json",
   "fast_conflict_ready_queue_hb8_extension_validation": "analysis/fast_conflict_ready_queue_hb8_extension_validation.json",
   "fast_conflict_wave7_valid_rows": 10,
@@ -2466,7 +2415,7 @@
     "route_reliance_gap": 0.00142074
   },
   "fast_conflict_router_dynamics_wave8_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave8_endpoints_validation.json",
-  "fast_conflict_handoff_incident": "analysis/fast_conflict_handoff_incident_20260804.json",
+  "fast_conflict_handoff_incident": "analysis/fast_conflict_handoff_incident_20260804.json; status superseded for E2_E32_noise by later strict-valid finals",
   "fast_conflict_wave8_valid_rows": 10,
   "fast_conflict_wave8_valid_pairs": 5,
   "fast_conflict_wave8_promoted_pairs": 0,
@@ -2482,6 +2431,22 @@
     "worst_experiment": 0.081564,
     "route_reliance_gap": -0.000405927
   },
-  "fast_conflict_wave8_retry_ready_infrastructure_arms": 4,
-  "fast_conflict_queue_depth_exception": "six ready_or_retry_ready arms while 2874 Jupyter visibility is lost and the exact-build extension remains unverified"
+  "fast_conflict_wave8_retry_ready_infrastructure_arms": 0,
+  "fast_conflict_router_dynamics_wave9_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave9_top2_noise_and_image_refill_validation.json",
+  "fast_conflict_ready_queue_hb12_extension_registry": "analysis/fast_conflict_ready_queue_hb12_extension_registry.json",
+  "fast_conflict_wave9_valid_rows": 8,
+  "fast_conflict_wave9_valid_pairs": 4,
+  "fast_conflict_wave9_promoted_pairs": 0,
+  "fast_conflict_router_dynamics_wave10_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave10_recovery_and_cosine_refill_validation.json",
+  "fast_conflict_wave10_valid_rows": 2,
+  "fast_conflict_wave10_valid_pairs": 1,
+  "fast_conflict_wave10_promoted_pairs": 0,
+  "fast_conflict_wave10_E32_linear_top2_recovered_learned_minus_frozen_points": {
+    "ood_val": -0.071037,
+    "id": 0.056634,
+    "worst_experiment": -0.324675,
+    "route_reliance_gap": -0.000710371,
+    "routing_entropy_gap": 0.0069791
+  },
+  "fast_conflict_queue_depth_exception": null
 }

@@ -1,5 +1,47 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 11:54 EDT
+
+The recovered E32 linear-top-2 epoch-5 pair is strict-valid and negative for useful learned
+routing. Learned minus frozen is `-0.071` OOD-validation, `+0.057` ID, and `-0.325`
+worst-experiment points; route reliance changes by `-0.00071` and entropy by `+0.00698`. Both
+results are finalized from saved epoch-5 checkpoints without retraining, are hash-bound to those
+checkpoints, cover four environments/9,854 OOD-validation samples, record clean `818fc8a`, set
+`test_evaluated=false`, and leave all OOD-test fields null. No promotion is licensed. Trace:
+`analysis/fast_conflict_router_dynamics_epoch5_wave10_recovery_and_cosine_refill_validation.json`.
+
+tester6/2899 was immediately refilled with the E2 cosine-top-2 learned/frozen pair. Six other
+H100s continue image-routing pairs: E4 on 2887, E2 on 2862, and E32 on 2859. All eight H100s in
+running containers have assigned work. Containers 2874 and 2875 remain scheduler-Pending after
+one start request each, leaving four authorized H100s unavailable. A real Cell-DINO build added
+the E32 tiny-noise learned/frozen pair to the registry, restoring 12 ready arms; backlog remains
+24. W&B is live, HF remains disabled for new runs while private quota is exhausted, the OOD test
+is sealed, and the paper is unchanged.
+
+## Current handoff — 2026-08-04 11:24 EDT
+
+Four additional learned/frozen endpoint pairs are strict-valid at epoch 5. E2 linear top-2 has
+the largest OOD mean increment (`+0.375` points) and ID increment (`+0.707`), but its weakest
+experiment falls `0.162` points and learned-minus-frozen route reliance is only `+0.00051`.
+E4 linear top-2 is `+0.030/-0.052/+0.121` OOD/ID/worst points with `+0.00091` reliance. E2 noise
+`0.001` is essentially flat and has a negative reliance gap; E32 noise loses `0.152` OOD and
+`0.081` worst-experiment points. None is promoted. The earlier pre-epoch-0 infrastructure status
+for the four noise arms is preserved but superseded by their later strict-valid finals. All eight
+rows use OOD validation, cover four environments/9,854 samples, record clean `818fc8a`, and keep
+the OOD test sealed. Trace:
+`analysis/fast_conflict_router_dynamics_epoch5_wave9_top2_noise_and_image_refill_validation.json`.
+
+tester6/2899 is running and its two H100s are recovering the E32 linear-top-2 learned/frozen
+finals from saved epoch-5 checkpoints without retraining. Six other H100s train paired image
+routing: E4 on 2887, E2 on 2862, and E32 on 2859, learned on GPU0 and frozen on GPU1. Thus all
+eight H100s in running containers have assigned work. Stopped containers 2875 and 2874 each
+received one start request and remain Pending because 11 nodes fail affinity/selector constraints,
+two are unschedulable, and three have insufficient GPUs; no duplicate start or create was issued.
+The ready queue is 12 exact-built arms (E2/E32 cosine top-2, E16 image, and E2/E4/E16 tiny noise,
+each learned/frozen) with 24 hypotheses in backlog. W&B is live, HF is disabled on new runs after
+the private quota failure, and the paper is unchanged. Trace:
+`analysis/fast_conflict_ready_queue_hb12_extension_registry.json`.
+
 ## Current handoff — 2026-08-04 06:42 EDT
 
 Ten corrected/new epoch-5 rows form five strict-valid learned/frozen pairs at blocks 10+11. The

@@ -1,14 +1,61 @@
 # Progress ledger
 
-Last verified: 2026-08-04 06:42 EDT on SciServer and locally. Ten of ten currently available H100s
-are assigned to five matched learned/frozen epoch-5 pairs; tester6 remains scheduler-Pending and
-contributes no GPU. Twelve additional short arms are exact-built and runnable. The paper has not
-been changed because the new results remain exploratory seed-0 mechanism evidence.
+Last verified: 2026-08-04 11:54 EDT on SciServer and locally. All eight H100s in the four running
+containers have assigned work: six train E2/E4/E32 image-routing learned/frozen pairs and two on
+tester6 train the E2 cosine-top-2 learned/frozen pair. tester3/2874 and
+tester4/2875 remain scheduler-Pending after one start request each, so their four H100s are not
+available. Twelve additional short arms are exact-built and runnable. The paper has not been
+changed because the new results remain exploratory seed-0 mechanism evidence.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-04 11:54 EDT — recovered E32 top-2 is negative; tester6 refilled with E2 cosine top-2
+
+- The E32 linear-top-2 epoch-5 checkpoints now have strict-valid full learned/frozen results,
+  finalized without retraining. Learned minus frozen is `-0.071` OOD-validation, `+0.057` ID,
+  and `-0.325` worst-experiment points. Route reliance also falls by `0.00071`; router entropy
+  rises by `0.00698`. The pair is not advanced.
+- Both results are bound to their epoch-5 checkpoint hashes, use blocks 10+11, cover four
+  environments and 9,854 OOD-validation samples, record clean execution `818fc8a`, set
+  `test_evaluated=false`, and keep every OOD-test field null. The prior writer failure remains
+  documented; training was not repeated.
+- tester6/2899 was immediately refilled with the E2 cosine-top-2 learned/frozen pair. Containers
+  2887, 2862, and 2859 continue the E4, E2, and E32 image pairs. All eight H100s in running
+  containers have assigned work; the four GPUs in 2874/2875 remain scheduler-unavailable.
+- A real Cell-DINO build of the E32 tiny-noise learned/frozen pair adds two replacements, keeping
+  the ready queue at 12 unique, result-absent arms and the hypothesis backlog at 24. No result is
+  promoted: fixed expert partitioning or ordinary short-run optimization remains more plausible
+  than useful learned routing. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave10_recovery_and_cosine_refill_validation.json`
+  and `analysis/fast_conflict_ready_queue_hb12_extension_registry.json`.
+
+## 2026-08-04 11:24 EDT — four endpoint pairs validate; tester6 returns and image pairs refill
+
+- Eight new endpoint JSONs form four strict-valid learned/frozen epoch-5 pairs. E2 linear top-2 has
+  the largest mean increase at `+0.375` OOD-validation and `+0.707` ID points, but the weakest
+  experiment falls `0.162` points and the route-reliance increase is only `0.00051`. E4 linear
+  top-2 is `+0.030/-0.052/+0.121` OOD/ID/worst points with a `+0.00091` reliance change. E2 noise
+  `0.001` is effectively flat; E32 noise is worse on OOD mean and tail. None advances.
+- The earlier pre-epoch-0 infrastructure classification for E2/E32 noise is preserved as the
+  contemporaneous observation but superseded as the final status: all four later final JSONs are
+  present and pass finite metric, four-environment/9,854-sample, block, parameter, provenance,
+  split, and sealed-test checks. Nothing is silently excluded.
+- tester6/2899 is now running. Its two free H100s were assigned to fail-closed finalization of the
+  E32 linear-top-2 learned/frozen epoch-5 checkpoints; this recomputes validation/mechanism outputs
+  without retraining. Container 2887 runs E4 image learned/frozen, 2862 runs E2 image, and 2859
+  runs E32 image. All eight H100s in running containers have assigned work.
+- One start was requested for stopped tester4/2875 and one for tester3/2874. Both remain Pending:
+  11/16 nodes fail affinity/selector constraints, two are unschedulable, and three lack GPUs;
+  preemption cannot help. No duplicate start or container creation was issued.
+- The ready queue contains 12 new exact-built, result-absent arms: E2/E32 cosine top-2, E16 image,
+  and E2/E4/E16 tiny-noise learned/frozen pairs. Every build uses blocks 10+11, milestones 2/5,
+  unique run identity, and the real Cell-DINO checkpoint. W&B is live; HF is disabled on new runs
+  while private quota is exhausted. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave9_top2_noise_and_image_refill_validation.json`
+  and `analysis/fast_conflict_ready_queue_hb12_extension_registry.json`.
 
 ## 2026-08-04 06:42 EDT — corrected router pairs validate; five new endpoint pairs refill the pool
 

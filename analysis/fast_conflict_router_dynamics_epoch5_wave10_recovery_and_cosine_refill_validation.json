@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T11:54:00-04:00",
+  "grade": "strict exploratory seed-0 recovered endpoint pair; no promotion",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "validation": {
+    "valid_rows": 2,
+    "valid_pairs": 1,
+    "promoted_pairs": 0,
+    "finite_required_metrics": true,
+    "per_environment_coverage": {"environments": 4, "samples": 9854},
+    "block_indices": [10, 11],
+    "milestone": 5,
+    "git_dirty": false,
+    "all_ood_test_fields_null": true,
+    "result_parse_errors": 0,
+    "checkpoint_recovery": {
+      "training_repeated": false,
+      "results_written_atomically": true,
+      "checkpoint_epoch": 5,
+      "checkpoint_sha256_recorded": true,
+      "reason": "post_training_result_writer_failure"
+    }
+  },
+  "pair": {
+    "arm": "E32_linear_top2",
+    "learned": {
+      "acc_selection": 0.014207428455449563,
+      "acc_within": 0.01831970846055353,
+      "worst_env_val": 0.0036525974025974025,
+      "route_reliance": -0.00020296326364927994,
+      "routing_entropy": 0.9729567116406302,
+      "experts_used": 32.0,
+      "total_params": 95683957,
+      "active_ffn_params": 4750850,
+      "router_params": 24578
+    },
+    "frozen": {
+      "acc_selection": 0.014917799878222043,
+      "acc_within": 0.017753373387176204,
+      "worst_env_val": 0.006899350649350649,
+      "route_reliance": 0.0005074081591231999,
+      "routing_entropy": 0.9659776149077873,
+      "experts_used": 32.0,
+      "total_params": 95683957,
+      "active_ffn_params": 4750850,
+      "router_params": 24578
+    },
+    "learned_minus_frozen_points": {
+      "ood_val": -0.071037,
+      "id": 0.056634,
+      "worst_env": -0.324675
+    },
+    "route_reliance_delta": -0.0007103714227724798,
+    "routing_entropy_delta": 0.006979096732842915,
+    "decision": "prune"
+  },
+  "refill": {
+    "released_gpus": ["2899_gpu0", "2899_gpu1"],
+    "new_assignments": {
+      "2899_gpu0": "twoffn_E2_cosine_top2_learned_ep5",
+      "2899_gpu1": "twoffn_E2_cosine_top2_frozen_ep5"
+    },
+    "launch_validation": {
+      "distinct_process_owners": true,
+      "gpu_memory_mib": {"gpu0": 9237, "gpu1": 9189},
+      "wandb_live": true,
+      "fatal_startup_matches": 0,
+      "ood_test_evaluated": false
+    },
+    "other_running_assignments": {
+      "2887_gpu0": "twoffn_E4_image_learned_ep5",
+      "2887_gpu1": "twoffn_E4_image_frozen_ep5",
+      "2862_gpu0": "twoffn_E2_image_learned_ep5",
+      "2862_gpu1": "twoffn_E2_image_frozen_ep5",
+      "2859_gpu0": "twoffn_E32_image_learned_ep5",
+      "2859_gpu1": "twoffn_E32_image_frozen_ep5"
+    },
+    "stopped_pending": {
+      "2875": "0/16 nodes available: 11 affinity/selector mismatch, 2 unschedulable, 3 insufficient GPU; preemption unavailable",
+      "2874": "0/16 nodes available: 11 affinity/selector mismatch, 2 unschedulable, 3 insufficient GPU; preemption unavailable"
+    },
+    "active_workers": 8,
+    "idle_h100s_in_running_containers": 0
+  },
+  "queue_replenishment": {
+    "ready_runnable": 12,
+    "running_from_registry": 2,
+    "backlog_hypotheses": 24,
+    "new_exact_builds": 2,
+    "new_pair": "twoffn_E32_noise0001_learned_frozen_ep5",
+    "unique_run_ids": true,
+    "result_absent": true,
+    "block_indices": [10, 11],
+    "parameter_counts": {"total": 95683957, "active_ffn": 2387714, "router": 24578},
+    "config_parse": "passed",
+    "checkpoint_load": "passed_real_Cell-DINO_build",
+    "data_access": "none"
+  },
+  "interpretation": "E32 linear top-2 does not support useful adaptive routing at epoch 5: learned is slightly worse on OOD mean, materially worse on the weakest experiment, and less route-dependent than frozen.",
+  "alternative_explanation": "Fixed expert mixtures, ordinary optimization, and seed-0 short-horizon noise remain more plausible than adaptive routing.",
+  "sharp_falsifier": "A learned router must beat its frozen control on OOD mean and worst experiment, keep ID within two points, and show route reliance above 0.01 before a longer run is licensed.",
+  "multiplicity": "Exploratory seed-0 search after many screened variants; no fresh-seed confirmation and no OOD-test access.",
+  "publication": {
+    "wandb": "live",
+    "hf": "disabled_for_new_runs_after_private_quota_failure",
+    "paper": "unchanged_exploratory_evidence"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "created_at": "2026-08-04T01:17:00-04:00",
-  "updated_at": "2026-08-04T06:42:00-04:00",
+  "updated_at": "2026-08-04T11:54:00-04:00",
   "campaign": "fast_conflict_ready_queue_20260804",
   "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
   "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
@@ -1020,8 +1020,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2875_gpu0"
+      "status": "validated_pruned",
+      "notes": "Epoch-5 learned-minus-frozen OOD/ID/worst is +0.030/-0.052/+0.121 points; route-reliance gap +0.00091, below the 0.01 mechanism criterion."
     },
     {
       "arm_id": "twoffn_E4_linear_top2_frozen_ep5",
@@ -1053,8 +1053,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2875_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E16_linear_top2_learned_ep5",
@@ -1407,8 +1406,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2887_gpu0"
+      "status": "validated_pruned",
+      "notes": "Epoch-5 learned-minus-frozen OOD/ID/worst is +0.375/+0.707/-0.162 points; the weakest experiment regresses and route-reliance gap is only +0.00051."
     },
     {
       "arm_id": "twoffn_E2_linear_top2_frozen_ep5",
@@ -1441,8 +1440,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2887_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E32_linear_top2_learned_ep5",
@@ -1475,8 +1473,9 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2874_gpu0"
+      "status": "recovery_running",
+      "assignment": "tester6_2899_gpu0",
+      "notes": "Training completed through the epoch-5 checkpoint before container 2874 stopped; fail-closed finalization from the saved checkpoint is running without retraining."
     },
     {
       "arm_id": "twoffn_E32_linear_top2_frozen_ep5",
@@ -1509,8 +1508,9 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2874_gpu1"
+      "status": "recovery_running",
+      "assignment": "tester6_2899_gpu1",
+      "notes": "Training completed through the epoch-5 checkpoint before container 2874 stopped; fail-closed finalization from the saved checkpoint is running without retraining."
     },
     {
       "arm_id": "twoffn_E2_noise001_learned_ep5",
@@ -1542,8 +1542,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "retry_ready_infrastructure_failure",
-      "notes": "2862 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
+      "status": "validated_pruned",
+      "notes": "The earlier pre-epoch-0 classification is superseded by the later strict-valid final. Learned-minus-frozen OOD is +0.041 points with a negative route-reliance gap."
     },
     {
       "arm_id": "twoffn_E2_noise001_frozen_ep5",
@@ -1575,8 +1575,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "retry_ready_infrastructure_failure",
-      "notes": "2862 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
+      "status": "validated_control",
+      "notes": "The earlier pre-epoch-0 classification is superseded by the later strict-valid final."
     },
     {
       "arm_id": "twoffn_E32_noise001_learned_ep5",
@@ -1608,8 +1608,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "retry_ready_infrastructure_failure",
-      "notes": "2859 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
+      "status": "validated_pruned",
+      "notes": "The earlier pre-epoch-0 classification is superseded by the later strict-valid final. Learned-minus-frozen OOD/worst is -0.152/-0.081 points despite a +0.00081 route-reliance gap."
     },
     {
       "arm_id": "twoffn_E32_noise001_frozen_ep5",
@@ -1641,8 +1641,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "retry_ready_infrastructure_failure",
-      "notes": "2859 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
+      "status": "validated_control",
+      "notes": "The earlier pre-epoch-0 classification is superseded by the later strict-valid final."
     },
     {
       "arm_id": "twoffn_E4_image_learned_ep5",
@@ -1674,7 +1674,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu0"
     },
     {
       "arm_id": "twoffn_E4_image_frozen_ep5",
@@ -1706,8 +1707,12 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu1"
     }
   ],
+  "ready_queue_extension_registry": "analysis/fast_conflict_ready_queue_hb12_extension_registry.json",
+  "active_refill_registry": "analysis/fast_conflict_image_refill_registry.json",
+  "latest_handoff_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave10_recovery_and_cosine_refill_validation.json",
   "multiplicity": "Exploratory bounded router-dynamics queue selected after the epoch5 two-FFN result; winners remain provisional until locked fresh-seed confirmation."
 }

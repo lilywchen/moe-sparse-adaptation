@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T11:24:00-04:00",
+  "grade": "strict exploratory seed-0 endpoint pairs; no promotion",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "validation": {
+    "valid_rows": 8,
+    "valid_pairs": 4,
+    "promoted_pairs": 0,
+    "finite_required_metrics": true,
+    "per_environment_coverage": {"environments": 4, "samples": 9854},
+    "block_indices": [10, 11],
+    "milestones": [2, 5],
+    "git_dirty": false,
+    "all_ood_test_fields_null": true,
+    "result_parse_errors": 0
+  },
+  "pairs": {
+    "E2_noise001": {
+      "learned": {"acc_selection": 0.029328191597320884, "acc_within": 0.04294297252043731, "worst_env_val": 0.008928571428571428, "route_reliance": 0.00020296326364927994},
+      "frozen": {"acc_selection": 0.028922265070022327, "acc_within": 0.04208115827834138, "worst_env_val": 0.008522727272727272, "route_reliance": 0.001826669372843516},
+      "learned_minus_frozen_points": {"ood_val": 0.040593, "id": 0.086181, "worst_env": 0.040584},
+      "route_reliance_delta": -0.001624,
+      "decision": "prune"
+    },
+    "E32_noise001": {
+      "learned": {"acc_selection": 0.028313375279074487, "acc_within": 0.03966807840047277, "worst_env_val": 0.008522727272727272, "route_reliance": 0.004465191800284148},
+      "frozen": {"acc_selection": 0.029835599756444085, "acc_within": 0.038855510686496605, "worst_env_val": 0.009334415584415584, "route_reliance": 0.003653338745687032},
+      "learned_minus_frozen_points": {"ood_val": -0.152222, "id": 0.081257, "worst_env": -0.081169},
+      "route_reliance_delta": 0.000812,
+      "decision": "prune"
+    },
+    "E2_linear_top2": {
+      "learned": {"acc_selection": 0.022427440633245383, "acc_within": 0.033315276273022755, "worst_env_val": 0.006493506493506494, "route_reliance": 0.0012177795818956762},
+      "frozen": {"acc_selection": 0.018672620255733713, "acc_within": 0.026248399487836107, "worst_env_val": 0.008116883116883116, "route_reliance": 0.0007103714227724781},
+      "learned_minus_frozen_points": {"ood_val": 0.375482, "id": 0.706688, "worst_env": -0.162338},
+      "route_reliance_delta": 0.000507,
+      "decision": "prune"
+    },
+    "E4_linear_top2": {
+      "learned": {"acc_selection": 0.017860767201136593, "acc_within": 0.024869496700482618, "worst_env_val": 0.006493506493506494, "route_reliance": 0.00020296326364927994},
+      "frozen": {"acc_selection": 0.017556322305662675, "acc_within": 0.025386585245740174, "worst_env_val": 0.005280259951259139, "route_reliance": -0.0007103714227724781},
+      "learned_minus_frozen_points": {"ood_val": 0.030444, "id": -0.051709, "worst_env": 0.121325},
+      "route_reliance_delta": 0.000913,
+      "decision": "prune"
+    }
+  },
+  "incident_resolution": {
+    "supersedes_status_only": "analysis/fast_conflict_handoff_incident_20260804.json",
+    "preserved_fact": "The first visibility audit saw no owner before epoch 0 and correctly withheld a scientific claim.",
+    "new_fact": "All four E2/E32 noise final JSONs later appeared and pass strict validation; they are no longer infrastructure exclusions.",
+    "silent_exclusion": false
+  },
+  "pending_recovery": {
+    "pair": "E32_linear_top2",
+    "training_complete": true,
+    "epoch5_checkpoints_present": 2,
+    "final_jsons_present_at_validation": 0,
+    "action": "fail-closed finalization from saved checkpoints on tester6 GPUs 0 and 1; no retraining"
+  },
+  "refill": {
+    "image_pairs_running": {
+      "2887_gpu0": "twoffn_E4_image_learned_ep5",
+      "2887_gpu1": "twoffn_E4_image_frozen_ep5",
+      "2862_gpu0": "twoffn_E2_image_learned_ep5",
+      "2862_gpu1": "twoffn_E2_image_frozen_ep5",
+      "2859_gpu0": "twoffn_E32_image_learned_ep5",
+      "2859_gpu1": "twoffn_E32_image_frozen_ep5"
+    },
+    "recovery_running": {
+      "2899_gpu0": "E32_linear_top2_learned_finalizer",
+      "2899_gpu1": "E32_linear_top2_frozen_finalizer"
+    },
+    "stopped_pending": {
+      "2875": "0/16 nodes available: 11 affinity/selector mismatch, 2 unschedulable, 3 insufficient GPU; preemption unavailable",
+      "2874": "0/16 nodes available: 11 affinity/selector mismatch, 2 unschedulable, 3 insufficient GPU; preemption unavailable"
+    },
+    "idle_h100s_in_running_containers": 0,
+    "ready_queue": 12,
+    "backlog_hypotheses": 24,
+    "hf_status": "disabled_for_new_runs_after_private_quota_failure",
+    "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804"
+  },
+  "interpretation": "At epoch 5, linear top-2 smoothing and symmetry-breaking noise still do not produce an aligned learned-over-frozen mean, tail, and causal-routing signal. Fixed partitions and ordinary optimization remain more plausible.",
+  "sharp_falsifier": "A learned router must beat its frozen control on OOD mean and worst experiment, keep ID within two points, and show route reliance above 0.01 before a longer run is licensed.",
+  "multiplicity": "Exploratory seed-0 search after many screened variants; no fresh-seed confirmation and no OOD-test access."
+}
