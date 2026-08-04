@@ -1,5 +1,35 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 14:12 EDT
+
+Eight new epoch-5 rows form four strict-valid learned/frozen two-FFN pairs. E16 image routing is
+the only aligned pair: learned minus frozen is `+0.264/+0.101/+0.162` OOD-validation/ID/worst
+points and its route reliance is `0.00558` versus `0.00325`. That is interesting enough to make
+it the matched depth comparator, but not enough for direct continuation because the mean effect
+is small under multiplicity and reliance remains below `0.01`. E32 cosine top-2 loses mean and
+tail, E2 tiny-noise loses all three metrics with zero learned reliance, and E4 tiny-noise trades a
+small mean/ID increase for worse tail and lower reliance. No pair is promoted. All results have
+finite metrics, four environments/9,854 OOD-validation samples, epoch-2/5 checkpoints, clean
+execution `818fc8a`, `test_evaluated=false`, and null OOD-test fields. Trace:
+`analysis/fast_conflict_router_dynamics_epoch5_wave12_e16_image_top2_noise_and_depth_refill_validation.json`.
+
+All eight usable H100s now train one-FFN block-11 controls: E2 cosine top-2 on 2887, E16 image on
+2862, E2 tiny-noise on 2859, and E4 tiny-noise on tester6/2899, learned on GPU0 and frozen on
+GPU1. tester6 is healthy at about 8 GB per GPU, both jobs reached epoch 0, W&B is syncing, and
+fatal scans are zero. The first E16-image frozen launch exited before training because a
+backgrounded shell lost the intended working directory; it made no scientific artifact and is
+excluded. The one bounded explicit-directory relaunch is healthy. Containers 2874 and 2875 are
+stopped after their one prior start request; their four GPUs remain scheduler-unavailable.
+
+Eight additional E4/E32 cosine-top-2 and E2/E4 image one-FFN learned/frozen controls pass real
+Cell-DINO exact builds, have eight unique run IDs, zero existing results, exact capacities, and no
+data access. With four remaining E16/E32 two-FFN tiny-noise arms, ready depth is 12 and backlog is
+24. W&B is live, HF remains disabled for new runs while private quota is exhausted, OOD test is
+sealed, and the paper is unchanged. The leading explanation remains fixed partitions, ordinary
+optimization, or seed-0 early-trajectory noise. The one-FFN E16 image pair is the sharpest
+falsifier: it must improve mean and tail against both its frozen control and its two-FFN learned
+counterpart, exceed `0.01` route reliance, avoid collapse, and retain ID within two points.
+
 ## Current handoff — 2026-08-04 11:54 EDT
 
 The recovered E32 linear-top-2 epoch-5 pair is strict-valid and negative for useful learned

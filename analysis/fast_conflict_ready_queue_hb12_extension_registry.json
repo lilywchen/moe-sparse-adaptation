@@ -85,9 +85,12 @@
       "wandb_destination": "ready/twoffn_E32_cosine_top2_learned_ep5",
       "hf_destination": "ready/twoffn_E32_cosine_top2_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2887_gpu0",
-      "launch_pid": 109046
+      "status": "validated_pruned",
+      "assignment": "2887_gpu0_completed",
+      "launch_pid": 109046,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_token_cosine_canonical_E32k2_ep5_s0_fastready_twoffn_E32_cosine_top2_learned_ep5_c68bc80.json",
+      "wandb_run_id": "1gngk2pa",
+      "decision": "do_not_advance_frozen_wins_ood_tail_and_route_reliance"
     },
     {
       "arm_id": "twoffn_E32_cosine_top2_frozen_ep5",
@@ -107,9 +110,12 @@
       "wandb_destination": "ready/twoffn_E32_cosine_top2_frozen_ep5",
       "hf_destination": "ready/twoffn_E32_cosine_top2_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2887_gpu1",
-      "launch_pid": 109047
+      "status": "validated_control",
+      "assignment": "2887_gpu1_completed",
+      "launch_pid": 109047,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_token_cosine_canonical_E32k2_ep5_s0_fastready_twoffn_E32_cosine_top2_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "kv2oibuy",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E16_image_learned_ep5",
@@ -129,9 +135,12 @@
       "wandb_destination": "ready/twoffn_E16_image_learned_ep5",
       "hf_destination": "ready/twoffn_E16_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2862_gpu0",
-      "launch_pid": 47844
+      "status": "validated_depth_comparator_no_direct_promotion",
+      "assignment": "2862_gpu0_completed",
+      "launch_pid": 47844,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_image_cosine_canonical_E16k1_ep5_s0_fastready_twoffn_E16_image_learned_ep5_c68bc80.json",
+      "wandb_run_id": "rryn47a2",
+      "decision": "aligned_small_gain_but_reliance_below_0p01_use_as_one_vs_two_ffn_comparator"
     },
     {
       "arm_id": "twoffn_E16_image_frozen_ep5",
@@ -151,9 +160,12 @@
       "wandb_destination": "ready/twoffn_E16_image_frozen_ep5",
       "hf_destination": "ready/twoffn_E16_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2862_gpu1",
-      "launch_pid": 47845
+      "status": "validated_control",
+      "assignment": "2862_gpu1_completed",
+      "launch_pid": 47845,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_image_cosine_canonical_E16k1_ep5_s0_fastready_twoffn_E16_image_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "ojoyk5nb",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E2_noise0001_learned_ep5",
@@ -173,9 +185,12 @@
       "wandb_destination": "ready/twoffn_E2_noise0001_learned_ep5",
       "hf_destination": "ready/twoffn_E2_noise0001_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2859_gpu0",
-      "launch_pid": 45496
+      "status": "validated_pruned",
+      "assignment": "2859_gpu0_completed",
+      "launch_pid": 45496,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_token_cosine_canonical_E2k1_ep5_s0_fastready_twoffn_E2_noise0001_learned_ep5_c68bc80.json",
+      "wandb_run_id": "9en36vxn",
+      "decision": "do_not_advance_frozen_wins_mean_id_tail_and_learned_reliance_zero"
     },
     {
       "arm_id": "twoffn_E2_noise0001_frozen_ep5",
@@ -195,9 +210,12 @@
       "wandb_destination": "ready/twoffn_E2_noise0001_frozen_ep5",
       "hf_destination": "ready/twoffn_E2_noise0001_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2859_gpu1",
-      "launch_pid": 45497
+      "status": "validated_control",
+      "assignment": "2859_gpu1_completed",
+      "launch_pid": 45497,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_token_cosine_canonical_E2k1_ep5_s0_fastready_twoffn_E2_noise0001_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "qtx117pr",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E4_noise0001_learned_ep5",
@@ -217,9 +235,12 @@
       "wandb_destination": "ready/twoffn_E4_noise0001_learned_ep5",
       "hf_destination": "ready/twoffn_E4_noise0001_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2899_gpu0",
-      "launch_pid": 6319
+      "status": "validated_pruned",
+      "assignment": "2899_gpu0_completed",
+      "launch_pid": 6319,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks10-11_token_cosine_canonical_E4k1_ep5_s0_fastready_twoffn_E4_noise0001_learned_ep5_c68bc80.json",
+      "wandb_run_id": "qvy0vsrh",
+      "decision": "do_not_advance_tail_and_route_reliance_below_frozen"
     },
     {
       "arm_id": "twoffn_E4_noise0001_frozen_ep5",
@@ -239,9 +260,12 @@
       "wandb_destination": "ready/twoffn_E4_noise0001_frozen_ep5",
       "hf_destination": "ready/twoffn_E4_noise0001_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "running",
-      "assignment": "2899_gpu1",
-      "launch_pid": 6320
+      "status": "validated_control",
+      "assignment": "2899_gpu1_completed",
+      "launch_pid": 6320,
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks10-11_token_cosine_canonical_E4k1_ep5_s0_fastready_twoffn_E4_noise0001_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "6107t1t0",
+      "decision": "mandatory_control_complete"
     },
     {
       "arm_id": "twoffn_E16_noise0001_learned_ep5",

@@ -1,16 +1,49 @@
 # Progress ledger
 
-Last verified: 2026-08-04 11:54 EDT on SciServer and locally. All eight H100s in the four running
-containers have assigned work: six train E2/E4/E32 image-routing learned/frozen pairs and two on
-tester6 train the E2 cosine-top-2 learned/frozen pair. tester3/2874 and
-tester4/2875 remain scheduler-Pending after one start request each, so their four H100s are not
-available. Twelve additional short arms are exact-built and runnable. The paper has not been
-changed because the new results remain exploratory seed-0 mechanism evidence.
+Last verified: 2026-08-04 14:12 EDT on SciServer and locally. All eight H100s in the four running
+containers train one-FFN block-11 learned/frozen depth controls: E2 cosine top-2 on 2887, E16
+image routing on 2862, E2 tiny-noise on 2859, and E4 tiny-noise on tester6/2899. Containers 2874
+and 2875 remain stopped after one prior start request each, so their four H100s are
+scheduler-unavailable. Twelve additional short arms are exact-built and runnable. The paper has
+not been changed because the new results remain exploratory seed-0 mechanism evidence.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-04 14:12 EDT — E16 image is the only aligned pair; all GPUs pivot to one-FFN depth controls
+
+- Eight new strict-valid epoch-5 JSONs form four learned/frozen pairs. E16 image routing is the
+  only pair with aligned mean, ID, and worst-experiment movement: `+0.264/+0.101/+0.162` points.
+  Its learned route reliance is `0.00558` versus `0.00325` frozen, the largest learned reliance in
+  this wave, but still about half the predeclared `0.01` mechanism signal. It is retained only as
+  the matched two-FFN comparator for the one-versus-two-FFN depth test, not promoted directly.
+- E32 cosine top-2 learned loses `0.203` OOD-validation and `0.081` worst-experiment points to its
+  frozen control. E2 tiny-noise loses `0.244/0.101/0.284` OOD/ID/worst points and has zero route
+  reliance. E4 tiny-noise gains `0.101` OOD and `0.241` ID points but loses `0.122` worst and has
+  lower route reliance than frozen. These exact two-FFN recipes do not advance.
+- Every released GPU was immediately refilled with matched one-FFN block-11 controls: E2 cosine
+  top-2 on 2887 (`112684/112685`), E16 image on 2862 (`50905/51903`), E2 tiny-noise on 2859
+  (`48703/48704`), and E4 tiny-noise on tester6/2899 (`9187/9188`). tester6 holds about 8 GB per
+  GPU, both jobs reached epoch 0, W&B runs `av4iz5sm`/`sdpwawdp` are syncing, and fatal scans are
+  zero. All 8/8 usable H100s are assigned; the four GPUs in stopped 2874/2875 remain unavailable.
+- The first E16-image frozen refill attempt exited before training because its working-directory
+  change ran in a backgrounded shell. It produced no milestone or result and is excluded. One
+  bounded relaunch with an explicit directory is healthy and is the only scientific run.
+- Eight more one-FFN block-11 learned/frozen arms were exact-built against the real Cell-DINO
+  checkpoint: E4/E32 cosine top-2 and E2/E4 image routing. All eight have unique run IDs, zero
+  existing results, no data access, and exact parameter accounting. Together with the four
+  remaining E16/E32 two-FFN tiny-noise arms, the ready queue is restored to 12; backlog is 24.
+  Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave12_e16_image_top2_noise_and_depth_refill_validation.json`,
+  `analysis/fast_conflict_ready_queue_hb13_depth_extension_registry.json`, and
+  `analysis/fast_conflict_ready_queue_hb14_depth_extension_registry.json`.
+
+The leading explanation remains fixed partitions, ordinary short-run optimization, or seed-0
+trajectory noise rather than a strong learned-router effect. The sharpest near-term falsifier is
+the one-FFN E16 image pair: learned must beat frozen and the two-FFN learned arm on mean and tail,
+with reliance above `0.01`, noncollapsed experts, and no more than two ID points lost. OOD test is
+sealed and multiplicity remains explicit.
 
 ## 2026-08-04 11:54 EDT — recovered E32 top-2 is negative; tester6 refilled with E2 cosine top-2
 
