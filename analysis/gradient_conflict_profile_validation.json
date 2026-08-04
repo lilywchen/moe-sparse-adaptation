@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T21:10:32-04:00",
+  "scientific_status": "diagnostic_mechanism_evidence_not_accuracy_evidence",
+  "campaign": "fast_discovery_gradient_conflict",
+  "execution_commit": "564b6613b44cb9843618e964bb11afbf7e3c10df",
+  "source_commit": "1948bb6",
+  "checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-gradient-profile-564b661",
+  "output_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/fast_discovery/gradient_conflict",
+  "method": {
+    "data_scope": "train_only",
+    "samples_per_environment": 8,
+    "draw_rounds": 3,
+    "sketch_dim": 4096,
+    "layers_profiled": 12,
+    "environments_profiled": 33,
+    "selection_split": null,
+    "test_evaluated": false,
+    "ood_test_fields": null
+  },
+  "coverage": {
+    "expected_profiles": 10,
+    "valid_profiles": 10,
+    "fatal_profiles": 0,
+    "checkpoints": ["pretrain", "epoch10", "epoch30", "epoch60", "epoch90"],
+    "gradient_draw_seeds": [0, 1]
+  },
+  "primary_seed0_rankings_most_to_least_conflict": {
+    "epoch10": [11, 10, 8, 9, 6, 5, 7, 4, 0, 1, 3, 2],
+    "epoch30": [11, 10, 9, 8, 7, 6, 5, 0, 2, 3, 4, 1],
+    "epoch60": [11, 10, 8, 9, 7, 6, 2, 3, 4, 5, 0, 1],
+    "epoch90": [0, 5, 2, 9, 6, 1, 4, 8, 10, 11, 7, 3]
+  },
+  "fresh_draw_seed1_rankings_most_to_least_conflict": {
+    "epoch10": [11, 10, 9, 8, 6, 5, 4, 3, 7, 1, 0, 2],
+    "epoch30": [11, 10, 9, 8, 7, 6, 2, 5, 0, 4, 3, 1],
+    "epoch60": [10, 11, 9, 7, 8, 0, 4, 6, 5, 2, 3, 1],
+    "epoch90": [5, 10, 7, 9, 4, 11, 0, 6, 2, 3, 8, 1],
+    "pretrain": [11, 2, 1, 9, 10, 7, 6, 5, 8, 4, 3, 0]
+  },
+  "selected_interventions": {
+    "one_ffn_high_conflict": [11],
+    "two_ffn_high_conflict": [10, 11],
+    "one_ffn_low_conflict_placebo": [1]
+  },
+  "interpretation": {
+    "result": "Block 11 is the reproducible high-conflict peak at epochs 10 and 30 and remains first or second at epoch 60; blocks 10 and 11 form the stable two-FFN high-conflict pair; block 1 is a reproducible low-conflict placebo at epochs 30 and 60.",
+    "alternative_explanation": "The metric may mainly reflect gradient noise or late-stage saturation rather than causal interference.",
+    "falsifier": "A learned sparse FFN at block 11 or blocks 10 and 11 must outperform its frozen-router and exact dense controls while reducing conflict; the same effect should be absent or smaller at placebo block 1.",
+    "epoch90_caveat": "Epoch-90 gradients are nearly orthogonal at almost every layer, so that checkpoint does not provide a discriminating placement signal.",
+    "multiplicity": "Layer selection used ten diagnostic profiles across five checkpoints and two gradient draws; all downstream accuracy claims remain exploratory until locked fresh-seed confirmation."
+  },
+  "validation_checks": {
+    "json_parseable": true,
+    "all_required_values_finite": true,
+    "all_12_ffns_present": true,
+    "all_33_training_environments_present": true,
+    "test_evaluated_false": true,
+    "heldout_accuracy_absent": true,
+    "fatal_scan_clear": true
+  }
+}

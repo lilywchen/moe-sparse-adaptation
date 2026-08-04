@@ -2358,3 +2358,29 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   30; epoch 60 (`+2.547`) and 90 (`+1.715`) added cost without strengthening that comparison.
   Trace: `analysis/fast_discovery_engineering_validation.json` and
   `analysis/fast_mechanistic_discovery_protocol.json`.
+
+## 2026-08-03 21:10 EDT — fast conflict-localized screen is live
+
+- Validated diagnostic coverage is 10/10 all-layer profiles. Across independent gradient draws,
+  block 11 is the stable high-conflict peak at epochs 10/30 and first-or-second at epoch 60;
+  blocks 10+11 are the selected two-FFN intervention and block 1 is the low-conflict placebo.
+  Epoch-90 profiles are saturated and not used for placement. This narrows the causal question but
+  is not efficacy evidence.
+- The five schedulable containers each run two distinct epoch-2 workers: 2887 has high11 learned
+  and dense; 2875 high11 frozen and low1 learned; 2874 low1 frozen and dense; 2862 high10+11
+  learned and dense; 2859 high10+11 frozen and the original-width anchor. All 10 usable H100s are
+  assigned and zero usable H100s are idle. Initial logs are fatal-clear; two-epoch results are not
+  yet present and therefore no accuracy interpretation is made.
+- tester6/2899 received one start and remains Pending/Running=false/exit0. Exact scheduler reason:
+  11 affinity-or-selector mismatches, 2 unschedulable nodes, and 3 insufficient-GPU nodes;
+  preemption is unhelpful or has no victims. No duplicate create or second start occurred.
+- Trust: execution is the clean tested commit `564b6613b44cb9843618e964bb11afbf7e3c10df`
+  corresponding to GitHub engineering commit `1948bb6`; paired data order, seed 0, checkpoint policy,
+  exact-total-parameter fairness, OOD-validation selection, and sealed OOD test are fixed. The
+  largest current threat is that conflict may be a noisy correlate rather than a causal placement
+  signal. Frozen-router and low-conflict placebo controls are the sharp falsifiers.
+- Ready/active/backlog are 12/10/24. The next automatic action is strict validation of the first
+  completed two-epoch triplet, followed by an epoch-5 refill only for a nonbroken, noncollapsed,
+  scientifically informative family. Trace:
+  `analysis/gradient_conflict_profile_validation.json` and
+  `analysis/fast_conflict_screen_registry.json`.

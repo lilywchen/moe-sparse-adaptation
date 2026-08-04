@@ -3191,3 +3191,33 @@ plus minute-fresh trainlogs; prior exact memory figures are not relabelled as cu
 remains Pending for the unchanged scheduler reason, with no start or create issued. Ready/backlog
 remain 12/26, W&B streams are live, HF remains quota-blocked, the paper is unchanged, and the OOD
 test remains sealed.
+
+## 2026-08-03 21:10 EDT — gradient localization validated; ten two-epoch paired screens launched
+
+The training-only all-layer profiler completed all 10 declared profiles: pretraining plus epochs
+10/30/60/90, each with two independent gradient draws, 12 FFNs, 33 training experiments,
+8 samples per experiment, 3 rounds, and a 4,096-dimensional deterministic sketch. Every JSON is
+parseable and finite, the fatal scan is clear, and the profiler records no selection split,
+`test_evaluated=false`, and no held-out accuracy fields. Block 11 is the reproducible conflict peak
+at epochs 10 and 30 and remains first or second at epoch 60; blocks 10+11 form the high-conflict
+two-FFN intervention; block 1 is the low-conflict placebo at epochs 30 and 60. Epoch-90 conflict is
+nearly saturated across all layers and is not a useful placement discriminator. This is diagnostic
+mechanism evidence, not an accuracy improvement. Trace:
+`analysis/gradient_conflict_profile_validation.json`.
+
+Ten disjoint epoch-2 arms now occupy all 10 schedulable H100s across containers
+2887/2875/2874/2862/2859: learned, frozen-router, and exact-total-parameter-matched dense controls
+at block 11; the same triplet at placebo block 1; learned/frozen/dense controls at blocks 10+11;
+and an original-width Cell-DINO anchor. The single-block sparse/dense totals are
+30,676,212/30,675,834 (378 parameters apart); the expected two-block totals are
+38,950,261/38,949,505 (756 apart). All use seed 0, the same data order and optimizer, save an
+epoch-2 checkpoint, select only on OOD validation, and keep OOD test sealed. Initial processes are
+live with GPU memory allocated and no fatal signatures; no accuracy result is yet available.
+
+Tester6 replacement 2899 received exactly one start request and remains scheduler-Pending with
+zero available GPUs: 11 nodes fail affinity/selector, 2 are unschedulable, and 3 lack GPUs;
+preemption is unhelpful or has no victims. Thus the usable pool is 10/10 occupied, with zero idle
+usable GPUs and two authorized GPUs currently unavailable. Twelve fully specified 5/10-epoch
+follow-ups and 24 mechanism hypotheses are ready in
+`analysis/fast_conflict_screen_registry.json`. The next completed epoch-2 triplet is validated as a
+pair before its leading family receives epoch 5; no broad 60- or 90-epoch search will be restarted.
