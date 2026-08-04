@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T15:01:00-04:00",
+  "campaign": "fast_conflict_ready_queue_20260804",
+  "evidence_grade": "strict exploratory seed-0 epoch-5 matched one-FFN depth controls; not confirmatory",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "execution_commit_result_prefix": "818fc8a",
+  "commit_prefix_validation": "8_of_8_match_clean_execution_commit_prefix",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "heldout_fields": "all_null",
+  "validated_rows": 8,
+  "validated_pairs": 4,
+  "common_checks": {
+    "json_parseable": true,
+    "finite_required_metrics": true,
+    "environment_count": 4,
+    "ood_validation_samples": 9854,
+    "epoch2_and_epoch5_milestones_present": true,
+    "epoch2_and_epoch5_checkpoints_present": true,
+    "block_indices": [11],
+    "n_blocks_converted": 1,
+    "seed": 0,
+    "git_dirty": false,
+    "fatal_log_matches": 0,
+    "wandb_completed_runs_synced": 8,
+    "hf_new_run_upload": "disabled_after_private_repository_quota_failure"
+  },
+  "rows": [
+    {
+      "arm_id": "oneffn_block11_E16_image_learned_ep5",
+      "variant": "moe",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks11_image_cosine_canonical_E16k1_ep5_s0_fastready_oneffn_block11_E16_image_learned_ep5_c68bc80.json",
+      "wandb_run_id": "b135hg6g",
+      "metrics": {"ood_val": 0.030545971179216563, "id": 0.03986506451295184, "worst_experiment": 0.008116883116883116, "route_reliance": 0.002435559163791356, "randomized_routes_ood_val": 0.028110412015425208, "routing_entropy": 0.990102882846214, "experts_used": 16},
+      "parameter_counts": {"total": 40131828, "ffn_block": 18911233, "active_ffn": 1187713, "router": 6145}
+    },
+    {
+      "arm_id": "oneffn_block11_E16_image_frozen_ep5",
+      "variant": "moe_frozen",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks11_image_cosine_canonical_E16k1_ep5_s0_fastready_oneffn_block11_E16_image_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "rcxj5biw",
+      "metrics": {"ood_val": 0.029023746701846966, "id": 0.040628385698808236, "worst_experiment": 0.008522727272727272, "route_reliance": 0.0022325959001420724, "randomized_routes_ood_val": 0.026791150801704893, "routing_entropy": 0.9780348880237905, "experts_used": 16},
+      "parameter_counts": {"total": 40131828, "ffn_block": 18911233, "active_ffn": 1187713, "router": 6145}
+    },
+    {
+      "arm_id": "oneffn_block11_E2_noise0001_learned_ep5",
+      "variant": "moe",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks11_token_cosine_canonical_E2k1_ep5_s0_fastready_oneffn_block11_E2_noise0001_learned_ep5_c68bc80.json",
+      "wandb_run_id": "wmdycrdy",
+      "metrics": {"ood_val": 0.032169677288410796, "id": 0.04688269477001871, "worst_experiment": 0.010551948051948052, "route_reliance": 0.0006088897909478364, "randomized_routes_ood_val": 0.03156078749746296, "routing_entropy": 0.9999362458114496, "experts_used": 2},
+      "parameter_counts": {"total": 23584500, "ffn_block": 2363905, "active_ffn": 1182337, "router": 769}
+    },
+    {
+      "arm_id": "oneffn_block11_E2_noise0001_frozen_ep5",
+      "variant": "moe_frozen",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks11_token_cosine_canonical_E2k1_ep5_s0_fastready_oneffn_block11_E2_noise0001_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "9bgb4uht",
+      "metrics": {"ood_val": 0.03237264055206008, "id": 0.045676154831084406, "worst_experiment": 0.010957792207792208, "route_reliance": 0.0003044448954739182, "randomized_routes_ood_val": 0.03206819565658616, "routing_entropy": 0.9994387169998837, "experts_used": 2},
+      "parameter_counts": {"total": 23584500, "ffn_block": 2363905, "active_ffn": 1182337, "router": 769}
+    },
+    {
+      "arm_id": "oneffn_block11_E2_cosine_top2_learned_ep5",
+      "variant": "moe",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks11_token_cosine_canonical_E2k2_ep5_s0_fastready_oneffn_block11_E2_cosine_top2_learned_ep5_c68bc80.json",
+      "wandb_run_id": "9i32ycho",
+      "metrics": {"ood_val": 0.03135782423381368, "id": 0.043361568009455335, "worst_experiment": 0.008928571428571428, "route_reliance": 0.0005074081591232016, "randomized_routes_ood_val": 0.03085041607469048, "routing_entropy": 0.9973802467460213, "experts_used": 2},
+      "parameter_counts": {"total": 23584500, "ffn_block": 2363905, "active_ffn": 2363905, "router": 769}
+    },
+    {
+      "arm_id": "oneffn_block11_E2_cosine_top2_frozen_ep5",
+      "variant": "moe_frozen",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks11_token_cosine_canonical_E2k2_ep5_s0_fastready_oneffn_block11_E2_cosine_top2_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "zj8bmtf1",
+      "metrics": {"ood_val": 0.029429673229145525, "id": 0.04405101940313208, "worst_experiment": 0.008522727272727272, "route_reliance": 0.0, "randomized_routes_ood_val": 0.029429673229145525, "routing_entropy": 0.9949433362772557, "experts_used": 2},
+      "parameter_counts": {"total": 23584500, "ffn_block": 2363905, "active_ffn": 2363905, "router": 769}
+    },
+    {
+      "arm_id": "oneffn_block11_E4_noise0001_learned_ep5",
+      "variant": "moe",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_blocks11_token_cosine_canonical_E4k1_ep5_s0_fastready_oneffn_block11_E4_noise0001_learned_ep5_c68bc80.json",
+      "wandb_run_id": "av4iz5sm",
+      "metrics": {"ood_val": 0.02821189364724985, "id": 0.042524377031419286, "worst_experiment": 0.009334415584415584, "route_reliance": 0.0007103714227724781, "randomized_routes_ood_val": 0.02750152222447737, "routing_entropy": 0.9989642818775372, "experts_used": 4},
+      "parameter_counts": {"total": 25948404, "ffn_block": 4727809, "active_ffn": 1183105, "router": 1537}
+    },
+    {
+      "arm_id": "oneffn_block11_E4_noise0001_frozen_ep5",
+      "variant": "moe_frozen",
+      "result_path": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/results/rxrx1_moe_frozen_blocks11_token_cosine_canonical_E4k1_ep5_s0_fastready_oneffn_block11_E4_noise0001_frozen_ep5_c68bc80.json",
+      "wandb_run_id": "sdpwawdp",
+      "metrics": {"ood_val": 0.028110412015425208, "id": 0.0432630749532158, "worst_experiment": 0.010146103896103896, "route_reliance": 0.0014207428455449561, "randomized_routes_ood_val": 0.02668966916988025, "routing_entropy": 0.9984072894284571, "experts_used": 4},
+      "parameter_counts": {"total": 25948404, "ffn_block": 4727809, "active_ffn": 1183105, "router": 1537}
+    }
+  ],
+  "pair_deltas_learned_minus_frozen_points": {
+    "E16_image": {"ood_val": 0.1522224477369597, "id": -0.0763321185856396, "worst_experiment": -0.0405844155844156, "route_reliance_raw_gap": 0.0002029632636492836, "decision": "no_promotion"},
+    "E2_noise0001": {"ood_val": -0.0202963263649284, "id": 0.1206539938934304, "worst_experiment": -0.0405844155844156, "route_reliance_raw_gap": 0.0003044448954739182, "decision": "prune"},
+    "E2_cosine_top2": {"ood_val": 0.1928151004668155, "id": -0.0689451393676745, "worst_experiment": 0.0405844155844156, "route_reliance_raw_gap": 0.0005074081591232016, "decision": "no_promotion"},
+    "E4_noise0001": {"ood_val": 0.0101481631824642, "id": -0.0738697921796514, "worst_experiment": -0.0811688311688312, "route_reliance_raw_gap": -0.000710371422772478, "decision": "prune"}
+  },
+  "depth_comparison": {
+    "E16_image_oneffn_learned_minus_twoffn_learned_ood_points": 0.0811853054597119,
+    "E16_image_learned_over_frozen_advantage_oneffn_points": 0.1522224477369597,
+    "E16_image_learned_over_frozen_advantage_twoffn_points": 0.2638522427440632,
+    "E16_image_tail_delta_oneffn_points": -0.0405844155844156,
+    "E16_image_tail_delta_twoffn_points": 0.1623376623376623
+  },
+  "promoted_pairs": [],
+  "active_refill": {
+    "2887_gpu0": {"arm": "oneffn_block11_E4_cosine_top2_learned_ep5", "pid": 116219, "wandb_run_id": "lfmxbcye"},
+    "2887_gpu1": {"arm": "oneffn_block11_E4_cosine_top2_frozen_ep5", "pid": 116227, "wandb_run_id": "yz1hkvky"},
+    "2862_gpu0": {"arm": "oneffn_block11_E32_cosine_top2_learned_ep5", "pid": 54512, "wandb_run_id": "z4hfoey5"},
+    "2862_gpu1": {"arm": "oneffn_block11_E32_cosine_top2_frozen_ep5", "pid": 54520, "wandb_run_id": "2bm9vjuk"},
+    "2859_gpu0": {"arm": "oneffn_block11_E2_image_learned_ep5", "pid": 52297, "wandb_run_id": "i1ox7je4"},
+    "2859_gpu1": {"arm": "oneffn_block11_E2_image_frozen_ep5", "pid": 52305, "wandb_run_id": "mn89jaqe"},
+    "2899_gpu0": {"arm": "oneffn_block11_E4_image_learned_ep5", "pid": 12824, "wandb_run_id": "ueh2424i"},
+    "2899_gpu1": {"arm": "oneffn_block11_E4_image_frozen_ep5", "pid": 12832, "wandb_run_id": "33eizdf3"}
+  },
+  "pool": {"running_containers": [2899, 2887, 2862, 2859], "active_workers": 8, "idle_h100s_in_running_containers": 0, "scheduler_unavailable_containers": [2874, 2875], "authorized_but_unavailable_h100s": 4},
+  "excluded_failures": [{"arm": "oneffn_block11_E16_image_frozen_ep5_first_launch", "stage": "before_training", "cause": "working-directory change occurred in a backgrounded shell", "scientific_artifacts": 0, "repair": "one bounded explicit-directory relaunch", "pooling": "excluded"}],
+  "interpretation": "Reducing the intervention from two FFNs to one modestly raises absolute E16-image OOD accuracy, but the learned-over-frozen advantage shrinks and the tail direction reverses. E2 top-2 is the strongest aligned one-FFN pair, yet its 0.193-point mean and 0.041-point tail gains accompany only 0.00051 route reliance and a small ID loss. The one-FFN depth hypothesis therefore does not establish useful adaptive routing at epoch 5.",
+  "most_plausible_explanation": "reduced architectural disruption, fixed expert partitions, and ordinary seed-0 short-run optimization remain more plausible than a strong learned-router effect",
+  "sharpest_falsifier": "a remaining one-FFN learned/frozen pair must show aligned OOD mean and worst-experiment gains with route reliance above 0.01, noncollapsed experts, and no more than two ID points lost",
+  "multiplicity": "Exploratory seed-0 multi-arm epoch-5 search; all apparent winners are provisional and no fresh-seed confirmation has been run.",
+  "largest_threat": "many early seed-0 comparisons, extremely small randomized-route effects, and four authorized H100s unavailable to the scheduler",
+  "next_action": "validate the four active E4/E32 top-2 and E2/E4 image pairs at epochs 2 and 5, refill every release from the 12-arm ready queue, and keep OOD test sealed"
+}

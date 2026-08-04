@@ -1,9 +1,9 @@
 # Progress ledger
 
-Last verified: 2026-08-04 14:12 EDT on SciServer and locally. All eight H100s in the four running
-containers train one-FFN block-11 learned/frozen depth controls: E2 cosine top-2 on 2887, E16
-image routing on 2862, E2 tiny-noise on 2859, and E4 tiny-noise on tester6/2899. Containers 2874
-and 2875 remain stopped after one prior start request each, so their four H100s are
+Last verified: 2026-08-04 15:01 EDT on SciServer and locally. All eight H100s in the four running
+containers train the next one-FFN block-11 learned/frozen controls: E4 cosine top-2 on 2887, E32
+cosine top-2 on 2862, E2 image routing on 2859, and E4 image routing on tester6/2899. Containers
+2874 and 2875 remain stopped after one prior start request each, so their four H100s are
 scheduler-unavailable. Twelve additional short arms are exact-built and runnable. The paper has
 not been changed because the new results remain exploratory seed-0 mechanism evidence.
 
@@ -11,6 +11,29 @@ Research-state synchronization: GitHub commit `75c2e85`, containing the validate
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-04 15:01 EDT — one-FFN depth controls remain causal negatives; eight new short arms launch
+
+- Eight strict-valid epoch-5 rows form four one-FFN learned/frozen pairs. E2 cosine top-2 is the
+  strongest aligned pair at `+0.193/-0.069/+0.041` OOD-validation/ID/worst points, but route
+  reliance is only `0.00051`, about twenty times below the predeclared `0.01` mechanism signal.
+  E16 image is `+0.152/-0.076/-0.041`; E2 tiny-noise is `-0.020/+0.121/-0.041`; E4 tiny-noise is
+  `+0.010/-0.074/-0.081`. None advances.
+- Reducing E16 image routing from two sparse FFNs to one raises absolute learned OOD by only
+  `0.081` points (`3.055%` versus `2.973%`), while its learned-over-frozen advantage shrinks from
+  `0.264` to `0.152` points and its tail direction reverses. This favors reduced architectural
+  disruption or fixed partitions over a useful learned router.
+- All eight rows parse, are finite, use block 11 only, cover four environments and 9,854
+  OOD-validation samples, have epoch-2/5 checkpoints, clean execution `818fc8a`, synced W&B runs,
+  `test_evaluated=false`, and null OOD-test fields. The first E16-frozen pre-training workdir
+  failure remains excluded; only its bounded repaired run is consumed.
+- Every released GPU was refilled: 2887 runs E4 cosine-top-2, 2862 E32 cosine-top-2, 2859 E2
+  image, and tester6/2899 E4 image, learned on GPU0 and frozen on GPU1. The eight next E16/E32
+  tiny-noise and E8 image/top-2 one-FFN controls pass real Cell-DINO exact builds with unique IDs,
+  zero existing results, and no data access. Together with four remaining two-FFN controls, the
+  ready queue is 12 and backlog is 24. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave13_oneffn_depth_validation.json` and
+  `analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json`.
 
 ## 2026-08-04 14:12 EDT — E16 image is the only aligned pair; all GPUs pivot to one-FFN depth controls
 

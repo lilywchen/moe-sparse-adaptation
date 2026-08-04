@@ -32,9 +32,10 @@
       "overrides": ["model.variant=moe", "model.n_experts=2", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E2_cosine_top2_learned_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E2_cosine_top2_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E2_cosine_top2_learned_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2887_gpu0",
-      "launch_pid": 112684
+      "launch_pid": 112684,
+      "wandb_run_id": "9i32ycho"
     },
     {
       "arm_id": "oneffn_block11_E2_cosine_top2_frozen_ep5",
@@ -49,9 +50,10 @@
       "overrides": ["model.variant=moe_frozen", "model.n_experts=2", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E2_cosine_top2_frozen_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E2_cosine_top2_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E2_cosine_top2_frozen_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2887_gpu1",
-      "launch_pid": 112685
+      "launch_pid": 112685,
+      "wandb_run_id": "zj8bmtf1"
     },
     {
       "arm_id": "oneffn_block11_E16_image_learned_ep5",
@@ -66,9 +68,10 @@
       "overrides": ["model.variant=moe", "model.n_experts=16", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E16_image_learned_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E16_image_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E16_image_learned_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2862_gpu0",
-      "launch_pid": 50905
+      "launch_pid": 50905,
+      "wandb_run_id": "b135hg6g"
     },
     {
       "arm_id": "oneffn_block11_E16_image_frozen_ep5",
@@ -83,9 +86,10 @@
       "overrides": ["model.variant=moe_frozen", "model.n_experts=16", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E16_image_frozen_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E16_image_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E16_image_frozen_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2862_gpu1",
       "launch_pid": 51903,
+      "wandb_run_id": "rcxj5biw",
       "launch_exclusion": "first attempt exited before training because the shell changed directory in a backgrounded subshell; no milestone or result was produced; one bounded relaunch used an explicit working directory and is the only scientific run"
     },
     {
@@ -101,9 +105,10 @@
       "overrides": ["model.variant=moe", "model.n_experts=2", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E2_noise0001_learned_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E2_noise0001_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E2_noise0001_learned_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2859_gpu0",
-      "launch_pid": 48703
+      "launch_pid": 48703,
+      "wandb_run_id": "wmdycrdy"
     },
     {
       "arm_id": "oneffn_block11_E2_noise0001_frozen_ep5",
@@ -118,9 +123,10 @@
       "overrides": ["model.variant=moe_frozen", "model.n_experts=2", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E2_noise0001_frozen_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E2_noise0001_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E2_noise0001_frozen_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2859_gpu1",
-      "launch_pid": 48704
+      "launch_pid": 48704,
+      "wandb_run_id": "9bgb4uht"
     },
     {
       "arm_id": "oneffn_block11_E4_noise0001_learned_ep5",
@@ -135,7 +141,7 @@
       "overrides": ["model.variant=moe", "model.n_experts=4", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E4_noise0001_learned_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E4_noise0001_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E4_noise0001_learned_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2899_gpu0",
       "launch_pid": 9187,
       "wandb_run_id": "av4iz5sm"
@@ -153,7 +159,7 @@
       "overrides": ["model.variant=moe_frozen", "model.n_experts=4", "model.ffn_block_indices=[11]", "run_tag=fastready_oneffn_block11_E4_noise0001_frozen_ep5_c68bc80"],
       "wandb_destination": "ready/oneffn_block11_E4_noise0001_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E4_noise0001_frozen_ep5",
-      "status": "running",
+      "status": "validated_no_promotion",
       "assignment": "2899_gpu1",
       "launch_pid": 9188,
       "wandb_run_id": "sdpwawdp"

@@ -37,7 +37,10 @@
       "wandb_destination": "ready/oneffn_block11_E4_cosine_top2_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E4_cosine_top2_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu0",
+      "launch_pid": 116219,
+      "wandb_run_id": "lfmxbcye"
     },
     {
       "arm_id": "oneffn_block11_E4_cosine_top2_frozen_ep5",
@@ -57,7 +60,10 @@
       "wandb_destination": "ready/oneffn_block11_E4_cosine_top2_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E4_cosine_top2_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu1",
+      "launch_pid": 116227,
+      "wandb_run_id": "yz1hkvky"
     },
     {
       "arm_id": "oneffn_block11_E32_cosine_top2_learned_ep5",
@@ -77,7 +83,10 @@
       "wandb_destination": "ready/oneffn_block11_E32_cosine_top2_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E32_cosine_top2_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2862_gpu0",
+      "launch_pid": 54512,
+      "wandb_run_id": "z4hfoey5"
     },
     {
       "arm_id": "oneffn_block11_E32_cosine_top2_frozen_ep5",
@@ -97,7 +106,10 @@
       "wandb_destination": "ready/oneffn_block11_E32_cosine_top2_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E32_cosine_top2_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2862_gpu1",
+      "launch_pid": 54520,
+      "wandb_run_id": "2bm9vjuk"
     },
     {
       "arm_id": "oneffn_block11_E2_image_learned_ep5",
@@ -117,7 +129,10 @@
       "wandb_destination": "ready/oneffn_block11_E2_image_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E2_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2859_gpu0",
+      "launch_pid": 52297,
+      "wandb_run_id": "i1ox7je4"
     },
     {
       "arm_id": "oneffn_block11_E2_image_frozen_ep5",
@@ -137,7 +152,10 @@
       "wandb_destination": "ready/oneffn_block11_E2_image_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E2_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2859_gpu1",
+      "launch_pid": 52305,
+      "wandb_run_id": "mn89jaqe"
     },
     {
       "arm_id": "oneffn_block11_E4_image_learned_ep5",
@@ -157,7 +175,10 @@
       "wandb_destination": "ready/oneffn_block11_E4_image_learned_ep5",
       "hf_destination": "ready/oneffn_block11_E4_image_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2899_gpu0",
+      "launch_pid": 12824,
+      "wandb_run_id": "ueh2424i"
     },
     {
       "arm_id": "oneffn_block11_E4_image_frozen_ep5",
@@ -177,7 +198,10 @@
       "wandb_destination": "ready/oneffn_block11_E4_image_frozen_ep5",
       "hf_destination": "ready/oneffn_block11_E4_image_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2899_gpu1",
+      "launch_pid": 12832,
+      "wandb_run_id": "33eizdf3"
     }
   ],
   "preflight": {

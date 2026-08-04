@@ -1,5 +1,32 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 15:01 EDT
+
+Eight one-FFN block-11 epoch-5 rows form four strict-valid learned/frozen pairs. E2 cosine top-2
+is the strongest aligned pair at `+0.193/-0.069/+0.041` OOD-validation/ID/worst points, but its
+learned randomized-route reliance is only `0.00051`; it is not promoted. E16 image is
+`+0.152/-0.076/-0.041`, E2 tiny-noise is `-0.020/+0.121/-0.041`, and E4 tiny-noise is
+`+0.010/-0.074/-0.081`. Every row is finite, covers four environments/9,854 OOD-validation
+samples, uses block 11, has epoch-2/5 artifacts, records clean `818fc8a`, is W&B-synced, sets
+`test_evaluated=false`, and leaves all OOD-test fields null. The earlier E16-frozen pre-training
+workdir failure remains an explicit exclusion. Trace:
+`analysis/fast_conflict_router_dynamics_epoch5_wave13_oneffn_depth_validation.json`.
+
+The E16 depth comparison is especially informative: one FFN raises absolute learned OOD by only
+`0.081` points relative to the two-FFN learned arm, while learned-over-frozen shrinks from `0.264`
+to `0.152` points and worst-experiment movement flips from `+0.162` to `-0.041`. Reduced surgery,
+fixed partitions, or ordinary seed-0 optimization are therefore more plausible than useful
+adaptive routing.
+
+All eight usable H100s now run the next paired short screen: E4 cosine top-2 on 2887, E32 cosine
+top-2 on 2862, E2 image on 2859, and E4 image on tester6/2899, learned on GPU0 and frozen on GPU1.
+Containers 2874 and 2875 remain scheduler-unavailable after one prior start request each. Eight
+additional E16/E32 tiny-noise and E8 image/top-2 one-FFN controls pass real Cell-DINO exact builds,
+have unique run IDs and zero existing results, and accessed no data. With four remaining two-FFN
+controls, ready depth is 12 and backlog 24. W&B is live, HF remains quota-blocked, the paper is
+unchanged, and OOD test is sealed. Trace:
+`analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json`.
+
 ## Current handoff — 2026-08-04 14:12 EDT
 
 Eight new epoch-5 rows form four strict-valid learned/frozen two-FFN pairs. E16 image routing is
