@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:24:00-04:00",
+  "classification": "exploratory_seed0_epoch5_router_dynamics_screen",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected": 4,
+    "valid": 4,
+    "environments": 4,
+    "ood_val_samples": 9854,
+    "milestones": [2, 5],
+    "checkpoints_per_arm": 2,
+    "fatal_log_matches": 0
+  },
+  "reference": {
+    "arm": "high10_11_learned_ep5",
+    "ood_val": 0.029937081388268724,
+    "id": 0.039717324928592534,
+    "worst": 0.011363636363636364,
+    "route_reliance": 0.001623706109194236
+  },
+  "arms": {
+    "twoffn_temp003_ep5": {
+      "ood_val": 0.030038563020093362,
+      "id": 0.03966807840047277,
+      "worst": 0.010146103896103896,
+      "train": 0.046061711356466875,
+      "route_reliance": 0.002131114268317434,
+      "routing_entropy": 0.9991653638850322,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_temp015_ep5": {
+      "ood_val": 0.029226070996549624,
+      "id": 0.038363045025298925,
+      "worst": 0.008928571428571428,
+      "train": 0.04608635646687697,
+      "route_reliance": 0.0024355591637913523,
+      "routing_entropy": 0.9992259762248525,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_noise0001_ep5": {
+      "ood_val": 0.030343007915567283,
+      "id": 0.04289372599231754,
+      "worst": 0.009334415584415584,
+      "train": 0.04887125394321767,
+      "route_reliance": 0.001116297950071038,
+      "routing_entropy": 0.9995764706975606,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_noise001_ep5": {
+      "ood_val": 0.032575603815709356,
+      "id": 0.04414951245937161,
+      "worst": 0.00974025974025974,
+      "train": 0.04943809148264984,
+      "route_reliance": 0.0024355591637913523,
+      "routing_entropy": 0.999453796340031,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_family_leader_not_promoted"
+    }
+  },
+  "contrasts_to_reference_points": {
+    "temp003": {"ood_val": 0.010148163182463824, "id": -0.004924652811976599, "worst": -0.1217532467532468, "route_reliance_gap": 0.0005074081591231981},
+    "temp015": {"ood_val": -0.07110103917190996, "id": -0.13542799032936065, "worst": -0.2435064935064936, "route_reliance_gap": 0.0008118530545971163},
+    "noise0001": {"ood_val": 0.04059265272985599, "id": 0.3176401063725007, "worst": -0.202922077922078, "route_reliance_gap": -0.0005074081591231981},
+    "noise001": {"ood_val": 0.2638522427440632, "id": 0.44321875307790776, "worst": -0.1623376623376624, "route_reliance_gap": 0.0008118530545971163}
+  },
+  "interpretation": "Temperature 0.03 and 0.15 are effectively tied with the canonical learned router and remain causally inert. Symmetry noise 0.001 is the family-leading short optimization result, but its +0.264 OOD-point movement is small, its worst-environment accuracy is lower, and route reliance remains far below 0.01. This is not evidence that learned conditional routing is responsible.",
+  "alternative_explanation": "Ordinary initialization or optimization regularization explains the noise trend.",
+  "sharp_falsifier": "A matched frozen-noise control or later locked pair that matches the learned arm, or continued route reliance below 0.01, rules out adaptive routing as the cause.",
+  "multiplicity": "Four new rows are part of a broader exploratory seed-0 router-dynamics search; no fresh-seed confirmation has been run.",
+  "refill": {
+    "2874_gpu0": "twoffn_temp03_ep5",
+    "2874_gpu1": "twoffn_image_ep5",
+    "2875_gpu0": "twoffn_E4_learned_ep5",
+    "2875_gpu1": "twoffn_E4_frozen_ep5"
+  }
+}

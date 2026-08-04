@@ -3354,3 +3354,33 @@ top-1 triplets and top-2 pairs; 24 backlog hypotheses remain. OOD test is sealed
 scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace:
 `analysis/fast_conflict_ready_queue_extension_validation.json` and
 `analysis/fast_conflict_recovered_finals_validation.json`.
+
+## 2026-08-04 03:24 EDT — first router-dynamics wave validates and four releases refill
+
+- **Where we are:** four of the first ten router-dynamics screens are strict-valid. Ten H100
+  assignments remain occupied and zero usable H100s are idle: 2887 runs auxiliary weights 0 and
+  0.0001; 2862 runs 0.05 and 0.1; 2859 runs learned/frozen top-2; 2874 was refilled with temperature
+  0.30 and image routing; 2875 was refilled with the paired E4 learned/frozen models. Twelve exact-
+  build-checked arms remain ready and 24 hypotheses remain in backlog. tester6/2899 is still
+  Pending because 11 nodes fail affinity, two are unschedulable, and three lack GPU capacity.
+- **What moved:** temperature 0.03/0.15 and symmetry-noise 0.0001/0.001 completed with two checkpoints
+  each, valid epoch-2/5 streams, clean `818fc8a` provenance, four-environment coverage, null heldout
+  fields, and fatal-clear logs. The four released GPUs were immediately refilled. Four linear-router
+  learned/frozen top-1/top-2 arms were exact-built at the same blocks 10+11 and restored ready depth
+  to 12.
+- **What we learned:** temperature 0.03 and 0.15 differ negligibly from the prior two-FFN learned
+  reference. Noise 0.001 is the short family leader at `3.258%` OOD validation, `4.415%` ID, and
+  `0.974%` worst environment. Relative to the prior learned reference this is `+0.264/+0.443/-0.162`
+  points. Its route reliance is only `0.00244`, so the result currently favors initialization or
+  optimization regularization, not learned conditional routing. The sharp falsifier is a matched
+  frozen result that matches learned, or continued reliance below `0.01`.
+- **Correctness/trust:** all four results are exploratory seed 0 within a multiple-comparison search.
+  Parameter accounting is `38,950,261` total and `2,369,282` active FFN parameters; all eight
+  experts are used and entropy is at least `0.99917`. Selection is OOD validation only; OOD test is
+  sealed. The largest threat is multiplicity plus the small absolute effect and lower tail metric.
+- **Traceable artifacts:** `analysis/fast_conflict_router_dynamics_epoch5_wave1_validation.json`,
+  `analysis/fast_conflict_ready_queue_linear_extension_validation.json`, and the updated ready
+  registry and steward ledgers. HF remains quota-blocked; the manuscript is unchanged.
+- **Next automatic action:** validate the pending auxiliary/top-2 releases, put the E4 dense control
+  on the next free GPU, then test learned versus frozen within E4. Continue refilling from the
+  twelve-arm queue; no new broad 60/90-epoch search is authorized.

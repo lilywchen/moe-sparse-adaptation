@@ -2493,3 +2493,24 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   scientifically informative family. Trace:
   `analysis/gradient_conflict_profile_validation.json` and
   `analysis/fast_conflict_screen_registry.json`.
+
+## 2026-08-04 03:24 EDT — four short results validate; temperature is flat and noise is a small optimization lead
+
+- Four epoch-5 router-dynamics rows are strict-valid on execution commit `818fc8a`: temperature
+  0.03 and 0.15, and expert symmetry noise 0.0001 and 0.001. Each has finite metrics, four OOD-
+  validation environments, epoch-2/5 milestones and checkpoints, clean provenance, null heldout
+  fields, and no fatal log match. OOD test remains sealed.
+- OOD-validation/ID/worst for temperature 0.03 is `3.004/3.967/1.015%`; for temperature 0.15 it is
+  `2.923/3.836/0.893%`. Both remain within `0.071` OOD points of the prior two-FFN learned reference,
+  with route reliance only `0.00213--0.00244`; both are pruned.
+- Noise 0.0001 scores `3.034/4.289/0.933%`. Noise 0.001 scores `3.258/4.415/0.974%`, or
+  `+0.264/+0.443/-0.162` points versus the prior learned reference. It is the provisional family
+  leader but is not promoted here because route reliance is `0.00244`, the tail metric falls, and
+  this is one seed after multiple searches. Initialization/optimization regularization is the
+  leading explanation; a frozen-noise control is the sharpest discriminator.
+- Released GPUs were refilled with temperature 0.30, image routing, and E4 learned/frozen. Ten H100
+  assignments are occupied and zero usable H100s are idle. Four exact-built linear-router top-1/
+  top-2 learned/frozen arms restore the runnable queue to 12; backlog remains 24.
+- tester6/2899 remains Pending/Running=false/exit0 with the unchanged affinity, schedulability, and
+  GPU-capacity reason. No start or create was issued. W&B uses the declared clean group; HF remains
+  blocked by private storage quota, and the paper is unchanged.

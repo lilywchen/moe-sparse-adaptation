@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:24:00-04:00",
+  "purpose": "Restore twelve runnable short arms after two temperature and two expert-count refills.",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "exact_builds": {
+    "expected": 4,
+    "valid": 4,
+    "errors": 0,
+    "unique_run_ids": true,
+    "blocks": [10, 11],
+    "geometry": "linear",
+    "milestones": [2, 5]
+  },
+  "arms": {
+    "twoffn_linear_top1_learned_ep5": {"variant": "moe", "top_k": 1, "total_params": 38950261, "active_ffn_params": 2369282},
+    "twoffn_linear_top1_frozen_ep5": {"variant": "moe_frozen", "top_k": 1, "total_params": 38950261, "active_ffn_params": 2369282},
+    "twoffn_linear_top2_learned_ep5": {"variant": "moe", "top_k": 2, "total_params": 38950261, "active_ffn_params": 4732418},
+    "twoffn_linear_top2_frozen_ep5": {"variant": "moe_frozen", "top_k": 2, "total_params": 38950261, "active_ffn_params": 4732418}
+  },
+  "hypothesis": "A learned linear router may use feature magnitude that cosine routing discards, making assignments more causally important at the conflict-localized FFNs.",
+  "alternative_explanation": "Any change is fixed partitioning or top-2 active compute rather than learned routing.",
+  "falsifier": "Frozen matches learned within top-k, route reliance remains below 0.01, or mean/tail metrics are dominated.",
+  "queue_after_extension": {"running_search_arms": 10, "ready_runnable_arms": 12, "backlog_hypotheses": 24}
+}
