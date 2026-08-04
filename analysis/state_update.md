@@ -2628,3 +2628,26 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   tail advantage, reliance above `0.01`, and noncollapsed usage. Multiplicity and the epoch-5
   horizon remain the largest threats. Trace:
   `analysis/fast_conflict_router_dynamics_epoch5_wave6_controls_and_config_exclusions.json`.
+
+## 2026-08-04 08:42 EDT — wave-8 endpoint validation and degraded-control-plane handoff
+
+- Ten endpoint rows are strict-valid as five learned/frozen pairs on clean execution `818fc8a`.
+  Learned-minus-frozen OOD/ID/worst points are E2 linear top-1 `+0.315/+0.066/+0.284`, E16
+  linear top-2 `+0.101/+0.202/+0.082`, E16 noise `+0.091/+0.101/-0.244`, E4 noise
+  `+0.081/-0.064/-0.122`, and E32 linear top-1 `-0.162/-0.091/-0.244`. No pair is promoted.
+- All learned route-reliance values are below `0.002`; the best E2 endpoint is `0.00091`, far below
+  the predeclared `0.01` causal-mechanism threshold. Fixed partitioning, ordinary optimization, or
+  seed-0 trajectory noise remains the leading explanation. A materially larger aligned mean/tail
+  increment with reliance above `0.01` is the sharp falsifier.
+- Three top-2 pairs now occupy 2875 (E4), 2887 (E2), and 2874 (E32), six verified H100 workers.
+  The E2/E32 noise-pair attempts on 2862/2859 ended before epoch 0 with no result or fatal message;
+  four devices retain unowned 8--9 GB allocations and are unsafe to refill. tester6/2899 remains
+  scheduler-Pending. The ready/retry queue is six, backlog 24.
+- The 2874 Jupyter server/websocket became unreachable while SciServer still reported the container
+  running. Existing work must be inspected before any restart. The exact-build queue extension is
+  not counted until its artifact is observed. OOD test remains sealed; seed-0 multiplicity and
+  control-plane visibility are the largest threats.
+- Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave8_endpoints_validation.json`,
+  `analysis/fast_conflict_handoff_incident_20260804.json`, and
+  `analysis/fast_conflict_ready_queue_registry.json`.

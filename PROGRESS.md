@@ -3539,3 +3539,35 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
   first completed checkpoint, refill each release from the 12-arm queue, and promote nothing unless
   learned routing gives a materially larger paired mean-plus-tail advantage with reliance above
   `0.01` and noncollapsed expert use.
+
+## 2026-08-04 08:42 EDT — expert-count endpoints close small; three top-2 pairs replace them
+
+- **Where we are:** ten endpoint results form five strict-valid epoch-5 learned/frozen pairs.
+  Six H100s have verified training assignments: 2875 runs E4 linear top-2, 2887 runs E2 linear
+  top-2, and 2874 runs E32 linear top-2. Four devices in 2862/2859 report 8--9 GB allocations
+  without any visible owning process, so they are not safe to refill. tester6/2899 remains Pending
+  for node-affinity and GPU-capacity reasons. The runnable/retry queue is temporarily six and the
+  hypothesis backlog is 24.
+- **What moved:** E16 linear-top-2, E2/E32 linear-top-1, and E4/E16 noise-0.001 pairs validated
+  10/10 and none advanced. The three disjoint top-2 pairs launched with exact live identities,
+  persistent outputs, W&B tracking, and HF disabled while private quota is blocked. E2 and E32
+  noise pairs attempted on 2862/2859 but exited before epoch 0 without results or fatal messages;
+  they are operational failures, excluded from science, and remain retry-ready.
+- **What we learned:** E2 linear top-1 is best in this wave at `+0.315/+0.066/+0.284` OOD/ID/
+  worst-environment points over frozen, but route reliance is only `0.00091`. E16 linear top-2 is
+  `+0.101/+0.202/+0.082`; E16 noise is `+0.091/+0.101/-0.244`; E4 noise is
+  `+0.081/-0.064/-0.122`; E32 linear is `-0.162/-0.091/-0.244`. No learned router reaches the
+  predeclared `0.01` reliance threshold. Expert-count endpoints and bounded symmetry noise alone
+  therefore do not explain a useful adaptive-routing effect at epoch 5.
+- **Correctness/trust:** all ten accepted rows are exploratory seed 0 after multiple comparisons,
+  paired at fixed data order and fairness class, clean execution `818fc8a`, four environments and
+  9,854 OOD-validation samples, with finite metrics and null heldout-test fields. Six earlier
+  configuration mismatches and the four pre-epoch-0 infrastructure attempts remain excluded. OOD
+  test is sealed. The largest threat is that small epoch-5 differences are trajectory noise.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_router_dynamics_epoch5_wave8_endpoints_validation.json`,
+  `analysis/fast_conflict_handoff_incident_20260804.json`, the updated ready registry, and steward
+  ledgers. No manuscript or HF artifact changed.
+- **Next automatic action:** restore 2874 Jupyter visibility and validate the exact-build extension;
+  recover ownership on 2862/2859 before retrying their noise pairs. The top-2 learned/frozen pairs
+  advance only if mean and tail improve together and learned route reliance exceeds `0.01`.

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-04T08:42:00-04:00",
+  "classification": "operational_handoff_and_exclusion_record",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "scientific_results_affected": 0,
+  "incidents": [
+    {
+      "container_id": 2862,
+      "gpu_devices": [0, 1],
+      "intended_arms": ["twoffn_E2_noise001_learned_ep5", "twoffn_E2_noise001_frozen_ep5"],
+      "observed": "W&B initialization and fresh logs, followed by zero visible training processes, zero epoch records, zero result JSONs, and zero fatal-log matches; both devices continued to report about 8 GB allocated",
+      "classification": "infrastructure_failure_before_epoch0",
+      "scientific_exclusion": "No accuracy or mechanism evidence; arms remain retry-ready.",
+      "retry_condition": "Retry only after GPU allocation ownership is identified and the devices are demonstrably free or owned by the intended workers."
+    },
+    {
+      "container_id": 2859,
+      "gpu_devices": [0, 1],
+      "intended_arms": ["twoffn_E32_noise001_learned_ep5", "twoffn_E32_noise001_frozen_ep5"],
+      "observed": "W&B initialization and fresh logs, followed by zero visible training processes, zero epoch records, zero result JSONs, and zero fatal-log matches; both devices continued to report about 9 GB allocated",
+      "classification": "infrastructure_failure_before_epoch0",
+      "scientific_exclusion": "No accuracy or mechanism evidence; arms remain retry-ready.",
+      "retry_condition": "Retry only after GPU allocation ownership is identified and the devices are demonstrably free or owned by the intended workers."
+    },
+    {
+      "container_id": 2874,
+      "gpu_devices": [0, 1],
+      "intended_arms": ["twoffn_E32_linear_top2_learned_ep5", "twoffn_E32_linear_top2_frozen_ep5"],
+      "observed": "Both workers launched with the exact intended identities and held about 9.4/9.2 GB; the Jupyter server/websocket later became unreachable while the SciServer compute page continued to report the container as running.",
+      "classification": "control_plane_visibility_failure_after_verified_launch",
+      "scientific_exclusion": "No result has yet been accepted; live status is provisional until visibility returns.",
+      "retry_condition": "Do not restart blindly. Reconnect first, inspect process/result identity, and validate or recover the existing work."
+    }
+  ],
+  "pool_snapshot": {
+    "confirmed_training_gpus": 6,
+    "confirmed_assignments": {
+      "2875_gpu0": "twoffn_E4_linear_top2_learned_ep5",
+      "2875_gpu1": "twoffn_E4_linear_top2_frozen_ep5",
+      "2887_gpu0": "twoffn_E2_linear_top2_learned_ep5",
+      "2887_gpu1": "twoffn_E2_linear_top2_frozen_ep5",
+      "2874_gpu0": "twoffn_E32_linear_top2_learned_ep5",
+      "2874_gpu1": "twoffn_E32_linear_top2_frozen_ep5"
+    },
+    "blocked_by_unowned_allocations": ["2862_gpu0", "2862_gpu1", "2859_gpu0", "2859_gpu1"],
+    "tester6": {
+      "container_id": 2899,
+      "status": "Pending",
+      "scheduler_reason": "11 node-affinity/selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption not helpful or no victims"
+    }
+  },
+  "queue_snapshot": {
+    "running": 6,
+    "ready_or_retry_ready": 6,
+    "backlog_hypotheses": 24,
+    "queue_depth_exception": "Below the required 12 because the exact-build extension was not observable after the 2874 Jupyter outage."
+  },
+  "tracking": {
+    "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
+    "wandb_enabled": true,
+    "hf_status": "disabled_for_new_runs_while_private_repository_quota_is_blocked",
+    "persistent_local_results": true
+  },
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "next_action": "Restore Jupyter visibility, validate the exact-build artifact if it completed, expand the runnable queue with paired image/cosine controls, and retry the two noise pairs only after GPU ownership is unambiguous."
+}

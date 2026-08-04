@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T08:36:00-04:00",
+  "classification": "exploratory_seed0_epoch5_matched_router_endpoint_wave",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected_results": 10,
+    "valid_results": 10,
+    "errors": 0,
+    "matched_pairs": 5,
+    "environments_per_result": 4,
+    "ood_val_samples_per_result": 9854,
+    "converted_blocks": [10, 11]
+  },
+  "strict_checks": {
+    "json_parseable": true,
+    "required_metrics_finite": true,
+    "selection_split_is_ood_val": true,
+    "test_evaluated_false": true,
+    "heldout_test_fields_null": true,
+    "per_environment_coverage_complete": true,
+    "execution_commit_exact": true,
+    "execution_tree_clean": true,
+    "embedded_config_present": true,
+    "block_identity_exact": true
+  },
+  "pairs": [
+    {
+      "family": "E16_linear_top2",
+      "learned_arm": "twoffn_E16_linear_top2_learned_ep5",
+      "frozen_arm": "twoffn_E16_linear_top2_frozen_ep5",
+      "ood_val_accuracy": {"learned": 0.013294094, "frozen": 0.012279277},
+      "learned_minus_frozen_points": {"ood_val": 0.101482, "id": 0.201911, "worst_experiment": 0.081564},
+      "route_reliance": {"learned": 0.000101482, "frozen": 0.000507408, "gap": -0.000405927},
+      "normalized_routing_entropy": {"learned": 0.980777989, "frozen": 0.982508678},
+      "decision": "prune_learned_retain_control_as_validated"
+    },
+    {
+      "family": "E16_noise001",
+      "learned_arm": "twoffn_E16_noise001_learned_ep5",
+      "frozen_arm": "twoffn_E16_noise001_frozen_ep5",
+      "ood_val_accuracy": {"learned": 0.028313375, "frozen": 0.027400041},
+      "learned_minus_frozen_points": {"ood_val": 0.091333, "id": 0.100955, "worst_experiment": -0.243506},
+      "route_reliance": {"learned": 0.001014816, "frozen": 0.002232596, "gap": -0.001217780},
+      "normalized_routing_entropy": {"learned": 0.999465858, "frozen": 0.981229121},
+      "decision": "prune_learned_retain_control_as_validated"
+    },
+    {
+      "family": "E2_linear_top1",
+      "learned_arm": "twoffn_E2_linear_learned_ep5",
+      "frozen_arm": "twoffn_E2_linear_frozen_ep5",
+      "ood_val_accuracy": {"learned": 0.026892632, "frozen": 0.023746702},
+      "learned_minus_frozen_points": {"ood_val": 0.314593, "id": 0.066483, "worst_experiment": 0.284091},
+      "route_reliance": {"learned": 0.000913335, "frozen": 0.000608890, "gap": 0.000304445},
+      "normalized_routing_entropy": {"learned": 0.999991245, "frozen": 0.999929790},
+      "decision": "prune_learned_retain_control_as_validated"
+    },
+    {
+      "family": "E32_linear_top1",
+      "learned_arm": "twoffn_E32_linear_learned_ep5",
+      "frozen_arm": "twoffn_E32_linear_frozen_ep5",
+      "ood_val_accuracy": {"learned": 0.013497057, "frozen": 0.015120763},
+      "learned_minus_frozen_points": {"ood_val": -0.162371, "id": -0.091106, "worst_experiment": -0.244034},
+      "route_reliance": {"learned": 0.001014816, "frozen": 0.001623706, "gap": -0.000608890},
+      "normalized_routing_entropy": {"learned": 0.998090721, "frozen": 0.998668637},
+      "decision": "prune_learned_retain_control_as_validated"
+    },
+    {
+      "family": "E4_noise001",
+      "learned_arm": "twoffn_E4_noise001_learned_ep5",
+      "frozen_arm": "twoffn_E4_noise001_frozen_ep5",
+      "ood_val_accuracy": {"learned": 0.028211894, "frozen": 0.027400041},
+      "learned_minus_frozen_points": {"ood_val": 0.081185, "id": -0.064020, "worst_experiment": -0.121753},
+      "route_reliance": {"learned": 0.001623706, "frozen": 0.001725188, "gap": -0.000101482},
+      "normalized_routing_entropy": {"learned": 0.999158851, "frozen": 0.995112494},
+      "decision": "prune_learned_retain_control_as_validated"
+    }
+  ],
+  "promoted_pairs": 0,
+  "interpretation": "Expert-count endpoints, top-2 linear E16, and E4/E16 symmetry noise do not produce useful adaptive routing by epoch 5. Fixed expert partitions, ordinary optimization, or seed-0 trajectory noise remain more plausible than a causal learned-router benefit.",
+  "alternative_explanation": "The learned router could require a different routing geometry or coherent routing granularity rather than more or fewer experts alone.",
+  "sharp_falsifier": "A matched learned/frozen pair must show a materially larger aligned OOD-mean and worst-environment gain with learned route reliance above 0.01, no collapsed expert use, and no more than two ID points lost.",
+  "multiplicity": "Exploratory seed 0 after a multi-arm short-horizon search; no winner is confirmatory.",
+  "largest_threat": "Epoch-5 differences are small relative to multiple comparisons, and all learned route-reliance values are below 0.002."
+}

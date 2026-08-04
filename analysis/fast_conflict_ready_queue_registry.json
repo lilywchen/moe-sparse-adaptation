@@ -1020,7 +1020,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2875_gpu0"
     },
     {
       "arm_id": "twoffn_E4_linear_top2_frozen_ep5",
@@ -1052,7 +1053,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2875_gpu1"
     },
     {
       "arm_id": "twoffn_E16_linear_top2_learned_ep5",
@@ -1084,8 +1086,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2887_gpu0"
+      "status": "validated_pruned"
     },
     {
       "arm_id": "twoffn_E16_linear_top2_frozen_ep5",
@@ -1117,8 +1118,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2887_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E4_noise001_learned_ep5",
@@ -1149,8 +1149,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2862_gpu0"
+      "status": "validated_pruned"
     },
     {
       "arm_id": "twoffn_E4_noise001_frozen_ep5",
@@ -1181,8 +1180,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2862_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E16_noise001_learned_ep5",
@@ -1213,8 +1211,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2859_gpu0"
+      "status": "validated_pruned"
     },
     {
       "arm_id": "twoffn_E16_noise001_frozen_ep5",
@@ -1245,8 +1242,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2859_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E2_linear_learned_ep5",
@@ -1279,8 +1275,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2874_gpu0"
+      "status": "validated_pruned"
     },
     {
       "arm_id": "twoffn_E2_linear_frozen_ep5",
@@ -1313,8 +1308,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2874_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E32_linear_learned_ep5",
@@ -1347,8 +1341,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2875_gpu0"
+      "status": "validated_pruned"
     },
     {
       "arm_id": "twoffn_E32_linear_frozen_ep5",
@@ -1381,8 +1374,7 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "running",
-      "assignment": "2875_gpu1"
+      "status": "validated_control"
     },
     {
       "arm_id": "twoffn_E2_linear_top2_learned_ep5",
@@ -1415,7 +1407,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu0"
     },
     {
       "arm_id": "twoffn_E2_linear_top2_frozen_ep5",
@@ -1448,7 +1441,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2887_gpu1"
     },
     {
       "arm_id": "twoffn_E32_linear_top2_learned_ep5",
@@ -1481,7 +1475,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2874_gpu0"
     },
     {
       "arm_id": "twoffn_E32_linear_top2_frozen_ep5",
@@ -1514,7 +1509,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "running",
+      "assignment": "2874_gpu1"
     },
     {
       "arm_id": "twoffn_E2_noise001_learned_ep5",
@@ -1546,7 +1542,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "retry_ready_infrastructure_failure",
+      "notes": "2862 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
     },
     {
       "arm_id": "twoffn_E2_noise001_frozen_ep5",
@@ -1578,7 +1575,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "retry_ready_infrastructure_failure",
+      "notes": "2862 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
     },
     {
       "arm_id": "twoffn_E32_noise001_learned_ep5",
@@ -1610,7 +1608,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "retry_ready_infrastructure_failure",
+      "notes": "2859 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
     },
     {
       "arm_id": "twoffn_E32_noise001_frozen_ep5",
@@ -1642,7 +1641,8 @@
         "json": 1,
         "checkpoints": 2
       },
-      "status": "ready"
+      "status": "retry_ready_infrastructure_failure",
+      "notes": "2859 launch reached W&B initialization but exited before epoch 0 with no result or fatal log; retry only after GPU ownership is unambiguous"
     },
     {
       "arm_id": "twoffn_E4_image_learned_ep5",
