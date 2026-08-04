@@ -9,6 +9,26 @@ gate and manuscript table, was pulled into the linked Overleaf project on 2026-0
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
 
+## 2026-08-03 20:21 EDT — fast architecture tooling passes the full suite; 30 becomes the search ceiling
+
+- The single-FFN limitation is removed prospectively. A run can now replace explicit lists of
+  transformer FFNs, while its dense comparator modifies the same indices and remains within the
+  predeclared 0.1% total-parameter tolerance at study scale. Run identity, capacity records,
+  environment handling, auxiliary loss, routing audits, and randomized-route controls all cover
+  every converted block without breaking the historical single-block interface.
+- A training-only profiler now ranks all 12 Cell-DINO FFNs by cross-experiment gradient cosine,
+  conflict rate, gradient norm, and balanced-minibatch uncertainty. It records a high-conflict
+  target and low-conflict placebo without reading OOD validation or OOD test.
+- On the clean SciServer test checkout, 37 focused tests and all 106 repository tests pass. The
+  profiler dry-run is parseable and asserts `data_scope=train_only`, `test_evaluated=false`, and
+  null OOD-test outcomes. This is validated engineering, not a new accuracy result. Trace:
+  `analysis/fast_discovery_engineering_validation.json`.
+- The prospective schedule is now 2/5/10/20/30. Ten epochs is the cheapest credible filter but not
+  a safe negative answer because the canonical MoE-minus-dense trajectory moved from `-0.416`
+  points at epoch 10 to `+2.781` at epoch 30. Epoch 20 is the new interpolation probe; epoch 30 is
+  the maximum exploratory horizon. Linearized one-H100 estimates are 26--32 minutes for 10,
+  53--65 minutes for 20, and 79--97 minutes for 30.
+
 ## 2026-08-03 19:55 EDT — prospective search pivots to fast mechanistic discovery
 
 - The user explicitly deprioritized additional broad 60--90 epoch exploration. Completed evidence

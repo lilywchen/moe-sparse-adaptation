@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-03T20:21:00-04:00",
+  "status": "engineering_validated_no_new_scientific_result",
+  "github_branch_commit": "1948bb6",
+  "sciserver_test_commit": "564b6613b44cb9843618e964bb11afbf7e3c10df",
+  "sciserver_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-fast-test-da7aa31",
+  "capabilities": {
+    "explicit_multi_ffn_conversion": true,
+    "placement_and_index_matched_dense_controls": true,
+    "per_block_routing_audit": true,
+    "joint_route_randomization": true,
+    "all_layer_training_experiment_gradient_conflict_profiler": true,
+    "fast_milestones": [2, 5, 10, 20, 30],
+    "maximum_exploratory_epoch": 30
+  },
+  "tests": {
+    "focused": "37 passed in 3.52s",
+    "full": "106 passed in 6.95s",
+    "profiler_dry_run": "pass",
+    "local_compile_and_diff_checks": "pass"
+  },
+  "correctness": {
+    "function_preserving_initialization": true,
+    "study_scale_dense_moe_total_parameter_tolerance_pct": 0.1,
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "ood_test_accessed": false,
+    "profiler_data_scope": "train_only"
+  },
+  "scientific_evidence_changed": false,
+  "next_consumer": "profile all 12 original Cell-DINO FFNs, then populate one-versus-two measured-conflict sparse/dense/frozen-router screens"
+}

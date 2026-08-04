@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "authorized_at": "2026-08-03T19:55:00-04:00",
+  "authorized_at": "2026-08-03T20:21:00-04:00",
   "status": "prospective_protocol_only_no_new_scientific_result",
   "objective": "Find a causally active sparse architecture with high information per GPU-hour before granting long training.",
   "why_changed": {
@@ -11,8 +11,10 @@
   "prospective_allocation": {
     "finish_existing": "only healthy jobs already near a declared checkpoint; validate and release",
     "do_not_restart": "stalled or failed 60/90-epoch exploratory arms solely for matrix completion",
-    "new_default_horizon_epochs": [0, 2, 5, 10],
-    "long_horizons_are_earned": [30, 60, 90]
+    "new_default_horizon_epochs": [0, 2, 5, 10, 20],
+    "maximum_exploratory_horizon_epochs": 30,
+    "confirmation_only_horizon_epochs": 60,
+    "epoch90_status": "not_routine"
   },
   "stages": [
     {
@@ -37,13 +39,30 @@
     {
       "stage": "D3",
       "budget": "10 epochs",
-      "continue_to_30_if": {
-        "accuracy_route": "at least +2 OOD-validation points versus the proper dense comparator with no worst-experiment loss, or a predeclared worst-experiment improvement",
-        "mechanism_route": "route reliance at least 0.01, at least two materially used experts, and reproducible cross-experiment gradient-conflict reduction",
-        "id_retention": "no more than 2 absolute ID points lost"
-      }
+      "interpretation": "minimum useful filter, not a safe negative answer point because the canonical effect changed sign between epochs 10 and 30",
+      "continue_to_20_if": "top trajectory within family or strong causal-routing evidence, with no more than 2 absolute ID points lost"
+    },
+    {
+      "stage": "D4",
+      "budget": "20 epochs",
+      "question": "Does epoch 20 preserve the paired ordering and mechanism signature strongly enough to make epoch 30 informative?",
+      "continue_to_30_if": "paired OOD/tail trajectory remains competitive and mechanism evidence does not collapse"
+    },
+    {
+      "stage": "D5",
+      "budget": "30 epochs maximum exploratory",
+      "question": "Is the locked sparse configuration materially better than its exact comparator at the earliest empirically supported answer point?",
+      "confirmation": "only a material locked result may receive epoch 60 with fresh seeds; epoch 90 is not routine"
     }
   ],
+  "runtime_estimates_one_h100": {
+    "source": "linearized from ten validated 90-epoch runs; operational storage or scheduler stalls may add elapsed time",
+    "epochs_2_minutes_median_range": [5.3, 5.3, 6.5],
+    "epochs_5_minutes_median_range": [13.3, 13.2, 16.2],
+    "epochs_10_minutes_median_range": [26.6, 26.4, 32.3],
+    "epochs_20_minutes_median_range": [53.2, 52.7, 64.7],
+    "epochs_30_minutes_median_range": [79.8, 79.1, 97.0]
+  },
   "first_three_bounded_questions": [
     "Does conflict-localized placement beat arbitrary early/middle/late placement?",
     "Does replacing two measured conflict-peak FFNs create a materially stronger routing effect than replacing one FFN?",

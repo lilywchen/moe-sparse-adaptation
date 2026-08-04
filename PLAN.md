@@ -21,13 +21,21 @@ The new discovery funnel is:
 3. **Five-epoch discriminator.** Continue only arms with valid, noncollapsed routing and either
    early paired OOD/tail movement or a strong causal mechanism signature. Use exact paired data
    order and controls; do not select on training loss.
-4. **Ten-epoch confirmation screen.** A new recipe may exceed ten epochs only if it satisfies at
-   least one accuracy route and the mechanism route: (a) at least +2 OOD-validation points versus
-   its proper dense comparator with no worst-experiment loss, or a predeclared tail improvement;
-   and (b) at least 1 absolute point route reliance, at least two materially used experts, and a
-   reproducible reduction in cross-experiment gradient conflict. ID loss must not exceed 2 points.
-5. **Long training is earned, not default.** Only a locked paired survivor receives epoch 30. Epoch
-   60 and fresh seeds require persistence at 30; epoch 90 remains final adjudication only.
+4. **Ten-epoch filter, not final answer.** The canonical comparison was 0.416 points worse than
+   dense at epoch 10 but 2.781 points better at epoch 30, so ten epochs can reject broken or
+   dominated variants but cannot safely declare a sparse idea ineffective. Continue only a small
+   fraction with competitive paired accuracy or a strong causal-routing signature.
+5. **Twenty-epoch decision probe.** Add epoch 20 to determine whether it predicts the epoch-30
+   ordering. A survivor must retain ID accuracy and either improve its paired OOD/tail trajectory
+   or show route reliance, multiple used experts, and conflict reduction.
+6. **Thirty epochs is the exploratory ceiling.** Epoch 30 is the earliest empirically supported
+   answer point and the maximum for architecture search. Epoch 60 is reserved for a locked,
+   fresh-seed confirmation after a materially promising epoch-30 pair; epoch 90 is not routine.
+
+From the ten validated 90-epoch runs, linearized one-H100 wall-clock estimates are about 5--7
+minutes for 2 epochs, 13--16 minutes for 5, 26--32 minutes for 10, 53--65 minutes for 20, and
+79--97 minutes for 30. Storage and scheduler stalls can increase elapsed time but do not justify
+longer scientific horizons.
 
 This revision does not invalidate completed long-run evidence. It changes prospective allocation:
 the search now prioritizes information per GPU-hour and directly tests why one sparse FFN should

@@ -8,10 +8,11 @@ with another 60/90-epoch recipe unless it passed the fast mechanistic funnel in 
 
 Refill priority is now: all-layer gradient-conflict diagnostics from saved checkpoints; two-epoch
 learned/frozen/dense mechanism triples at measured conflict peaks and placebo layers; five-epoch
-single-versus-multiple sparse-FFN and staged-upcycling screens; then ten-epoch exact pairs. A long
-extension requires route reliance of at least one absolute accuracy point, noncollapsed expert
-usage, reproducible conflict reduction, and paired accuracy/tail evidence. Training loss and GPU
-occupancy never license extension.
+single-versus-multiple sparse-FFN and staged-upcycling screens; then ten-epoch exact pairs. Epoch
+20 is the intermediate trajectory decision and epoch 30 is the maximum exploratory horizon.
+Epoch 60 is only for a locked fresh-seed confirmation after a material epoch-30 result. Extension
+requires noncollapsed expert usage, reproducible conflict reduction, and paired accuracy/tail
+evidence; training loss and GPU occupancy never license it.
 
 The steward executes the RxRx1 kill test in `PLAN.md`; it is not a read-only monitor. It protects
 healthy work but uses every safely idle authorized GPU for the next licensed experiment. It does

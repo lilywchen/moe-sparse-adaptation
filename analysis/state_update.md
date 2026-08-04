@@ -2334,3 +2334,27 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   canonical delayed-emergence lesson visible without funding inert routers to epoch 60 by default.
 - No live compute, result, publication, or paper state is claimed by this protocol update. OOD test
   remains sealed. Trace: `analysis/fast_mechanistic_discovery_protocol.json`.
+
+## 2026-08-03 20:21 EDT — multi-FFN and gradient-localization engineering validated
+
+- Prospective capacity surgery now accepts explicit FFN index lists while preserving the original
+  one-block API. Every converted block receives environment IDs, contributes an averaged auxiliary
+  loss, has its own routing diagnostics, and participates in joint randomized-route evaluation.
+  Dense-wide controls use the identical index list and pass the study-scale 0.1% total-parameter
+  tolerance; initialization remains function-preserving.
+- The new training-only gradient profiler computes deterministic sketched gradients for every
+  transformer FFN from balanced acquisition-experiment minibatches, then reports pairwise cosine,
+  negative-cosine rate, norm, round-to-round uncertainty, and high-/low-conflict rankings. The CLI
+  explicitly records no selection split, `test_evaluated=false`, null OOD outcomes, checkpoint
+  hash, and source provenance.
+- Exact code on the isolated SciServer checkout passes 37 focused tests and 106 full tests; the
+  profiler dry-run passes its training-only and sealed-test assertions. GitHub branch commit is
+  `1948bb6`; the code-equivalent remote test commit is
+  `564b6613b44cb9843618e964bb11afbf7e3c10df`. No scientific result, live-pool claim, W&B/HF
+  artifact, or manuscript evidence changed.
+- The fast schedule is refined to epochs 2/5/10/20/30. Epoch 10 is a filter, epoch 20 tests whether
+  ordering has stabilized, and epoch 30 is the exploratory ceiling. The evidence for retaining 30
+  as the ceiling is the canonical sign change from `-0.416` points at epoch 10 to `+2.781` at epoch
+  30; epoch 60 (`+2.547`) and 90 (`+1.715`) added cost without strengthening that comparison.
+  Trace: `analysis/fast_discovery_engineering_validation.json` and
+  `analysis/fast_mechanistic_discovery_protocol.json`.

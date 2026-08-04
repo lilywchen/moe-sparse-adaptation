@@ -1,0 +1,14 @@
+_base_: ccas_rxrx1.yaml
+
+# One predeclared 30-epoch learning-rate schedule with dense milestone coverage. The steward
+# evaluates/prunes at 2/5/10/20 and treats 30 as the maximum exploratory answer point.
+train:
+  epochs: 30
+  milestone_epochs: [2, 5, 10, 20, 30]
+  save_checkpoint_epochs: [2, 5, 10, 20, 30]
+
+analysis:
+  run_mechanism: true
+  record_train_accuracy: false
+
+stage: 1
