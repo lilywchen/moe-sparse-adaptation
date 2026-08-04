@@ -1,5 +1,29 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 06:42 EDT
+
+Ten corrected/new epoch-5 rows form five strict-valid learned/frozen pairs at blocks 10+11. The
+largest mean difference is E8 linear top-1: learned exceeds frozen by `+0.599` OOD-validation and
+`+0.926` ID points. It is not adaptive-routing evidence because the worst environment is `-0.081`
+points lower and its randomized-route reliance gap is `-0.00132`. E16 cosine top-2 is the only
+pair whose OOD mean, worst environment, and route-reliance deltas all point up, but they are only
+`+0.101`, `+0.244`, and `+0.00142`; this is far below the predeclared `0.01` mechanism signal. The
+other three pairs are negative or mixed. No row is promoted beyond epoch 5. Six prior
+configuration-mismatch attempts remain preserved exclusions. All evidence is exploratory seed 0;
+OOD test remains sealed. Trace:
+`analysis/fast_conflict_router_dynamics_epoch5_wave7_corrected_linear_top2_validation.json`.
+
+The pool was immediately refilled with five new matched endpoint pairs. Container 2887 runs E16
+linear top-2 learned/frozen; 2875 runs E32 linear top-1; 2874 runs E2 linear top-1; 2862 runs E4
+noise `0.001`; and 2859 runs E16 noise `0.001`, always learned on GPU0 and frozen on GPU1. Ten of
+ten schedulable H100s are active and zero are idle. A repaired exact-build audit passed 10/10
+additional E2/E32 linear-top-2, E2/E32 noise, and E4 image learned/frozen models with unique run
+IDs, exact parameters, and no data/test access; together with two existing arms this restores 12
+runnable replacements and backlog 24. tester6/2899 remains Pending for 11 affinity/selector
+mismatches, 2 unschedulable constraints, and 3 insufficient-GPU constraints; no duplicate
+start/create was issued. W&B is live, HF remains quota-blocked without retry, and the paper is
+unchanged.
+
 ## Current handoff — 2026-08-04 02:37 EDT
 
 Ten terminal milestones and their checkpoints are strict-valid, but the corresponding full result

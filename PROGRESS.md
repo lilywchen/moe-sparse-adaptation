@@ -1,14 +1,40 @@
 # Progress ledger
 
-Last verified: 2026-08-04 00:18 EDT on SciServer and locally. Ten of ten currently available H100s
-are assigned to eight epoch-5 screens and two block-10 epoch-2 controls; tester6 remains
-scheduler-Pending and contributes no GPU. The paper has not been changed because the new results
-remain exploratory seed-0 mechanism evidence.
+Last verified: 2026-08-04 06:42 EDT on SciServer and locally. Ten of ten currently available H100s
+are assigned to five matched learned/frozen epoch-5 pairs; tester6 remains scheduler-Pending and
+contributes no GPU. Twelve additional short arms are exact-built and runnable. The paper has not
+been changed because the new results remain exploratory seed-0 mechanism evidence.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
 `paper/main.tex` compiled successfully to five pages with 0 errors and one pre-existing warning.
 Overleaf then reported no newer GitHub commit since the merge.
+
+## 2026-08-04 06:42 EDT — corrected router pairs validate; five new endpoint pairs refill the pool
+
+- All ten corrected/new epoch-5 rows are strict-valid: finite metrics, exact clean execution commit
+  `818fc8a`, blocks 10+11, four environments/9,854 OOD-validation samples, complete checkpoints,
+  `selection_split=ood_val`, `test_evaluated=false`, and null OOD-test fields. The six earlier
+  configuration-mismatch attempts remain preserved exclusions and are not pooled.
+- The largest mean learned-minus-frozen result is E8 linear top-1 at `+0.599` OOD-validation and
+  `+0.926` ID points, but its worst environment falls `0.081` points and randomized routes perform
+  better (`-0.00132` reliance gap). E16 cosine top-2 is the only aligned pair on mean, tail, and
+  route reliance, but the changes are only `+0.101/+0.244` OOD/worst points and `+0.00142`
+  reliance. No pair reaches the predeclared `0.01` causal-routing signal, so none continues.
+- Every released GPU was refilled with an exact matched endpoint pair: E16 linear top-2 on 2887,
+  E32 linear top-1 on 2875, E2 linear top-1 on 2874, E4 noise `0.001` on 2862, and E16 noise
+  `0.001` on 2859. Each container uses GPU0 for learned and GPU1 for frozen; ten are active and
+  zero are idle.
+- The next queue is again 12 runnable arms after ten real Cell-DINO model builds passed: E2/E32
+  linear top-2, E2/E32 noise `0.001`, and E4 image routing, each learned/frozen. The first audit
+  queried `top_k` from the wrong report object; a metadata-only repair reads it from the loaded
+  config, after which all 10/10 builds passed with unique run IDs and no data or OOD-test access.
+- Fixed expert partitioning, ordinary optimization, or short seed-0 trajectory noise remains more
+  plausible than useful adaptive routing. The sharp falsifier is an endpoint with route reliance
+  above `0.01` plus aligned learned-over-frozen OOD mean and worst-environment improvement.
+  W&B is live, HF retry remains quota-blocked, and the paper is unchanged. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave7_corrected_linear_top2_validation.json` and
+  `analysis/fast_conflict_ready_queue_hb8_extension_validation.json`.
 
 ## 2026-08-03 20:21 EDT — fast architecture tooling passes the full suite; 30 becomes the search ceiling
 

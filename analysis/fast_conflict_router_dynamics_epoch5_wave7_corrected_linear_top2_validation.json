@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T06:32:00-04:00",
+  "classification": "exploratory_seed0_epoch5_corrected_matched_learned_frozen_router_pairs",
+  "source_commit": "86c8ff606c433e727371e423bdb25419e9c2a069",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "result_root": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation/substrate_rxrx1/cell_dino_cp5/fast_conflict_ready_queue_20260804",
+  "coverage": {
+    "expected_rows": 10,
+    "valid_rows": 10,
+    "expected_pairs": 5,
+    "valid_pairs": 5,
+    "environments": 4,
+    "ood_val_samples_per_row": 9854,
+    "blocks": [10, 11],
+    "n_blocks_converted": 2,
+    "milestones": [2, 5],
+    "fatal_log_matches": 0,
+    "excluded_rows": 0
+  },
+  "strict_checks": {
+    "json_parseable": true,
+    "required_metrics_finite": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "all_ood_test_fields_null": true,
+    "four_environment_coverage_complete": true,
+    "commit_clean_and_exact": true,
+    "config_identity_matches_intent": true,
+    "paired_data_order_seed_and_horizon_match": true
+  },
+  "paired_contrasts_learned_minus_frozen": {
+    "E4_linear_top1": {
+      "learned_arm": "twoffn_E4_linear_learned_ep5",
+      "frozen_arm": "twoffn_E4_linear_frozen_ep5",
+      "ood_val_points": -0.111630,
+      "id_points": 0.054171,
+      "worst_environment_points": -0.081169,
+      "route_reliance_gap_fraction": -0.00274000,
+      "decision": "not_promoted"
+    },
+    "E16_cosine_top2": {
+      "learned_arm": "twoffn_E16_top2_learned_ep5",
+      "frozen_arm": "twoffn_E16_top2_frozen_ep5",
+      "ood_val_points": 0.101482,
+      "id_points": -0.184674,
+      "worst_environment_points": 0.243506,
+      "route_reliance_gap_fraction": 0.00142074,
+      "decision": "family_leader_not_promoted"
+    },
+    "E8_linear_top2": {
+      "learned_arm": "twoffn_linear_top2_learned_ep5",
+      "frozen_arm": "twoffn_linear_top2_frozen_ep5",
+      "ood_val_points": -0.284149,
+      "id_points": -0.364424,
+      "worst_environment_points": -0.121753,
+      "route_reliance_gap_fraction": -0.00142074,
+      "decision": "not_promoted"
+    },
+    "E8_linear_top1": {
+      "learned_arm": "twoffn_linear_top1_learned_ep5",
+      "frozen_arm": "twoffn_linear_top1_frozen_ep5",
+      "ood_val_points": 0.598742,
+      "id_points": 0.925835,
+      "worst_environment_points": -0.081235,
+      "route_reliance_gap_fraction": -0.00131926,
+      "decision": "accuracy_leader_not_promoted"
+    },
+    "E16_linear_top1": {
+      "learned_arm": "twoffn_E16_linear_learned_ep5",
+      "frozen_arm": "twoffn_E16_linear_frozen_ep5",
+      "ood_val_points": 0.284149,
+      "id_points": 0.337339,
+      "worst_environment_points": -0.040584,
+      "route_reliance_gap_fraction": -0.00020296,
+      "decision": "not_promoted"
+    }
+  },
+  "consumer_mapping": {
+    "E8_linear_top1": "largest learned-minus-frozen mean difference, but random routing performs better and the worst environment falls; accuracy-only exploratory observation",
+    "E16_cosine_top2": "only pair with aligned positive OOD mean, worst-environment, and learned route-reliance deltas; magnitude is too small for continuation",
+    "other_three_pairs": "negative or mixed paired evidence; do not continue past epoch 5"
+  },
+  "excluded_prior_attempts": {
+    "count": 6,
+    "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave6_controls_and_config_exclusions.json",
+    "rule": "The earlier repeated --override launches remain configuration-mismatch exclusions and are never pooled with these corrected rows."
+  },
+  "interpretation": "The corrected short wave does not show a learned router making a decision-relevant contribution. The largest mean difference is the E8 linear top-1 pair, but its randomized-route control is better and its worst environment is lower. The E16 cosine top-2 pair is directionally aligned on mean and tail, but the OOD advantage is only 0.101 points and the route-reliance gap is 0.00142, far below the predeclared 0.01 mechanism signal.",
+  "what_this_rules_out": "At epoch 5, simply changing the router to linear, increasing the bank to 16 experts, or using top-2 within the tested two-FFN blocks does not create a meaningful adaptive-routing effect relative to its exact frozen-router control.",
+  "most_plausible_explanation": "Fixed expert partitions, ordinary optimization regularization, and seed-0 short-horizon trajectory noise remain more plausible than useful adaptive conditional computation in these pairs.",
+  "sharp_falsifier": "A new paired endpoint must produce route reliance above 0.01 together with an aligned learned-over-frozen OOD mean and worst-environment advantage, without more than two ID points lost or routing collapse.",
+  "multiplicity": "All rows are exploratory seed 0 after many comparisons. No configuration is confirmatory, and no OOD-test data were accessed.",
+  "publication": {
+    "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
+    "wandb": "synced",
+    "hf": "blocked_private_repository_storage_limit_no_retry",
+    "paper": "unchanged"
+  }
+}
