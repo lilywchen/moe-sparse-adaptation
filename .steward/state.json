@@ -3,7 +3,7 @@
   "classification": "FAST_CONFLICT_WAVE13_ONEFFN_VALID8_PAIRS4_NO_PROMOTION_REFILLED8_READY12",
   "last_action": "validate_four_oneffn_depth_pairs_no_promotion_refill_all_eight_usable_h100s_with_next_top2_image_pairs_exact_build_hb15_restore_ready12",
   "last_action_at": "2026-08-04T15:01:00-04:00",
-  "last_verified_commit": "781d93c276ff65192a6db83ffdeadcec1e03d7c5",
+  "last_verified_commit": "808720adbf6f84718e230521a6884678ae0520a7",
   "valid_results": 156,
   "expected_results": 8,
   "active_gpu_workers": 8,
@@ -1521,7 +1521,7 @@
     "acc_within": 0.356249,
     "acc_train": 0.999877
   },
-  "last_synced_commit": "a7f774db47d8984d2f90d150d696162dc47c9a6b",
+  "last_synced_commit": "808720adbf6f84718e230521a6884678ae0520a7",
   "overleaf_build_status": "synced_exact_github_commit_d71aa6955dcff053c92d5f3382fe7d82cf1331ba_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T14:24-04:00; local_fatal_build_pass",
   "expert_count60_canonical_E16_tail_safe_launch": {
     "container_id": 2875,
@@ -2468,6 +2468,7 @@
   "fast_conflict_wave12_launch_exclusions": ["oneffn_E16_image_frozen_first_attempt_exited_before_training_due_backgrounded_workdir_change_no_result_or_milestone_one_bounded_explicit_directory_relaunch_healthy"],
   "fast_conflict_wave12_ready_breakdown": {"remaining_hb12_twoffn_noise_arms": 4, "new_hb14_oneffn_depth_arms": 8, "ready_total": 12, "backlog_hypotheses": 24},
   "fast_conflict_router_dynamics_wave13_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave13_oneffn_depth_validation.json",
+  "fast_conflict_wave13_evidence_github_commit": "808720adbf6f84718e230521a6884678ae0520a7",
   "fast_conflict_ready_queue_hb15_depth_extension_registry": "analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json",
   "fast_conflict_wave13_valid_rows": 8,
   "fast_conflict_wave13_valid_pairs": 4,
