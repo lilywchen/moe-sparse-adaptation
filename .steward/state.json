@@ -3,7 +3,7 @@
   "classification": "FAST_CONFLICT_WAVE11_VALID8_PAIRS4_NO_PROMOTION_REFILLED8_DEPTH_READY12",
   "last_action": "validate_image6_and_E2_cosine_top2_prune_four_pairs_refill_all_eight_h100s_exact_build_oneffn_depth_controls_restore_ready12",
   "last_action_at": "2026-08-04T13:10:00-04:00",
-  "last_verified_commit": "f702738e82c52945372e140494abfcbaa8c5f6e2",
+  "last_verified_commit": "a7f774db47d8984d2f90d150d696162dc47c9a6b",
   "valid_results": 140,
   "expected_results": 8,
   "active_gpu_workers": 8,
@@ -1521,7 +1521,7 @@
     "acc_within": 0.356249,
     "acc_train": 0.999877
   },
-  "last_synced_commit": "c1236970ad083f81c1b1447526af8f3471272ff5",
+  "last_synced_commit": "a7f774db47d8984d2f90d150d696162dc47c9a6b",
   "overleaf_build_status": "synced_exact_github_commit_d71aa6955dcff053c92d5f3382fe7d82cf1331ba_7_pages_0_errors_1_preexisting_showhyphens_warning_2026-08-02T14:24-04:00; local_fatal_build_pass",
   "expert_count60_canonical_E16_tail_safe_launch": {
     "container_id": 2875,
