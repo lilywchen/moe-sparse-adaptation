@@ -783,6 +783,7 @@
   "fast_conflict_dispatchfix_active": 2,
   "fast_conflict_dispatchfix_validated": 10,
   "fast_conflict_dispatchfix_validation": "analysis/fast_conflict_dispatchfix_epoch2_validation.json",
+  "fast_conflict_epoch2_evidence_github_commit": "5c305f8696e4a7a823d6a32ae07b0f6b66a47cb3",
   "fast_conflict_dispatchfix_metadata_normalization": {"raw_backups":10,"normalized_results":10,"manifests_regenerated":10,"manifest_hash_valid":10,"source_values_changed":false},
   "fast_conflict_dispatchfix_immediate_ready": [],
   "fast_conflict_dispatchfix_conditional_ready_depth": 12,

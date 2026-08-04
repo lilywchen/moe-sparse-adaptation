@@ -3277,4 +3277,6 @@ One bounded HF publication attempt stopped immediately at the private-repository
 zero normalized runs uploaded and no retry will occur until quota is available. The source writer
 now normalizes unevaluated OOD-test fields before persistence. Local syntax and extracted-helper
 tests pass; a new full remote suite was blocked by the SciServer checkout's GitHub reauthentication
-prompt, so no credential was entered. OOD test remains sealed and the manuscript is unchanged.
+prompt, so no credential was entered. Evidence, registries, source repair, and ledgers were pushed
+in GitHub commit `5c305f8696e4a7a823d6a32ae07b0f6b66a47cb3`. OOD test remains sealed and the
+manuscript is unchanged.

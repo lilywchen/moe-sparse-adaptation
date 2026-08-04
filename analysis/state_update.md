@@ -22,7 +22,9 @@ blocks 10+11, and placebo block 1, plus frozen/dense block-10 epoch-2 controls. 
 launches `low1_frozen_ep5`; block-10 epoch-5 pairing follows only after its controls validate.
 tester6/2899 remains scheduler-Pending after one start and contributes zero GPUs. HF publication
 made one bounded attempt and is blocked by private storage quota; zero runs uploaded. The paper is
-unchanged. Trace: `analysis/fast_conflict_screen_epoch5_registry.json`.
+unchanged. Evidence, registries, source repair, and ledgers were pushed in GitHub commit
+`5c305f8696e4a7a823d6a32ae07b0f6b66a47cb3`. Trace:
+`analysis/fast_conflict_screen_epoch5_registry.json`.
 
 ## Current handoff — 2026-08-03 23:18 EDT
 
