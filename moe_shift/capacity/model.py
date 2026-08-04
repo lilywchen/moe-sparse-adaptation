@@ -14,6 +14,7 @@ import torch
 import torch.nn as nn
 
 from .surgery import convert_blocks
+from .naming import explicit_block_indices
 
 
 def _git_sha(path):
@@ -224,7 +225,7 @@ def build_ccas(cfg):
     m = cfg["model"]
     return CCASModel(num_classes=m["num_classes"], variant=m["variant"],
                      placement=m.get("placement", "middle"), n_experts=m.get("n_experts", 8),
-                     placements=m.get("placements"), block_indices=m.get("block_indices"),
+                     placements=m.get("placements"), block_indices=explicit_block_indices(m),
                      top_k=m.get("top_k", 1), routing_unit=m.get("routing_unit", "token"),
                      geometry=m.get("geometry", "cosine"), balance=m.get("balance", "global"),
                      temperature=m.get("temperature", 0.07),

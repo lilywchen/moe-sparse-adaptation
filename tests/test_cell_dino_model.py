@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 
 from moe_shift.capacity import MoEFFN
+import moe_shift.capacity.model as capacity_model
 from moe_shift.capacity.model import CCASModel
 
 
@@ -60,6 +61,26 @@ class _FakeChannelAdaptiveDino(_FakeCellDino):
         patches = raw["x_norm_patchtokens"].reshape(batch, channels, -1, self.num_features)
         cls = raw["x_norm_clstoken"].reshape(batch, channels * self.num_features)
         return ((patches, cls),)
+
+
+def test_build_ccas_dispatches_ffn_block_indices_alias(monkeypatch):
+    captured = {}
+
+    def fake_model(**kwargs):
+        captured.update(kwargs)
+        return captured
+
+    monkeypatch.setattr(capacity_model, "CCASModel", fake_model)
+    built = capacity_model.build_ccas({
+        "model": {
+            "num_classes": 11,
+            "variant": "moe",
+            "placement": "middle",
+            "ffn_block_indices": [10, 11],
+        },
+        "img_size": 128,
+    })
+    assert built["block_indices"] == [10, 11]
 
 
 def test_cell_dino_adapter_flattens_chunks_and_extracts_cls(monkeypatch, tmp_path):
