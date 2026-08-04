@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T02:33:38-04:00",
+  "failure": "NameError: normalize_withheld_ood_fields was called by the post-training result writer but its helper definition was absent from the SciServer execution patch.",
+  "scope": "Training and terminal checkpoint creation completed; the failure occurred after OOD-validation evaluation and before atomic result JSON publication.",
+  "source_github_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "sciserver_code_equivalent_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "sciserver_checkout": "/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-finalizer-87d1fe9",
+  "tests": {"focused_passed": 35, "full_passed": 114, "failed": 0},
+  "repair": {
+    "missing_helper_restored": true,
+    "checkpoint_finalizer_added": true,
+    "training_repeated_for_saved_checkpoints": false,
+    "atomic_result_write": true,
+    "checkpoint_sha_recorded": true,
+    "stage1_validation_required": true
+  },
+  "safety": {
+    "selection_split": "ood_val",
+    "test_evaluated": false,
+    "ood_test_batches_iterated": 0,
+    "all_ood_test_fields_forced_null": true,
+    "fail_closed_config_run_epoch_and_block_checks": true
+  },
+  "stopped_restarts": ["twoffn_aux0_ep5", "twoffn_aux0001_ep5"],
+  "stopped_restart_reason": "They had run for only seconds when the shared writer defect was discovered; they were stopped before meaningful training and relaunched only after the repair passed tests.",
+  "current_recovery_assignments": {
+    "2862_gpu0": "recover_twoffn_learned_epoch10",
+    "2862_gpu1": "recover_twoffn_frozen_epoch10",
+    "2859_gpu0": "recover_twoffn_dense_epoch10",
+    "2859_gpu1": "recover_low1_frozen_epoch5"
+  },
+  "remaining_checkpoint_recoveries_after_current_wave": 6,
+  "largest_threat": "Recovered full results still require strict metric, mechanism, log, checkpoint, and provenance validation before replacing milestone-only evidence."
+}

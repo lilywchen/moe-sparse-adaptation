@@ -3320,3 +3320,30 @@ highest-ranked nonduplicate arm from `analysis/fast_conflict_ready_queue_registr
 retry was made because the private storage quota is unchanged; the paper remains unchanged.
 Validated evidence and launch registries were pushed in GitHub commit
 `f4ff4b5ab3ef52cd3336801487175e0defdf763b`.
+
+## 2026-08-04 02:37 EDT — epoch-10 milestone signal, writer repair, and fast refill
+
+All ten continuation jobs reached their declared terminal milestone and wrote nonzero checkpoints,
+but the old post-training writer then failed with a missing-helper `NameError`. Their full result
+JSONs are excluded until recovered; training is not being repeated. Source commit `c68bc80` adds
+the missing normalization helper and a fail-closed checkpoint finalizer. Its code-equivalent
+SciServer commit `818fc8a` passes 35 focused and 114 full tests. Four key checkpoints are being
+finalized now and six remain queued. Trace:
+`analysis/post_training_finalizer_repair_validation.json`.
+
+The strict milestone values change the mechanism interpretation. Blocks10+11 learned/frozen/dense
+at epoch 10 score `7.083/7.104/5.845%` OOD validation. The sparse-over-dense contrast is therefore
+`+1.238` points, but learned routing is `-0.020` points versus frozen routing. Block11 learned is
+`-0.944` points versus dense, block10 learned at epoch 5 is `-0.649` points, and the low-conflict
+frozen placebo is `+0.781` points versus dense. The two-FFN effect persists, but the evidence now
+favors fixed partitions, conditional capacity, or optimization regularization rather than useful
+adaptive routing or conflict-specific placement. Trace:
+`analysis/fast_conflict_epoch10_milestone_validation.json`.
+
+The ten freed H100s were refilled with six new five-epoch performance searches and four checkpoint
+recoveries. Exact performance assignments are 2887 GPU0/1 auxiliary weights 0 and 0.0001; 2875
+GPU0/1 symmetry noise 0.0001 and 0.001; 2874 GPU0/1 router temperatures 0.03 and 0.15. Container
+2862 recovers the two-FFN learned/frozen epoch-10 finals; 2859 recovers the matched dense final and
+the block-1 frozen placebo. Live verification shows two owned processes per container and zero
+usable idle H100s. Six ready arms and 24 backlog hypotheses remain. OOD test is sealed, tester6
+remains scheduler-Pending, HF waits for private quota, and the paper is unchanged.

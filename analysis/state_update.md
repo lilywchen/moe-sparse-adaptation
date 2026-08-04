@@ -1,5 +1,36 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 02:37 EDT
+
+Ten terminal milestones and their checkpoints are strict-valid, but the corresponding full result
+JSONs are temporarily excluded. A post-training writer called
+`normalize_withheld_ood_fields` without including that helper in the SciServer patch, so each run
+finished training and wrote its terminal checkpoint before failing during final publication. The
+repair and a fail-closed checkpoint finalizer are on GitHub at `c68bc80`; the code-equivalent
+SciServer checkout is committed at `818fc8a` and passes 35 focused plus 114 full tests. Four saved
+checkpoints are being finalized without retraining, and the remaining six are queued for the next
+releases. Trace: `analysis/post_training_finalizer_repair_validation.json`.
+
+The milestone-only epoch-10 result is scientifically informative. For blocks 10+11, learned,
+frozen, and equal-total-parameter dense reach `7.083%`, `7.104%`, and `5.845%` OOD validation.
+Thus learned-minus-dense is `+1.238` points, but learned-minus-frozen is `-0.020` points. At block
+11 alone, learned is `6.454%` versus `7.398%` dense. At block 10 alone at epoch 5, learned is
+`2.070%` versus `2.720%` dense. The low-conflict block-1 frozen placebo is also `2.720%`, or
+`+0.781` points over its dense control. The two-FFN advantage persists, but adaptive routing and
+conflict-localized placement are not supported by these orderings. Fixed expert partitions,
+conditional capacity, or optimization regularization are now the leading explanations. This is
+exploratory seed 0 after multiple comparisons; recovered mechanism metrics and fresh locked seeds
+are still required. Trace: `analysis/fast_conflict_epoch10_milestone_validation.json`.
+
+All ten schedulable H100s were refilled after the repair. Performance searches occupy six GPUs:
+2887 GPU0/1 `twoffn_aux0_ep5` / `twoffn_aux0001_ep5`; 2875 GPU0/1
+`twoffn_noise0001_ep5` / `twoffn_noise001_ep5`; and 2874 GPU0/1
+`twoffn_temp003_ep5` / `twoffn_temp015_ep5`. Checkpoint recovery occupies four GPUs: 2862 GPU0/1
+two-FFN learned/frozen epoch 10 and 2859 GPU0/1 two-FFN dense epoch 10 / block-1 frozen epoch 5.
+The six remaining ready arms and 24-hypothesis backlog are intact. Live verification shows two
+owned GPU processes per container, 1.7--8.4 GB allocated per GPU, and zero usable idle H100s. OOD
+test remains sealed; HF publication still waits for private quota.
+
 ## Current handoff — 2026-08-04 01:17 EDT
 
 Ten new milestones are strict-valid: eight epoch-5 placement/depth/router-state rows and the two
