@@ -26,5 +26,17 @@
   "alternative_explanation": "Fixed expert partitions, conditional capacity, or optimizer trajectory regularization can explain the result; seed-0 multiplicity may still inflate its size.",
   "sharp_falsifier": "A new learned router must exceed its frozen control with route reliance above 0.01, noncollapsed use, paired OOD or tail improvement, and a locked fresh-seed replication.",
   "remaining_terminal_checkpoint_recoveries": 6,
+  "artifact_manifests": {
+    "expected": 4,
+    "valid": 4,
+    "files_per_manifest": 4,
+    "checkpoint_hash_matches_recovery_record": 4,
+    "sha256": {
+      "high10_11_learned_ep10": "098fed3528a056d353dc1f32f0234626b3e13356f05cf9702340bb51be0a3364",
+      "high10_11_frozen_ep10": "767eea375ce4d3f297a1de004c6d59b7a180447cdbf4f995c0b4c571a6074b8a",
+      "high10_11_dense_ep10": "49e96006d64d0993737bce69953c334d05286f45ec8ecc4c693967982a7fd93e",
+      "low1_frozen_ep5": "f98d28f809d5d7ea1b237268bce2ac8a36c4ea3f42e75108da8230c9ddc6a4de"
+    }
+  },
   "publication": {"hf_status": "blocked_private_repository_storage_limit", "uploaded": 0}
 }

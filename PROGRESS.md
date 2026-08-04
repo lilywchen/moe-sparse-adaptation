@@ -3345,7 +3345,8 @@ checkpoint recoveries. Exact performance assignments were 2887 GPU0/1 auxiliary 
 GPU0/1 symmetry noise 0.0001 and 0.001; 2874 GPU0/1 router temperatures 0.03 and 0.15. Container
 2862 recovered the two-FFN learned/frozen epoch-10 finals; 2859 recovered the matched dense final
 and block-1 frozen placebo. All four recovered results are strict-valid, clean `818fc8a`, and were
-not retrained. Learned/frozen route reliance is only `0.00721/0.00680`, both below `0.01`, so the
+not retrained. Four checksum manifests cover result/trainlog/milestones/checkpoint and reproduce
+the recorded checkpoint hashes. Learned/frozen route reliance is only `0.00721/0.00680`, both below `0.01`, so the
 full mechanism results reinforce the fixed-partition interpretation. Those four released GPUs were
 immediately refilled with auxiliary-weight 0.05/0.1 and the learned/frozen top-2 pair. All ten GPUs
 again run short performance searches. The ready queue remains at 12 after exact-building E4/E16

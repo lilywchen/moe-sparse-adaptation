@@ -807,6 +807,7 @@
   "fast_conflict_continuation_active": 0,
   "fast_conflict_continuation_assignments": {},
   "fast_conflict_continuation_terminal_milestones": {"expected":10,"valid":10,"full_results_recovered_valid":4,"full_results_excluded_pending_recovery":6,"terminal_checkpoints":10,"validation":"analysis/fast_conflict_epoch10_milestone_validation.json","recovered_validation":"analysis/fast_conflict_recovered_finals_validation.json"},
+  "fast_conflict_recovered_artifact_manifests": {"expected":4,"valid":4,"files_per_manifest":4,"checkpoint_hash_matches":4,"hf_uploaded":0},
   "fast_conflict_continuation_writer_failure": {"error":"missing_normalize_withheld_ood_fields_helper","phase":"post_training_result_write","training_repeated":false,"repair_validation":"analysis/post_training_finalizer_repair_validation.json","source_commit":"c68bc808ed4404d1040b3f23a7cfe60cf937634a","sciserver_code_equivalent_commit":"818fc8ad86ebf8933807abca6a3db240b10db235","tests":"35_focused_114_full_pass"},
   "fast_conflict_epoch10_twoffn_learned_minus_dense_points": {"ood_val":1.238075908260605,"id":2.826750714074657,"worst_experiment":-0.04058441558441562},
   "fast_conflict_epoch10_twoffn_learned_minus_frozen_points": {"ood_val":-0.020296326364928,"id":0.140352605141336,"worst_experiment":0.0},

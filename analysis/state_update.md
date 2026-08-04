@@ -11,6 +11,8 @@ SciServer checkout is committed at `818fc8a` and passes 35 focused plus 114 full
 four saved checkpoints are now strict-valid full results without retraining; six remain queued for
 recovery. All four record clean `818fc8a`, a checkpoint SHA-256, null OOD-test fields, four
 environments/9,854 samples, and atomic recovery provenance. Trace:
+Each has a checksum manifest covering its result, train log, milestone stream, and terminal
+checkpoint; all four checkpoint hashes match the recovery records. Trace:
 `analysis/post_training_finalizer_repair_validation.json` and
 `analysis/fast_conflict_recovered_finals_validation.json`.
 
