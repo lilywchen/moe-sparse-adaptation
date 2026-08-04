@@ -2535,3 +2535,46 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   routing requires a learned advantage that survives the frozen control, preserves the worst
   environment, and raises randomized-route dependence above `0.01`. OOD test is sealed; no broad
   60/90-epoch search is launched.
+
+## 2026-08-04 04:18 EDT — E4 learned barely exceeds frozen; image and temperature 0.30 prune
+
+- E4 learned/frozen are strict-valid at epoch 5 on clean execution `818fc8a`. OOD-validation/ID/
+  worst are `2.496/3.484/0.853%` and `2.405/3.472/0.690%`. The learned edge is only
+  `+0.091/+0.012/+0.163` points, and learned route reliance is lower (`0.00173` versus `0.00315`).
+  This is not evidence that the E4 router learned a useful conditional policy; the E4 dense row is
+  still finalizing, so no total-parameter claim is made yet.
+- Temperature 0.30 and image routing are strict-valid at `2.628/3.775/0.731%` and
+  `2.659/3.642/0.771%` OOD/ID/worst. Both are below the canonical E8 learned reference on all three
+  metrics and have reliance below `0.003`; both are pruned.
+- Four releases were refilled with E16 top-2 learned/frozen and the matched frozen-noise/image
+  controls. The first launch attempt failed before training because of a relative config path; the
+  single narrow retry used the validated absolute config path and all four workers are healthy.
+  All ten schedulable H100s are assigned, zero are idle, ready/backlog are `12/24`, and four new
+  E4/E16 linear-top-2 learned/frozen arms are predeclared.
+- The most plausible explanation remains fixed expert partitioning or ordinary optimization
+  regularization rather than adaptive conditional computation. The sharpest falsifier is a matched
+  learned/frozen noise, image, top-2, or linear pair with a larger mean-plus-tail learned advantage
+  and randomized-route dependence above `0.01`. These are seed-0 multiple-comparison results; OOD
+  test remains sealed, tester6/2899 remains scheduler-Pending, HF remains quota-blocked, and the
+  paper is unchanged. Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave4_validation.json`.
+
+## 2026-08-04 04:28 EDT — exact-total E4/E16 matrices isolate partition effects
+
+- E4 learned/frozen/dense OOD-validation is `2.496/2.405/2.080%`; ID is
+  `3.484/3.472/3.268%`; worst is `0.853/0.690/0.853%`. Learned-minus-dense is
+  `+0.416/+0.217/+0.000` points, but frozen-minus-dense is already
+  `+0.325/+0.204/-0.163`. The adaptive increment is only `+0.091/+0.012/+0.163` and learned route
+  reliance is lower than frozen. This is a small sparse-partition regularization signal, not a
+  learned-routing result.
+- E16 learned/frozen/dense OOD-validation is `2.760/2.770/3.024%`; ID is
+  `4.068/4.230/4.577%`; worst is `0.771/0.731/0.933%`. Learned is below both controls on mean OOD
+  and ID and has reliance `0.00071`. Increasing to 16 experts does not help at epoch 5.
+- Four released GPUs were refilled with E4 linear learned/frozen and E8 linear learned/frozen.
+  All ten schedulable H100s are assigned, zero are idle, and four predeclared E4/E16 noise pairs
+  restore ready/backlog to `12/24`. The exact configurations share seed/data order and use clean
+  execution `818fc8a`; OOD test remains sealed.
+- The most plausible explanation is now more specifically fixed partitioning or initialization-
+  driven optimization regularization. Linear/top-2/noise learned/frozen pairs are the sharpest
+  falsifier: useful adaptive routing must produce a materially larger mean-plus-tail learned edge
+  and route dependence above `0.01`. Trace:
+  `analysis/fast_conflict_router_dynamics_epoch5_wave5_expert_count_validation.json`.

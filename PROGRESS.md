@@ -3418,3 +3418,62 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
   families at their first completed checkpoint, refill from the 12 exact-built matched controls,
   and require a learned-versus-frozen difference with route reliance above `0.01` before spending
   beyond the short screen.
+
+## 2026-08-04 04:18 EDT — E4 and routing-granularity rows close; matched mechanism controls refill
+
+- **Where we are:** four additional epoch-5 rows are strict-valid. All ten schedulable H100
+  assignments remain occupied after immediate refill: 2887 runs E4 dense and E16 learned; 2875
+  now runs E16 top-2 learned/frozen; 2874 runs the frozen-noise and frozen-image controls; 2862
+  runs E16 frozen/dense; and 2859 runs E4 top-2 learned/frozen. Zero usable H100s are idle. Four
+  predeclared E4/E16 linear-top-2 controls restore the ready queue to 12; backlog remains 24.
+- **What moved:** E4 learned/frozen, temperature 0.30, and image routing completed with finite
+  metrics, four environments/9,854 samples, epoch-2/5 checkpoints, clean `818fc8a` provenance,
+  fatal-clear logs, OOD-validation selection, and null heldout fields. An initial refill command
+  failed before training because it used a relative config path; the one allowed narrow retry used
+  the preflighted absolute config path and all four workers loaded cleanly with no excluded row.
+- **What we learned:** E4 learned/frozen score `2.496/2.405%` OOD validation,
+  `3.484/3.472%` ID, and `0.853/0.690%` worst environment. Learned-minus-frozen is only
+  `+0.091/+0.012/+0.163` points, while learned route reliance (`0.00173`) is lower than frozen
+  (`0.00315`). Temperature 0.30 and image routing score `2.628/2.659%` OOD and both trail the
+  canonical E8 learned reference on mean, ID, and tail. Reducing expert count or making one image-
+  level assignment does not reveal useful adaptive routing.
+- **Correctness/trust:** all four rows are exploratory seed 0 after multiple searches. E4
+  learned/frozen share `29,494,645` total and `2,366,210` active FFN parameters; the dense result
+  is still finalizing and no sparse-versus-dense E4 claim is made here. OOD test remains sealed.
+  The largest threat is that tiny early differences are optimization noise; the matched frozen-
+  noise/image and top-2 pairs are the sharpest causal checks.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_router_dynamics_epoch5_wave4_validation.json`, the updated ready registry,
+  and steward ledgers. HF remains quota-blocked and the manuscript is unchanged.
+- **Next automatic action:** validate E4 dense, E16 learned/frozen/dense, and E4 top-2 immediately
+  when their result writers finish; refill each release from the 12-arm paired linear queue. Do not
+  spend past epoch 5 unless a learned/frozen pair improves both decision metrics and raises route
+  reliance above `0.01`.
+
+## 2026-08-04 04:28 EDT — E4 benefit is mostly fixed partitioning; E16 favors dense
+
+- **Where we are:** the complete E4 and E16 learned/frozen/dense matrices are strict-valid at
+  epoch 5. All ten schedulable H100s are again assigned: 2887 runs E4 linear learned/frozen; 2875
+  E16 top-2 learned/frozen; 2874 frozen-noise/image controls; 2862 E8 linear learned/frozen; and
+  2859 E4 top-2 learned/frozen. Zero usable H100s are idle. Four E4/E16 symmetry-noise pairs restore
+  the ready queue to 12; backlog remains 24.
+- **What moved:** E4 dense and E16 learned/frozen/dense finalized with finite metrics, four
+  environments/9,854 samples, epoch-2/5 checkpoints, clean `818fc8a`, fatal-clear logs,
+  OOD-validation selection, and null heldout fields. Their four released GPUs were immediately
+  refilled with paired linear-router screens.
+- **What we learned:** E4 learned/frozen/dense OOD is `2.496/2.405/2.080%`. Learned exceeds exact-
+  total dense by `+0.416` OOD points, but frozen already contributes `+0.325`; learned adds only
+  `+0.091` over frozen and has lower route reliance. E16 learned/frozen/dense OOD is
+  `2.760/2.770/3.024%`: learned is slightly below frozen and `0.264` points below dense, with route
+  reliance only `0.00071`. The promising part is a small E4 sparse-partition regularization effect,
+  not evidence that the router is adapting usefully.
+- **Correctness/trust:** these are exact-total comparisons within E4 and E16 only, exploratory
+  seed 0 after multiple searches. E4 sparse/dense totals are `29,494,645/29,493,881`; E16 are
+  `57,861,493/57,860,753`. OOD test remains sealed. The largest threat is early-horizon noise and
+  multiplicity; no epoch-10 continuation is licensed.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_router_dynamics_epoch5_wave5_expert_count_validation.json`, the updated
+  ready registry, and steward ledgers. HF remains quota-blocked and the manuscript is unchanged.
+- **Next automatic action:** validate the E4 top-2 and matched frozen-noise/image controls at
+  completion, then the linear pairs. Continue only a configuration that establishes both a useful
+  learned-over-frozen effect and route dependence above `0.01` without losing tail performance.

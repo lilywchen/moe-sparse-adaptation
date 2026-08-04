@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T04:18:00-04:00",
+  "classification": "exploratory_seed0_epoch5_router_dynamics_screen",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected": 4,
+    "valid": 4,
+    "environments": 4,
+    "ood_val_samples": 9854,
+    "milestones": [2, 5],
+    "checkpoints_per_arm": 2,
+    "fatal_log_matches": 0
+  },
+  "reference": {
+    "arm": "high10_11_learned_ep5",
+    "ood_val": 0.029937081388268724,
+    "id": 0.039717324928592534,
+    "worst": 0.011363636363636364,
+    "route_reliance": 0.001623706109194236
+  },
+  "arms": {
+    "twoffn_E4_learned_ep5": {
+      "ood_val": 0.024964481428861377,
+      "id": 0.03484191864473555,
+      "worst": 0.008529650690495532,
+      "train": 0.03871746845425868,
+      "route_reliance": 0.0017251877410188778,
+      "routing_entropy": 0.9997776230224239,
+      "experts_used": 4,
+      "total_params": 29494645,
+      "active_ffn_params": 2366210,
+      "status": "validated_pruned"
+    },
+    "twoffn_E4_frozen_ep5": {
+      "ood_val": 0.024050114674243962,
+      "id": 0.034718802324436124,
+      "worst": 0.006899350649350649,
+      "train": 0.03856959779179811,
+      "route_reliance": 0.003145930586563834,
+      "routing_entropy": 0.99928472322733,
+      "experts_used": 4,
+      "total_params": 29494645,
+      "active_ffn_params": 2366210,
+      "status": "validated_control"
+    },
+    "twoffn_temp03_ep5": {
+      "ood_val": 0.02628374264258169,
+      "id": 0.03774746380380183,
+      "worst": 0.007305194805194805,
+      "train": 0.04312894321766562,
+      "route_reliance": 0.0014207428455449561,
+      "routing_entropy": 0.9982498945635528,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_image_ep5": {
+      "ood_val": 0.026588187538055613,
+      "id": 0.03641780754456811,
+      "worst": 0.007711038961038961,
+      "train": 0.04197062302839117,
+      "route_reliance": 0.002740004059265274,
+      "routing_entropy": 0.998509075990686,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    }
+  },
+  "contrasts_points": {
+    "E4_learned_minus_frozen": {
+      "ood_val": 0.0914366754617415,
+      "id": 0.0123116320299426,
+      "worst": 0.1630300041144883,
+      "route_reliance_gap": -0.0014207428455449561
+    },
+    "temperature_0p30_minus_reference": {
+      "ood_val": -0.3653338745687036,
+      "id": -0.1969861124790704,
+      "worst": -0.4058441558441559,
+      "route_reliance_gap": -0.0002029632636492799
+    },
+    "image_minus_reference": {
+      "ood_val": -0.3348893850213111,
+      "id": -0.3299517384024423,
+      "worst": -0.3652597402597403,
+      "route_reliance_gap": 0.001116297950071038
+    }
+  },
+  "interpretation": "E4 learned routing has only a 0.091 OOD-point and 0.012 ID-point edge over its frozen control, while randomized-route dependence is lower for learned than frozen and both are far below 0.01. Temperature 0.30 and image-level routing are both below the canonical E8 learned reference on mean, ID, and tail. These rows do not support useful adaptive routing; fixed partition or ordinary optimization remains the leading explanation.",
+  "alternative_explanation": "Expert count, routing granularity, and temperature mainly perturb ordinary optimization while the expert partition itself supplies any sparse regularization.",
+  "sharp_falsifier": "A matched frozen-noise control or a learned/frozen top-2 or linear pair must show a larger mean-plus-tail learned advantage with route reliance above 0.01; otherwise adaptive routing is not the cause.",
+  "multiplicity": "Four rows are exploratory seed 0 within a broader multiple-comparison router-dynamics search; no fresh-seed confirmation has been run.",
+  "launch_repair": {
+    "first_attempt": "failed_before_training_due_relative_config_path",
+    "retry": "healthy_after_absolute_preflighted_config_path",
+    "scientific_rows_excluded": 0
+  },
+  "refill": {
+    "2875_gpu0": "twoffn_E16_top2_learned_ep5",
+    "2875_gpu1": "twoffn_E16_top2_frozen_ep5",
+    "2874_gpu0": "twoffn_noise001_frozen_ep5",
+    "2874_gpu1": "twoffn_image_frozen_ep5"
+  }
+}

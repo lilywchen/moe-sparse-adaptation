@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T04:28:00-04:00",
+  "classification": "exploratory_seed0_epoch5_exact_total_parameter_expert_count_matrix",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected": 6,
+    "valid": 6,
+    "environments": 4,
+    "ood_val_samples": 9854,
+    "milestones": [2, 5],
+    "checkpoints_per_arm": 2,
+    "fatal_log_matches": 0
+  },
+  "families": {
+    "E4": {
+      "learned": {"ood_val":0.024964481428861377,"id":0.03484191864473555,"worst":0.008529650690495532,"train":0.03871746845425868,"route_reliance":0.0017251877410188778,"routing_entropy":0.9997776230224239,"experts_used":4,"total_params":29494645,"active_ffn_params":2366210},
+      "frozen": {"ood_val":0.024050114674243962,"id":0.034718802324436124,"worst":0.006899350649350649,"train":0.03856959779179811,"route_reliance":0.003145930586563834,"routing_entropy":0.9992847242322733,"experts_used":4,"total_params":29494645,"active_ffn_params":2366210},
+      "dense": {"ood_val":0.020803734524051147,"id":0.032675071407465776,"worst":0.008529650690495532,"train":0.03620366719242902,"total_params":29493881},
+      "learned_minus_frozen_points": {"ood_val":0.0914366754617415,"id":0.0123116320299426,"worst":0.1630300041144883,"route_reliance_gap":-0.0014207428455449561},
+      "learned_minus_dense_points": {"ood_val":0.416074690481023,"id":0.2166847237269774,"worst":0.0},
+      "frozen_minus_dense_points": {"ood_val":0.3246380150192815,"id":0.2043730916970348,"worst":-0.1630300041144883}
+    },
+    "E16": {
+      "learned": {"ood_val":0.02760300385630201,"id":0.040677632226928,"worst":0.007711038961038961,"train":0.04675177444794953,"route_reliance":0.0007103714227724781,"routing_entropy":0.998662170669892,"experts_used":16,"total_params":57861493,"active_ffn_params":2375426},
+      "frozen": {"ood_val":0.027704485488126648,"id":0.04230276765488033,"worst":0.007305194805194805,"train":0.048969834384858045,"route_reliance":0.0020296326364927925,"routing_entropy":0.995167974598643,"experts_used":16,"total_params":57861493,"active_ffn_params":2375426},
+      "dense": {"ood_val":0.03024152628374264,"id":0.045774647887323945,"worst":0.009334415584415584,"train":0.05170544164037855,"total_params":57860753},
+      "learned_minus_frozen_points": {"ood_val":-0.0101481631824638,"id":-0.162513542795233,"worst":0.0405844155844156,"route_reliance_gap":-0.0013192612137203144},
+      "learned_minus_dense_points": {"ood_val":-0.263852242744063,"id":-0.5097015660395945,"worst":-0.1623376623376623}
+    }
+  },
+  "interpretation": "E4 sparse learned exceeds exact-total dense by 0.416 OOD points, but frozen already captures 0.325 points and learned adds only 0.091 with lower route dependence, so the E4 direction is mostly fixed-partition regularization. E16 learned is below both frozen and exact-total dense, with route reliance only 0.00071. More experts do not create a useful adaptive-routing regime at epoch 5.",
+  "alternative_explanation": "The number and initialization of expert partitions alter ordinary optimization; the learned router contributes little or nothing at this horizon.",
+  "sharp_falsifier": "Linear, top-2, or symmetry-noise learned/frozen pairs must show a materially larger learned mean-plus-tail advantage and route reliance above 0.01; otherwise the sparse signal is partition or optimization regularization.",
+  "multiplicity": "The E4/E16 matrix is exploratory seed 0 within a broader short-run multiple-comparison search. No fresh-seed confirmation has been run and fairness claims are only within each exact-total family.",
+  "refill": {
+    "2887_gpu0": "twoffn_E4_linear_learned_ep5",
+    "2887_gpu1": "twoffn_E4_linear_frozen_ep5",
+    "2862_gpu0": "twoffn_linear_top1_learned_ep5",
+    "2862_gpu1": "twoffn_linear_top1_frozen_ep5"
+  }
+}
