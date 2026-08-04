@@ -3,13 +3,16 @@
 ## Current handoff — 2026-08-04 02:37 EDT
 
 Ten terminal milestones and their checkpoints are strict-valid, but the corresponding full result
-JSONs are temporarily excluded. A post-training writer called
+JSONs were initially excluded. A post-training writer called
 `normalize_withheld_ood_fields` without including that helper in the SciServer patch, so each run
 finished training and wrote its terminal checkpoint before failing during final publication. The
 repair and a fail-closed checkpoint finalizer are on GitHub at `c68bc80`; the code-equivalent
-SciServer checkout is committed at `818fc8a` and passes 35 focused plus 114 full tests. Four saved
-checkpoints are being finalized without retraining, and the remaining six are queued for the next
-releases. Trace: `analysis/post_training_finalizer_repair_validation.json`.
+SciServer checkout is committed at `818fc8a` and passes 35 focused plus 114 full tests. The first
+four saved checkpoints are now strict-valid full results without retraining; six remain queued for
+recovery. All four record clean `818fc8a`, a checkpoint SHA-256, null OOD-test fields, four
+environments/9,854 samples, and atomic recovery provenance. Trace:
+`analysis/post_training_finalizer_repair_validation.json` and
+`analysis/fast_conflict_recovered_finals_validation.json`.
 
 The milestone-only epoch-10 result is scientifically informative. For blocks 10+11, learned,
 frozen, and equal-total-parameter dense reach `7.083%`, `7.104%`, and `5.845%` OOD validation.
@@ -22,14 +25,20 @@ conditional capacity, or optimization regularization are now the leading explana
 exploratory seed 0 after multiple comparisons; recovered mechanism metrics and fresh locked seeds
 are still required. Trace: `analysis/fast_conflict_epoch10_milestone_validation.json`.
 
+Recovered mechanism metrics sharpen the result: learned/frozen route reliance is
+`0.00721/0.00680`, a difference of only `0.00041`, and both are below the predeclared `0.01`
+threshold. Both use 8/8 experts with entropy `0.9999/0.9978`. This confirms that the current
+sparse-over-dense result is not evidence for an adaptive router.
+
 All ten schedulable H100s were refilled after the repair. Performance searches occupy six GPUs:
 2887 GPU0/1 `twoffn_aux0_ep5` / `twoffn_aux0001_ep5`; 2875 GPU0/1
 `twoffn_noise0001_ep5` / `twoffn_noise001_ep5`; and 2874 GPU0/1
-`twoffn_temp003_ep5` / `twoffn_temp015_ep5`. Checkpoint recovery occupies four GPUs: 2862 GPU0/1
-two-FFN learned/frozen epoch 10 and 2859 GPU0/1 two-FFN dense epoch 10 / block-1 frozen epoch 5.
-The six remaining ready arms and 24-hypothesis backlog are intact. Live verification shows two
-owned GPU processes per container, 1.7--8.4 GB allocated per GPU, and zero usable idle H100s. OOD
-test remains sealed; HF publication still waits for private quota.
+`twoffn_temp003_ep5` / `twoffn_temp015_ep5`. The four completed recovery GPUs were immediately
+refilled: 2862 GPU0/1 `twoffn_aux005_ep5` / `twoffn_aux01_ep5`; 2859 GPU0/1
+`twoffn_top2_ep5` / `twoffn_top2_frozen_ep5`. The queue remains at 12 ready arms after exact-
+building learned/frozen/dense E4 and E16 triplets plus paired E4/E16 top-2 controls; the
+24-hypothesis backlog remains intact. OOD test remains sealed; HF publication still waits for
+private quota.
 
 ## Current handoff — 2026-08-04 01:17 EDT
 

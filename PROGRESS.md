@@ -3340,10 +3340,16 @@ favors fixed partitions, conditional capacity, or optimization regularization ra
 adaptive routing or conflict-specific placement. Trace:
 `analysis/fast_conflict_epoch10_milestone_validation.json`.
 
-The ten freed H100s were refilled with six new five-epoch performance searches and four checkpoint
-recoveries. Exact performance assignments are 2887 GPU0/1 auxiliary weights 0 and 0.0001; 2875
+The ten freed H100s were first refilled with six new five-epoch performance searches and four
+checkpoint recoveries. Exact performance assignments were 2887 GPU0/1 auxiliary weights 0 and 0.0001; 2875
 GPU0/1 symmetry noise 0.0001 and 0.001; 2874 GPU0/1 router temperatures 0.03 and 0.15. Container
-2862 recovers the two-FFN learned/frozen epoch-10 finals; 2859 recovers the matched dense final and
-the block-1 frozen placebo. Live verification shows two owned processes per container and zero
-usable idle H100s. Six ready arms and 24 backlog hypotheses remain. OOD test is sealed, tester6
-remains scheduler-Pending, HF waits for private quota, and the paper is unchanged.
+2862 recovered the two-FFN learned/frozen epoch-10 finals; 2859 recovered the matched dense final
+and block-1 frozen placebo. All four recovered results are strict-valid, clean `818fc8a`, and were
+not retrained. Learned/frozen route reliance is only `0.00721/0.00680`, both below `0.01`, so the
+full mechanism results reinforce the fixed-partition interpretation. Those four released GPUs were
+immediately refilled with auxiliary-weight 0.05/0.1 and the learned/frozen top-2 pair. All ten GPUs
+again run short performance searches. The ready queue remains at 12 after exact-building E4/E16
+top-1 triplets and top-2 pairs; 24 backlog hypotheses remain. OOD test is sealed, tester6 remains
+scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace:
+`analysis/fast_conflict_ready_queue_extension_validation.json` and
+`analysis/fast_conflict_recovered_finals_validation.json`.

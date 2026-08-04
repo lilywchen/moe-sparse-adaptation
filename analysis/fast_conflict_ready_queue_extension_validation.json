@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T02:44:00-04:00",
+  "purpose": "Replenish the runnable short-arm queue after six router-dynamics launches.",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "sciserver_code_equivalent_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "template": "fast_conflict_ready_queue_20260804/configs/twoffn_aux005_ep5.yaml",
+  "exact_builds": {
+    "expected": 10,
+    "valid": 10,
+    "errors": 0,
+    "unique_run_ids": true,
+    "blocks": [10, 11],
+    "milestones": [2, 5]
+  },
+  "arms": {
+    "twoffn_E4_learned_ep5": {"variant": "moe", "experts": 4, "total_params": 29494645, "active_ffn_params": 2366210},
+    "twoffn_E4_frozen_ep5": {"variant": "moe_frozen", "experts": 4, "total_params": 29494645, "active_ffn_params": 2366210},
+    "twoffn_E4_dense_ep5": {"variant": "dense_wide", "experts": 4, "total_params": 29493881, "sparse_gap_params": 764},
+    "twoffn_E16_learned_ep5": {"variant": "moe", "experts": 16, "total_params": 57861493, "active_ffn_params": 2375426},
+    "twoffn_E16_frozen_ep5": {"variant": "moe_frozen", "experts": 16, "total_params": 57861493, "active_ffn_params": 2375426},
+    "twoffn_E16_dense_ep5": {"variant": "dense_wide", "experts": 16, "total_params": 57860753, "sparse_gap_params": 740},
+    "twoffn_E4_top2_learned_ep5": {"variant": "moe", "experts": 4, "top_k": 2, "total_params": 29494645, "active_ffn_params": 4729346},
+    "twoffn_E4_top2_frozen_ep5": {"variant": "moe_frozen", "experts": 4, "top_k": 2, "total_params": 29494645, "active_ffn_params": 4729346},
+    "twoffn_E16_top2_learned_ep5": {"variant": "moe", "experts": 16, "top_k": 2, "total_params": 57861493, "active_ffn_params": 4738562},
+    "twoffn_E16_top2_frozen_ep5": {"variant": "moe_frozen", "experts": 16, "top_k": 2, "total_params": 57861493, "active_ffn_params": 4738562}
+  },
+  "hypothesis": "Expert count may determine whether each expert gets enough data or enough diversity for adaptive routing to outperform fixed partitions.",
+  "alternative_explanation": "Any expert-count trend is explained by fixed partition regularization or equal total capacity.",
+  "falsifier": "Within both E4 and E16 triplets, frozen or dense matches learned, route reliance remains negligible, or expert use collapses.",
+  "queue_after_extension": {"running_search_arms": 10, "ready_runnable_arms": 12, "backlog_hypotheses": 24}
+}

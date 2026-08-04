@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T02:52:00-04:00",
+  "grade": "strict exploratory seed-0 recovered finals",
+  "source_github_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "sciserver_code_equivalent_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "result_git_sha": "818fc8a",
+  "result_git_dirty": false,
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {"expected": 4, "valid": 4, "environments": 4, "ood_val_samples": 9854, "finite_required_metrics": true},
+  "recovery": {"training_repeated": false, "checkpoint_sha256_valid": 4, "atomic_result_writes": 4, "stage1_validation_passed": 4},
+  "rows": {
+    "high10_11_learned_ep10": {"ood_val": 0.07083417901359854, "id": 0.1312912439673003, "worst_experiment": 0.010551948051948052, "total_params": 38950261, "experts_used": 8, "routing_entropy": 0.9999195082806945, "randomized_routes_acc": 0.06362898315404912, "route_reliance": 0.007205195859549415},
+    "high10_11_frozen_ep10": {"ood_val": 0.07103714227724782, "id": 0.12988771791588694, "worst_experiment": 0.010551948051948052, "total_params": 38950261, "experts_used": 8, "routing_entropy": 0.9977793872061554, "randomized_routes_acc": 0.06423787294499696, "route_reliance": 0.006799269332250862},
+    "high10_11_dense_ep10": {"ood_val": 0.05845341993099249, "id": 0.10302373682655373, "worst_experiment": 0.010957792207792208, "total_params": 38949505},
+    "low1_frozen_ep5": {"ood_val": 0.02719707732900345, "id": 0.039077120063035556, "worst_experiment": 0.010551948051948052, "total_params": 30676212, "experts_used": 8, "routing_entropy": 0.9976191785516405, "randomized_routes_acc": 0.025471889587984575, "route_reliance": 0.0017251877410188743}
+  },
+  "contrasts_percentage_points": {
+    "twoffn_learned_minus_dense": {"ood_val": 1.238075908260605, "id": 2.826750714074657, "worst_experiment": -0.04058441558441562},
+    "twoffn_learned_minus_frozen": {"ood_val": -0.020296326364928, "id": 0.140352605141336, "worst_experiment": 0.0},
+    "twoffn_route_reliance_learned_minus_frozen": 0.000405926527298553
+  },
+  "interpretation": "The recovered mechanism metrics confirm that the persistent sparse-over-dense signal is not currently an adaptive-router effect. Learned and frozen routing have the same accuracy ordering and nearly identical route reliance, both below the predeclared 0.01 mechanism threshold.",
+  "alternative_explanation": "Fixed expert partitions, conditional capacity, or optimizer trajectory regularization can explain the result; seed-0 multiplicity may still inflate its size.",
+  "sharp_falsifier": "A new learned router must exceed its frozen control with route reliance above 0.01, noncollapsed use, paired OOD or tail improvement, and a locked fresh-seed replication.",
+  "remaining_terminal_checkpoint_recoveries": 6,
+  "publication": {"hf_status": "blocked_private_repository_storage_limit", "uploaded": 0}
+}
