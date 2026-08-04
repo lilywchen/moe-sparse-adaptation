@@ -1,5 +1,29 @@
 # Living scientific state
 
+## Current handoff — 2026-08-04 00:18 EDT
+
+Ten of ten corrected epoch-2 conflict-localized results are strict-valid. At high-conflict block 11,
+learned routing reaches `1.16%` OOD validation versus `1.07%` dense and `0.87%` frozen; at blocks
+10+11 it reaches `1.09%` versus `1.05%` and `0.99%`. At low-conflict block 1, learned is `0.91%`,
+below dense `1.02%` and above frozen `0.79%`. Worst-experiment ordering also favors learned at the
+two high-conflict interventions. These near-chance epoch-2 values are diagnostic, not an efficacy
+result, but the predicted high-versus-placebo localization ordering is present. It must survive
+epoch 5 with learned-router dependence and healthy routing or the conflict measure is merely
+correlational. Trace: `analysis/fast_conflict_dispatchfix_epoch2_validation.json`.
+
+Every row covers environments 7/27/42/49 and 9,854 OOD-validation samples, has the exact requested
+blocks, correct one-/two-FFN parameter counts, finite metrics, required checkpoint/log/milestone,
+and a hash-valid manifest. All seven sparse/frozen rows use 8/8 experts with entropy
+0.9598--0.9968. Empty maps in five unevaluated OOD-test fields were normalized fail-closed to null;
+ten raw backups were preserved and ten manifests regenerated. OOD test was not accessed.
+
+All ten schedulable H100s are occupied: eight epoch-5 learned/frozen/dense screens at block 11,
+blocks 10+11, and placebo block 1, plus frozen/dense block-10 epoch-2 controls. The first release
+launches `low1_frozen_ep5`; block-10 epoch-5 pairing follows only after its controls validate.
+tester6/2899 remains scheduler-Pending after one start and contributes zero GPUs. HF publication
+made one bounded attempt and is blocked by private storage quota; zero runs uploaded. The paper is
+unchanged. Trace: `analysis/fast_conflict_screen_epoch5_registry.json`.
+
 ## Current handoff — 2026-08-03 23:18 EDT
 
 The intended conflict-localized screen had a fail-closed correctness problem: all nine intervention

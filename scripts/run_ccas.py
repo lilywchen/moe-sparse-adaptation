@@ -536,6 +536,11 @@ def main():
         "wall_seconds": round(time.time() - t0, 1),
         "config": cfg,
     }
+    # Selection-stage runs never evaluate OOD test.  Keep every withheld field explicitly null
+    # in the source result, rather than relying on the publication path to repair legacy empty
+    # maps after the fact.  This makes the persisted JSON fail-closed even when HF publication is
+    # disabled or interrupted.
+    result = normalize_withheld_ood_fields(result)
     out_json.write_text(json.dumps(result, indent=2))
     logf.close()
     if milestone_f is not None:

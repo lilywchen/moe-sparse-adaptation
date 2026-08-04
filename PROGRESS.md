@@ -1,8 +1,9 @@
 # Progress ledger
 
-Last verified: 2026-08-03 16:56 EDT on SciServer and locally. Ten of ten currently available H100s
-are assigned; tester6 remains scheduler-Pending and contributes no GPU. The paper has not been
-changed because the new results remain exploratory seed-0 mechanism evidence.
+Last verified: 2026-08-04 00:18 EDT on SciServer and locally. Ten of ten currently available H100s
+are assigned to eight epoch-5 screens and two block-10 epoch-2 controls; tester6 remains
+scheduler-Pending and contributes no GPU. The paper has not been changed because the new results
+remain exploratory seed-0 mechanism evidence.
 
 Research-state synchronization: GitHub commit `75c2e85`, containing the validated negative kill
 gate and manuscript table, was pulled into the linked Overleaf project on 2026-08-01;
@@ -3246,3 +3247,34 @@ a learned block-10 localization follow-up. Block-10 frozen and dense controls ar
 refills. All use seed 0, matched data order, a fresh W&B group, persistent results/checkpoints,
 OOD-validation selection, and sealed OOD test. No corrected accuracy result exists yet. Trace:
 `analysis/fast_conflict_screen_dispatch_repair_validation.json`.
+
+## 2026-08-04 00:18 EDT — ten corrected epoch-2 results validate and the epoch-5 screen fills the pool
+
+All ten corrected results pass strict JSON, finite metric, exact block/variant, parameter-count,
+four-environment/9,854-sample, checkpoint, milestone, log, manifest, provenance, and fatal-scan
+checks. Every result uses `selection_split=ood_val`, records `test_evaluated=false`, and keeps all
+five OOD-test fields null after a fail-closed metadata normalization. Ten raw pre-normalization
+copies are preserved, ten manifests were regenerated and hash-verified, and no scientific value
+changed. Seven sparse/frozen rows use all eight experts with routing entropy 0.9598--0.9968.
+Trace: `analysis/fast_conflict_dispatchfix_epoch2_validation.json`.
+
+At this very early point, block-11 learned routing is `1.16%` OOD validation versus `1.07%` dense
+and `0.87%` frozen; blocks 10+11 learned is `1.09%` versus `1.05%` dense and `0.99%` frozen. The
+block-1 placebo learned row is `0.91%`, below its `1.02%` dense control but above `0.79%` frozen.
+This is the predicted localization ordering, but the accuracies are near chance and the differences
+are only diagnostic. The sharp falsifier is failure to preserve or strengthen learned-over-control
+ordering at epoch 5, or seeing an equal effect at the placebo.
+
+Eight epoch-5 workers and the two missing block-10 epoch-2 controls now occupy all ten schedulable
+H100s. Exact assignments are 2887: high11 learned/frozen epoch 5; 2875: high10 frozen epoch 2 and
+high11 dense epoch 5; 2874: high10 dense epoch 2 and high10+11 learned epoch 5; 2862: high10+11
+frozen/dense epoch 5; 2859: low1 learned/dense epoch 5. `low1_frozen_ep5` is the immediate refill.
+The ready queue remains at least 12 with 24 hypotheses in backlog. tester6/2899 received one start
+and remains Pending because available nodes do not satisfy affinity/capacity; no duplicate was
+created or started.
+
+One bounded HF publication attempt stopped immediately at the private-repository storage limit;
+zero normalized runs uploaded and no retry will occur until quota is available. The source writer
+now normalizes unevaluated OOD-test fields before persistence. Local syntax and extracted-helper
+tests pass; a new full remote suite was blocked by the SciServer checkout's GitHub reauthentication
+prompt, so no credential was entered. OOD test remains sealed and the manuscript is unchanged.

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T00:18:00-04:00",
+  "campaign": "fast_conflict_screen_dispatchfix_20260804",
+  "scientific_status": "diagnostic_seed0_mechanism_evidence_not_performance_answer",
+  "source_commit": "813015d2309cec6a49bbc886c18230e5b26b502c",
+  "execution_commit": "3b898c2fe0c3445ca65826a2b5a692aae475e143",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields": null,
+  "coverage": {
+    "expected_results": 10,
+    "valid_results": 10,
+    "failed_results": 0,
+    "excluded_results": 0,
+    "environment_ids": [7, 27, 42, 49],
+    "ood_validation_samples_per_result": 9854
+  },
+  "validation_checks": {
+    "json_parseable": 10,
+    "finite_required_metrics": 10,
+    "exact_block_and_variant_identity": 10,
+    "parameter_counts_valid": 10,
+    "environment_coverage_valid": 10,
+    "companion_log_checkpoint_milestone_manifest_complete": 10,
+    "manifest_hash_valid": 10,
+    "fatal_scan_clear": 10,
+    "test_sealed": 10,
+    "noncollapsed_sparse_routing": 7
+  },
+  "parameter_counts": {
+    "one_ffn_moe_or_frozen": 30676212,
+    "one_ffn_dense": 30675834,
+    "one_ffn_gap": 378,
+    "two_ffn_moe_or_frozen": 38950261,
+    "two_ffn_dense": 38949505,
+    "two_ffn_gap": 756
+  },
+  "routing_health": {
+    "sparse_results": 7,
+    "experts_used_each": 8,
+    "entropy_range": [0.9598, 0.9968],
+    "collapsed_results": 0
+  },
+  "metrics_percent_rounded": {
+    "high_block11": {
+      "learned": {"ood_val": 1.16, "worst_experiment": 0.61},
+      "frozen": {"ood_val": 0.87, "worst_experiment": 0.37},
+      "dense": {"ood_val": 1.07, "worst_experiment": 0.24}
+    },
+    "high_blocks10_11": {
+      "learned": {"ood_val": 1.09, "worst_experiment": 0.57},
+      "frozen": {"ood_val": 0.99, "worst_experiment": 0.49},
+      "dense": {"ood_val": 1.05, "worst_experiment": 0.37}
+    },
+    "low_block1_placebo": {
+      "learned": {"ood_val": 0.91, "worst_experiment": 0.53},
+      "frozen": {"ood_val": 0.79, "worst_experiment": 0.45},
+      "dense": {"ood_val": 1.02, "worst_experiment": 0.49}
+    },
+    "high_block10_learned": {"ood_val": 0.94, "worst_experiment": 0.57}
+  },
+  "paired_differences_percentage_points_rounded": {
+    "high_block11_learned_minus_dense": {"ood_val": 0.09, "worst_experiment": 0.37},
+    "high_block11_learned_minus_frozen": {"ood_val": 0.29, "worst_experiment": 0.24},
+    "high_blocks10_11_learned_minus_dense": {"ood_val": 0.04, "worst_experiment": 0.20},
+    "high_blocks10_11_learned_minus_frozen": {"ood_val": 0.10, "worst_experiment": 0.08},
+    "low_block1_learned_minus_dense": {"ood_val": -0.11, "worst_experiment": 0.04},
+    "low_block1_learned_minus_frozen": {"ood_val": 0.12, "worst_experiment": 0.08}
+  },
+  "metadata_normalization": {
+    "defect": "source results encoded five unevaluated OOD-test fields as empty maps rather than explicit nulls",
+    "raw_pre_normalization_backups": 10,
+    "normalized_results": 10,
+    "manifests_regenerated": 10,
+    "manifest_hashes_reverified": 10,
+    "scientific_values_changed": false,
+    "source_persistence_repair": "scripts/run_ccas.py now normalizes withheld fields before writing the source result"
+  },
+  "publication": {
+    "wandb_group": "rxrx1-cell-dino-fast-conflict-dispatchfix-20260804",
+    "hf_status": "blocked_private_repository_storage_limit",
+    "hf_attempts_this_validation": 1,
+    "hf_uploaded_runs": 0,
+    "retry_condition": "private repository storage quota becomes available"
+  },
+  "interpretation": {
+    "result": "At epoch 2, learned routing is slightly above both controls at the measured high-conflict interventions, while the learned low-conflict placebo is below its dense control.",
+    "alternative_explanation": "All accuracies are near chance and the ordering may be seed noise, generic optimization, or a correlational gradient-conflict marker rather than causal specialization.",
+    "falsifier": "The high-conflict learned-over-control ordering must persist or strengthen at epoch 5 with learned-router dependence and healthy routing, while remaining absent or smaller at the low-conflict placebo.",
+    "multiplicity": "This is a seed-0 exploratory placement, depth, and router-state screen; no efficacy claim or locked confirmation follows from epoch-2 ordering."
+  }
+}
