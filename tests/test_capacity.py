@@ -259,11 +259,24 @@ def test_convert_multiple_blocks_is_explicit_and_function_preserving():
     assert torch.allclose(model(inputs), reference(inputs), atol=1e-6)
 
 
-def test_multiblock_dense_and_moe_remain_total_parameter_matched():
+def test_multiblock_dense_uses_nearest_realisable_width_per_layer():
     torch.manual_seed(0)
     _, sparse = convert_blocks(TinyViT(n=8), "moe", block_indices=[1, 5], n_experts=E)
     torch.manual_seed(0)
     _, dense = convert_blocks(TinyViT(n=8), "dense_wide", block_indices=[1, 5], n_experts=E)
+    # The toy model is too small for a whole-model percentage tolerance: its irreducible
+    # one-hidden-unit rounding step is itself about 0.1%.  Check the exact realizability bound.
+    one_hidden_unit = D + D + 1
+    assert abs(dense.ffn_block_params - sparse.ffn_block_params) <= one_hidden_unit
+
+
+def test_multiblock_dense_and_moe_are_matched_at_study_scale():
+    torch.manual_seed(0)
+    _, sparse = convert_blocks(
+        TinyViT(n=12, d=192, h=768), "moe", block_indices=[1, 5, 9], n_experts=8)
+    torch.manual_seed(0)
+    _, dense = convert_blocks(
+        TinyViT(n=12, d=192, h=768), "dense_wide", block_indices=[1, 5, 9], n_experts=8)
     ok, delta = check_budget(dense, sparse)
     assert ok, delta
 
