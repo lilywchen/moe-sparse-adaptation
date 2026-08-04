@@ -3384,3 +3384,37 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
 - **Next automatic action:** validate the pending auxiliary/top-2 releases, put the E4 dense control
   on the next free GPU, then test learned versus frozen within E4. Continue refilling from the
   twelve-arm queue; no new broad 60/90-epoch search is authorized.
+
+## 2026-08-04 03:52 EDT — balance strength and E8 top-2 close; six GPUs refill with paired controls
+
+- **Where we are:** six additional epoch-5 rows are strict-valid. All ten schedulable H100
+  assignments were refilled: 2887 runs E4 dense and E16 learned; 2875 runs E4 learned/frozen;
+  2874 runs temperature 0.30 and image routing; 2862 runs E16 frozen/dense; and 2859 runs E4
+  top-2 learned/frozen. Zero usable H100 assignments are idle. The exact-build ready queue is 12
+  and the hypothesis backlog is 24. tester6/2899 remains scheduler-Pending and contributes no GPU.
+- **What moved:** auxiliary weights 0, 0.0001, 0.05, and 0.1, plus E8 top-2 learned/frozen,
+  completed with finite metrics, four-environment coverage, epoch-2/5 checkpoints, clean `818fc8a`
+  provenance, fatal-clear logs, `selection_split=ood_val`, and null heldout fields. Four auxiliary
+  releases launched the E4 dense control and E16 learned/frozen/dense triplet; the top-2 releases
+  launched the E4 top-2 pair. Six additional noise/image/E4-linear/E16-linear arms passed exact
+  model construction with unique run IDs and restored ready depth to 12.
+- **What we learned:** load-balance strength does not explain the sparse effect. OOD validation is
+  `2.791/2.801/3.034/2.933%` at auxiliary weights `0.0001/0/0.05/0.1`. Zero balance lowers route
+  entropy to `0.814` while keeping all eight experts active, yet route reliance falls to `0.00061`
+  and accuracy declines. Thus uneven specialization alone is not useful routing. E8 top-2 learned
+  scores `3.197%` versus `3.004%` frozen: a small `+0.193` OOD and `+0.239` ID-point difference,
+  zero worst-environment difference, and route reliance only `0.00365`. It is a short family lead,
+  not evidence that adaptive routing causes the improvement.
+- **Correctness/trust:** these are exploratory seed-0 comparisons inside a multiple-search program.
+  E8 top-2 learned/frozen share `38,950,261` total and `4,732,418` active FFN parameters. Auxiliary
+  arms share the exact E8 top-1 class. OOD test remains sealed. No fresh seeds or long-horizon runs
+  are licensed by these small results; the largest threat is multiplicity plus causal routing
+  dependence remaining below `0.01`.
+- **Traceable artifacts:** `analysis/fast_conflict_router_dynamics_epoch5_wave2_validation.json`,
+  `analysis/fast_conflict_router_dynamics_epoch5_wave3_top2_validation.json`, the two queue-extension
+  validations, the updated ready registry, and steward ledgers. HF remains quota-blocked and the
+  manuscript is unchanged.
+- **Next automatic action:** validate the E4 learned/frozen/dense and E4 top-2 learned/frozen
+  families at their first completed checkpoint, refill from the 12 exact-built matched controls,
+  and require a learned-versus-frozen difference with route reliance above `0.01` before spending
+  beyond the short screen.

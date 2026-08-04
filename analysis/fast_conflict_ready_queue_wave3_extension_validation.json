@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:51:00-04:00",
+  "purpose": "Restore twelve runnable short arms after launching the E4 top-2 learned/frozen pair.",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "exact_builds": {"expected": 2, "valid": 2, "errors": 0, "unique_run_ids": true, "blocks": [10, 11], "geometry": "linear", "milestones": [2, 5]},
+  "arms": {
+    "twoffn_E16_linear_learned_ep5": {"variant": "moe", "n_experts": 16, "total_params": 57861493, "active_ffn_params": 2375426},
+    "twoffn_E16_linear_frozen_ep5": {"variant": "moe_frozen", "n_experts": 16, "total_params": 57861493, "active_ffn_params": 2375426}
+  },
+  "hypothesis": "Sixteen magnitude-sensitive expert partitions may expose a learned-versus-frozen routing difference not present with cosine routing.",
+  "alternative_explanation": "Many fixed linear partitions or parameter count, rather than adaptive routing, explain any movement.",
+  "falsifier": "Frozen matches learned, experts collapse, or route reliance stays below 0.01.",
+  "queue_after_extension": {"running_search_arms": 10, "ready_runnable_arms": 12, "backlog_hypotheses": 24}
+}

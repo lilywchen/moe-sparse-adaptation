@@ -2514,3 +2514,24 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
 - tester6/2899 remains Pending/Running=false/exit0 with the unchanged affinity, schedulability, and
   GPU-capacity reason. No start or create was issued. W&B uses the declared clean group; HF remains
   blocked by private storage quota, and the paper is unchanged.
+
+## 2026-08-04 03:52 EDT — auxiliary sweep is flat; top-2 learned has only a small paired edge
+
+- Four load-balance-strength rows and the E8 top-2 learned/frozen pair are strict-valid at epoch 5
+  on clean execution `818fc8a`. All rows cover the same four OOD-validation environments and 9,854
+  samples, have epoch-2/5 checkpoints, are fatal-clear, and keep every OOD-test field null.
+- Auxiliary weights `0.0001/0/0.05/0.1` score `2.791/2.801/3.034/2.933%` OOD validation. Zero
+  balance makes routing visibly less uniform (entropy `0.814`) without expert death, but route
+  reliance is only `0.00061` and accuracy is lower. This rules out simple load-balance suppression
+  as the missing ingredient and shows that nonuniform assignments are not sufficient.
+- E8 top-2 learned/frozen score `3.197/3.004%` OOD, `4.393/4.154%` ID, and both `0.933%` on the
+  worst environment. Learned-minus-frozen is `+0.193/+0.239/+0.000` points; route reliance is
+  `0.00365/0.00315`. The small paired mean lead is exploratory and does not establish a causal
+  routing mechanism.
+- Six released GPUs were refilled with E4 dense, E16 learned/frozen/dense, and E4 top-2
+  learned/frozen. All ten schedulable H100 assignments are occupied and zero are idle. Six new
+  matched frozen/linear arms exact-build with unique IDs, preserving ready/backlog at `12/24`.
+- The sharpest next test is the matched E4 and E16 learned/frozen/dense families: useful adaptive
+  routing requires a learned advantage that survives the frozen control, preserves the worst
+  environment, and raises randomized-route dependence above `0.01`. OOD test is sealed; no broad
+  60/90-epoch search is launched.

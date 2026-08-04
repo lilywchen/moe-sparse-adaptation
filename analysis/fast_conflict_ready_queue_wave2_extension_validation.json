@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:44:00-04:00",
+  "purpose": "Restore twelve runnable short arms after launching the E4 dense control and E16 learned/frozen/dense triplet.",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "exact_builds": {
+    "expected": 4,
+    "valid": 4,
+    "errors": 0,
+    "unique_run_ids": true,
+    "blocks": [10, 11],
+    "milestones": [2, 5]
+  },
+  "arms": {
+    "twoffn_noise001_frozen_ep5": {"variant": "moe_frozen", "n_experts": 8, "geometry": "cosine", "routing_unit": "token", "total_params": 38950261, "active_ffn_params": 2369282},
+    "twoffn_image_frozen_ep5": {"variant": "moe_frozen", "n_experts": 8, "geometry": "cosine", "routing_unit": "image", "total_params": 38950261, "active_ffn_params": 2369282},
+    "twoffn_E4_linear_learned_ep5": {"variant": "moe", "n_experts": 4, "geometry": "linear", "routing_unit": "token", "total_params": 29494645, "active_ffn_params": 2366210},
+    "twoffn_E4_linear_frozen_ep5": {"variant": "moe_frozen", "n_experts": 4, "geometry": "linear", "routing_unit": "token", "total_params": 29494645, "active_ffn_params": 2366210}
+  },
+  "hypothesis": "Matched frozen controls will distinguish the best initialization and image-routing screens from fixed partitions, while the E4 linear pair tests whether fewer experts plus magnitude-sensitive routing makes assignments learnable.",
+  "alternative_explanation": "Any accuracy movement is fixed partitioning or ordinary optimization rather than adaptive routing.",
+  "falsifier": "Frozen matches learned, route reliance stays below 0.01, or the pair is dominated on OOD validation and worst-environment accuracy.",
+  "queue_after_extension": {"running_search_arms": 10, "ready_runnable_arms": 12, "backlog_hypotheses": 24}
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:42:00-04:00",
+  "classification": "exploratory_seed0_epoch5_router_auxiliary_strength_screen",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {
+    "expected": 4,
+    "valid": 4,
+    "environments": 4,
+    "ood_val_samples": 9854,
+    "milestones": [2, 5],
+    "checkpoints_per_arm": 2,
+    "fatal_log_matches": 0
+  },
+  "reference": {
+    "arm": "high10_11_learned_ep5",
+    "ood_val": 0.029937081388268724,
+    "id": 0.039717324928592534,
+    "worst": 0.011363636363636364,
+    "route_reliance": 0.001623706109194236
+  },
+  "arms": {
+    "twoffn_aux0001_ep5": {
+      "ood_val": 0.02790744875177592,
+      "id": 0.03533438392593322,
+      "worst": 0.008116883116883116,
+      "train": 0.04039333596214511,
+      "route_reliance": 0.0020296326364927925,
+      "routing_entropy": 0.9972501380624735,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_aux0_ep5": {
+      "ood_val": 0.02800893038360057,
+      "id": 0.03890475721461637,
+      "worst": 0.009334415584415584,
+      "train": 0.04512519716088328,
+      "route_reliance": 0.0006088897909478364,
+      "routing_entropy": 0.8142138663150007,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_aux005_ep5": {
+      "ood_val": 0.030343007915567283,
+      "id": 0.04178567910962277,
+      "worst": 0.008116883116883116,
+      "train": 0.047959384858044164,
+      "route_reliance": 0.002537040795615994,
+      "routing_entropy": 0.9990968843713533,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    },
+    "twoffn_aux01_ep5": {
+      "ood_val": 0.029328191597320884,
+      "id": 0.04235201418300001,
+      "worst": 0.007711038961038961,
+      "train": 0.048353706624605676,
+      "route_reliance": 0.0010148163182463962,
+      "routing_entropy": 0.9994078062294801,
+      "experts_used": 8,
+      "total_params": 38950261,
+      "active_ffn_params": 2369282,
+      "status": "validated_pruned"
+    }
+  },
+  "contrasts_to_reference_points": {
+    "aux0001": {"ood_val": -0.20296326364928036, "id": -0.4382941002659316, "worst": -0.3246753246753247, "route_reliance_gap": 0.0004059265272985565},
+    "aux0": {"ood_val": -0.19281510046681537, "id": -0.08125677139761648, "worst": -0.202922077922078, "route_reliance_gap": -0.0010148163182463995},
+    "aux005": {"ood_val": 0.04059265272985595, "id": 0.20683541810302384, "worst": -0.3246753246753247, "route_reliance_gap": 0.000913334686421758},
+    "aux01": {"ood_val": -0.06088897909478397, "id": 0.2634689254407473, "worst": -0.3652597402597403, "route_reliance_gap": -0.0006088897909478397}
+  },
+  "interpretation": "Changing the load-balance weight from zero through 0.1 did not produce an OOD or worst-environment improvement. Zero balance reduced routing entropy to 0.814 while retaining all eight experts, but its randomized-route dependence fell to 0.00061 and accuracy declined. This separates nonuniform expert use from useful adaptive routing: sharper specialization alone is not sufficient.",
+  "alternative_explanation": "The epoch-5 horizon may be too short for auxiliary-strength differences to translate into useful routing, or the fixed expert partition rather than router learning may dominate the early effect.",
+  "sharp_falsifier": "A matched learned-versus-frozen family at a different expert count or geometry must show a reproducible learned advantage together with route reliance above 0.01; otherwise adaptive routing remains unsupported.",
+  "multiplicity": "Four new rows are part of a broader exploratory seed-0 search. They are not fresh-seed confirmation and are not pooled with different fairness estimands.",
+  "refill": {
+    "2887_gpu0": "twoffn_E4_dense_ep5",
+    "2887_gpu1": "twoffn_E16_learned_ep5",
+    "2862_gpu0": "twoffn_E16_frozen_ep5",
+    "2862_gpu1": "twoffn_E16_dense_ep5"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-04T03:50:00-04:00",
+  "classification": "exploratory_seed0_epoch5_top2_learned_frozen_pair",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "coverage": {"expected": 2, "valid": 2, "environments": 4, "ood_val_samples": 9854, "milestones": [2, 5], "checkpoints_per_arm": 2, "fatal_log_matches": 0},
+  "arms": {
+    "twoffn_top2_ep5": {"variant": "moe", "ood_val": 0.03196671402476152, "id": 0.04392790308283266, "worst": 0.009334415584415584, "train": 0.05207511829652997, "route_reliance": 0.00365338745687032, "routing_entropy": 0.9957954839837652, "experts_used": 8, "total_params": 38950261, "active_ffn_params": 4732418, "status": "validated_family_leader_not_promoted"},
+    "twoffn_top2_frozen_ep5": {"variant": "moe_frozen", "ood_val": 0.030038563020093362, "id": 0.04153944646902393, "worst": 0.009334415584415584, "train": 0.04995563880126183, "route_reliance": 0.0031459305865638304, "routing_entropy": 0.99254699018908085, "experts_used": 8, "total_params": 38950261, "active_ffn_params": 4732418, "status": "validated_control"}
+  },
+  "learned_minus_frozen_points": {"ood_val": 0.19281510046681581, "id": 0.23884566138087315, "worst": 0.0, "route_reliance_gap": 0.0005074568703064895},
+  "interpretation": "Top-2 learned routing has a small paired mean advantage over its frozen control at epoch 5, with no worst-environment improvement. Randomized-route dependence remains only 0.00365, so the result does not yet show that adaptive routing is the cause.",
+  "alternative_explanation": "Smoother gradients or ordinary optimization, rather than learned conditional assignments, explain the small mean difference.",
+  "sharp_falsifier": "E4 or E16 top-2 learned/frozen pairs that fail to reproduce the learned advantage, or continued route reliance below 0.01, rule out a robust adaptive-routing interpretation.",
+  "multiplicity": "This is one seed within a broader short-run search and is not promoted to a longer horizon.",
+  "refill": {"2859_gpu0": "twoffn_E4_top2_learned_ep5", "2859_gpu1": "twoffn_E4_top2_frozen_ep5"}
+}
