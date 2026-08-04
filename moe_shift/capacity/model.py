@@ -1,4 +1,4 @@
-"""Build the CCAS model with exactly one FFN block converted.
+"""Build the CCAS model with one or more explicitly selected FFN blocks converted.
 
 Variants (all function-preserving at init):
   original    - untouched pretrained FFN (lower total budget P0; accuracy-compute reference)
@@ -13,7 +13,7 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from .surgery import convert_block
+from .surgery import convert_blocks
 
 
 def _git_sha(path):
@@ -53,7 +53,8 @@ def _actual_blocks(backbone):
 
 
 class CCASModel(nn.Module):
-    def __init__(self, num_classes, variant="moe", placement="middle", n_experts=8, top_k=1,
+    def __init__(self, num_classes, variant="moe", placement="middle", placements=None,
+                 block_indices=None, n_experts=8, top_k=1,
                  routing_unit="token", geometry="cosine", balance="global", temperature=0.07,
                  timm_name="vit_small_patch14_dinov2", img=224, pretrained=True,
                  drop_path=0.2, sym_break_wide=0.1, sym_break_moe=0.0,
@@ -128,8 +129,9 @@ class CCASModel(nn.Module):
         # the complete trainable model rather than backbone-only parameters.
         self.fc = nn.Linear(self.dim, num_classes)
 
-        _, self.capacity = convert_block(
-            self, variant, placement=placement, n_experts=n_experts, top_k=top_k,
+        _, self.capacity = convert_blocks(
+            self, variant, placement=placement, placements=placements,
+            block_indices=block_indices, n_experts=n_experts, top_k=top_k,
             routing_unit=routing_unit, geometry=geometry, balance=balance,
             temperature=temperature, sym_break_wide=sym_break_wide, sym_break_moe=sym_break_moe)
 
@@ -162,8 +164,8 @@ class CCASModel(nn.Module):
 
     # -- environment ids are used ONLY by the within-batch balancing loss, never at inference --
     def set_env(self, env):
-        if self._moe_block is not None:
-            self._moe_block.set_env(env)
+        for block in self._moe_blocks:
+            block.set_env(env)
 
     def forward_features(self, x):
         if self.backbone_source == "channel_adaptive_dino":
@@ -201,19 +203,28 @@ class CCASModel(nn.Module):
         return self.fc(self.forward_features(x))
 
     def aux_loss(self, balance_w, zloss_w=0.0):
-        if self._moe_block is None:
+        if not self._moe_blocks:
             return torch.zeros((), device=self.fc.weight.device)
-        return self._moe_block.aux_loss(balance_w, zloss_w)
+        # Average across converted layers so a multi-layer model does not silently receive a
+        # proportionally stronger regularizer than its single-layer comparator.
+        return torch.stack([
+            block.aux_loss(balance_w, zloss_w) for block in self._moe_blocks
+        ]).mean()
 
     @property
     def moe_block(self):
         return self._moe_block
+
+    @property
+    def moe_blocks(self):
+        return tuple(self._moe_blocks)
 
 
 def build_ccas(cfg):
     m = cfg["model"]
     return CCASModel(num_classes=m["num_classes"], variant=m["variant"],
                      placement=m.get("placement", "middle"), n_experts=m.get("n_experts", 8),
+                     placements=m.get("placements"), block_indices=m.get("block_indices"),
                      top_k=m.get("top_k", 1), routing_unit=m.get("routing_unit", "token"),
                      geometry=m.get("geometry", "cosine"), balance=m.get("balance", "global"),
                      temperature=m.get("temperature", 0.07),

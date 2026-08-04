@@ -16,7 +16,8 @@ import torch.nn as nn
 
 from moe_shift.audit.routing import capture
 from moe_shift.capacity import (MoEFFN, Router, WideFFN, budget_delta_pct, check_budget,
-                                convert_block, global_lbl, placement_index, within_batch_lbl)
+                                convert_block, convert_blocks, global_lbl, placement_index,
+                                within_batch_lbl)
 
 D, H, E, B, T = 32, 64, 4, 6, 5
 
@@ -241,6 +242,30 @@ def test_convert_touches_exactly_one_block():
     model, rep = convert_block(TinyViT(n=8), "moe", placement="late", n_experts=E)
     converted = [i for i, b in enumerate(model.blocks) if isinstance(b.mlp, (MoEFFN, WideFFN))]
     assert converted == [rep.block_index], converted
+
+
+def test_convert_multiple_blocks_is_explicit_and_function_preserving():
+    torch.manual_seed(0)
+    reference = TinyViT(n=8)
+    model = copy.deepcopy(reference)
+    inputs = torch.randn(3, 5, D)
+    model, report = convert_blocks(
+        model, "moe", block_indices=[1, 5], n_experts=E, sym_break_moe=0.0)
+    converted = [i for i, block in enumerate(model.blocks) if isinstance(block.mlp, MoEFFN)]
+    assert converted == [1, 5]
+    assert report.block_indices == (1, 5)
+    assert report.n_converted_blocks == 2
+    assert len(model._moe_blocks) == 2
+    assert torch.allclose(model(inputs), reference(inputs), atol=1e-6)
+
+
+def test_multiblock_dense_and_moe_remain_total_parameter_matched():
+    torch.manual_seed(0)
+    _, sparse = convert_blocks(TinyViT(n=8), "moe", block_indices=[1, 5], n_experts=E)
+    torch.manual_seed(0)
+    _, dense = convert_blocks(TinyViT(n=8), "dense_wide", block_indices=[1, 5], n_experts=E)
+    ok, delta = check_budget(dense, sparse)
+    assert ok, delta
 
 
 # ---------------------------------------------------------------- routing units

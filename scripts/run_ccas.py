@@ -214,27 +214,31 @@ def evaluate(model, loader, device):
 
 @torch.no_grad()
 def counterfactual_reroute(model, loader, device, seed=0):
-    """route reliance = OOD(learned routes) - OOD(randomized routes), expert weights fixed.
+    """Joint route reliance with every converted router randomized and expert weights fixed.
 
     The router is temporarily replaced by i.i.d. Gaussian logits, which give a balanced random
     top-1 assignment while leaving every expert's weights untouched. The substitution is always
     undone (finally), and the RNG is seeded so the number is reproducible across reruns.
     """
-    blk = model.moe_block
-    if blk is None:
+    blocks = list(model.moe_blocks)
+    if not blocks:
         return None
-    real_router_forward = blk.router.forward
     gen = torch.Generator(device="cpu").manual_seed(int(seed))
+    real_router_forwards = [block.router.forward for block in blocks]
 
-    def rand_router(z):
-        r = torch.randn(z.shape[0], blk.n_experts, generator=gen)
-        return r.to(z.device, dtype=z.dtype)
+    def randomized_forward(block):
+        def forward(z):
+            r = torch.randn(z.shape[0], block.n_experts, generator=gen)
+            return r.to(z.device, dtype=z.dtype)
+        return forward
 
     try:
-        blk.router.forward = rand_router
+        for block in blocks:
+            block.router.forward = randomized_forward(block)
         acc = evaluate(model, loader, device)[0]
     finally:
-        blk.router.forward = real_router_forward
+        for block, real_forward in zip(blocks, real_router_forwards):
+            block.router.forward = real_forward
     return acc
 
 
@@ -297,8 +301,10 @@ def main():
     p_star = cap.total_params + (0 if cap.router_params else 0)
     protocol["variant"] = cap.variant
     protocol["block_index"] = cap.block_index
+    protocol["block_indices"] = list(cap.block_indices)
     protocol["n_blocks"] = len(model.blocks)
-    protocol["exactly_one_block_converted"] = True
+    protocol["n_blocks_converted"] = cap.n_converted_blocks
+    protocol["exactly_one_block_converted"] = cap.n_converted_blocks == 1
     protocol["training_pressure"] = pressure
     protocol["route_balance"] = expected_balance
     protocol["output_adversary"] = adversary is not None
@@ -449,15 +455,26 @@ def main():
     # ---------------- mechanism ----------------
     mech = {}
     run_mechanism = bool(cfg.get("analysis", {}).get("run_mechanism", True))
-    if run_mechanism and model.moe_block is not None:
-        try:
-            eidx, site, label = audit_routing.capture(model, audit_loader, device)
-            mech["routing_mi_site"] = float(audit_routing.routing_mi(eidx, site))
-            mech["routing_mi_class"] = float(audit_routing.routing_mi(eidx, label))
-            used, ent = audit_routing.expert_usage(eidx, cfg["model"]["n_experts"])
-            mech["experts_used"], mech["routing_entropy"] = float(used), float(ent)
-        except Exception as e:
-            mech["routing_error"] = str(e)
+    if run_mechanism and model.moe_blocks:
+        per_block = {}
+        for block_index, block in zip(cap.block_indices, model.moe_blocks):
+            try:
+                eidx, site, label = audit_routing.capture(
+                    model, audit_loader, device, block=block)
+                used, ent = audit_routing.expert_usage(eidx, cfg["model"]["n_experts"])
+                per_block[str(block_index)] = {
+                    "routing_mi_site": float(audit_routing.routing_mi(eidx, site)),
+                    "routing_mi_class": float(audit_routing.routing_mi(eidx, label)),
+                    "experts_used": float(used), "routing_entropy": float(ent),
+                }
+            except Exception as e:
+                per_block[str(block_index)] = {"routing_error": str(e)}
+        mech["routing_by_block"] = per_block
+        # Preserve the historical flat fields for single-block aggregators.
+        first = per_block.get(str(cap.block_indices[0]), {})
+        for key in ("routing_mi_site", "routing_mi_class", "experts_used", "routing_entropy"):
+            if key in first:
+                mech[key] = first[key]
         try:
             mech["randomized_routes_acc"] = counterfactual_reroute(
                 model, mech_eval_loader, device, seed=cfg["seed"])
@@ -503,7 +520,8 @@ def main():
                                    if adversary is not None else 0)),
         "adversary_params": (sum(p.numel() for p in adversary.parameters())
                              if adversary is not None else 0),
-        "block_index": cap.block_index,
+        "block_index": cap.block_index, "block_indices": list(cap.block_indices),
+        "n_blocks_converted": cap.n_converted_blocks,
         # ---- mechanism ----
         **mech,
         # ---- provenance ----

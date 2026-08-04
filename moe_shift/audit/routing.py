@@ -5,7 +5,7 @@ from sklearn.metrics import normalized_mutual_info_score
 
 
 @torch.no_grad()
-def capture(model, loader, device):
+def capture(model, loader, device, block=None):
     """Top-1 expert id and aligned site/class labels for any MoE routing unit.
 
     Image routing emits one assignment per image. Token routing emits one assignment per token,
@@ -14,10 +14,13 @@ def capture(model, loader, device):
     silently drops the routing diagnostics in ``run_ccas.py``.
     """
     model.eval()
+    block = model.moe_block if block is None else block
+    if block is None:
+        raise ValueError("routing capture requires at least one MoE block")
     experts, sites, labels = [], [], []
     for x, y, site, *_ in loader:
         model(x.to(device))
-        assignment = model.moe_block.top1().numpy()
+        assignment = block.top1().numpy()
         site = np.asarray(site)
         label = np.asarray(y)
         if assignment.shape[0] != site.shape[0]:
@@ -26,7 +29,7 @@ def capture(model, loader, device):
                     "routing assignments cannot be aligned to image labels: "
                     f"{assignment.shape[0]} assignments for {site.shape[0]} images")
             tokens_per_image = assignment.shape[0] // site.shape[0]
-            recorded = (getattr(model.moe_block, "last", None) or {}).get("tokens_per_image")
+            recorded = (getattr(block, "last", None) or {}).get("tokens_per_image")
             if recorded is not None and int(recorded) != tokens_per_image:
                 raise ValueError(
                     f"router recorded {recorded} tokens/image but emitted {tokens_per_image}")
