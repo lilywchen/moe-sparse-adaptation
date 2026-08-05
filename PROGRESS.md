@@ -3786,3 +3786,36 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
 - **Next automatic action:** restore stable Chrome control; re-audit all five running containers;
   strict-validate every completed epoch-5 pair; then launch the next exact learned/frozen pair on
   each verified idle device after duplicate/result checks. Epoch 10 remains unlicensed.
+
+## 2026-08-05 07:23 EDT — cross-wave learned/frozen meta-analysis closes the broad epoch-5 router question
+
+- **Where we are:** 34 strict-valid epoch-5 learned/frozen pair executions from waves 3--14 enter
+  a descriptive cross-wave analysis after one exact duplicate is removed. HB15 is not included:
+  container 2859 still has two last-verified idle H100s and its E8 cosine-top-2 pair remains pending
+  strict validation; the eight H100s in 2899/2887/2875/2862 remain unverified because Chrome
+  control is unavailable. Container 2874 remains stopped. Ready/backlog remain `14/24`.
+- **What moved:** the existing strict validation artifacts were schema-normalized without reading
+  or changing raw results. Wave1/2 learned-reference perturbations, six wave6 mismatches, the
+  duplicated E4 record, and incomplete HB15 results are explicitly outside the aggregate. No run,
+  refill, prune, promotion, W&B/HF publication, or manuscript action occurred.
+- **What we learned:** learned-minus-frozen OOD movement is mean `+0.063` and median `+0.086`
+  points, with 22 positive and 12 negative executions (descriptive two-sided sign `p=0.121`).
+  Worst-experiment movement is mean `-0.030` and median `-0.041` points; only `7/34` executions
+  improve OOD, ID, and tail together, while `11` improve mean OOD but lose tail. Of 29 executions
+  with absolute learned route reliance, zero cross `0.01` and the maximum is `0.00649`. This is
+  provisional evidence against a broad early learned-routing effect; fixed partitioning, generic
+  sparse regularization, or shared seed-0 trajectory variation remains more plausible.
+- **Correctness/trust:** every input pair was already strict-valid, same-seed/data-order paired,
+  OOD-validation selected, and OOD-test blind. The aggregate is not confirmatory: pairs share seed
+  0, adaptive search ancestry, and sometimes repeated configurations; its sign tests are purely
+  descriptive. The one-versus-two-FFN summaries are not causal because their waves/configurations
+  are nonexchangeable. The largest threat is multiplicity plus the possibility of a post-epoch-10
+  sign reversal.
+- **Traceable artifacts:**
+  `analysis/fast_conflict_learned_vs_frozen_epoch5_meta_validation.json`, this progress entry,
+  state/evidence ledgers, and no other scientific or publication artifact.
+- **Next automatic action:** after stable control returns, audit every container, strict-validate
+  all completed HB15 pairs, and refill verified releases. Future independent capacity should favor
+  staged router/expert unfreezing with matched dense and low-conflict placebo controls; epoch 10/20/
+  30 continuation still requires aligned mean/tail evidence, reliance above `0.01`, healthy usage,
+  and no more than two ID points lost. OOD test remains sealed.

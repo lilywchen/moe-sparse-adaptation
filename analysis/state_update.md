@@ -2829,3 +2829,27 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   restart, exclusion, pruning, or promotion occurred.
 - The next licensed action is control restoration followed by complete container audit, strict
   epoch-5 validation, and immediate paired refill from ready14. OOD test remains sealed.
+
+## Current handoff — 2026-08-05 07:23 EDT
+
+A descriptive cross-wave analysis now covers 34 strict-valid epoch-5 learned/frozen pair
+executions from waves 3--14 after removing one exact duplicate. Learned-minus-frozen OOD movement
+is mean `+0.063` and median `+0.086` points (22 positive, 12 negative; descriptive sign
+`p=0.121`). Worst-experiment movement is mean `-0.030` and median `-0.041`; only `7/34` improve
+OOD, ID, and tail together, while 11 mean-positive pairs lose tail. No observed learned router
+crosses the `0.01` reliance gate (`0/29`, maximum `0.00649`). This rules out a broad, consistent
+early learned-router advantage across the screened families, not a later staged-upcycling effect.
+
+The aggregate is provisional rather than confirmatory: all executions use seed 0 and adaptive
+search ancestry, some repeat configurations, and the one-/two-FFN cohorts are nonexchangeable.
+Input artifacts were already strict-valid, OOD-validation selected, and OOD-test blind; incomplete
+HB15 rows, learned-reference perturbations, known configuration mismatches, and the exact duplicate
+are excluded. Fixed partitioning, generic sparse regularization, or shared short-trajectory noise
+remains the leading explanation. Trace:
+`analysis/fast_conflict_learned_vs_frozen_epoch5_meta_validation.json`.
+
+Live-state knowledge is unchanged: 2859 has two last-verified idle H100s and a completed pair
+pending strict validation; 2899/2887/2875/2862 have eight unverified H100s because Chrome control
+remains unavailable; 2874 is stopped; ready/backlog are `14/24`. Restore control, audit all
+containers, validate HB15, and favor staged router/expert unfreezing plus dense/placebo controls
+for the next independent screen. OOD test remains sealed.

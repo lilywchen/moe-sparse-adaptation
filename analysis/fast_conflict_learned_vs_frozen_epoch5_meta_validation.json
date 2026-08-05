@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-05T07:23:30-04:00",
+  "evidence_grade": "provisional_exploratory_meta_analysis_of_strict_validated_pairs",
+  "question": "Across the strict-valid epoch-5 learned-versus-frozen short screens, is there a consistent mean, tail, or causal-routing advantage for learned routing?",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "source_commit_family": [
+    "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+    "86c8ff606c433e727371e423bdb25419e9c2a069"
+  ],
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "aggregation_scope": {
+    "strict_validated_pair_records_found": 35,
+    "exact_duplicate_records_excluded": 1,
+    "pair_executions_analyzed": 34,
+    "seed": 0,
+    "epoch": 5,
+    "sparse_ffn_counts": [
+      1,
+      2
+    ],
+    "note": "The unit is a validated pair execution, not an independent configuration or seed. Repeated configurations from corrected or later waves remain separate executions; the byte-identical E4 contrast repeated in wave4 and wave5 is counted once."
+  },
+  "source_coverage": [
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave3_top2_validation.json",
+      "included_pairs": 1
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave4_validation.json",
+      "included_pairs": 1
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave5_expert_count_validation.json",
+      "included_pairs": 1,
+      "excluded_exact_duplicates": 1
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave7_corrected_linear_top2_validation.json",
+      "included_pairs": 5
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave8_endpoints_validation.json",
+      "included_pairs": 5
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave9_top2_noise_and_image_refill_validation.json",
+      "included_pairs": 4
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave10_recovery_and_cosine_refill_validation.json",
+      "included_pairs": 1
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave11_image_cosine_and_refill_validation.json",
+      "included_pairs": 4
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave12_e16_image_top2_noise_and_depth_refill_validation.json",
+      "included_pairs": 4
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave13_oneffn_depth_validation.json",
+      "included_pairs": 4
+    },
+    {
+      "artifact": "analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json",
+      "included_pairs": 4
+    }
+  ],
+  "out_of_scope": [
+    "Wave1 temperature/noise and wave2 auxiliary-strength contrasts use a learned-router reference rather than a matched learned/frozen pair.",
+    "Six wave6 configuration-mismatch attempts remain excluded by their original validation artifact.",
+    "HB15 completions remain pending strict validation and are not included."
+  ],
+  "aggregate_points": {
+    "ood_val": {
+      "n": 34,
+      "mean": 0.06268287032080135,
+      "median": 0.086259,
+      "positive": 22,
+      "negative": 12,
+      "zero": 0,
+      "descriptive_two_sided_sign_p": 0.12144948495551944
+    },
+    "id": {
+      "n": 34,
+      "mean": 0.06880036325195106,
+      "median": 0.0615585,
+      "positive": 21,
+      "negative": 13,
+      "zero": 0,
+      "descriptive_two_sided_sign_p": 0.22948101302608848
+    },
+    "worst_experiment": {
+      "n": 34,
+      "mean": -0.029839546364852716,
+      "median": -0.0405844155844156,
+      "positive": 13,
+      "negative": 19,
+      "zero": 2,
+      "descriptive_two_sided_sign_p_nonzero_only": 0.37708558747544885
+    }
+  },
+  "joint_signatures": {
+    "ood_and_worst_experiment_positive": 10,
+    "ood_id_and_worst_experiment_positive": 7,
+    "ood_positive_but_worst_experiment_negative": 11
+  },
+  "causal_routing_check": {
+    "learned_route_reliance_available": 29,
+    "learned_route_reliance_at_least_0p01": 0,
+    "maximum_learned_route_reliance": 0.006494824436776948,
+    "learned_minus_frozen_reliance_gap_available": 31,
+    "reliance_gap_mean": -0.0004321422368980659,
+    "reliance_gap_median": -0.000405927,
+    "reliance_gap_positive": 11,
+    "reliance_gap_negative": 20,
+    "descriptive_pearson_ood_gain_vs_reliance_gap": 0.2940220949494998
+  },
+  "depth_diagnostic_not_a_causal_comparison": {
+    "one_sparse_ffn": {
+      "n": 8,
+      "ood_mean_points": 0.15983357312766389,
+      "ood_median_points": 0.1725187741018876,
+      "worst_experiment_mean_points": 0.02029220665584415,
+      "worst_experiment_median_points": 0.0,
+      "all_accuracy_deltas_positive": 2
+    },
+    "two_sparse_ffns": {
+      "n": 26,
+      "ood_mean_points": 0.032790346380228264,
+      "ood_median_points": 0.07611107113862389,
+      "worst_experiment_mean_points": -0.04526470114045175,
+      "worst_experiment_median_points": -0.08116891558441561,
+      "all_accuracy_deltas_positive": 5
+    },
+    "caveat": "Depth cohorts were generated in different adaptive waves with different configurations and are not exchangeable. These summaries rank follow-up priority only."
+  },
+  "interpretation": "Learned routing produces small positive mean OOD movements more often than negative ones in these selected epoch-5 executions, but the aggregate is not statistically or causally persuasive: the descriptive sign test is 0.12, mean and median gains are below 0.1 point, worst-experiment movement is slightly negative, only 7/34 executions improve OOD, ID, and tail together, and no observed learned router reaches the 0.01 randomized-route reliance gate. The evidence favors fixed expert partitions, generic sparse regularization, or short-run trajectory variation over useful adaptive routing for the screened recipes.",
+  "what_this_rules_out": "It rules out a broad, consistent, early learned-router advantage across the tested epoch-5 linear, cosine, image, top-1/top-2, expert-count, symmetry-noise, and one-/two-FFN variants. It does not rule out a later-emerging effect, staged upcycling/unfreezing, or a fresh-seed effect in a prospectively locked family.",
+  "sharpest_falsifier": "A prospectively locked learned/frozen/dense family at a measured conflict peak must show aligned OOD mean and worst-experiment gains, learned route reliance above 0.01 without collapsed expert use, at most two ID points lost, and persistence through epoch 20/30 before fresh-seed confirmation.",
+  "multiplicity": "All summaries are descriptive. The 34 pair executions share seed 0, data, adaptive family selection, and often configuration ancestry; sign tests and correlations are not confirmatory p-values. No correction can make these non-independent selected screens a fresh-seed confirmation.",
+  "largest_threat": "Adaptive multiple testing and shared seed/data order can make small positive signs recur without a generalizable routing effect; the epoch-5 horizon can also miss the canonical sign reversal observed after epoch 10.",
+  "decision": "Do not promote any existing epoch-5 learned-router pair. Once live control is restored, validate pending HB15 pairs, then prioritize staged router/expert unfreezing and matched dense/placebo controls over additional breadth in router width, temperature, image granularity, or top-k.",
+  "publication": {
+    "manuscript_changed": false,
+    "hf_changed": false,
+    "wandb_changed": false
+  }
+}
