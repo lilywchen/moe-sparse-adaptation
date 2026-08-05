@@ -3708,3 +3708,25 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
   refill each release with the one-FFN block-11 controls. Continue beyond epoch 5 only for a small
   family leader with aligned mean and tail improvement, learned route reliance above `0.01`, no
   collapsed routing, and no more than two ID points lost.
+
+## 2026-08-05 — wave-14 one-FFN extension closes; HB15 is the remaining short screen
+
+- Eight one-FFN block-11 epoch-5 rows form four strict-valid learned/frozen pairs. Learned-minus-
+  frozen OOD/ID/worst points are E4 cosine-top-2 `+0.467/+0.820/+0.244`, E32 cosine-top-2
+  `-0.051/+0.185/+0.081`, E2 image `+0.223/+0.163/+0.081`, and E4 image
+  `+0.304/+0.229/-0.122`. Learned randomized-route reliance is at most `0.00132`, far below the
+  predeclared `0.01` causal-routing threshold. No pair advances to epoch 10 or longer.
+- This closes the specific question of whether simply reducing surgery to one FFN makes the learned
+  router causally useful at epoch 5. It does not: the small gains remain compatible with fixed
+  partitions or ordinary optimization, and the best mean gains either have negligible reliance or
+  reverse on the worst experiment.
+- The remaining performance-search queue is the HB15 paired screen: one-FFN E16/E32 tiny-noise,
+  E8 image, and E8 cosine-top-2 learned/frozen controls. They remain capped at epoch 5 initially;
+  only a matched pair with aligned OOD mean/tail improvement, route reliance above `0.01`, healthy
+  expert use, and ID loss at most two points can reach epoch 10.
+- SciServer currently reports containers 2899, 2887, 2875, 2862, and 2859 running (ten H100s) and
+  2874 stopped. Exact GPU ownership/occupancy could not be reverified because the authenticated
+  Chrome control repeatedly disconnected after the dashboard audit, so no scientifically unsafe
+  launch was made from an unverified device. OOD test remains sealed; HF remains quota-blocked.
+- Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json`
+  and `analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json`.

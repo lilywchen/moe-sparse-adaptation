@@ -2777,3 +2777,21 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   than two ID points lost. Trace:
   `analysis/fast_conflict_router_dynamics_epoch5_wave11_image_cosine_and_refill_validation.json`
   and `analysis/fast_conflict_ready_queue_hb13_depth_extension_registry.json`.
+
+## 2026-08-05 — wave-14 one-FFN extension validation and resume handoff
+
+- Four strict-valid one-FFN block-11 learned/frozen pairs completed at epoch 5. E4 cosine-top-2 is
+  the numerically strongest at `+0.467/+0.820/+0.244` OOD/ID/worst points, but learned route
+  reliance is only `0.00010`. E32 cosine-top-2 loses `0.051` OOD points; E2 image gains `0.223`
+  with negative measured reliance; E4 image gains `0.304` mean OOD but loses `0.122` on the worst
+  experiment and has lower reliance than frozen. No pair passes the `0.01` mechanism gate.
+- Interpretation: one-FFN surgery is not enough to reveal useful learned routing in this early
+  regime. Fixed partitions, ordinary optimization, or seed-0 short-trajectory noise remain more
+  plausible. The sharp falsifier is unchanged: learned must beat frozen on paired mean and tail,
+  exceed `0.01` reliance without collapse, and retain ID within two points.
+- Remaining bounded search: HB15 E16/E32 tiny-noise, E8 image, and E8 cosine-top-2 learned/frozen
+  pairs. Epoch 5 is the initial answer point; epoch 10 is licensed only by the paired causal gate.
+- Dashboard state is five running two-H100 containers and one stopped. Browser-control disconnects
+  prevented process/GPU ownership verification, so the queue was not launched onto ambiguous
+  devices. This is an operational handoff, not a scientific result. OOD test remains sealed.
+- Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json`.

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "validated_at": "2026-08-05T01:00:57-04:00",
+  "evidence_grade": "strict exploratory seed0 epoch5 paired evidence",
+  "family": "one-FFN block-11 depth-extension learned-versus-frozen controls",
+  "source_commit": "c68bc808ed4404d1040b3f23a7cfe60cf937634a",
+  "execution_commit": "818fc8ad86ebf8933807abca6a3db240b10db235",
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_fields_null": true,
+  "seed": 0,
+  "epochs": 5,
+  "block_indices": [11],
+  "rows_valid": 8,
+  "pairs_valid": 4,
+  "pairs_promoted": 0,
+  "strict_checks": {
+    "json_parseable": true,
+    "required_metrics_finite": true,
+    "selection_split_ood_val": true,
+    "test_evaluated_false": true,
+    "all_ood_test_fields_null": true,
+    "per_environment_ids": [7, 27, 42, 49],
+    "per_environment_sample_count": 9854,
+    "same_seed_and_data_order_within_pair": true,
+    "one_converted_ffn": true,
+    "clean_execution_tree": true,
+    "wandb_run_ids_present": true
+  },
+  "pairs": [
+    {
+      "pair": "oneffn_block11_E4_cosine_top2",
+      "learned_wandb_run_id": "lfmxbcye",
+      "frozen_wandb_run_id": "yz1hkvky",
+      "learned_minus_frozen_points": {
+        "ood_val": 0.4668155,
+        "id": 0.8199547,
+        "worst_experiment": 0.2435065
+      },
+      "learned_route_reliance": 0.00010148,
+      "promotion": false,
+      "reason": "aligned accuracy deltas but randomized-route reliance is approximately zero"
+    },
+    {
+      "pair": "oneffn_block11_E32_cosine_top2",
+      "learned_wandb_run_id": "z4hfoey5",
+      "frozen_wandb_run_id": "2bm9vjuk",
+      "learned_minus_frozen_points": {
+        "ood_val": -0.0507408,
+        "id": 0.1846745,
+        "worst_experiment": 0.0811688
+      },
+      "learned_route_reliance": 0.00131926,
+      "promotion": false,
+      "reason": "mean OOD does not improve and reliance remains below 0.01"
+    },
+    {
+      "pair": "oneffn_block11_E2_image",
+      "learned_wandb_run_id": "i1ox7je4",
+      "frozen_wandb_run_id": "mn89jaqe",
+      "learned_minus_frozen_points": {
+        "ood_val": 0.2232596,
+        "id": 0.1625135,
+        "worst_experiment": 0.0811688
+      },
+      "learned_route_reliance": -0.00010148,
+      "promotion": false,
+      "reason": "small aligned accuracy deltas without causal routing reliance"
+    },
+    {
+      "pair": "oneffn_block11_E4_image",
+      "learned_wandb_run_id": "ueh2424i",
+      "frozen_wandb_run_id": "33eizdf3",
+      "learned_metrics": {
+        "ood_val": 0.0281104120,
+        "id": 0.0428691027,
+        "worst_experiment": 0.0077110390,
+        "route_reliance": 0.0010148163
+      },
+      "frozen_metrics": {
+        "ood_val": 0.0250659631,
+        "id": 0.0405791392,
+        "worst_experiment": 0.0089285714,
+        "route_reliance": 0.0012177796
+      },
+      "learned_minus_frozen_points": {
+        "ood_val": 0.3044449,
+        "id": 0.2289964,
+        "worst_experiment": -0.1217532
+      },
+      "promotion": false,
+      "reason": "mean gain reverses on the worst experiment and learned reliance is below frozen"
+    }
+  ],
+  "decision": {
+    "longer_horizon_licensed": false,
+    "next_screen": "HB15 one-FFN E16/E32 tiny-noise, E8 image, and E8 cosine-top2 learned/frozen pairs",
+    "interpretation": "small early gains remain compatible with fixed expert partitions or ordinary optimization; no pair demonstrates useful adaptive routing",
+    "sharp_falsifier": "a matched learned router must beat frozen routing on OOD mean and worst experiment with route reliance above 0.01, noncollapsed experts, and no more than two ID points lost"
+  },
+  "multiplicity": "exploratory seed0 short-horizon multi-arm search; no winner is confirmatory",
+  "hf_publication": "blocked by private repository storage quota",
+  "ood_test_accessed": false
+}

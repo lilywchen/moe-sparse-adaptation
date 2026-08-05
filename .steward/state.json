@@ -2478,5 +2478,19 @@
   "fast_conflict_wave13_E2_cosine_top2_learned_minus_frozen_points": {"ood_val": 0.192815, "id": -0.068945, "worst_experiment": 0.040584, "route_reliance_gap": 0.000507408},
   "fast_conflict_wave13_E4_noise0001_learned_minus_frozen_points": {"ood_val": 0.010148, "id": -0.073870, "worst_experiment": -0.081169, "route_reliance_gap": -0.000710371},
   "fast_conflict_wave13_depth_interpretation": "one_ffn_modestly_recovers_absolute_E16_image_OOD_but_shrinks_learned_over_frozen_increment_and_reverses_tail_so_reduced_surgery_fixed_partitions_or_seed0_optimization_remain_more_plausible",
-  "fast_conflict_wave13_ready_breakdown": {"remaining_hb12_twoffn_noise_arms": 4, "new_hb15_oneffn_depth_arms": 8, "ready_total": 12, "backlog_hypotheses": 24}
+  "fast_conflict_wave13_ready_breakdown": {"remaining_hb12_twoffn_noise_arms": 4, "new_hb15_oneffn_depth_arms": 8, "ready_total": 12, "backlog_hypotheses": 24},
+  "fast_conflict_router_dynamics_wave14_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json",
+  "fast_conflict_wave14_valid_rows": 8,
+  "fast_conflict_wave14_valid_pairs": 4,
+  "fast_conflict_wave14_promoted_pairs": 0,
+  "fast_conflict_wave14_E4_cosine_top2_learned_minus_frozen_points": {"ood_val": 0.4668155, "id": 0.8199547, "worst_experiment": 0.2435065, "learned_route_reliance": 0.00010148},
+  "fast_conflict_wave14_E32_cosine_top2_learned_minus_frozen_points": {"ood_val": -0.0507408, "id": 0.1846745, "worst_experiment": 0.0811688, "learned_route_reliance": 0.00131926},
+  "fast_conflict_wave14_E2_image_learned_minus_frozen_points": {"ood_val": 0.2232596, "id": 0.1625135, "worst_experiment": 0.0811688, "learned_route_reliance": -0.00010148},
+  "fast_conflict_wave14_E4_image_learned_minus_frozen_points": {"ood_val": 0.3044449, "id": 0.2289964, "worst_experiment": -0.1217532, "learned_route_reliance": 0.0010148163, "frozen_route_reliance": 0.0012177796},
+  "fast_conflict_wave14_interpretation": "one_ffn_early_gains_remain_compatible_with_fixed_partitions_or_ordinary_optimization_and_no_pair_demonstrates_useful_adaptive_routing",
+  "available_gpu_pool": {"dashboard_running_containers": [2899, 2887, 2875, 2862, 2859], "dashboard_stopped_containers": [2874], "authorized_h100s_in_running_containers": 10, "verified_active_workers": null, "verified_idle_h100s": null, "verification_blocker": "authenticated Chrome control repeatedly disconnected after dashboard audit"},
+  "fast_conflict_wave14_next_action": "reconnect Chrome, verify every process and GPU, then launch HB15 E16/E32 tiny-noise plus E8 image/top2 learned-frozen pairs only on unambiguously free devices; epoch10 requires paired mean-tail gain and learned reliance above0.01",
+  "largest_current_threat": "early-horizon seed0 multiplicity, route reliance below0.01, and temporarily unverified live GPU ownership",
+  "next_gate": "HB15 epoch5 paired causal-routing screen; no longer horizon licensed; OOD test sealed",
+  "last_material_update": "2026-08-05T01:00:57-04:00"
 }
