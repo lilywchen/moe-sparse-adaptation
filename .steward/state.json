@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "classification": "FAST_CONFLICT_WAVE13_ONEFFN_VALID8_PAIRS4_NO_PROMOTION_REFILLED8_READY12",
-  "last_action": "validate_four_oneffn_depth_pairs_no_promotion_refill_all_eight_usable_h100s_with_next_top2_image_pairs_exact_build_hb15_restore_ready12",
-  "last_action_at": "2026-08-04T15:01:00-04:00",
-  "last_verified_commit": "808720adbf6f84718e230521a6884678ae0520a7",
+  "classification": "FAST_CONFLICT_HB15_SHORT10_ACTIVE_READY14_SETUP_FAILURES_EXCLUDED",
+  "last_action": "audit_five_running_containers_exclude_pretraining_dispatch_failures_launch_ten_short_hb15_workers_restore_ready14",
+  "last_action_at": "2026-08-05T02:53:00-04:00",
+  "last_verified_commit": "a7ade4df1d1851eec28eda082032ee679e7287e2",
   "valid_results": 156,
-  "expected_results": 8,
-  "active_gpu_workers": 8,
+  "expected_results": 10,
+  "active_gpu_workers": 10,
   "idle_h100s": 0,
   "verified_active_gpu_workers_partial": 8,
   "verified_idle_h100s_partial": 0,
-  "gpu_accounting_scope": "fresh complete audit through 2026-08-04T15:01-04:00; all eight H100s in running containers have assigned short oneffn learned_frozen work; four H100s in stopped 2874_2875 are scheduler-unavailable after one prior start request each",
-  "sciserver_resource_map": "2887 runs oneffn E4 cosine-top2 learned_frozen; 2862 runs oneffn E32 cosine-top2 learned_frozen; 2859 runs oneffn E2 image learned_frozen; 2899 runs oneffn E4 image learned_frozen; 2874_2875 stopped after one prior start request each with affinity_unschedulable_insufficient_gpu reason",
-  "current_gpu_assignments_as_of": "2026-08-04T15:01:00-04:00",
+  "gpu_accounting_scope": "fresh separate audit and post-launch verification through 2026-08-05T02:53-04:00; ten H100s in five running containers carry short learned_frozen work; 2874 remains stopped and was not restarted",
+  "sciserver_resource_map": "2899 oneffn E16 tiny-noise; 2887 oneffn E32 tiny-noise; 2875 twoffn E16 tiny-noise; 2862 oneffn E8 image; 2859 oneffn E8 cosine-top2; GPU0 learned and GPU1 frozen; 2874 stopped",
+  "current_gpu_assignments_as_of": "2026-08-05T02:53:00-04:00",
   "current_gpu_assignments_currentness": "fresh complete per-container process, GPU memory/utilization, latest persistent artifacts, fatal/log, W&B, HF, queue, and scheduler audit",
   "active_data_prep_workers": 0,
   "valid_rxrx1_rescue_results": 4,
@@ -1397,34 +1397,37 @@
   "extreme_temperature_aux60_test_status": "exact_committed_script_test_registry_hashes_repaired_once; seven_focused_pass; full_suite_exit_zero; eight_disjoint_one_cell_dryruns_pass",
   "extreme_temperature_aux60_wandb_group": "rxrx1-cell-dino-extreme-temperature-aux60-20260802",
   "extreme_temperature_aux60_hf_prefix": "rxrx1/cell_dino_cp5/extreme_temperature_aux60_20260802",
-  "ready_arms": 12,
-  "ready_arms_runnable_without_repaired_test_readback": 12,
+  "ready_arms": 14,
+  "ready_arms_runnable_without_repaired_test_readback": 14,
   "ready_arms_confirmation_test_gated": 0,
-  "ready_queue_test_status": "twelve result-absent ready arms: four remaining twoffn E16_E32 tiny-noise controls plus eight exact-built oneffn E16_E32 tiny-noise and E8 image_top2 controls; unique IDs, real Cell-DINO build, milestones2_5, no data or OOD-test access",
+  "ready_queue_test_status": "fourteen factor-validated result-absent arms: remaining twoffn E32 tiny-noise, five oneffn block11 linear learned_frozen pairs, and one block1 E8 tiny-noise placebo pair; exact identity and absence rechecked at launch; milestones2_5; OOD test sealed",
   "ready_queue_registry_commit": "751dbd3290b9674ab32371c235f880ad63cc5a78",
   "ready_queue_registry_tree": "4e43e319cd59eedb6fb716c9ba898e84e52fc6c9",
   "ready_queue_addendum_commit": "d5d2b63",
   "backlog_hypotheses": 24,
-  "wandb_current_status": "eight completed oneffn depth rows are synced and four new learned_frozen pairs are live in rxrx1-cell-dino-router-dynamics-short-20260804; no completed pair is promoted; HF is disabled for new runs while quota is blocked",
+  "wandb_current_status": "ten HB15 short workers use rxrx1-cell-dino-router-dynamics-short-20260804; verified IDs include l1icw356, 9p64fiu7, bqep6m1a, off3aeuo, and ls70eapj; remaining IDs await log parse; HF disabled while quota blocked",
   "current_gpu_assignments": {
     "2899": {
-      "gpu0": {"arm": "oneffn_block11_E4_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "ueh2424i", "status": "running", "launch_pid": 12824},
-      "gpu1": {"arm": "oneffn_block11_E4_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "33eizdf3", "status": "running", "launch_pid": 12832}
+      "gpu0": {"arm": "oneffn_block11_E16_noise0001_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "l1icw356", "status": "running", "launch_log": "/home/idies/workspace/hb16r2_2899_gpu0_oneffn_E16_noise0001_learned.log"},
+      "gpu1": {"arm": "oneffn_block11_E16_noise0001_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "9p64fiu7", "status": "running", "launch_log": "/home/idies/workspace/hb16r3_2899_gpu1_oneffn_E16_noise0001_frozen.log"}
     },
     "2887": {
-      "gpu0": {"arm": "oneffn_block11_E4_cosine_top2_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "lfmxbcye", "status": "running", "launch_pid": 116219},
-      "gpu1": {"arm": "oneffn_block11_E4_cosine_top2_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "yz1hkvky", "status": "running", "launch_pid": 116227}
+      "gpu0": {"arm": "oneffn_block11_E32_noise0001_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": null, "status": "running", "launch_log": "/home/idies/workspace/hb16r4_2887_gpu0_oneffn_E32_noise0001_learned.log"},
+      "gpu1": {"arm": "oneffn_block11_E32_noise0001_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": null, "status": "running", "launch_log": "/home/idies/workspace/hb16r4_2887_gpu1_oneffn_E32_noise0001_frozen.log"}
+    },
+    "2875": {
+      "gpu0": {"arm": "twoffn_E16_noise0001_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": null, "status": "running", "launch_log": "/home/idies/workspace/hb16r2_2875_gpu0_twoffn_E16_noise0001_learned.log"},
+      "gpu1": {"arm": "twoffn_E16_noise0001_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "bqep6m1a", "status": "running", "launch_log": "/home/idies/workspace/hb16r3_2875_gpu1_twoffn_E16_noise0001_frozen.log"}
     },
     "2862": {
-      "gpu0": {"arm": "oneffn_block11_E32_cosine_top2_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "z4hfoey5", "status": "running", "launch_pid": 54512},
-      "gpu1": {"arm": "oneffn_block11_E32_cosine_top2_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "2bm9vjuk", "status": "running", "launch_pid": 54520}
+      "gpu0": {"arm": "oneffn_block11_E8_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": null, "status": "running", "launch_log": "/home/idies/workspace/hb16r2_2862_gpu0_oneffn_E8_image_learned.log"},
+      "gpu1": {"arm": "oneffn_block11_E8_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "off3aeuo", "status": "running", "launch_log": "/home/idies/workspace/hb16r3_2862_gpu1_oneffn_E8_image_frozen.log"}
     },
     "2859": {
-      "gpu0": {"arm": "oneffn_block11_E2_image_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "i1ox7je4", "status": "running", "launch_pid": 52297},
-      "gpu1": {"arm": "oneffn_block11_E2_image_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "mn89jaqe", "status": "running", "launch_pid": 52305}
+      "gpu0": {"arm": "oneffn_block11_E8_cosine_top2_learned_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": "ls70eapj", "status": "running", "launch_log": "/home/idies/workspace/hb16r2_2859_gpu0_oneffn_E8_cosine_top2_learned.log"},
+      "gpu1": {"arm": "oneffn_block11_E8_cosine_top2_frozen_ep5", "wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804", "wandb_run_id": null, "status": "running", "launch_log": "/home/idies/workspace/hb16r3_2859_gpu1_oneffn_E8_cosine_top2_frozen.log"}
     },
-    "2875": {"status": "stopped_after_one_start_request_scheduler_unavailable", "reason": "11 affinity_or_selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unavailable"},
-    "2874": {"status": "stopped_after_one_start_request_scheduler_unavailable", "reason": "11 affinity_or_selector mismatch; 2 unschedulable; 3 insufficient GPU; preemption unavailable"}
+    "2874": {"status": "stopped", "start_requests_this_invocation": 0, "create_requests_this_invocation": 0}
   },
   "extreme_route_E64_epoch60_paired_validation": "analysis/extreme_route_E64_epoch60_paired_and_E4_seed1_refills_validation.json",
   "extreme_route_E64_epoch60_tail_safe_minus_no_aux_points": {
@@ -2066,7 +2069,7 @@
   "upcycling_noise60_epoch60_wave2_and_controls_validation": "analysis/upcycling_noise60_epoch60_wave2_and_controls_validation.json",
   "upcycling_noise60_mechanism_status": "all eight seed0 E4_E8_E16 finals strict-valid; completed learned-minus-frozen E4 and E8 contrasts show small mean gains with worst-experiment losses; route E16 noisy-minus-zero is plus0p142_ood minus0p128_id plus0p284_worst; ordinary initialization_or_trajectory_regularization still leads; no epoch90_or_fresh_seed promotion",
   "queue_depth_exception": null,
-  "browser_transport_status": "in_app_browser_authenticated_and_all_four_running_jupyter_workspaces_audited; 2874_2875 stopped_scheduler_unavailable",
+  "browser_transport_status": "Chrome authenticated; dashboard plus five running Jupyter workspaces audited separately; control stable after cleanup; 2874 remains stopped",
   "historical_next_gate_at_protocol_update": "run training-only all-layer gradient-conflict profiler, resolve measured conflict and placebo indices, then launch paired 2/5/10/20/30 learned_frozen_dense one-versus-two sparse-FFN screens; epoch30 is exploratory ceiling; keep OOD test sealed",
   "prospective_search_policy": "fast_mechanistic_discovery",
   "prospective_default_horizons": [
@@ -2264,17 +2267,19 @@
   },
   "fast_conflict_ready_queue_registry": "analysis/fast_conflict_ready_queue_registry.json",
   "fast_conflict_image_refill_registry": "analysis/fast_conflict_image_refill_registry.json",
-  "fast_conflict_ready_queue_count": 12,
-  "fast_conflict_ready_active": 8,
+  "fast_conflict_ready_queue_count": 14,
+  "fast_conflict_ready_active": 10,
   "fast_conflict_ready_assignments": {
-    "2899_gpu0": "oneffn_block11_E4_image_learned_ep5",
-    "2899_gpu1": "oneffn_block11_E4_image_frozen_ep5",
-    "2887_gpu0": "oneffn_block11_E4_cosine_top2_learned_ep5",
-    "2887_gpu1": "oneffn_block11_E4_cosine_top2_frozen_ep5",
-    "2862_gpu0": "oneffn_block11_E32_cosine_top2_learned_ep5",
-    "2862_gpu1": "oneffn_block11_E32_cosine_top2_frozen_ep5",
-    "2859_gpu0": "oneffn_block11_E2_image_learned_ep5",
-    "2859_gpu1": "oneffn_block11_E2_image_frozen_ep5"
+    "2899_gpu0": "oneffn_block11_E16_noise0001_learned_ep5",
+    "2899_gpu1": "oneffn_block11_E16_noise0001_frozen_ep5",
+    "2887_gpu0": "oneffn_block11_E32_noise0001_learned_ep5",
+    "2887_gpu1": "oneffn_block11_E32_noise0001_frozen_ep5",
+    "2875_gpu0": "twoffn_E16_noise0001_learned_ep5",
+    "2875_gpu1": "twoffn_E16_noise0001_frozen_ep5",
+    "2862_gpu0": "oneffn_block11_E8_image_learned_ep5",
+    "2862_gpu1": "oneffn_block11_E8_image_frozen_ep5",
+    "2859_gpu0": "oneffn_block11_E8_cosine_top2_learned_ep5",
+    "2859_gpu1": "oneffn_block11_E8_cosine_top2_frozen_ep5"
   },
   "fast_conflict_ready_wandb_group": "rxrx1-cell-dino-router-dynamics-short-20260804",
   "fast_conflict_ready_queue_preflight": {
@@ -2370,13 +2375,14 @@
     "running_containers": [
       2899,
       2887,
+      2875,
       2862,
       2859
     ],
-    "usable_h100s": 8,
-    "active_workers": 8,
+    "usable_h100s": 10,
+    "active_workers": 10,
     "idle_usable_h100s": 0,
-    "authorized_but_unavailable_h100s": 4,
+    "authorized_but_unavailable_h100s": 2,
     "blocked_by_unowned_allocations": []
   },
   "tester6": {
@@ -2388,8 +2394,8 @@
     "create_requests_this_invocation": 0,
     "last_start_request": "prior_invocation_exactly_once",
     "scheduler_reason": null,
-    "gpu0": "oneffn_block11_E4_image_learned_ep5_pid12824_wandb_ueh2424i_8093MiB_startup_fatal0",
-    "gpu1": "oneffn_block11_E4_image_frozen_ep5_pid12832_wandb_33eizdf3_8099MiB_startup_fatal0"
+    "gpu0": "oneffn_block11_E16_noise0001_learned_ep5_wandb_l1icw356_7967MiB_fatal0",
+    "gpu1": "oneffn_block11_E16_noise0001_frozen_ep5_wandb_9p64fiu7_7941MiB_fatal0"
   },
   "largest_current_threat": "epoch5 seed0 multiplicity and extremely small randomized-route effects; even the strongest aligned oneffn pair has reliance0p00051; four authorized H100s remain scheduler-unavailable",
   "next_gate": "validate four active E4_E32 top2 and E2_E4 image oneffn learned_frozen pairs at epochs2_5; require aligned mean-tail gain, ID loss at most2 points, noncollapse, and learned reliance above0p01; OOD test sealed",
@@ -2470,6 +2476,9 @@
   "fast_conflict_router_dynamics_wave13_validation": "analysis/fast_conflict_router_dynamics_epoch5_wave13_oneffn_depth_validation.json",
   "fast_conflict_wave13_evidence_github_commit": "808720adbf6f84718e230521a6884678ae0520a7",
   "fast_conflict_ready_queue_hb15_depth_extension_registry": "analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json",
+  "fast_conflict_ready_queue_hb17_linear_placebo_registry": "analysis/fast_conflict_ready_queue_hb17_linear_placebo_registry.json",
+  "fast_conflict_hb16_dispatch_exclusions": ["relative_workdir_backgrounded_pretraining_exit_no_artifact", "absent_fast_discovery_wrapper_pretraining_exit_no_artifact", "stale_second_frozen_config_occurrence_pretraining_exit_no_artifact", "2887_terminal45_busy_no_scientific_process_terminal46_clean_submission"],
+  "fast_conflict_hb16_epoch2_E8_top2_learned_minus_frozen_points": {"ood_val": 0.01, "id": 0.04, "worst_experiment": 0.0, "grade": "diagnostic_only_not_answer_point"},
   "fast_conflict_wave13_valid_rows": 8,
   "fast_conflict_wave13_valid_pairs": 4,
   "fast_conflict_wave13_promoted_pairs": 0,
@@ -2488,9 +2497,9 @@
   "fast_conflict_wave14_E2_image_learned_minus_frozen_points": {"ood_val": 0.2232596, "id": 0.1625135, "worst_experiment": 0.0811688, "learned_route_reliance": -0.00010148},
   "fast_conflict_wave14_E4_image_learned_minus_frozen_points": {"ood_val": 0.3044449, "id": 0.2289964, "worst_experiment": -0.1217532, "learned_route_reliance": 0.0010148163, "frozen_route_reliance": 0.0012177796},
   "fast_conflict_wave14_interpretation": "one_ffn_early_gains_remain_compatible_with_fixed_partitions_or_ordinary_optimization_and_no_pair_demonstrates_useful_adaptive_routing",
-  "available_gpu_pool": {"dashboard_running_containers": [2899, 2887, 2875, 2862, 2859], "dashboard_stopped_containers": [2874], "authorized_h100s_in_running_containers": 10, "verified_active_workers": null, "verified_idle_h100s": null, "verification_blocker": "authenticated Chrome control repeatedly disconnected after dashboard audit"},
+  "available_gpu_pool": {"dashboard_running_containers": [2899, 2887, 2875, 2862, 2859], "dashboard_stopped_containers": [2874], "authorized_h100s_in_running_containers": 10, "verified_active_workers": 10, "verified_idle_h100s": 0, "authorized_but_unavailable_h100s": 2, "verification_blocker": null},
   "fast_conflict_wave14_next_action": "reconnect Chrome, verify every process and GPU, then launch HB15 E16/E32 tiny-noise plus E8 image/top2 learned-frozen pairs only on unambiguously free devices; epoch10 requires paired mean-tail gain and learned reliance above0.01",
-  "largest_current_threat": "early-horizon seed0 multiplicity, route reliance below0.01, and temporarily unverified live GPU ownership",
-  "next_gate": "HB15 epoch5 paired causal-routing screen; no longer horizon licensed; OOD test sealed",
-  "last_material_update": "2026-08-05T01:00:57-04:00"
+  "largest_current_threat": "early-horizon seed0 multiplicity and consistently tiny randomized-route effects; dispatch failures were pre-training and excluded",
+  "next_gate": "strict HB15 epoch5 paired causal-routing screen; require aligned mean-tail gain, ID loss at most2 points, noncollapse, and learned reliance above0p01; epoch10 otherwise unlicensed; OOD test sealed",
+  "last_material_update": "2026-08-05T02:53:00-04:00"
 }

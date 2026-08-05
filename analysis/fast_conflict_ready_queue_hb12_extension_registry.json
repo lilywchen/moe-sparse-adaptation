@@ -285,7 +285,9 @@
       "wandb_destination": "ready/twoffn_E16_noise0001_learned_ep5",
       "hf_destination": "ready/twoffn_E16_noise0001_learned_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2875_gpu0",
+      "wandb_run_id": null
     },
     {
       "arm_id": "twoffn_E16_noise0001_frozen_ep5",
@@ -305,7 +307,9 @@
       "wandb_destination": "ready/twoffn_E16_noise0001_frozen_ep5",
       "hf_destination": "ready/twoffn_E16_noise0001_frozen_ep5",
       "result_budget": {"epochs": 5, "json": 1, "checkpoints": 2},
-      "status": "ready"
+      "status": "running",
+      "assignment": "2875_gpu1",
+      "wandb_run_id": "bqep6m1a"
     },
     {
       "arm_id": "twoffn_E32_noise0001_learned_ep5",

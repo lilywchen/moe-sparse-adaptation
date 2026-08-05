@@ -2795,3 +2795,22 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   prevented process/GPU ownership verification, so the queue was not launched onto ambiguous
   devices. This is an operational handoff, not a scientific result. OOD test remains sealed.
 - Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json`.
+
+## 2026-08-05 02:53 EDT — HB15 launch/refill handoff
+
+- Five running containers now carry ten short workers: 2899 one-FFN E16 tiny-noise, 2887 one-FFN
+  E32 tiny-noise, 2875 two-FFN E16 tiny-noise, 2862 one-FFN E8 image, and 2859 one-FFN E8
+  cosine top-2, each learned/frozen on GPU0/1. Container 2874 remains stopped; idle usable H100s
+  were zero at the verified handoff.
+- Three setup-only dispatch classes are excluded: backgrounded relative working directory, absent
+  convenience wrapper path, and the stale second frozen config occurrence. They ended before
+  training with no milestone/checkpoint/result. Scientific workers use absolute execution and
+  existing Cell-DINO config paths. The occupied recursive audit terminal on 2887 was abandoned;
+  the E32 pair was submitted once from clean terminal 46.
+- E8 top-2 learned/frozen reached epoch 2 at `0.59/0.58%` OOD validation, `0.78/0.74%` ID, and
+  `0.28/0.28%` worst experiment. This is diagnostic only. No endpoint result or promotion exists.
+- The ready queue is refilled to 14 arms: the remaining two-FFN E32 tiny-noise pair, five one-FFN
+  block-11 linear learned/frozen pairs (E2/4/8/16/32), and an E8 block-1 low-conflict placebo
+  learned/frozen pair. Backlog remains 24. Exact duplicate/result checks remain mandatory at launch.
+- OOD test is sealed, HF remains private-quota blocked, and W&B uses
+  `rxrx1-cell-dino-router-dynamics-short-20260804`. Leading explanation and falsifier are unchanged.

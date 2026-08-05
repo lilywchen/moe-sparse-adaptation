@@ -3730,3 +3730,34 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
   launch was made from an unverified device. OOD test remains sealed; HF remains quota-blocked.
 - Trace: `analysis/fast_conflict_router_dynamics_epoch5_wave14_oneffn_depth_extension_validation.json`
   and `analysis/fast_conflict_ready_queue_hb15_depth_extension_registry.json`.
+
+## 2026-08-05 02:53 EDT — HB15 short screen fills ten H100s after excluded setup failures
+
+- **Where we are:** five running two-H100 containers are assigned ten short epoch-5 workers:
+  tester6/2899 has one-FFN E16 tiny-noise learned/frozen, 2887 one-FFN E32 tiny-noise,
+  2875 two-FFN E16 tiny-noise, 2862 one-FFN E8 image routing, and 2859 one-FFN E8
+  cosine top-2. Container 2874 remains stopped and was not restarted. Fourteen arms are in the
+  replacement ready registry and the hypothesis backlog remains 24.
+- **What moved:** every live container was audited separately before dispatch. All ten GPUs were
+  free and owned. The initial relative-path commands, the first absolute-path repair, and the
+  second-command frozen controls all exited before training because of shell/config dispatch
+  errors; they produced no milestones, checkpoints, or results and are explicitly excluded. The
+  scientific workers use absolute execution/config paths and the locked seed-0 epoch-5 settings.
+  Verified live logs show both GPUs active on 2899/2875/2862, the 2859 pair reaching epoch 2, and
+  the repaired 2887 pair launched from a clean terminal.
+- **What we learned:** there is no new endpoint claim yet. At epoch 2, E8 cosine top-2 learned
+  versus frozen is `+0.01/+0.04/+0.00` OOD/ID/worst percentage points, which is diagnostic only
+  and does not license continuation. The leading explanation remains fixed partitions or ordinary
+  short-run optimization. The sharp falsifier remains aligned learned-over-frozen mean and tail,
+  route reliance above `0.01`, healthy usage, and at most two ID points lost.
+- **Correctness/trust:** all scientific arms use source `c68bc808`, clean execution `818fc8a`,
+  paired seed/data order and same-architecture fairness. Selection is OOD validation; OOD test is
+  untouched and all heldout fields remain required null. HF publication is disabled after the
+  private-quota failure; W&B runs use the existing short-router group. These are exploratory
+  seed-0 comparisons under substantial multiplicity.
+- **Traceable artifacts:** updated HB12/HB15 registries,
+  `analysis/fast_conflict_ready_queue_hb17_linear_placebo_registry.json`, and steward ledgers.
+  No manuscript, HF artifact, or scientific endpoint validation changed.
+- **Next automatic action:** strict-validate each epoch-5 learned/frozen pair and immediately refill
+  releases from the 14-arm E32-noise/linear-router/low-conflict-placebo queue. Epoch 10 remains
+  unlicensed unless the paired causal mechanism gate passes.
