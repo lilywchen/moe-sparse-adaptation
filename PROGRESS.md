@@ -3761,3 +3761,28 @@ scheduler-Pending, HF waits for private quota, and the paper is unchanged. Trace
 - **Next automatic action:** strict-validate each epoch-5 learned/frozen pair and immediately refill
   releases from the 14-arm E32-noise/linear-router/low-conflict-placebo queue. Epoch 10 remains
   unlicensed unless the paired causal mechanism gate passes.
+
+## 2026-08-05 03:15 EDT — one HB15 pair completed; control-channel blocker prevents safe refill
+
+- **Where we are:** SciServer still reports 2899/2887/2875/2862/2859 running and 2874 stopped.
+  Container 2859 was audited directly: both H100s are idle at zero memory/utilization and no
+  scientific process remains. Its E8 cosine-top-2 learned/frozen pair completed and synced W&B.
+  The other four running containers could not be re-audited after the Chrome control channel began
+  disconnecting immediately after tab claim, so their eight GPUs are explicitly unverified.
+- **What moved:** the 2859 pair is `completed_pending_strict_validation`, not validated or promoted.
+  Learned-minus-frozen observed OOD-validation and ID differences are `+0.0304` and `-0.0366`
+  percentage points. A Chrome repair audit confirmed Chrome running, the extension installed and
+  enabled, and the native-host manifest correct; one already-authorized new Chrome window did not
+  stabilize control. No blind refill or duplicate launch was attempted.
+- **What we learned:** the partial endpoint is negligible and does not support adaptive routing,
+  but tail and route-reliance extraction are incomplete, so this is not a scientific gate result.
+  Fixed top-2 smoothing or ordinary short-run optimization remains the leading alternative.
+- **Correctness/trust:** source `c68bc808`, execution `818fc8a`, paired seed-0 same-architecture
+  fairness, OOD-validation selection, and sealed OOD test are preserved. The largest immediate
+  threat is operational: two verified idle H100s cannot be refilled safely without stable container
+  control, while eight H100 states remain unknown.
+- **Traceable artifacts:** `analysis/hb15_chrome_control_incident_20260805.json`, HB15 registry, and
+  steward ledgers only. No endpoint validation, HF artifact, or manuscript evidence changed.
+- **Next automatic action:** restore stable Chrome control; re-audit all five running containers;
+  strict-validate every completed epoch-5 pair; then launch the next exact learned/frozen pair on
+  each verified idle device after duplicate/result checks. Epoch 10 remains unlicensed.

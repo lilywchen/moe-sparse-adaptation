@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-05T03:15:00-04:00",
+  "classification": "operational_control_blocker_not_scientific_result",
+  "dashboard": {
+    "running_containers": [2899, 2887, 2875, 2862, 2859],
+    "stopped_containers": [2874]
+  },
+  "verified_container": {
+    "container_id": 2859,
+    "gpu0": {"utilization_percent": 0, "memory_mib": 0, "status": "idle"},
+    "gpu1": {"utilization_percent": 0, "memory_mib": 0, "status": "idle"},
+    "active_scientific_processes": 0,
+    "completed_pair": "oneffn_block11_E8_cosine_top2_learned_frozen_ep5",
+    "wandb_synced": true,
+    "hf_status": "blocked_private_repository_storage_limit"
+  },
+  "observed_endpoint_only": {
+    "learned_acc_selection": 0.025471889587984575,
+    "frozen_acc_selection": 0.025167444692510657,
+    "learned_minus_frozen_ood_points": 0.03044448954739182,
+    "learned_acc_within": 0.035288513739781346,
+    "frozen_acc_within": 0.03565448635871171,
+    "learned_minus_frozen_id_points": -0.03659726189303658,
+    "scientific_status": "pending_strict_validation",
+    "reason": "tail, route-reliance, environment coverage, checkpoint identity, and full schema checks were not completed"
+  },
+  "unverified_containers": [2899, 2887, 2875, 2862],
+  "control_failure": {
+    "surface": "Chrome browser extension",
+    "behavior": "browser connection repeatedly became unavailable immediately after tab claim",
+    "diagnostics": {
+      "chrome_running": true,
+      "extension_installed_and_enabled": true,
+      "native_host_manifest_correct": true,
+      "one_authorized_new_window_attempted": true,
+      "reconnection_after_window": "failed_after_claim"
+    },
+    "excluded_actions": [
+      "no blind launch",
+      "no duplicate restart",
+      "no claim that unverified GPUs were active or idle",
+      "no promotion or pruning from incomplete endpoint extraction"
+    ]
+  },
+  "selection_split": "ood_val",
+  "test_evaluated": false,
+  "ood_test_accessed": false,
+  "next_action": "restore stable Chrome control, audit all five running containers, strict-validate all completed epoch-5 pairs, and refill each verified idle GPU from the 14-arm ready queue"
+}

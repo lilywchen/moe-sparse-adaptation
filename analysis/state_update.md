@@ -2814,3 +2814,18 @@ re-audit, tester6 verification, and guarded verification-or-same-cell-relaunch o
   learned/frozen pair. Backlog remains 24. Exact duplicate/result checks remain mandatory at launch.
 - OOD test is sealed, HF remains private-quota blocked, and W&B uses
   `rxrx1-cell-dino-router-dynamics-short-20260804`. Leading explanation and falsifier are unchanged.
+
+## 2026-08-05 03:15 EDT — HB15 completion is pending strict validation; refill control blocked
+
+- Container 2859 has two verified idle H100s and no remaining scientific process. The E8
+  cosine-top-2 learned/frozen epoch-5 pair completed with W&B sync and persistent result JSONs.
+- The only safely extracted endpoint differences are `+0.0304` OOD-validation and `-0.0366` ID
+  percentage points for learned minus frozen. This is negligible, incomplete, and not a gate
+  result because paired tail, route reliance, environment coverage, checkpoint identity, and full
+  schema checks remain outstanding.
+- Chrome, its extension, and the native host pass local diagnostics, but the control channel became
+  unavailable immediately after every tab claim even after one authorized new-window repair.
+  Containers 2899/2887/2875/2862 therefore remain unverified at this handoff. No blind launch,
+  restart, exclusion, pruning, or promotion occurred.
+- The next licensed action is control restoration followed by complete container audit, strict
+  epoch-5 validation, and immediate paired refill from ready14. OOD test remains sealed.
