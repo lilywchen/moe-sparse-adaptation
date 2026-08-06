@@ -88,6 +88,56 @@ def classification_objective(logits, labels, environments, objective="erm"):
     return torch.stack([per_example[environments == env].mean() for env in present]).mean()
 
 
+def router_gradient_norms(loss, model):
+    """Classification-loss gradient norm for each trainable router, without accumulating grads.
+
+    This is a fail-fast audit for hard top-1 routing. A selected-ST run must expose a finite,
+    nonzero task gradient before auxiliary losses are added; the historical renormalised top-1
+    implementation did not. Frozen-router and non-MoE models correctly return an empty mapping.
+    """
+    norms = {}
+    for block_index, block in zip(model.capacity.block_indices, model.moe_blocks):
+        params = [p for p in block.router.parameters() if p.requires_grad]
+        if not params:
+            continue
+        grads = torch.autograd.grad(loss, params, retain_graph=True, allow_unused=True)
+        squared = loss.new_zeros(())
+        for grad in grads:
+            if grad is not None:
+                squared = squared + grad.detach().float().square().sum()
+        norms[str(block_index)] = float(squared.sqrt())
+    return norms
+
+
+def snapshot_routers(model):
+    """Small CPU snapshots used to prove that trainable routers actually moved."""
+    return {
+        str(block_index): [p.detach().float().cpu().clone() for p in block.router.parameters()]
+        for block_index, block in zip(model.capacity.block_indices, model.moe_blocks)
+    }
+
+
+def router_parameter_deltas(model, initial):
+    """Absolute and relative L2 displacement of every router from initialisation."""
+    deltas = {}
+    for block_index, block in zip(model.capacity.block_indices, model.moe_blocks):
+        key = str(block_index)
+        before = initial.get(key)
+        if before is None:
+            continue
+        delta_sq = base_sq = 0.0
+        for current, start in zip(block.router.parameters(), before):
+            current = current.detach().float().cpu()
+            delta_sq += float((current - start).square().sum())
+            base_sq += float(start.square().sum())
+        absolute = math.sqrt(delta_sq)
+        deltas[key] = {
+            "l2": absolute,
+            "relative_l2": absolute / max(math.sqrt(base_sq), 1e-12),
+        }
+    return deltas
+
+
 def milestone_epochs(cfg):
     """Validate and return sorted one-indexed milestone/checkpoint epochs."""
     total = int(cfg["train"]["epochs"])
@@ -272,6 +322,7 @@ def main():
 
     model = build_ccas(cfg).to(device)
     cap = model.capacity
+    initial_routers = snapshot_routers(model)
     inv_target = float(cfg["losses"].get("invariance_w", 0.0)) if pressure == "output" else 0.0
     if pressure == "output" and inv_target <= 0:
         raise ValueError("pressure=output requires losses.invariance_w > 0")
@@ -314,6 +365,8 @@ def main():
     if cap.variant in ("moe", "moe_frozen"):
         protocol["experts_are_upcycled_copies"] = True
         protocol["router_trainable"] = (cap.variant == "moe")
+        protocol["routing_estimator"] = str(
+            cfg["model"].get("routing_estimator", "selected_st"))
 
     opt = build_optimizer(model, cfg, adversary)
     epochs = int(cfg["train"]["epochs"])
@@ -335,6 +388,7 @@ def main():
     milestone_f = open(milestone_path, "w") if milestones else None
     objective = str(cfg["train"].get("objective", "erm"))
 
+    initial_router_task_grad_norms = None
     for ep in range(epochs):
         model.train()
         if adversary is not None:
@@ -346,6 +400,11 @@ def main():
             feats = model.forward_features(x)
             logits = model.fc(feats)
             loss = classification_objective(logits, y, s, objective)
+            if initial_router_task_grad_norms is None and model.moe_blocks:
+                initial_router_task_grad_norms = router_gradient_norms(loss, model)
+                print(
+                    "[router-gradient-check] classification-only norms "
+                    f"{initial_router_task_grad_norms}", flush=True)
             aux = model.aux_loss(bw, zw)
             adv = loss.new_zeros(())
             if adversary is not None:
@@ -489,6 +548,7 @@ def main():
             mech["class_decodability"] = float(audit_leak.class_decodability(feats, label))
         except Exception as e:
             mech["leakage_error"] = str(e)
+    router_deltas = router_parameter_deltas(model, initial_routers)
 
     sha, dirty = git_info()
     result = {
@@ -497,6 +557,7 @@ def main():
         "variant": cap.variant, "placement": cap.placement, "routing_unit": cfg["model"]["routing_unit"],
         "geometry": cfg["model"]["geometry"], "pressure": pressure,
         "balance": cfg["model"]["balance"],
+        "routing_estimator": cfg["model"].get("routing_estimator", "selected_st"),
         "classification_objective": objective,
         "n_experts": cfg["model"]["n_experts"], "top_k": cfg["model"]["top_k"],
         # ---- outcomes ----
@@ -523,6 +584,8 @@ def main():
         "block_index": cap.block_index, "block_indices": list(cap.block_indices),
         "n_blocks_converted": cap.n_converted_blocks,
         # ---- mechanism ----
+        "initial_router_task_grad_norms": initial_router_task_grad_norms,
+        "router_parameter_deltas": router_deltas,
         **mech,
         # ---- provenance ----
         "protocol": protocol, "git_sha": sha, "git_dirty": dirty,

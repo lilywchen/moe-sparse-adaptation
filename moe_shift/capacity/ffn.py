@@ -96,17 +96,22 @@ class WideFFN(nn.Module):
 
 
 class MoEFFN(nn.Module):
-    """Sparse conditional capacity: E experts, top-1, each initialised from the pretrained FFN.
+    """Sparse conditional capacity with experts initialised from the pretrained FFN.
 
     routing_unit : "image" -> one decision per image (routes on pooled/global appearance)
                    "token" -> one decision per token (routes on local content)
     router_frozen: True    -> router parameters are fixed at init (the frozen-router control that
                              isolates whether the LEARNED assignment policy adds value)
     balance      : "global" | "within_environment"
+    routing_estimator:
+        "selected_st"  -> top-1 is exactly one in the forward pass but carries the selected
+                          softmax probability's gradient (function-preserving straight-through)
+        "legacy_renorm" -> historical top-k renormalisation; retained only to reproduce old runs
     """
 
     def __init__(self, mlp, n_experts=8, top_k=1, routing_unit="token", geometry="cosine",
-                 balance="global", temperature=0.07, router_frozen=False, sym_break=0.0):
+                 balance="global", temperature=0.07, router_frozen=False, sym_break=0.0,
+                 routing_estimator="selected_st"):
         super().__init__()
         if routing_unit not in ("image", "token"):
             raise ValueError(f"routing_unit must be image|token, got {routing_unit!r}")
@@ -114,10 +119,15 @@ class MoEFFN(nn.Module):
             balance = "within_environment"
         if balance not in ("global", "within_environment"):
             raise ValueError(f"balance must be global|within_environment, got {balance!r}")
+        if routing_estimator not in ("selected_st", "legacy_renorm"):
+            raise ValueError(
+                "routing_estimator must be selected_st|legacy_renorm, "
+                f"got {routing_estimator!r}")
         fc1, _, _ = _mlp_parts(mlp)
         self.n_experts, self.top_k = n_experts, top_k
         self.routing_unit, self.balance = routing_unit, balance
         self.router_frozen, self.sym_break = bool(router_frozen), float(sym_break)
+        self.routing_estimator = str(routing_estimator)
 
         self.experts = nn.ModuleList([copy.deepcopy(mlp) for _ in range(n_experts)])
         if self.sym_break > 0:
@@ -153,9 +163,17 @@ class MoEFFN(nn.Module):
 
         probs = logits.softmax(dim=-1)
         topv, topi = probs.topk(self.top_k, dim=-1)
-        topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
+        if self.top_k == 1 and self.routing_estimator == "selected_st":
+            # The historical ``topv / topv.sum()`` makes a top-1 gate identically one, so the
+            # task loss cannot train the router through the hard expert choice.  This estimator
+            # remains exactly one in the forward pass (and therefore preserves the pretrained
+            # FFN at upcycling) while using d(topv)/d(logits) in the backward pass.
+            topv = topv + (torch.ones_like(topv) - topv).detach()
+        else:
+            topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
         self.last = {"logits": logits, "probs": probs, "assign": topi[:, 0].detach(),
-                     "env": env_dec, "tokens_per_image": T}
+                     "env": env_dec, "tokens_per_image": T,
+                     "routing_estimator": self.routing_estimator}
 
         flat = x.reshape(B * T, C)
         if self.routing_unit == "image":                 # expand per-image choice to its tokens

@@ -75,6 +75,28 @@ def test_moe_is_function_preserving(mlp, x):
         assert torch.allclose(moe(x), mlp(x), atol=1e-6), f"MoE({unit}) must equal dense at init"
 
 
+@pytest.mark.parametrize("routing_unit", ["image", "token"])
+def test_selected_st_top1_receives_task_gradient_and_preserves_forward(mlp, x, routing_unit):
+    """Regression: hard top-1 must not erase the task gradient to the router."""
+    torch.manual_seed(2)
+    moe = MoEFFN(
+        mlp, n_experts=E, top_k=1, routing_unit=routing_unit,
+        routing_estimator="selected_st", sym_break=0.0,
+    )
+    target = torch.randn_like(x)
+    out = moe(x)
+    assert torch.allclose(out, mlp(x), atol=1e-6)
+    loss = (out * target).sum()
+    grads = torch.autograd.grad(loss, tuple(moe.router.parameters()), allow_unused=False)
+    norm = torch.stack([grad.float().square().sum() for grad in grads]).sum().sqrt()
+    assert float(norm) > 1e-6, "classification loss must train a selected-ST top-1 router"
+
+
+def test_routing_estimator_rejects_unknown_value(mlp):
+    with pytest.raises(ValueError, match="routing_estimator"):
+        MoEFFN(mlp, routing_estimator="unknown")
+
+
 def test_frozen_router_is_function_preserving_and_has_no_grads(mlp, x):
     moe = MoEFFN(mlp, n_experts=E, router_frozen=True, sym_break=0.0)
     assert torch.allclose(moe(x), mlp(x), atol=1e-6)

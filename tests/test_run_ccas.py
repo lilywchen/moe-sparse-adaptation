@@ -4,8 +4,33 @@ import torch
 import json
 
 from scripts.run_ccas import (
-    classification_objective, milestone_epochs, validate_stage1_artifacts,
+    classification_objective, milestone_epochs, router_gradient_norms,
+    router_parameter_deltas, snapshot_routers, validate_stage1_artifacts,
 )
+from moe_shift.capacity import MoEFFN
+
+
+class _Mlp(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = torch.nn.Linear(4, 8)
+        self.act = torch.nn.GELU()
+        self.fc2 = torch.nn.Linear(8, 4)
+
+    def forward(self, x):
+        return self.fc2(self.act(self.fc1(x)))
+
+
+class _RouterAuditModel(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.block = MoEFFN(_Mlp(), n_experts=2, routing_estimator="selected_st")
+        self._moe_blocks = [self.block]
+        self.capacity = type("Capacity", (), {"block_indices": (3,)})()
+
+    @property
+    def moe_blocks(self):
+        return tuple(self._moe_blocks)
 
 
 def test_environment_balanced_objective_equalizes_experiments():
@@ -16,6 +41,20 @@ def test_environment_balanced_objective_equalizes_experiments():
     expected = 0.5 * (per_example[:2].mean() + per_example[2:].mean())
     assert classification_objective(logits, labels, env, "environment_balanced") == pytest.approx(expected)
     assert classification_objective(logits, labels, env, "erm") == pytest.approx(per_example.mean())
+
+
+def test_router_gradient_and_parameter_delta_audits():
+    torch.manual_seed(0)
+    model = _RouterAuditModel()
+    initial = snapshot_routers(model)
+    loss = model.block(torch.randn(3, 2, 4)).square().mean()
+    norms = router_gradient_norms(loss, model)
+    assert norms["3"] > 0
+    with torch.no_grad():
+        next(model.block.router.parameters()).add_(0.1)
+    deltas = router_parameter_deltas(model, initial)
+    assert deltas["3"]["l2"] > 0
+    assert deltas["3"]["relative_l2"] > 0
 
 
 def test_milestones_are_one_indexed_bounded_and_checkpoints_are_subset():

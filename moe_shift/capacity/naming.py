@@ -40,6 +40,9 @@ def run_id_from(cfg) -> str:
         location = m["placement"]
     parts = [cfg["dataset"], v]
     if v in ("moe", "moe_frozen"):
+        # Prefix the estimator to the historical identity. This prevents result-file collisions
+        # while leaving the established dataset/variant/campaign substrings usable as anchor keys.
+        parts.insert(0, str(m.get("routing_estimator", "selected_st")))
         pressure = m.get("pressure", "route" if m.get("balance") in
                          ("within_batch", "within_environment") else "canonical")
         parts += [location, m["routing_unit"], m["geometry"], pressure,

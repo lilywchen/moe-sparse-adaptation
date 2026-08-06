@@ -29,6 +29,19 @@ def test_run_id_encodes_ffn_block_indices_alias():
     assert "blocks10-11" in run_id_from(cfg)
 
 
+def test_run_id_encodes_routing_estimator_to_avoid_historical_collisions():
+    cfg = {
+        "dataset": "rxrx1", "seed": 0,
+        "model": {
+            "variant": "moe", "placement": "late", "routing_unit": "token",
+            "geometry": "cosine", "balance": "global", "n_experts": 8, "top_k": 1,
+            "routing_estimator": "selected_st",
+        },
+        "train": {"epochs": 30},
+    }
+    assert "selected_st" in run_id_from(cfg)
+
+
 def test_explicit_block_index_aliases_must_agree():
     with pytest.raises(ValueError, match="disagree"):
         explicit_block_indices({"block_indices": [6], "ffn_block_indices": [11]})

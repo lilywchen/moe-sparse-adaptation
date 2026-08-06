@@ -73,7 +73,7 @@ def resolve_block_indices(n_blocks: int, placement: str = "middle",
 
 
 def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
-                 temperature, sym_break_wide, sym_break_moe):
+                 temperature, sym_break_wide, sym_break_moe, routing_estimator):
     fc1_orig, _, fc2_orig = _mlp_parts(mlp)
     d_out, has_out_bias = fc2_orig.out_features, fc2_orig.bias is not None
 
@@ -87,7 +87,8 @@ def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance
     else:
         new = MoEFFN(mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
                      geometry=geometry, balance=balance, temperature=temperature,
-                     router_frozen=(variant == "moe_frozen"), sym_break=sym_break_moe)
+                     router_frozen=(variant == "moe_frozen"), sym_break=sym_break_moe,
+                     routing_estimator=routing_estimator)
 
     router_params = _count(new.router) if isinstance(new, MoEFFN) else 0
     block_params = _count(new)
@@ -106,7 +107,8 @@ def convert_blocks(model, variant: str, placement: str = "middle",
                    n_experts: int = 8, top_k: int = 1, routing_unit: str = "token",
                    geometry: str = "cosine", balance: str = "global",
                    temperature: float = 0.07, sym_break_wide: float = 0.1,
-                   sym_break_moe: float = 0.0, reference_total: Optional[int] = None):
+                   sym_break_moe: float = 0.0, routing_estimator: str = "selected_st",
+                   reference_total: Optional[int] = None):
     """Convert selected blocks in-place; ``model`` must expose mutable blocks with ``.mlp``.
 
     `reference_total` is the fixed budget P* (normally the MoE variant's `total_params`); when
@@ -127,7 +129,7 @@ def convert_blocks(model, variant: str, placement: str = "middle",
     for idx in indices:
         new, bp, rp, br, ap = _convert_mlp(
             blocks[idx].mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
-            temperature, sym_break_wide, sym_break_moe)
+            temperature, sym_break_wide, sym_break_moe, routing_estimator)
         blocks[idx].mlp = new
         converted.append(new)
         block_params += bp
@@ -157,13 +159,15 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
                   top_k: int = 1, routing_unit: str = "token", geometry: str = "cosine",
                   balance: str = "global", temperature: float = 0.07,
                   sym_break_wide: float = 0.1, sym_break_moe: float = 0.0,
+                  routing_estimator: str = "selected_st",
                   reference_total: Optional[int] = None):
     """Backward-compatible single-block wrapper around :func:`convert_blocks`."""
     return convert_blocks(
         model, variant, placement=placement, n_experts=n_experts, top_k=top_k,
         routing_unit=routing_unit, geometry=geometry, balance=balance,
         temperature=temperature, sym_break_wide=sym_break_wide,
-        sym_break_moe=sym_break_moe, reference_total=reference_total)
+        sym_break_moe=sym_break_moe, routing_estimator=routing_estimator,
+        reference_total=reference_total)
 
 
 def budget_delta_pct(report_a: CapacityReport, report_b: CapacityReport) -> float:
