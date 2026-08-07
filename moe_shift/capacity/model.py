@@ -6,6 +6,12 @@ Variants (all function-preserving at init):
   moe         - learned top-1 router over E experts             (fixed budget P*)
   moe_frozen  - identical architecture, router frozen at init   (fixed budget P*)
   shared_moe  - pretrained shared FFN plus routed residual experts
+
+Frontier variants (see capacity/frontier.py for the measured failure each one targets):
+  oracle_moe  - shared FFN + GROUND-TRUTH-indexed routed experts (a ceiling, not deployable)
+  condln_moe  - affine LayerNorm experts routed on a token-statistics descriptor
+  soft_moe    - fully differentiable Soft MoE residual branch (no argmax, no aux loss)
+  lowrank_moe - fine-grained low-rank residual experts + diversity loss + top-k annealing
 """
 import hashlib
 import subprocess
@@ -14,7 +20,7 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 
-from .surgery import convert_blocks
+from .surgery import convert_blocks, set_shared_only, set_top_k
 from .naming import explicit_block_indices
 
 
@@ -62,6 +68,10 @@ class CCASModel(nn.Module):
                  drop_path=0.2, sym_break_wide=0.1, sym_break_moe=0.0,
                  routing_estimator="selected_st",
                  feature_stat_mix_prob=0.0, feature_stat_mix_alpha=0.1,
+                 expert_rank=16, diversity_w=0.0, diversity_probe_tokens=64,
+                 slots_per_expert=1, soft_temperature=1.0, expert_dropout=0.5,
+                 group_source="cell_type", condln_descriptor="token_stats",
+                 condln_modulate="input",
                  backbone_source="timm", hub_repo_dir=None, checkpoint_path=None,
                  hub_model="cell_dino_cp_vits8", input_channels=5,
                  feature_pool="cls",
@@ -133,6 +143,7 @@ class CCASModel(nn.Module):
         # the complete trainable model rather than backbone-only parameters.
         self.fc = nn.Linear(self.dim, num_classes)
 
+        self.group_source = str(group_source)
         _, self.capacity = convert_blocks(
             self, variant, placement=placement, placements=placements,
             block_indices=block_indices, n_experts=n_experts, top_k=top_k,
@@ -140,7 +151,12 @@ class CCASModel(nn.Module):
             temperature=temperature, sym_break_wide=sym_break_wide, sym_break_moe=sym_break_moe,
             routing_estimator=routing_estimator,
             feature_stat_mix_prob=feature_stat_mix_prob,
-            feature_stat_mix_alpha=feature_stat_mix_alpha)
+            feature_stat_mix_alpha=feature_stat_mix_alpha,
+            expert_rank=expert_rank, diversity_w=diversity_w,
+            diversity_probe_tokens=diversity_probe_tokens,
+            slots_per_expert=slots_per_expert, soft_temperature=soft_temperature,
+            expert_dropout=expert_dropout, group_source=group_source,
+            condln_descriptor=condln_descriptor, condln_modulate=condln_modulate)
 
         self.freeze_backbone = bool(freeze_backbone)
         self.unfreeze_last_n_blocks = int(unfreeze_last_n_blocks or 0)
@@ -173,6 +189,39 @@ class CCASModel(nn.Module):
     def set_env(self, env):
         for block in self._moe_blocks:
             block.set_env(env)
+
+    def set_group(self, group):
+        """Oracle group ids (cell type, or train-remapped experiment) for ``oracle_moe``.
+
+        Every routed block accepts this call so the runner never has to branch on variant.  Only
+        :class:`~moe_shift.capacity.frontier.SharedRoutedOracleFFN` consumes it; for every other
+        variant it is stored and ignored, which keeps the ceiling arms and the deployable arms on
+        one code path.
+        """
+        for block in self._moe_blocks:
+            setter = getattr(block, "set_group", None)
+            if callable(setter):
+                setter(group)
+
+    def set_shared_only(self, shared_only=True):
+        """Route every oracle block through its shared path alone (held-out-group readout)."""
+        return set_shared_only(self, shared_only)
+
+    def set_top_k(self, top_k):
+        """Dense-to-sparse annealing hook; no-op for variants without a settable top-k."""
+        return set_top_k(self, top_k)
+
+    def expert_diversity_loss(self):
+        """Mean expert-similarity measure across blocks that define one, or None if none do.
+
+        ``None`` rather than ``0.0`` matters: a variant with no diversity measure and a variant
+        whose experts are perfectly orthogonal would otherwise report the same number.
+        """
+        terms = [block.expert_diversity_loss() for block in self._moe_blocks
+                 if hasattr(block, "expert_diversity_loss")]
+        if not terms:
+            return None
+        return torch.stack(terms).mean()
 
     def forward_features(self, x):
         if self.backbone_source == "channel_adaptive_dino":
@@ -243,6 +292,15 @@ def build_ccas(cfg):
                      routing_estimator=m.get("routing_estimator", "selected_st"),
                      feature_stat_mix_prob=m.get("feature_stat_mix_prob", 0.0),
                      feature_stat_mix_alpha=m.get("feature_stat_mix_alpha", 0.1),
+                     expert_rank=m.get("expert_rank", 16),
+                     diversity_w=m.get("diversity_w", 0.0),
+                     diversity_probe_tokens=m.get("diversity_probe_tokens", 64),
+                     slots_per_expert=m.get("slots_per_expert", 1),
+                     soft_temperature=m.get("soft_temperature", 1.0),
+                     expert_dropout=m.get("expert_dropout", 0.5),
+                     group_source=m.get("group_source", "cell_type"),
+                     condln_descriptor=m.get("condln_descriptor", "token_stats"),
+                     condln_modulate=m.get("condln_modulate", "input"),
                      backbone_source=m.get("backbone_source", "timm"),
                      hub_repo_dir=m.get("hub_repo_dir"),
                      checkpoint_path=m.get("checkpoint_path"),

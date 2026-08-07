@@ -103,6 +103,44 @@ def test_raw_site_view_reads_joint_six_channel_sample(tmp_path):
 
     class FakeDataset:
         _input_array = np.asarray([rel])
+        metadata_array = torch.tensor([[7, 1]])          # [experiment, cell_type]
+        y_array = torch.tensor([3])
+
+    class FakeSubset:
+        dataset = FakeDataset()
+        indices = np.asarray([0])
+
+        def __len__(self):
+            return 1
+
+    view = _RawSiteView(
+        FakeSubset(), exp_col=0, remap={7: 2}, raw_root=tmp_path,
+        transform=_rxrx1_raw_transform(8, train=False, channel_layout="native6"),
+        cell_col=1,
+    )
+    x, y, site, env, cell = view[0]
+    assert tuple(x.shape) == (6, 8, 8)
+    assert np.allclose(x.mean(dim=(1, 2)).numpy(), 0.0, atol=2e-5)
+    assert np.allclose(x.std(dim=(1, 2)).numpy(), 1.0, atol=2e-5)
+    assert (y, site, env, cell) == (3, 2, 7, 1)
+
+
+def test_raw_site_view_emits_sentinel_cell_type_when_column_absent(tmp_path):
+    """cell_type is optional: a WILDS build without the field must stay runnable.
+
+    Every non-oracle arm ignores the 5th element, so a -1 sentinel is correct here. The oracle arm
+    fails loudly later, in run_ccas.batch_group_ids, where the requirement is explicit.
+    """
+    import torch
+
+    rel = "images/HEPG2-01/Plate1/B02_s1.png"
+    for channel, path in enumerate(_native_channel_paths(tmp_path, rel), start=1):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        grid = (np.arange(12 * 12).reshape(12, 12) + channel * 11) % 256
+        Image.fromarray(grid.astype(np.uint8), mode="L").save(path)
+
+    class FakeDataset:
+        _input_array = np.asarray([rel])
         metadata_array = torch.tensor([[7]])
         y_array = torch.tensor([3])
 
@@ -117,8 +155,4 @@ def test_raw_site_view_reads_joint_six_channel_sample(tmp_path):
         FakeSubset(), exp_col=0, remap={7: 2}, raw_root=tmp_path,
         transform=_rxrx1_raw_transform(8, train=False, channel_layout="native6"),
     )
-    x, y, site, env = view[0]
-    assert tuple(x.shape) == (6, 8, 8)
-    assert np.allclose(x.mean(dim=(1, 2)).numpy(), 0.0, atol=2e-5)
-    assert np.allclose(x.std(dim=(1, 2)).numpy(), 1.0, atol=2e-5)
-    assert (y, site, env) == (3, 2, 7)
+    assert view[0][4] == -1

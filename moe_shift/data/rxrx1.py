@@ -29,7 +29,7 @@ import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF
 from PIL import Image
-from torch.utils.data import DataLoader, Dataset, Sampler
+from torch.utils.data import DataLoader, Dataset, Sampler, Subset
 
 from .datasets import IMAGENET_MEAN, IMAGENET_STD
 
@@ -109,12 +109,13 @@ def _native_channel_paths(raw_root, composite_relative_path):
 class _RawSiteView(Dataset):
     """Use WILDS labels/splits but read the official six grayscale acquisitions."""
 
-    def __init__(self, subset, exp_col, remap, raw_root, transform):
+    def __init__(self, subset, exp_col, remap, raw_root, transform, cell_col=None):
         self.subset = subset
         self.exp_col = int(exp_col)
         self.remap = remap
         self.raw_root = Path(raw_root)
         self.transform = transform
+        self.cell_col = None if cell_col is None else int(cell_col)
 
     def __len__(self):
         return len(self.subset)
@@ -136,7 +137,8 @@ class _RawSiteView(Dataset):
         meta = dataset.metadata_array[global_idx]
         raw = int(meta[self.exp_col])
         y = int(dataset.y_array[global_idx])
-        return x, y, int(self.remap.get(raw, -1)), raw
+        cell = -1 if self.cell_col is None else int(meta[self.cell_col])
+        return x, y, int(self.remap.get(raw, -1)), raw, cell
 
 
 def _rxrx1_transform(img_size, train, rrc=False, style="imagenet", channel_layout=None):
@@ -187,7 +189,7 @@ def _rxrx1_transform(img_size, train, rrc=False, style="imagenet", channel_layou
 
 
 class _SiteView(Dataset):
-    """Adapt a WILDS subset -> (x, y, site_int, env_int).
+    """Adapt a WILDS subset -> (x, y, site_int, env_int, cell_int).
 
     TWO domain fields, deliberately distinct. Conflating them was a real bug: per-environment
     accuracy used to be bucketed by `site`, and on an OOD split every environment is unseen, so
@@ -200,11 +202,17 @@ class _SiteView(Dataset):
            this index space, so the -1 sentinel stays exactly as it was.
     env  : the RAW acquisition-environment id (experiment / hospital) from the WILDS metadata.
            Well defined on every split, and the only correct key for per-environment reporting.
+    cell : the RxRx1 cell line (HUVEC/RPE/HEPG2/U2OS). Unlike `site` this is defined and MEANINGFUL
+           on every split, including the unseen OOD experiments, and it is orthogonal to the batch
+           nuisance -- which is what makes it the one legitimate conditioning variable for oracle
+           routing. Appended LAST so every existing 4-tuple consumer is untouched; consumers that
+           want it must check `len(batch) > 4`, because the other datasets still yield 4-tuples.
     """
-    def __init__(self, subset, exp_col, remap):
+    def __init__(self, subset, exp_col, remap, cell_col=None):
         self.subset = subset
         self.exp_col = exp_col
         self.remap = remap
+        self.cell_col = None if cell_col is None else int(cell_col)
 
     def __len__(self):
         return len(self.subset)
@@ -212,7 +220,8 @@ class _SiteView(Dataset):
     def __getitem__(self, i):
         x, y, meta = self.subset[i]              # WILDS: (image, label, metadata_row)
         raw = int(meta[self.exp_col])
-        return x, int(y), int(self.remap.get(raw, -1)), raw
+        cell = -1 if self.cell_col is None else int(meta[self.cell_col])
+        return x, int(y), int(self.remap.get(raw, -1)), raw, cell
 
 
 class CrossExperimentBatchSampler(Sampler):
@@ -277,8 +286,25 @@ class CrossExperimentBatchSampler(Sampler):
             yield [batch[index] for index in order]
 
 
+def _cell_type_column(ds):
+    """Index of the ``cell_type`` metadata column, or None if this build lacks it.
+
+    Returning None instead of raising keeps every non-oracle arm runnable on a WILDS build without
+    the field; the oracle arm fails loudly later, in ``batch_group_ids``, where the requirement is
+    explicit rather than implied.
+    """
+    try:
+        return ds.metadata_fields.index("cell_type")
+    except (AttributeError, ValueError):
+        return None
+
+
 def make_rxrx1_loaders(cfg):
-    """Returns (train_loader, test_within, test_heldout, audit_loader). Mutates cfg['sites']['K']."""
+    """Returns (train_loader, test_within, test_heldout, audit_loader). Mutates cfg['sites']['K'].
+
+    Every loader yields ``(x, y, site, env, cell_type)``.  The 5th element is appended, so all
+    existing 4-tuple consumers are unaffected.
+    """
     from wilds import get_dataset                # imported lazily so the rest of the repo needs no wilds
 
     img_size = cfg.get("img_size") or cfg["model"].get("vit", {}).get("img", 256)
@@ -315,13 +341,38 @@ def make_rxrx1_loaders(cfg):
           f"|train|={len(train_sub)} |id_test|={len(within_sub)} |ood_test|={len(ood_sub)}")
 
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]
+    # cell_type is emitted on every split so oracle cell-type routing and BTX clustering can use
+    # it. It is metadata, not a label, and no loss consumes it unless an arm asks for it.
+    cell_col = _cell_type_column(ds)
+    cfg.setdefault("sites", {})["n_cell_types"] = (
+        int(ds.metadata_array[:, cell_col].max()) + 1 if cell_col is not None else 0)
     mk = lambda d, sh: DataLoader(d, batch_size=bs, shuffle=sh, num_workers=nw,
                                   pin_memory=True, drop_last=sh, persistent_workers=(nw > 0))
     view = (lambda subset, transform: _RawSiteView(
-        subset, exp_col, remap, raw_root, transform)) if raw_root else (
-        lambda subset, transform: _SiteView(subset, exp_col, remap))
+        subset, exp_col, remap, raw_root, transform, cell_col=cell_col)) if raw_root else (
+        lambda subset, transform: _SiteView(subset, exp_col, remap, cell_col=cell_col))
     train_view = view(train_sub, tf_tr)
     within = view(within_sub, tf_ev)
+
+    # BTX phase 2 trains one specialist per environment cluster, so it needs the training set
+    # restricted to that cluster. Applied to the TRAIN view only: the ID and OOD splits stay
+    # complete, or the specialists would not be comparable with anything.
+    subset_environments = cfg["train"].get("environment_subset")
+    if subset_environments:
+        wanted = {int(e) for e in subset_environments}
+        raw_train = train_sub.metadata_array[:, exp_col].tolist()
+        keep = [i for i, raw in enumerate(raw_train) if int(raw) in wanted]
+        if not keep:
+            raise ValueError(
+                f"train.environment_subset {sorted(wanted)} matches no training environment; "
+                f"available ids are {sorted(set(int(r) for r in raw_train))[:8]}...")
+        missing = wanted - {int(r) for r in raw_train}
+        if missing:
+            raise ValueError(f"train.environment_subset names unknown environments: "
+                             f"{sorted(missing)}")
+        train_view = Subset(train_view, keep)
+        print(f"[rxrx1] train restricted to {len(wanted)} environment(s): "
+              f"{len(keep)} of {len(raw_train)} images")
     if bool(cfg["train"].get("cross_experiment_pairs", False)):
         try:
             cell_col = ds.metadata_fields.index("cell_type")
@@ -378,8 +429,9 @@ def make_rxrx1_val_loader(cfg):
     train_exps = sorted(set(ds.get_subset("train").metadata_array[:, exp_col].tolist()))
     remap = {e: i for i, e in enumerate(train_exps)}
     bs, nw = cfg["train"]["batch_size"], cfg["train"]["num_workers"]
+    cell_col = _cell_type_column(ds)
     print(f"[rxrx1] |ood_val|={len(val_sub)} (model/hparam selection; test untouched)")
-    view = (_RawSiteView(val_sub, exp_col, remap, raw_root, transform)
-            if raw_root else _SiteView(val_sub, exp_col, remap))
+    view = (_RawSiteView(val_sub, exp_col, remap, raw_root, transform, cell_col=cell_col)
+            if raw_root else _SiteView(val_sub, exp_col, remap, cell_col=cell_col))
     return DataLoader(view, batch_size=bs, shuffle=False,
                       num_workers=nw, pin_memory=True, persistent_workers=(nw > 0))

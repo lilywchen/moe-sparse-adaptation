@@ -10,10 +10,25 @@ from typing import Optional, Sequence
 import torch.nn as nn
 
 from .ffn import MoEFFN, SharedResidualMoEFFN, WideFFN, _mlp_parts
+from .frontier import (
+    CondLNMoEFFN,
+    LowRankResidualMoEFFN,
+    SharedRoutedOracleFFN,
+    SoftMoEResidualFFN,
+)
 from .routers import Router
 
 PLACEMENTS = ("early", "middle", "late")
-VARIANTS = ("original", "dense_wide", "moe", "moe_frozen", "shared_moe")
+VARIANTS = (
+    "original", "dense_wide", "moe", "moe_frozen", "shared_moe",
+    # frontier variants (see capacity/frontier.py for the failure each one targets)
+    "oracle_moe", "condln_moe", "soft_moe", "lowrank_moe",
+)
+
+#: Variants that keep the pretrained dense FFN active for every input.  Replacement is the one
+#: design the completed campaigns showed to be actively harmful, so every new variant preserves
+#: the shared path and this list is what the sweeper asserts against.
+SHARED_PATH_VARIANTS = ("shared_moe", "oracle_moe", "condln_moe", "soft_moe", "lowrank_moe")
 
 
 def placement_index(n_blocks: int, placement: str) -> int:
@@ -74,7 +89,11 @@ def resolve_block_indices(n_blocks: int, placement: str = "middle",
 
 def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
                  temperature, sym_break_wide, sym_break_moe, routing_estimator,
-                 feature_stat_mix_prob, feature_stat_mix_alpha):
+                 feature_stat_mix_prob, feature_stat_mix_alpha,
+                 expert_rank=16, diversity_w=0.0, diversity_probe_tokens=64,
+                 slots_per_expert=1, soft_temperature=1.0, expert_dropout=0.5,
+                 group_source="cell_type", condln_descriptor="token_stats",
+                 condln_modulate="input"):
     fc1_orig, _, fc2_orig = _mlp_parts(mlp)
     d_out, has_out_bias = fc2_orig.out_features, fc2_orig.bias is not None
 
@@ -93,20 +112,57 @@ def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance
             feature_stat_mix_prob=feature_stat_mix_prob,
             feature_stat_mix_alpha=feature_stat_mix_alpha,
         )
+    elif variant == "oracle_moe":
+        new = SharedRoutedOracleFFN(
+            mlp, n_experts=n_experts, expert_dropout=expert_dropout,
+            group_source=group_source)
+    elif variant == "condln_moe":
+        new = CondLNMoEFFN(
+            mlp, n_experts=n_experts, top_k=top_k, geometry=geometry, balance=balance,
+            temperature=temperature, descriptor=condln_descriptor, modulate=condln_modulate)
+    elif variant == "soft_moe":
+        new = SoftMoEResidualFFN(
+            mlp, n_experts=n_experts, slots_per_expert=slots_per_expert,
+            expert_rank=expert_rank if expert_rank and expert_rank > 0 else 0,
+            temperature=soft_temperature)
+    elif variant == "lowrank_moe":
+        new = LowRankResidualMoEFFN(
+            mlp, n_experts=n_experts, top_k=top_k, expert_rank=expert_rank,
+            routing_unit=routing_unit, geometry=geometry, balance=balance,
+            temperature=temperature, routing_estimator=routing_estimator,
+            diversity_w=diversity_w, diversity_probe_tokens=diversity_probe_tokens)
     else:
         new = MoEFFN(mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
                      geometry=geometry, balance=balance, temperature=temperature,
                      router_frozen=(variant == "moe_frozen"), sym_break=sym_break_moe,
                      routing_estimator=routing_estimator)
 
-    routed_types = (MoEFFN, SharedResidualMoEFFN)
-    router_params = _count(new.router) if isinstance(new, routed_types) else 0
+    if getattr(new, "router", None) is not None:
+        router_params = _count(new.router)
+    elif isinstance(new, SoftMoEResidualFFN):
+        # Soft MoE has no Router module: the slot projection `phi` performs the routing, so it is
+        # counted here. Reporting zero router parameters would misstate the budget audit.
+        router_params = new.phi.numel()
+    else:
+        router_params = 0
     block_params = _count(new)
-    if isinstance(new, SharedResidualMoEFFN):
+
+    if isinstance(new, SoftMoEResidualFFN):
+        # Soft MoE activates EVERY expert on every input, by construction. Reporting top-k active
+        # parameters here would understate its true compute, so `active` is the whole block.
+        active = block_params
+        bias_replicas = n_experts * d_out if has_out_bias else 0
+    elif isinstance(new, (SharedResidualMoEFFN, LowRankResidualMoEFFN, SharedRoutedOracleFFN)):
         shared_params = _count(new.shared)
         residual_params = sum(_count(expert) for expert in new.experts)
-        active = shared_params + residual_params // n_experts * top_k + router_params
+        k_active = getattr(new, "top_k", 1)
+        active = shared_params + residual_params // n_experts * k_active + router_params
         bias_replicas = n_experts * d_out if has_out_bias else 0
+    elif isinstance(new, CondLNMoEFFN):
+        # Affine experts: one (gamma, beta) pair per selected expert is active, plus the shared
+        # pretrained FFN that every input passes through.
+        active = _count(new.mlp) + 2 * new.width * new.top_k + router_params
+        bias_replicas = 0
     elif isinstance(new, MoEFFN):
         active = (block_params - router_params) // n_experts * top_k + router_params
         bias_replicas = (n_experts - 1) * d_out if has_out_bias else 0
@@ -125,6 +181,12 @@ def convert_blocks(model, variant: str, placement: str = "middle",
                    sym_break_moe: float = 0.0, routing_estimator: str = "selected_st",
                    feature_stat_mix_prob: float = 0.0,
                    feature_stat_mix_alpha: float = 0.1,
+                   expert_rank: int = 16, diversity_w: float = 0.0,
+                   diversity_probe_tokens: int = 64, slots_per_expert: int = 1,
+                   soft_temperature: float = 1.0, expert_dropout: float = 0.5,
+                   group_source: str = "cell_type",
+                   condln_descriptor: str = "token_stats",
+                   condln_modulate: str = "input",
                    reference_total: Optional[int] = None):
     """Convert selected blocks in-place; ``model`` must expose mutable blocks with ``.mlp``.
 
@@ -147,7 +209,12 @@ def convert_blocks(model, variant: str, placement: str = "middle",
         new, bp, rp, br, ap = _convert_mlp(
             blocks[idx].mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
             temperature, sym_break_wide, sym_break_moe, routing_estimator,
-            feature_stat_mix_prob, feature_stat_mix_alpha)
+            feature_stat_mix_prob, feature_stat_mix_alpha,
+            expert_rank=expert_rank, diversity_w=diversity_w,
+            diversity_probe_tokens=diversity_probe_tokens,
+            slots_per_expert=slots_per_expert, soft_temperature=soft_temperature,
+            expert_dropout=expert_dropout, group_source=group_source,
+            condln_descriptor=condln_descriptor, condln_modulate=condln_modulate)
         blocks[idx].mlp = new
         converted.append(new)
         block_params += bp
@@ -168,7 +235,8 @@ def convert_blocks(model, variant: str, placement: str = "middle",
     model._capacity_report = report
     model._moe_blocks = [
         module for module in converted
-        if isinstance(module, (MoEFFN, SharedResidualMoEFFN))
+        if isinstance(module, (MoEFFN, SharedResidualMoEFFN, SharedRoutedOracleFFN,
+                               CondLNMoEFFN, SoftMoEResidualFFN, LowRankResidualMoEFFN))
     ]
     model._moe_block = model._moe_blocks[0] if model._moe_blocks else None
     model._converted_indices = indices
@@ -183,8 +251,13 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
                   routing_estimator: str = "selected_st",
                   feature_stat_mix_prob: float = 0.0,
                   feature_stat_mix_alpha: float = 0.1,
-                  reference_total: Optional[int] = None):
-    """Backward-compatible single-block wrapper around :func:`convert_blocks`."""
+                  reference_total: Optional[int] = None, **frontier):
+    """Backward-compatible single-block wrapper around :func:`convert_blocks`.
+
+    ``**frontier`` forwards the frontier-variant knobs (``expert_rank``, ``diversity_w``,
+    ``slots_per_expert``, ``expert_dropout``, ``group_source``, ...) without changing this
+    function's historical positional signature.
+    """
     return convert_blocks(
         model, variant, placement=placement, n_experts=n_experts, top_k=top_k,
         routing_unit=routing_unit, geometry=geometry, balance=balance,
@@ -192,7 +265,33 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
         sym_break_moe=sym_break_moe, routing_estimator=routing_estimator,
         feature_stat_mix_prob=feature_stat_mix_prob,
         feature_stat_mix_alpha=feature_stat_mix_alpha,
-        reference_total=reference_total)
+        reference_total=reference_total, **frontier)
+
+
+def set_shared_only(model, shared_only: bool = True):
+    """Toggle shared-path-only inference on every oracle block.
+
+    This is how the oracle CEILING is read out: an unseen group has no expert, so the honest
+    evaluation of ``oracle_moe`` on a held-out split is the shared path alone.  Returns the number
+    of blocks toggled so callers can assert the switch actually applied.
+    """
+    toggled = 0
+    for block in getattr(model, "_moe_blocks", []) or []:
+        if isinstance(block, SharedRoutedOracleFFN):
+            block.shared_only = bool(shared_only)
+            toggled += 1
+    return toggled
+
+
+def set_top_k(model, top_k: int):
+    """Set the active top-k on every block that supports dense-to-sparse annealing."""
+    applied = {}
+    for block_index, block in zip(getattr(model, "_converted_indices", ()) or (),
+                                  getattr(model, "_moe_blocks", []) or []):
+        setter = getattr(block, "set_top_k", None)
+        if callable(setter):
+            applied[str(block_index)] = setter(top_k)
+    return applied
 
 
 def budget_delta_pct(report_a: CapacityReport, report_b: CapacityReport) -> float:

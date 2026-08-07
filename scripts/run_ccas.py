@@ -70,22 +70,98 @@ def build_optimizer(model, cfg, adversary=None):
     return torch.optim.AdamW(groups)
 
 
-def classification_objective(logits, labels, environments, objective="erm"):
+OBJECTIVES = ("erm", "environment_balanced", "group_dro")
+
+
+def classification_objective(logits, labels, environments, objective="erm",
+                             label_smoothing=0.0, group_dro=None):
     """Return the supervised loss while making environment weighting explicit.
 
     ``environment_balanced`` gives every experiment represented in the minibatch equal weight,
     rather than letting experiments with more images dominate the update.  It uses no validation
     or test information and changes no model capacity.
+
+    ``group_dro`` optimises the WORST experiment rather than the mean (Sagawa et al., 2020).  The
+    completed campaigns' most reproducible MoE effect is a mean/tail trade -- replacement depth
+    cost ``1.481`` OOD-test points while raising worst-batch accuracy ``2.377`` points -- so this
+    objective makes that trade the target instead of a side effect.  It requires the stateful
+    :class:`GroupDRO` weight tracker, which the caller owns across steps.
+
+    ``label_smoothing`` matters mechanically here, not just as regularisation: train accuracy
+    reaches ``1.0`` by epoch 30, and the straight-through router gradient is scaled by
+    ``d(loss)/d(topv)``.  A saturated cross-entropy therefore stops training the router entirely,
+    leaving only the balance loss to shape routing.  Smoothing keeps the task gradient alive.
     """
-    per_example = F.cross_entropy(logits, labels, reduction="none")
+    per_example = F.cross_entropy(
+        logits, labels, reduction="none", label_smoothing=float(label_smoothing))
     if objective == "erm":
         return per_example.mean()
+    if objective == "group_dro":
+        if group_dro is None:
+            raise ValueError("train.objective=group_dro requires a GroupDRO tracker")
+        return group_dro(per_example, environments)
     if objective != "environment_balanced":
         raise ValueError(f"unknown train.objective: {objective!r}")
     present = torch.unique(environments)
     if torch.any(present < 0):
         raise ValueError("environment_balanced training requires non-negative train environments")
     return torch.stack([per_example[environments == env].mean() for env in present]).mean()
+
+
+class GroupDRO:
+    """Online group-DRO weights over training environments (Sagawa et al., 2020).
+
+    Group weights follow exponentiated gradient ascent on the per-group loss::
+
+        q_g <- q_g * exp(step_size * loss_g)        (then renormalised over all groups)
+
+    Only groups PRESENT in the current minibatch are updated, and the returned loss is their
+    ``q``-weighted mean renormalised over the present groups.  With 33 training experiments and
+    batch 64, most groups are absent from any given minibatch, so renormalising over the present
+    subset is what keeps the objective an unbiased reweighting rather than a silently shrinking
+    loss.
+
+    ``q`` is deliberately kept out of the optimiser: it is a dual variable, not a parameter, and
+    it is recorded in the run JSON so the realised weighting is auditable after the fact.
+    """
+
+    def __init__(self, n_groups: int, step_size: float = 0.01, device=None):
+        if int(n_groups) < 2:
+            raise ValueError("group DRO requires at least two training environments")
+        if float(step_size) <= 0:
+            raise ValueError("group DRO step_size must be positive")
+        self.n_groups = int(n_groups)
+        self.step_size = float(step_size)
+        self.q = torch.ones(self.n_groups, dtype=torch.float32, device=device) / self.n_groups
+
+    def __call__(self, per_example: torch.Tensor, environments: torch.Tensor) -> torch.Tensor:
+        present = torch.unique(environments)
+        if torch.any(present < 0):
+            raise ValueError("group DRO requires non-negative train environment ids")
+        if torch.any(present >= self.n_groups):
+            raise ValueError(
+                f"environment id >= n_groups ({self.n_groups}); check cfg['sites']['K']")
+        self.q = self.q.to(per_example.device)
+        group_losses = torch.stack([per_example[environments == g].mean() for g in present])
+        with torch.no_grad():
+            index = present.to(self.q.device)
+            self.q[index] = self.q[index] * torch.exp(
+                self.step_size * group_losses.detach().to(self.q.dtype))
+            self.q = self.q / self.q.sum().clamp_min(1e-12)
+        weights = self.q[index].to(group_losses.dtype)
+        weights = weights / weights.sum().clamp_min(1e-12)
+        return (weights * group_losses).sum()
+
+    def state(self):
+        """Serialisable snapshot of the realised group weighting."""
+        values = self.q.detach().float().cpu().tolist()
+        return {
+            "n_groups": self.n_groups,
+            "step_size": self.step_size,
+            "weights": values,
+            "max_weight": max(values) if values else None,
+            "min_weight": min(values) if values else None,
+        }
 
 
 def cross_experiment_contrastive_loss(features, labels, environments, temperature=0.1):
@@ -121,11 +197,23 @@ def router_gradient_norms(loss, model):
 
     This is a fail-fast audit for hard top-1 routing. A selected-ST run must expose a finite,
     nonzero task gradient before auxiliary losses are added; the historical renormalised top-1
-    implementation did not. Frozen-router and non-MoE models correctly return an empty mapping.
+    implementation did not. Frozen-router, oracle-routed and non-MoE models correctly return an
+    empty mapping -- ``oracle_moe`` has no learned router at all, and ``soft_moe``'s slot
+    projection is reported under the same key because it plays the router's role.
+
+    Logged EVERY epoch, not only at initialisation: train accuracy reaches 1.0 by epoch 30, so
+    the interesting quantity is when this norm decays to zero, which a single init-time probe
+    cannot show.
     """
     norms = {}
     for block_index, block in zip(model.capacity.block_indices, model.moe_blocks):
-        params = [p for p in block.router.parameters() if p.requires_grad]
+        router = getattr(block, "router", None)
+        if router is not None:
+            params = [p for p in router.parameters() if p.requires_grad]
+        else:
+            # Soft MoE routes through `phi`; oracle blocks have no routing parameters at all.
+            phi = getattr(block, "phi", None)
+            params = [phi] if phi is not None and phi.requires_grad else []
         if not params:
             continue
         grads = torch.autograd.grad(loss, params, retain_graph=True, allow_unused=True)
@@ -137,10 +225,25 @@ def router_gradient_norms(loss, model):
     return norms
 
 
+def _routing_parameters(block):
+    """The parameters that play the router's role for this block, or [] if it has none.
+
+    ``oracle_moe`` routes on ground truth and has no routing parameters; ``soft_moe`` routes
+    through its slot projection ``phi``.  Returning a list keeps every caller uniform instead of
+    each one re-deriving the special cases.
+    """
+    router = getattr(block, "router", None)
+    if router is not None:
+        return list(router.parameters())
+    phi = getattr(block, "phi", None)
+    return [phi] if phi is not None else []
+
+
 def snapshot_routers(model):
     """Small CPU snapshots used to prove that trainable routers actually moved."""
     return {
-        str(block_index): [p.detach().float().cpu().clone() for p in block.router.parameters()]
+        str(block_index): [p.detach().float().cpu().clone()
+                           for p in _routing_parameters(block)]
         for block_index, block in zip(model.capacity.block_indices, model.moe_blocks)
     }
 
@@ -151,10 +254,10 @@ def router_parameter_deltas(model, initial):
     for block_index, block in zip(model.capacity.block_indices, model.moe_blocks):
         key = str(block_index)
         before = initial.get(key)
-        if before is None:
+        if not before:
             continue
         delta_sq = base_sq = 0.0
-        for current, start in zip(block.router.parameters(), before):
+        for current, start in zip(_routing_parameters(block), before):
             current = current.detach().float().cpu()
             delta_sq += float((current - start).square().sum())
             base_sq += float(start.square().sum())
@@ -296,12 +399,37 @@ def publish_hf_run(result, artifact_paths, out_dir):
             "n_files": len(files)}
 
 
+def batch_group_ids(batch, group_source):
+    """Oracle group ids for this batch, or None when the arm does not use oracle routing.
+
+    ``cell_type``   -> ``batch[4]``, the RxRx1 cell line.  Defined on every split, including the
+                       unseen OOD experiments, so oracle cell-type experts really do apply there.
+    ``environment`` -> ``batch[2]``, the TRAIN-remapped site index.  This is ``-1`` on every OOD
+                       row, so an unseen experiment matches no expert and falls through to the
+                       shared path automatically -- which is exactly the ceiling being measured.
+    """
+    if not group_source:
+        return None
+    if group_source == "cell_type":
+        if len(batch) < 5:
+            raise ValueError(
+                "oracle cell-type routing needs a 5-element loader batch (x, y, site, env, cell); "
+                "this dataset does not expose cell_type")
+        return batch[4]
+    if group_source == "environment":
+        return batch[2]
+    raise ValueError(f"unknown group_source: {group_source!r}")
+
+
 @torch.no_grad()
-def evaluate(model, loader, device):
+def evaluate(model, loader, device, group_source=None):
     """-> (acc, worst_env_acc, per_env_acc, per_env_n), bucketed by RAW environment id.
 
     `per_env_n` is required, not cosmetic: the plan's uncertainty is a CLUSTER bootstrap over
     experiments / hospitals, which cannot be reconstructed from per-environment accuracies alone.
+
+    ``group_source`` forwards oracle group ids to the model.  Evaluation must do this, not just
+    training: an oracle block raises rather than silently guessing when its group ids are stale.
     """
     model.eval()
     ok = tot = 0
@@ -313,6 +441,9 @@ def evaluate(model, loader, device):
         # collapsed per_env to a single '-1' bucket and made worst_env_* equal to overall accuracy.
         # The 3-tuple fallback is for the injected-nuisance loaders, where site IS the environment.
         s = batch[3] if len(batch) > 3 else batch[2]
+        group = batch_group_ids(batch, group_source)
+        if group is not None:
+            model.set_group(group.to(device))
         pred = model(x).argmax(1)
         c = (pred == y)
         ok += c.sum().item(); tot += y.numel()
@@ -328,33 +459,73 @@ def evaluate(model, loader, device):
 
 
 @torch.no_grad()
-def counterfactual_reroute(model, loader, device, seed=0):
+def counterfactual_reroute(model, loader, device, seed=0, group_source=None):
     """Joint route reliance with every converted router randomized and expert weights fixed.
 
     The router is temporarily replaced by i.i.d. Gaussian logits, which give a balanced random
     top-1 assignment while leaving every expert's weights untouched. The substitution is always
     undone (finally), and the RNG is seeded so the number is reproducible across reruns.
+
+    Blocks with no learned router are skipped rather than crashing the audit.  For ``soft_moe``
+    the slot projection ``phi`` plays the router's role, so randomising its logits is the matching
+    counterfactual; for ``oracle_moe`` there is nothing to randomise, and the informative
+    counterfactual is :func:`shared_only_accuracy` instead.  ``None`` is returned when no block
+    had a randomisable router, so a caller can tell "no reliance" apart from "not measurable".
     """
-    blocks = list(model.moe_blocks)
+    blocks = [b for b in model.moe_blocks
+              if getattr(b, "router", None) is not None or getattr(b, "phi", None) is not None]
     if not blocks:
         return None
     gen = torch.Generator(device="cpu").manual_seed(int(seed))
-    real_router_forwards = [block.router.forward for block in blocks]
+    saved = []
 
-    def randomized_forward(block):
+    def randomized_forward(block, n_out):
         def forward(z):
-            r = torch.randn(z.shape[0], block.n_experts, generator=gen)
+            r = torch.randn(z.shape[0], n_out, generator=gen)
             return r.to(z.device, dtype=z.dtype)
         return forward
 
     try:
         for block in blocks:
-            block.router.forward = randomized_forward(block)
-        acc = evaluate(model, loader, device)[0]
+            router = getattr(block, "router", None)
+            if router is not None:
+                saved.append((block, "router", router.forward))
+                router.forward = randomized_forward(block, block.n_experts)
+            else:
+                # Soft MoE: replace phi with a fresh random projection of identical shape, so the
+                # slot assignment is scrambled while every expert's weights stay untouched.
+                saved.append((block, "phi", block.phi.detach().clone()))
+                block.phi.copy_(torch.randn(
+                    block.phi.shape, generator=gen).to(block.phi.device, block.phi.dtype)
+                    * block.phi.shape[0] ** -0.5)
+        acc = evaluate(model, loader, device, group_source=group_source)[0]
     finally:
-        for block, real_forward in zip(blocks, real_router_forwards):
-            block.router.forward = real_forward
+        for block, kind, value in saved:
+            if kind == "router":
+                block.router.forward = value
+            else:
+                block.phi.copy_(value.to(block.phi.device, block.phi.dtype))
     return acc
+
+
+@torch.no_grad()
+def shared_only_accuracy(model, loader, device, group_source=None):
+    """Accuracy with every oracle block forced through its shared path alone.
+
+    This is the number the oracle decision rule in ``moe_shift/models/oracle.py`` is written
+    against: if a shared path trained alongside ground-truth-indexed experts still cannot beat the
+    parameter-matched dense control on held-out data, then batch and content are not separable
+    here even with ground truth.  Returns ``None`` when the model has no oracle block.
+    """
+    if not any(hasattr(b, "shared_only") for b in model.moe_blocks):
+        return None
+    toggled = model.set_shared_only(True)
+    try:
+        if not toggled:
+            return None
+        return evaluate(model, loader, device, group_source=group_source)[0]
+    finally:
+        model.set_shared_only(False)
 
 
 def main():
@@ -387,6 +558,19 @@ def main():
 
     model = build_ccas(cfg).to(device)
     cap = model.capacity
+
+    # BTX phase 3: replace the expert bank with independently trained specialists. Done BEFORE the
+    # router snapshot so router displacement is measured from the mixed model, and recorded in the
+    # protocol because it deliberately breaks function preservation at initialisation.
+    btx_report = None
+    btx_manifest = cfg["model"].get("btx_manifest")
+    if btx_manifest:
+        from moe_shift.capacity.btx import mix_specialists
+        btx_report = mix_specialists(
+            model, btx_manifest,
+            freeze_experts=bool(cfg["model"].get("btx_freeze_experts", True)))
+        print(f"[btx] mixed specialists: {btx_report}", flush=True)
+
     initial_routers = snapshot_routers(model)
     inv_target = float(cfg["losses"].get("invariance_w", 0.0)) if pressure == "output" else 0.0
     if pressure == "output" and inv_target <= 0:
@@ -438,6 +622,50 @@ def main():
         protocol["router_trainable"] = True
         protocol["routing_estimator"] = str(
             cfg["model"].get("routing_estimator", "selected_st"))
+    elif cap.variant in ("oracle_moe", "condln_moe", "soft_moe", "lowrank_moe"):
+        # Every frontier variant keeps the pretrained dense FFN active for all inputs: replacement
+        # is the one design the completed campaigns showed to be actively harmful.
+        protocol["pretrained_shared_expert_always_active"] = True
+        protocol["frontier_variant"] = cap.variant
+        if cap.variant == "oracle_moe":
+            protocol["router_trainable"] = False
+            protocol["routing_is_ground_truth"] = True
+            protocol["group_source"] = str(cfg["model"].get("group_source", "cell_type"))
+            protocol["expert_dropout"] = float(cfg["model"].get("expert_dropout", 0.5))
+            protocol["deployable"] = False          # this arm is a CEILING, not a method
+        if cap.variant == "condln_moe":
+            protocol["router_trainable"] = True
+            protocol["expert_form"] = "layernorm_affine"
+            protocol["condln_descriptor"] = str(
+                cfg["model"].get("condln_descriptor", "token_stats"))
+            protocol["transductive"] = False        # descriptor comes from the input alone
+        if cap.variant == "soft_moe":
+            protocol["router_trainable"] = True
+            protocol["discrete_routing"] = False
+            protocol["auxiliary_balance_loss_active"] = False
+            protocol["all_experts_active"] = True
+            protocol["softmax_scope"] = "within_image"
+        if cap.variant == "lowrank_moe":
+            protocol["router_trainable"] = True
+            protocol["expert_rank"] = int(cfg["model"].get("expert_rank", 16))
+            protocol["diversity_w"] = float(cfg["model"].get("diversity_w", 0.0))
+            protocol["routing_estimator"] = str(
+                cfg["model"].get("routing_estimator", "selected_st"))
+
+    # Oracle arms need ground-truth group ids at train AND eval time; every other arm passes None
+    # so the loaders and evaluation path stay on exactly one code path.
+    group_source = (str(cfg["model"].get("group_source", "cell_type"))
+                    if cap.variant == "oracle_moe" else None)
+    protocol["group_source"] = group_source
+    if btx_report is not None:
+        protocol["btx"] = btx_report
+        protocol["experts_are_upcycled_copies"] = False
+        protocol["experts_are_independent_specialists"] = True
+        protocol["function_preserving_at_init"] = False
+    if cfg["train"].get("environment_subset"):
+        # A specialist is not comparable with a full-data arm; make that unmistakable in the JSON.
+        protocol["environment_subset"] = [int(e) for e in cfg["train"]["environment_subset"]]
+        protocol["trained_on_environment_subset"] = True
 
     opt = build_optimizer(model, cfg, adversary)
     epochs = int(cfg["train"]["epochs"])
@@ -470,18 +698,63 @@ def main():
     protocol["cross_experiment_pairs"] = paired_batches
     protocol["cross_experiment_contrastive_w"] = consistency_w
 
+    if objective not in OBJECTIVES:
+        raise ValueError(f"train.objective must be one of {OBJECTIVES}, got {objective!r}")
+    label_smoothing = float(cfg["train"].get("label_smoothing", 0.0) or 0.0)
+    if not 0.0 <= label_smoothing < 1.0:
+        raise ValueError("train.label_smoothing must lie in [0, 1)")
+    protocol["label_smoothing"] = label_smoothing
+    group_dro = None
+    if objective == "group_dro":
+        group_dro = GroupDRO(
+            int(cfg["sites"]["K"]),
+            step_size=float(cfg["train"].get("group_dro_step_size", 0.01)),
+            device=device)
+        protocol["group_dro_step_size"] = group_dro.step_size
+        protocol["group_dro_n_groups"] = group_dro.n_groups
+
+    # Dense-to-sparse annealing: start with every expert active so each one is supervised while
+    # data is still plentiful, then contract to the target top-k. `anneal_top_k_epochs` is the
+    # epoch by which the target is reached; 0 disables annealing entirely.
+    anneal_epochs = int(cfg["train"].get("anneal_top_k_epochs", 0) or 0)
+    if anneal_epochs < 0:
+        raise ValueError("train.anneal_top_k_epochs cannot be negative")
+    target_top_k = int(cfg["model"].get("top_k", 1))
+    n_experts_cfg = int(cfg["model"]["n_experts"])
+    protocol["anneal_top_k_epochs"] = anneal_epochs
+    if anneal_epochs:
+        applied = model.set_top_k(n_experts_cfg)
+        if not applied:
+            raise ValueError(
+                f"train.anneal_top_k_epochs is set but variant {cap.variant!r} has no settable "
+                "top-k; only lowrank_moe supports dense-to-sparse annealing")
+        protocol["anneal_top_k_from"] = n_experts_cfg
+        protocol["anneal_top_k_to"] = target_top_k
+
     initial_router_task_grad_norms = None
+    router_grad_norm_by_epoch = {}
+    group_dro_weight_trace = {}
     for ep in range(epochs):
         model.train()
         if adversary is not None:
             adversary.train()
+        if anneal_epochs:
+            # Linear contraction in k from n_experts down to the target, reached at anneal_epochs.
+            fraction = min(1.0, ep / max(anneal_epochs, 1))
+            k_now = int(round(n_experts_cfg + fraction * (target_top_k - n_experts_cfg)))
+            model.set_top_k(k_now)
+        epoch_router_norms = None
         run_loss = run_aux = run_adv = run_consistency = 0.0; nb = 0
         for batch in train_loader:
             x, y, s = batch[0].to(device), batch[1].to(device), batch[2].to(device)
             model.set_env(s)                       # used ONLY by within-environment balancing
+            group = batch_group_ids(batch, group_source)
+            if group is not None:
+                model.set_group(group.to(device))
             feats = model.forward_features(x)
             logits = model.fc(feats)
-            loss = classification_objective(logits, y, s, objective)
+            loss = classification_objective(
+                logits, y, s, objective, label_smoothing=label_smoothing, group_dro=group_dro)
             consistency = (
                 cross_experiment_contrastive_loss(
                     feats, y, s, temperature=consistency_temperature)
@@ -505,6 +778,13 @@ def main():
                     print(
                         "[router-gradient-check] classification-only norms "
                         f"{initial_router_task_grad_norms}", flush=True)
+            # Per-EPOCH router gradient norm. The single init-time probe above cannot show the
+            # failure that matters: train accuracy reaches 1.0 by epoch 30, and the selected-ST
+            # estimator's gradient is scaled by d(loss)/d(topv), so a saturated task loss stops
+            # training the router while the balance loss keeps shaping it. Recording the norm
+            # every epoch makes that decay visible instead of inferred.
+            if epoch_router_norms is None and model.moe_blocks:
+                epoch_router_norms = router_gradient_norms(loss, model)
             aux = model.aux_loss(bw, zw)
             adv = loss.new_zeros(())
             if adversary is not None:
@@ -515,14 +795,23 @@ def main():
             run_loss += loss.item(); run_aux += float(aux); run_adv += float(adv)
             run_consistency += float(consistency); nb += 1
         sched.step()
+        if epoch_router_norms:
+            router_grad_norm_by_epoch[str(ep)] = epoch_router_norms
+        if group_dro is not None:
+            group_dro_weight_trace[str(ep)] = group_dro.state()["max_weight"]
         rec = {"epoch": ep, "loss": run_loss / max(nb, 1), "aux": run_aux / max(nb, 1),
                "adversary": run_adv / max(nb, 1),
                "cross_experiment_contrastive": run_consistency / max(nb, 1),
+               "router_grad_norms": epoch_router_norms,
+               "active_top_k": (model.moe_blocks[0].top_k if model.moe_blocks else None),
                "lr": opt.param_groups[-1]["lr"], "t": round(time.time() - t0, 1)}
         logf.write(json.dumps(rec) + "\n"); logf.flush()
         if wandb_run is not None:
             try:
-                wandb_run.log({f"train/{k}": v for k, v in rec.items() if k != "epoch"},
+                # Only scalars go to the tracker: `router_grad_norms` is a per-block mapping and
+                # belongs in the JSONL, which is the source of truth anyway.
+                wandb_run.log({f"train/{k}": v for k, v in rec.items()
+                               if k != "epoch" and isinstance(v, (int, float))},
                               step=ep)
             except Exception as e:
                 print(f"[wandb] epoch log skipped: {e}", flush=True)
@@ -540,9 +829,12 @@ def main():
             cuda_rng = torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None
             np_rng = np.random.get_state()
             try:
-                m_train, m_worst_train, _, _ = evaluate(model, train_loader, device)
-                m_id, m_worst_id, _, _ = evaluate(model, test_within, device)
-                m_val, m_worst_val, m_per_env, m_per_env_n = evaluate(model, val_loader, device)
+                m_train, m_worst_train, _, _ = evaluate(
+                    model, train_loader, device, group_source=group_source)
+                m_id, m_worst_id, _, _ = evaluate(
+                    model, test_within, device, group_source=group_source)
+                m_val, m_worst_val, m_per_env, m_per_env_n = evaluate(
+                    model, val_loader, device, group_source=group_source)
             finally:
                 torch.random.set_rng_state(cpu_rng)
                 if cuda_rng is not None:
@@ -585,11 +877,16 @@ def main():
     # confirmatory. Below stage 3 we therefore do not even compute test accuracy, and every
     # downstream metric (worst environment, mechanism, route reliance) is computed on OOD val.
     stage = int(cfg.get("stage", 1))
+    # Terminal numbers must be read at the TARGET sparsity, never at an intermediate annealed k.
+    if anneal_epochs:
+        protocol["final_top_k"] = model.set_top_k(target_top_k)
     if bool(cfg.get("analysis", {}).get("record_train_accuracy", False)):
-        acc_train, worst_train, _, _ = evaluate(model, train_loader, device)
+        acc_train, worst_train, _, _ = evaluate(
+            model, train_loader, device, group_source=group_source)
     else:
         acc_train = worst_train = None
-    acc_within, worst_within, _, _ = evaluate(model, test_within, device)
+    acc_within, worst_within, _, _ = evaluate(
+        model, test_within, device, group_source=group_source)
 
     if val_loader is None:
         # No OOD val split exists for this dataset: selection must fall back to the held-out
@@ -598,10 +895,12 @@ def main():
     else:
         sel_loader, selection_split = val_loader, "ood_val"
 
-    acc_val, worst_val, per_env_val, per_env_n_val = evaluate(model, sel_loader, device)
+    acc_val, worst_val, per_env_val, per_env_n_val = evaluate(
+        model, sel_loader, device, group_source=group_source)
 
     if stage >= 3:
-        acc_ood, worst_ood, per_env_ood, per_env_n_ood = evaluate(model, test_heldout, device)
+        acc_ood, worst_ood, per_env_ood, per_env_n_ood = evaluate(
+            model, test_heldout, device, group_source=group_source)
         test_evaluated = True
     else:
         acc_ood = worst_ood = None
@@ -639,11 +938,29 @@ def main():
                 mech[key] = first[key]
         try:
             mech["randomized_routes_acc"] = counterfactual_reroute(
-                model, mech_eval_loader, device, seed=cfg["seed"])
+                model, mech_eval_loader, device, seed=cfg["seed"],
+                group_source=group_source)
             if mech["randomized_routes_acc"] is not None:
                 mech["route_reliance"] = acc_sel - mech["randomized_routes_acc"]
         except Exception as e:
             mech["reroute_error"] = str(e)
+        # Oracle arms have no randomisable router; their counterfactual is the shared path alone,
+        # which is also the quantity the oracle decision rule is written against.
+        try:
+            shared_only = shared_only_accuracy(
+                model, mech_eval_loader, device, group_source=group_source)
+            if shared_only is not None:
+                mech["shared_only_acc"] = shared_only
+                mech["oracle_expert_contribution"] = acc_sel - shared_only
+        except Exception as e:
+            mech["shared_only_error"] = str(e)
+        try:
+            diversity = model.expert_diversity_loss()
+            # Mean pairwise cosine between experts: ~1.0 means interchangeable experts, which is
+            # the failure mode the balance loss cannot see. None = variant defines no measure.
+            mech["expert_output_cosine"] = None if diversity is None else float(diversity)
+        except Exception as e:
+            mech["diversity_error"] = str(e)
     if run_mechanism:
         try:
             feats, site, label = audit_leak.features_site_label(model, audit_loader, device)
@@ -690,7 +1007,12 @@ def main():
         "n_blocks_converted": cap.n_converted_blocks,
         # ---- mechanism ----
         "initial_router_task_grad_norms": initial_router_task_grad_norms,
+        # Per-epoch router gradient norms: shows WHEN the task signal to the router decays, which
+        # a single initialisation probe cannot. Train accuracy saturates well before epoch 30.
+        "router_grad_norm_by_epoch": router_grad_norm_by_epoch or None,
         "router_parameter_deltas": router_deltas,
+        "group_dro_state": (group_dro.state() if group_dro is not None else None),
+        "group_dro_max_weight_by_epoch": group_dro_weight_trace or None,
         **mech,
         # ---- provenance ----
         "protocol": protocol, "git_sha": sha, "git_dirty": dirty,
