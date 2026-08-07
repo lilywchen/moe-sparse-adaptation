@@ -1,5 +1,25 @@
 # Progress ledger
 
+Last verified: 2026-08-07 EDT. The canonical current synthesis is now `STATE.md`.
+
+## 2026-08-07 — completed table changes the MoE hypothesis; shared/residual wave is live
+
+- The latest completed table makes dense expansion at blocks 10–11 the baseline to beat:
+  `21.514%` OOD validation, `38.731%` OOD test, and `7.951%` worst test batch. The best replacement
+  MoE reaches `20.783/36.817/6.926%`; learned-versus-frozen differences are small and mixed.
+  Replacement depth lowers mean accuracy while raising worst-batch accuracy. The evidence favors
+  ordinary capacity, fixed partitioning, or optimization over a useful learned-router effect.
+- The design therefore changes from replacing Cell-DINO FFNs to retaining the pretrained dense
+  FFN and adding zero-initialized routed residual experts. The eight predefined 30-epoch arms test
+  replacement versus shared allocation, top-k, expert count, depth, cross-experiment supervised
+  consistency, and MixStyle. The full rationale, arm-by-arm decision map, and limits of the prior
+  evidence are in `STATE.md`.
+- All eight jobs are live across four 2×H100 SciServer containers at exact commit `d7fad7a`. At the
+  first stable global check, four arms were at epoch 2 and four at epoch 1. Results persist under
+  `substrate_rxrx1/cell_dino_cp5/shared_residual_performance30_20260807`. W&B is offline and HF
+  publication is deferred because credentials were absent inside the containers; local artifacts
+  remain authoritative and require later synchronization.
+
 Last verified: 2026-08-04 15:01 EDT on SciServer and locally. All eight H100s in the four running
 containers train the next one-FFN block-11 learned/frozen controls: E4 cosine top-2 on 2887, E32
 cosine top-2 on 2862, E2 image routing on 2859, and E4 image routing on tester6/2899. Containers

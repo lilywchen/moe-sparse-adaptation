@@ -1,5 +1,10 @@
 # Sparse Conditional Adaptation Under Acquisition Shift
 
+> **Current direction (2026-08-07):** The active study is now focused on supervised adaptation of
+> Cell-DINO to RxRx1 under held-out-batch shift. See [`STATE.md`](STATE.md) for the latest evidence,
+> changed MoE hypothesis, active eight-arm wave, and decision criteria. The broader factorial
+> design below is retained as project history and supporting infrastructure.
+
 This repository contains the code and manuscript for a controlled study of one question:
 
 > When adapting a pretrained vision model to scientific images collected across acquisition
@@ -37,6 +42,7 @@ canonical dense control because a dense model has no routing distribution to bal
 - `tests/`: protocol and analysis guards.
 - `docs/research_plan.html`: detailed operational research plan.
 - `SCISERVER.md`: cluster paths and safe execution/check-in contract.
+- `STATE.md`: compact current evidence, interpretation, active wave, and next decisions.
 - `PROGRESS.md`: shared handoff ledger for humans and scheduled Codex checks.
 
 ## Local validation

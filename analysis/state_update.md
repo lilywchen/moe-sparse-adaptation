@@ -1,5 +1,9 @@
 # Living scientific state
 
+> **Current state:** See [`../STATE.md`](../STATE.md) for the 2026-08-07 synthesis, completed
+> performance table, shared/residual-MoE hypothesis, and live eight-arm wave. The entries below
+> are retained as the chronological scientific record.
+
 ## Current handoff — 2026-08-04 15:01 EDT
 
 Eight one-FFN block-11 epoch-5 rows form four strict-valid learned/frozen pairs. E2 cosine top-2
