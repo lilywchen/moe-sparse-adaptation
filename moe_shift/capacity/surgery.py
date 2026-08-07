@@ -9,11 +9,11 @@ from typing import Optional, Sequence
 
 import torch.nn as nn
 
-from .ffn import MoEFFN, WideFFN, _mlp_parts
+from .ffn import MoEFFN, SharedResidualMoEFFN, WideFFN, _mlp_parts
 from .routers import Router
 
 PLACEMENTS = ("early", "middle", "late")
-VARIANTS = ("original", "dense_wide", "moe", "moe_frozen")
+VARIANTS = ("original", "dense_wide", "moe", "moe_frozen", "shared_moe")
 
 
 def placement_index(n_blocks: int, placement: str) -> int:
@@ -73,7 +73,8 @@ def resolve_block_indices(n_blocks: int, placement: str = "middle",
 
 
 def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
-                 temperature, sym_break_wide, sym_break_moe, routing_estimator):
+                 temperature, sym_break_wide, sym_break_moe, routing_estimator,
+                 feature_stat_mix_prob, feature_stat_mix_alpha):
     fc1_orig, _, fc2_orig = _mlp_parts(mlp)
     d_out, has_out_bias = fc2_orig.out_features, fc2_orig.bias is not None
 
@@ -84,15 +85,29 @@ def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance
             Router(fc1_orig.in_features, n_experts, geometry, temperature))
         new = WideFFN(mlp, n_experts=n_experts, sym_break=sym_break_wide,
                       target_params=target_block_params)
+    elif variant == "shared_moe":
+        new = SharedResidualMoEFFN(
+            mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
+            geometry=geometry, balance=balance, temperature=temperature,
+            routing_estimator=routing_estimator,
+            feature_stat_mix_prob=feature_stat_mix_prob,
+            feature_stat_mix_alpha=feature_stat_mix_alpha,
+        )
     else:
         new = MoEFFN(mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
                      geometry=geometry, balance=balance, temperature=temperature,
                      router_frozen=(variant == "moe_frozen"), sym_break=sym_break_moe,
                      routing_estimator=routing_estimator)
 
-    router_params = _count(new.router) if isinstance(new, MoEFFN) else 0
+    routed_types = (MoEFFN, SharedResidualMoEFFN)
+    router_params = _count(new.router) if isinstance(new, routed_types) else 0
     block_params = _count(new)
-    if isinstance(new, MoEFFN):
+    if isinstance(new, SharedResidualMoEFFN):
+        shared_params = _count(new.shared)
+        residual_params = sum(_count(expert) for expert in new.experts)
+        active = shared_params + residual_params // n_experts * top_k + router_params
+        bias_replicas = n_experts * d_out if has_out_bias else 0
+    elif isinstance(new, MoEFFN):
         active = (block_params - router_params) // n_experts * top_k + router_params
         bias_replicas = (n_experts - 1) * d_out if has_out_bias else 0
     else:
@@ -108,6 +123,8 @@ def convert_blocks(model, variant: str, placement: str = "middle",
                    geometry: str = "cosine", balance: str = "global",
                    temperature: float = 0.07, sym_break_wide: float = 0.1,
                    sym_break_moe: float = 0.0, routing_estimator: str = "selected_st",
+                   feature_stat_mix_prob: float = 0.0,
+                   feature_stat_mix_alpha: float = 0.1,
                    reference_total: Optional[int] = None):
     """Convert selected blocks in-place; ``model`` must expose mutable blocks with ``.mlp``.
 
@@ -129,7 +146,8 @@ def convert_blocks(model, variant: str, placement: str = "middle",
     for idx in indices:
         new, bp, rp, br, ap = _convert_mlp(
             blocks[idx].mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
-            temperature, sym_break_wide, sym_break_moe, routing_estimator)
+            temperature, sym_break_wide, sym_break_moe, routing_estimator,
+            feature_stat_mix_prob, feature_stat_mix_alpha)
         blocks[idx].mlp = new
         converted.append(new)
         block_params += bp
@@ -148,7 +166,10 @@ def convert_blocks(model, variant: str, placement: str = "middle",
         block_indices=indices, placements=labels, n_converted_blocks=len(indices),
     )
     model._capacity_report = report
-    model._moe_blocks = [m for m in converted if isinstance(m, MoEFFN)]
+    model._moe_blocks = [
+        module for module in converted
+        if isinstance(module, (MoEFFN, SharedResidualMoEFFN))
+    ]
     model._moe_block = model._moe_blocks[0] if model._moe_blocks else None
     model._converted_indices = indices
     model._converted_index = indices[0]
@@ -160,6 +181,8 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
                   balance: str = "global", temperature: float = 0.07,
                   sym_break_wide: float = 0.1, sym_break_moe: float = 0.0,
                   routing_estimator: str = "selected_st",
+                  feature_stat_mix_prob: float = 0.0,
+                  feature_stat_mix_alpha: float = 0.1,
                   reference_total: Optional[int] = None):
     """Backward-compatible single-block wrapper around :func:`convert_blocks`."""
     return convert_blocks(
@@ -167,6 +190,8 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
         routing_unit=routing_unit, geometry=geometry, balance=balance,
         temperature=temperature, sym_break_wide=sym_break_wide,
         sym_break_moe=sym_break_moe, routing_estimator=routing_estimator,
+        feature_stat_mix_prob=feature_stat_mix_prob,
+        feature_stat_mix_alpha=feature_stat_mix_alpha,
         reference_total=reference_total)
 
 

@@ -9,7 +9,8 @@ from .naming import run_id_from                      # torch-free
 
 _LAZY = {
     "Router": ".routers",
-    "WideFFN": ".ffn", "MoEFFN": ".ffn",
+    "WideFFN": ".ffn", "MoEFFN": ".ffn", "SharedResidualMoEFFN": ".ffn",
+    "mixstyle_tokens": ".ffn",
     "global_lbl": ".balance", "within_batch_lbl": ".balance",
     "within_environment_lbl": ".balance", "z_loss": ".balance",
     "convert_block": ".surgery", "convert_blocks": ".surgery",

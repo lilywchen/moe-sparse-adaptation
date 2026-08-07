@@ -88,6 +88,34 @@ def classification_objective(logits, labels, environments, objective="erm"):
     return torch.stack([per_example[environments == env].mean() for env in present]).mean()
 
 
+def cross_experiment_contrastive_loss(features, labels, environments, temperature=0.1):
+    """Supervised contrastive loss with positives from distinct source experiments.
+
+    The paired RxRx1 sampler guarantees that same-label positives are also from the same cell
+    type.  This loss itself remains generic: it receives no test metadata and simply excludes
+    same-experiment pairs from the positive set.
+    """
+    if temperature <= 0:
+        raise ValueError("contrastive temperature must be positive")
+    z = F.normalize(features.float(), dim=-1)
+    logits = (z @ z.t()) / float(temperature)
+    diagonal = torch.eye(len(z), dtype=torch.bool, device=z.device)
+    valid_pair = ~diagonal
+    positives = (
+        labels[:, None].eq(labels[None, :])
+        & environments[:, None].ne(environments[None, :])
+        & valid_pair
+    )
+    positive_count = positives.sum(dim=1)
+    valid_anchor = positive_count > 0
+    if not bool(valid_anchor.any()):
+        return features.sum() * 0.0
+    logits = logits.masked_fill(~valid_pair, float("-inf"))
+    log_prob = logits - torch.logsumexp(logits, dim=1, keepdim=True)
+    positive_log_prob = log_prob.masked_fill(~positives, 0.0).sum(dim=1)
+    return -(positive_log_prob[valid_anchor] / positive_count[valid_anchor]).mean()
+
+
 def router_gradient_norms(loss, model):
     """Classification-loss gradient norm for each trainable router, without accumulating grads.
 
@@ -196,6 +224,43 @@ def validate_stage1_artifacts(result, milestone_path=None):
                 raise ValueError("milestone run identity mismatch")
             if row.get("selection_split") != "ood_val" or row.get("test_evaluated") is not False:
                 raise ValueError("milestone violates OOD-test blindness")
+            for key in ("acc_train", "acc_within", "acc_selection", "worst_env_val"):
+                if not math.isfinite(float(row[key])):
+                    raise ValueError(f"milestone has non-finite {key}")
+    return milestones
+
+
+def validate_publishable_artifacts(result, milestone_path=None):
+    """Validate either a test-blind selection run or an explicitly declared stage-3 run."""
+    if result.get("selection_split") != "ood_val":
+        raise ValueError("publish requires selection on ood_val")
+    required = ("acc_selection", "acc_val", "worst_env_val", "acc_within")
+    if any(not math.isfinite(float(result[key])) for key in required):
+        raise ValueError("publish requires finite selection/ID metrics")
+
+    if result.get("test_evaluated") is True:
+        if int(result.get("stage", 0)) < 3:
+            raise ValueError("test-evaluated publication requires stage >= 3")
+        for key in ("acc_heldout", "worst_env_heldout"):
+            if not math.isfinite(float(result[key])):
+                raise ValueError(f"publish requires finite {key}")
+        if not result.get("per_env_heldout") or not result.get("per_env_n_heldout"):
+            raise ValueError("publish requires per-environment OOD-test results")
+    elif result.get("test_evaluated") is False:
+        if any(result.get(key) is not None for key in HELDOUT_RESULT_FIELDS):
+            raise ValueError("test-blind publication requires null OOD-test metrics")
+    else:
+        raise ValueError("test_evaluated must be explicitly true or false")
+
+    milestones = []
+    if milestone_path is not None and Path(milestone_path).is_file():
+        with open(milestone_path) as handle:
+            milestones = [json.loads(line) for line in handle if line.strip()]
+        for row in milestones:
+            if row.get("run_id") != result.get("run_id"):
+                raise ValueError("milestone run identity mismatch")
+            if row.get("selection_split") != "ood_val" or row.get("test_evaluated") is not False:
+                raise ValueError("milestones must remain OOD-test blind")
             for key in ("acc_train", "acc_within", "acc_selection", "worst_env_val"):
                 if not math.isfinite(float(row[key])):
                     raise ValueError(f"milestone has non-finite {key}")
@@ -367,6 +432,12 @@ def main():
         protocol["router_trainable"] = (cap.variant == "moe")
         protocol["routing_estimator"] = str(
             cfg["model"].get("routing_estimator", "selected_st"))
+    elif cap.variant == "shared_moe":
+        protocol["pretrained_shared_expert_always_active"] = True
+        protocol["residual_experts_zero_output_initialized"] = True
+        protocol["router_trainable"] = True
+        protocol["routing_estimator"] = str(
+            cfg["model"].get("routing_estimator", "selected_st"))
 
     opt = build_optimizer(model, cfg, adversary)
     epochs = int(cfg["train"]["epochs"])
@@ -387,35 +458,66 @@ def main():
     milestone_path = out_dir / f"{rid}.milestones.jsonl"
     milestone_f = open(milestone_path, "w") if milestones else None
     objective = str(cfg["train"].get("objective", "erm"))
+    consistency_w = float(cfg["losses"].get("cross_experiment_contrastive_w", 0.0))
+    consistency_temperature = float(
+        cfg["losses"].get("cross_experiment_contrastive_temperature", 0.1))
+    paired_batches = bool(cfg["train"].get("cross_experiment_pairs", False))
+    if consistency_w < 0:
+        raise ValueError("cross-experiment contrastive weight cannot be negative")
+    if consistency_w > 0 and not paired_batches:
+        raise ValueError(
+            "cross-experiment contrastive loss requires train.cross_experiment_pairs=true")
+    protocol["cross_experiment_pairs"] = paired_batches
+    protocol["cross_experiment_contrastive_w"] = consistency_w
 
     initial_router_task_grad_norms = None
     for ep in range(epochs):
         model.train()
         if adversary is not None:
             adversary.train()
-        run_loss = run_aux = run_adv = 0.0; nb = 0
+        run_loss = run_aux = run_adv = run_consistency = 0.0; nb = 0
         for batch in train_loader:
             x, y, s = batch[0].to(device), batch[1].to(device), batch[2].to(device)
             model.set_env(s)                       # used ONLY by within-environment balancing
             feats = model.forward_features(x)
             logits = model.fc(feats)
             loss = classification_objective(logits, y, s, objective)
+            consistency = (
+                cross_experiment_contrastive_loss(
+                    feats, y, s, temperature=consistency_temperature)
+                if consistency_w > 0 else loss.new_zeros(())
+            )
             if initial_router_task_grad_norms is None and model.moe_blocks:
-                initial_router_task_grad_norms = router_gradient_norms(loss, model)
-                print(
-                    "[router-gradient-check] classification-only norms "
-                    f"{initial_router_task_grad_norms}", flush=True)
+                probed_norms = router_gradient_norms(loss, model)
+                # Shared residual experts have exact-zero outputs on their first minibatch, so
+                # their task gradient to the router is correctly zero until one expert update.
+                # Probe again on minibatch two; a persistent zero is then visible rather than
+                # being mislabeled as the expected function-preserving initialization.
+                defer_zero_initialized_probe = (
+                    cap.variant == "shared_moe" and nb == 0
+                    and not any(value > 0 for value in probed_norms.values())
+                )
+                if defer_zero_initialized_probe:
+                    print("[router-gradient-check] deferred until residual experts leave zero init",
+                          flush=True)
+                else:
+                    initial_router_task_grad_norms = probed_norms
+                    print(
+                        "[router-gradient-check] classification-only norms "
+                        f"{initial_router_task_grad_norms}", flush=True)
             aux = model.aux_loss(bw, zw)
             adv = loss.new_zeros(())
             if adversary is not None:
                 lambd = lambda_schedule(ep, epochs, inv_target)
                 adv = F.cross_entropy(adversary(feats, lambd), s)
-            (loss + aux + adv).backward()
+            (loss + consistency_w * consistency + aux + adv).backward()
             opt.step(); opt.zero_grad(set_to_none=True)
-            run_loss += loss.item(); run_aux += float(aux); run_adv += float(adv); nb += 1
+            run_loss += loss.item(); run_aux += float(aux); run_adv += float(adv)
+            run_consistency += float(consistency); nb += 1
         sched.step()
         rec = {"epoch": ep, "loss": run_loss / max(nb, 1), "aux": run_aux / max(nb, 1),
                "adversary": run_adv / max(nb, 1),
+               "cross_experiment_contrastive": run_consistency / max(nb, 1),
                "lr": opt.param_groups[-1]["lr"], "t": round(time.time() - t0, 1)}
         logf.write(json.dumps(rec) + "\n"); logf.flush()
         if wandb_run is not None:
@@ -425,7 +527,8 @@ def main():
             except Exception as e:
                 print(f"[wandb] epoch log skipped: {e}", flush=True)
         print(f"[{rid}] ep{ep} loss {rec['loss']:.4f} aux {rec['aux']:.4f} "
-              f"adv {rec['adversary']:.4f}", flush=True)
+              f"adv {rec['adversary']:.4f} xbc {rec['cross_experiment_contrastive']:.4f}",
+              flush=True)
 
         epoch_number = ep + 1
         if epoch_number in milestones:
@@ -559,6 +662,8 @@ def main():
         "balance": cfg["model"]["balance"],
         "routing_estimator": cfg["model"].get("routing_estimator", "selected_st"),
         "classification_objective": objective,
+        "cross_experiment_contrastive_w": consistency_w,
+        "cross_experiment_pairs": paired_batches,
         "n_experts": cfg["model"]["n_experts"], "top_k": cfg["model"]["top_k"],
         # ---- outcomes ----
         # Stage <3: acc_heldout is null BY DESIGN (the OOD test split is not touched).
@@ -622,7 +727,7 @@ def main():
             print(f"[wandb] skipped: {e}")
     if os.environ.get("HF_TOKEN") and os.environ.get("CCAS_HF_REPO"):
         try:
-            validate_stage1_artifacts(result, milestone_path if milestones else None)
+            validate_publishable_artifacts(result, milestone_path if milestones else None)
             artifacts = [out_json, log_path]
             if milestones:
                 artifacts.append(milestone_path)

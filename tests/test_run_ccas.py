@@ -4,8 +4,9 @@ import torch
 import json
 
 from scripts.run_ccas import (
-    classification_objective, milestone_epochs, router_gradient_norms,
-    router_parameter_deltas, snapshot_routers, validate_stage1_artifacts,
+    classification_objective, cross_experiment_contrastive_loss, milestone_epochs, router_gradient_norms,
+    router_parameter_deltas, snapshot_routers, validate_publishable_artifacts,
+    validate_stage1_artifacts,
 )
 from moe_shift.capacity import MoEFFN
 
@@ -41,6 +42,16 @@ def test_environment_balanced_objective_equalizes_experiments():
     expected = 0.5 * (per_example[:2].mean() + per_example[2:].mean())
     assert classification_objective(logits, labels, env, "environment_balanced") == pytest.approx(expected)
     assert classification_objective(logits, labels, env, "erm") == pytest.approx(per_example.mean())
+
+
+def test_cross_experiment_contrastive_uses_only_different_environment_positives():
+    features = torch.tensor([[1.0, 0.0], [0.9, 0.1], [0.0, 1.0], [0.1, 0.9]])
+    labels = torch.tensor([0, 0, 1, 1])
+    environments = torch.tensor([0, 1, 0, 1])
+    aligned = cross_experiment_contrastive_loss(features, labels, environments, temperature=0.1)
+    shuffled = cross_experiment_contrastive_loss(
+        features[[0, 2, 1, 3]], labels, environments, temperature=0.1)
+    assert aligned < shuffled
 
 
 def test_router_gradient_and_parameter_delta_audits():
@@ -83,3 +94,24 @@ def test_publish_validation_rejects_test_access_and_checks_milestones(tmp_path):
     result["test_evaluated"] = True
     with pytest.raises(ValueError, match="test_evaluated=false"):
         validate_stage1_artifacts(result, path)
+
+
+def test_stage3_publication_requires_finite_test_and_keeps_milestones_blind(tmp_path):
+    result = {
+        "run_id": "run", "stage": 3, "selection_split": "ood_val",
+        "test_evaluated": True, "acc_selection": 0.3, "acc_val": 0.3,
+        "worst_env_val": 0.1, "acc_within": 0.5, "acc_heldout": 0.4,
+        "worst_env_heldout": 0.08, "per_env_heldout": {1: 0.4, 2: 0.3},
+        "per_env_n_heldout": {1: 10, 2: 10},
+    }
+    milestone = {
+        "run_id": "run", "epoch": 30, "selection_split": "ood_val",
+        "test_evaluated": False, "acc_train": 1.0, "acc_within": 0.5,
+        "acc_selection": 0.3, "worst_env_val": 0.1,
+    }
+    path = tmp_path / "milestones.jsonl"
+    path.write_text(json.dumps(milestone) + "\n")
+    assert validate_publishable_artifacts(result, path) == [milestone]
+    result["stage"] = 2
+    with pytest.raises(ValueError, match="stage >= 3"):
+        validate_publishable_artifacts(result, path)

@@ -29,7 +29,7 @@ import torch
 import torchvision.transforms as T
 import torchvision.transforms.functional as TF
 from PIL import Image
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset, Sampler
 
 from .datasets import IMAGENET_MEAN, IMAGENET_STD
 
@@ -215,6 +215,68 @@ class _SiteView(Dataset):
         return x, int(y), int(self.remap.get(raw, -1)), raw
 
 
+class CrossExperimentBatchSampler(Sampler):
+    """Class-paired RxRx1 minibatches for standard supervised contrastive learning.
+
+    Every batch contains pairs with the same perturbation and cell type but distinct source
+    experiments.  Pairing within cell type avoids treating true cell-line biology as a nuisance.
+    The sampler uses only training labels/metadata and the global torch RNG, so the runner's
+    existing RNG save/restore around milestone evaluation preserves the optimization trajectory.
+    """
+
+    def __init__(self, labels, experiments, cell_types, batch_size, drop_last=True):
+        self.labels = torch.as_tensor(labels, dtype=torch.long).flatten()
+        self.experiments = torch.as_tensor(experiments, dtype=torch.long).flatten()
+        self.cell_types = torch.as_tensor(cell_types, dtype=torch.long).flatten()
+        if not (len(self.labels) == len(self.experiments) == len(self.cell_types)):
+            raise ValueError("cross-experiment sampler metadata lengths disagree")
+        self.batch_size = int(batch_size)
+        self.drop_last = bool(drop_last)
+        if self.batch_size < 2 or self.batch_size % 2:
+            raise ValueError("cross-experiment pairing requires an even batch size >= 2")
+
+        groups = {}
+        for index, (label, experiment, cell_type) in enumerate(zip(
+                self.labels.tolist(), self.experiments.tolist(), self.cell_types.tolist())):
+            groups.setdefault((cell_type, label), {}).setdefault(experiment, []).append(index)
+        self.keys_by_cell = {}
+        self.groups = groups
+        for key, by_experiment in groups.items():
+            if len(by_experiment) >= 2:
+                self.keys_by_cell.setdefault(key[0], []).append(key)
+        required_pairs = self.batch_size // 2
+        self.cells = sorted(
+            cell for cell, keys in self.keys_by_cell.items() if len(keys) >= required_pairs)
+        if not self.cells:
+            raise ValueError(
+                f"no cell type has {required_pairs} perturbations represented in >=2 experiments")
+
+    def __len__(self):
+        if self.drop_last:
+            return len(self.labels) // self.batch_size
+        return (len(self.labels) + self.batch_size - 1) // self.batch_size
+
+    @staticmethod
+    def _choice(values):
+        return values[int(torch.randint(len(values), (1,)).item())]
+
+    def __iter__(self):
+        n_pairs = self.batch_size // 2
+        for _ in range(len(self)):
+            cell = self._choice(self.cells)
+            keys = self.keys_by_cell[cell]
+            selected = torch.randperm(len(keys))[:n_pairs].tolist()
+            batch = []
+            for key_index in selected:
+                by_experiment = self.groups[keys[key_index]]
+                experiments = list(by_experiment)
+                chosen = torch.randperm(len(experiments))[:2].tolist()
+                for position in chosen:
+                    batch.append(self._choice(by_experiment[experiments[position]]))
+            order = torch.randperm(len(batch)).tolist()
+            yield [batch[index] for index in order]
+
+
 def make_rxrx1_loaders(cfg):
     """Returns (train_loader, test_within, test_heldout, audit_loader). Mutates cfg['sites']['K']."""
     from wilds import get_dataset                # imported lazily so the rest of the repo needs no wilds
@@ -258,9 +320,27 @@ def make_rxrx1_loaders(cfg):
     view = (lambda subset, transform: _RawSiteView(
         subset, exp_col, remap, raw_root, transform)) if raw_root else (
         lambda subset, transform: _SiteView(subset, exp_col, remap))
+    train_view = view(train_sub, tf_tr)
     within = view(within_sub, tf_ev)
+    if bool(cfg["train"].get("cross_experiment_pairs", False)):
+        try:
+            cell_col = ds.metadata_fields.index("cell_type")
+        except ValueError as error:
+            raise ValueError("RxRx1 metadata has no cell_type field for paired sampling") from error
+        global_indices = torch.as_tensor(train_sub.indices, dtype=torch.long)
+        labels = ds.y_array[global_indices]
+        metadata = ds.metadata_array[global_indices]
+        sampler = CrossExperimentBatchSampler(
+            labels, metadata[:, exp_col], metadata[:, cell_col], bs, drop_last=True)
+        train_loader = DataLoader(
+            train_view, batch_sampler=sampler, num_workers=nw, pin_memory=True,
+            persistent_workers=(nw > 0))
+        print("[rxrx1] class-paired training batches: same perturbation/cell type, "
+              "different experiments")
+    else:
+        train_loader = mk(train_view, True)
     return (
-        mk(view(train_sub, tf_tr), True),                  # train  (seen experiments)
+        train_loader,                                      # train  (seen experiments)
         mk(within, False),                                 # test_within  (seen, held-out images)
         mk(view(ood_sub, tf_ev), False),                   # test_heldout (OOD experiments)
         mk(within, False),                                 # audit: seen experiments, label⟂batch already

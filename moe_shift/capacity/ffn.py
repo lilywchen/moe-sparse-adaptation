@@ -206,3 +206,156 @@ class MoEFFN(nn.Module):
 
     def top1(self):
         return self.last["assign"].detach().cpu()
+
+
+def mixstyle_tokens(x: torch.Tensor, probability: float = 0.5,
+                    alpha: float = 0.1, eps: float = 1e-6) -> torch.Tensor:
+    """Standard MixStyle augmentation for transformer tokens.
+
+    Per-image feature means and standard deviations are mixed across the minibatch while the
+    normalized token content is retained.  It is deliberately label- and environment-agnostic,
+    and is active only during training through :class:`SharedResidualMoEFFN`.
+    """
+    if x.ndim != 3:
+        raise ValueError(f"MixStyle expects BxTxC tokens, got {tuple(x.shape)}")
+    if x.shape[0] < 2 or probability <= 0 or float(torch.rand(())) >= probability:
+        return x
+    if alpha <= 0:
+        raise ValueError("MixStyle alpha must be positive")
+
+    mu = x.mean(dim=1, keepdim=True)
+    sigma = (x.var(dim=1, keepdim=True, unbiased=False) + eps).sqrt()
+    normalized = (x - mu) / sigma
+    permutation = torch.randperm(x.shape[0], device=x.device)
+    concentration = x.new_full((x.shape[0],), float(alpha))
+    lam = torch.distributions.Beta(concentration, concentration).sample().view(-1, 1, 1)
+    mixed_mu = lam * mu + (1.0 - lam) * mu[permutation]
+    mixed_sigma = lam * sigma + (1.0 - lam) * sigma[permutation]
+    return normalized * mixed_sigma + mixed_mu
+
+
+class SharedResidualMoEFFN(nn.Module):
+    """Always-active pretrained FFN plus conventionally routed residual experts.
+
+    This is the shared-expert/residual-MoE alternative to replacement upcycling.  ``shared`` is
+    the original pretrained FFN.  Each routed expert copies its input projection but starts with
+    an exactly-zero output projection, so the complete module equals the pretrained FFN at
+    initialization.  ``n_experts`` counts routed residual experts; the total expert banks are
+    therefore ``1 + n_experts``.
+
+    The routing implementation intentionally matches :class:`MoEFFN`: cosine or linear router,
+    token or image decisions, ordinary top-k dispatch, and the same balancing/z losses.  Optional
+    MixStyle is a standard feature-statistics augmentation and does not change inference.
+    """
+
+    def __init__(self, mlp, n_experts=3, top_k=1, routing_unit="token", geometry="cosine",
+                 balance="global", temperature=0.07, routing_estimator="selected_st",
+                 feature_stat_mix_prob=0.0, feature_stat_mix_alpha=0.1):
+        super().__init__()
+        if routing_unit not in ("image", "token"):
+            raise ValueError(f"routing_unit must be image|token, got {routing_unit!r}")
+        if balance == "within_batch":
+            balance = "within_environment"
+        if balance not in ("global", "within_environment"):
+            raise ValueError(f"balance must be global|within_environment, got {balance!r}")
+        if routing_estimator not in ("selected_st", "legacy_renorm"):
+            raise ValueError(
+                "routing_estimator must be selected_st|legacy_renorm, "
+                f"got {routing_estimator!r}")
+        if int(n_experts) < 1 or not 1 <= int(top_k) <= int(n_experts):
+            raise ValueError("shared residual MoE requires 1 <= top_k <= n_experts")
+
+        fc1, _, _ = _mlp_parts(mlp)
+        self.n_experts, self.top_k = int(n_experts), int(top_k)
+        self.routing_unit, self.balance = routing_unit, balance
+        self.routing_estimator = str(routing_estimator)
+        self.feature_stat_mix_prob = float(feature_stat_mix_prob)
+        self.feature_stat_mix_alpha = float(feature_stat_mix_alpha)
+        self.shared = copy.deepcopy(mlp)
+        self.experts = nn.ModuleList([copy.deepcopy(mlp) for _ in range(self.n_experts)])
+        with torch.no_grad():
+            for expert in self.experts:
+                # The pretrained input projection is a useful adapter initialization.  Zeroing
+                # only the final projection makes every residual exactly zero without tying later
+                # updates: the initial router already sends different examples to each expert.
+                expert.fc2.weight.zero_()
+                if expert.fc2.bias is not None:
+                    expert.fc2.bias.zero_()
+
+        self.router = Router(fc1.in_features, self.n_experts, geometry, temperature)
+        self.router_frozen = False
+        self._env = None
+        self.last = None
+
+    def set_env(self, env):
+        self._env = env
+
+    def forward(self, x):
+        orig = x.shape
+        if x.ndim == 4:
+            tokens = x.reshape(orig[0], orig[1] * orig[2], orig[3])
+        elif x.ndim == 3:
+            tokens = x
+        else:
+            raise ValueError(f"shared residual MoE expects BxTxC or BxHxWxC, got {tuple(x.shape)}")
+
+        if self.training and self.feature_stat_mix_prob > 0:
+            tokens = mixstyle_tokens(
+                tokens, probability=self.feature_stat_mix_prob,
+                alpha=self.feature_stat_mix_alpha)
+        shared_input = tokens.reshape(orig) if len(orig) == 4 else tokens
+        shared_out = self.shared(shared_input)
+
+        B, T, C = tokens.shape
+        if self.routing_unit == "image":
+            logits = self.router(tokens.mean(dim=1))
+            env_dec = self._env
+        else:
+            logits = self.router(tokens.reshape(B * T, C))
+            env_dec = None if self._env is None else self._env.repeat_interleave(T)
+
+        probs = logits.softmax(dim=-1)
+        topv, topi = probs.topk(self.top_k, dim=-1)
+        if self.top_k == 1 and self.routing_estimator == "selected_st":
+            topv = topv + (torch.ones_like(topv) - topv).detach()
+        else:
+            topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
+        self.last = {
+            "logits": logits, "probs": probs, "assign": topi[:, 0].detach(),
+            "env": env_dec, "tokens_per_image": T,
+            "routing_estimator": self.routing_estimator,
+        }
+
+        flat = tokens.reshape(B * T, C)
+        if self.routing_unit == "image":
+            idx = topi.repeat_interleave(T, dim=0)
+            wts = topv.repeat_interleave(T, dim=0)
+        else:
+            idx, wts = topi, topv
+
+        correction = torch.zeros_like(flat)
+        for slot in range(self.top_k):
+            ids, weights = idx[:, slot], wts[:, slot]
+            contribution = torch.zeros_like(flat)
+            for expert_index, expert in enumerate(self.experts):
+                mask = ids == expert_index
+                if mask.any():
+                    contribution[mask] = expert(flat[mask]).to(contribution.dtype)
+            correction = correction + weights.unsqueeze(-1) * contribution
+        correction = correction.reshape(B, T, C)
+        if len(orig) == 4:
+            correction = correction.reshape(orig)
+        return shared_out + correction
+
+    def aux_loss(self, balance_w: float, zloss_w: float = 0.0):
+        if self.last is None:
+            return torch.zeros((), device=next(self.parameters()).device)
+        probs, assign, env = self.last["probs"], self.last["assign"], self.last["env"]
+        if self.balance == "within_environment":
+            load_balance = within_environment_lbl(probs, assign, self.n_experts, env)
+        else:
+            load_balance = global_lbl(probs, assign, self.n_experts)
+        return balance_w * load_balance + zloss_w * z_loss(self.last["logits"])
+
+    def top1(self):
+        return self.last["assign"].detach().cpu()

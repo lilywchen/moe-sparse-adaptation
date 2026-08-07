@@ -11,7 +11,7 @@ model:
   timm_name: vit_small_patch14_dinov2     # DINOv2 ViT-S/14 — the single substrate
   pretrained: true
   drop_path: 0.2
-  variant: moe                            # original | dense_wide | moe | moe_frozen
+  variant: moe                            # original | dense_wide | moe | moe_frozen | shared_moe
   placement: middle                       # early | middle | late          (grid factor 1)
   routing_unit: token                     # image | token                  (grid factor 2)
   geometry: cosine                        # linear | cosine                (grid factor 3)
@@ -23,6 +23,8 @@ model:
   temperature: 0.07
   sym_break_wide: 0.1                     # exact-preserving unequal Net2Wider output splits
   sym_break_moe: 0.0                      # router breaks MoE symmetry; keep exact preservation
+  feature_stat_mix_prob: 0.0              # standard MixStyle; training only
+  feature_stat_mix_alpha: 0.1
 train:
   epochs: 30
   batch_size: 64
@@ -31,9 +33,12 @@ train:
   warmup_epochs: 5
   llrd: 0.7
   rand_resized_crop: true
+  cross_experiment_pairs: false
 losses:
   balance_w: 1.0e-2
   zloss_w: 1.0e-3
   invariance_w: 0.1                       # used only by pressure=output; tune once per dataset
+  cross_experiment_contrastive_w: 0.0
+  cross_experiment_contrastive_temperature: 0.1
 budget:
   tolerance_pct: 0.1                      # predeclared, enforced by check_budget

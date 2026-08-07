@@ -30,6 +30,21 @@ python scripts/sweep_ccas.py --dry-run
 python scripts/sweep_ccas.py --gpus 0,1 --max-concurrent 2
 ```
 
+For the four-container shared/residual-MoE performance wave, run one shard per container:
+
+```bash
+nohup python scripts/sweep_rxrx1_shared_performance.py \
+  --shard-index 0 --num-shards 4 --gpus 0,1 --max-concurrent 2 \
+  > shared_residual_performance30.shard0.launch.log 2>&1 &
+```
+
+Use shard indices `0`, `1`, `2`, and `3`. The sweep writes one shared manifest and its result
+table is always available without separate evaluation commands:
+
+```bash
+python scripts/sweep_rxrx1_shared_performance.py --status
+```
+
 The sweep is idempotent. Prefer `tmux` when available. The current GPU image does not include it,
 so launch with `nohup`, redirect to the persistent `logs/` directory, and save the launcher PID
 there. Never rely on a browser terminal remaining connected.

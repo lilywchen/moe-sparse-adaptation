@@ -39,14 +39,15 @@ def run_id_from(cfg) -> str:
     else:
         location = m["placement"]
     parts = [cfg["dataset"], v]
-    if v in ("moe", "moe_frozen"):
+    if v in ("moe", "moe_frozen", "shared_moe"):
         # Prefix the estimator to the historical identity. This prevents result-file collisions
         # while leaving the established dataset/variant/campaign substrings usable as anchor keys.
         parts.insert(0, str(m.get("routing_estimator", "selected_st")))
         pressure = m.get("pressure", "route" if m.get("balance") in
                          ("within_batch", "within_environment") else "canonical")
-        parts += [location, m["routing_unit"], m["geometry"], pressure,
-                  f"E{m['n_experts']}k{m['top_k']}"]
+        bank = (f"S1E{m['n_experts']}k{m['top_k']}" if v == "shared_moe"
+                else f"E{m['n_experts']}k{m['top_k']}")
+        parts += [location, m["routing_unit"], m["geometry"], pressure, bank]
     elif v == "dense_wide":
         parts += [location, m.get("pressure", "canonical"), f"E{m['n_experts']}"]
     parts += [f"ep{t['epochs']}", f"s{cfg['seed']}"]

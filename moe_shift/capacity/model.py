@@ -5,6 +5,7 @@ Variants (all function-preserving at init):
   dense_wide  - the same capacity as the MoE, allocated as SHARED width (fixed budget P*)
   moe         - learned top-1 router over E experts             (fixed budget P*)
   moe_frozen  - identical architecture, router frozen at init   (fixed budget P*)
+  shared_moe  - pretrained shared FFN plus routed residual experts
 """
 import hashlib
 import subprocess
@@ -60,6 +61,7 @@ class CCASModel(nn.Module):
                  timm_name="vit_small_patch14_dinov2", img=224, pretrained=True,
                  drop_path=0.2, sym_break_wide=0.1, sym_break_moe=0.0,
                  routing_estimator="selected_st",
+                 feature_stat_mix_prob=0.0, feature_stat_mix_alpha=0.1,
                  backbone_source="timm", hub_repo_dir=None, checkpoint_path=None,
                  hub_model="cell_dino_cp_vits8", input_channels=5,
                  feature_pool="cls",
@@ -136,7 +138,9 @@ class CCASModel(nn.Module):
             block_indices=block_indices, n_experts=n_experts, top_k=top_k,
             routing_unit=routing_unit, geometry=geometry, balance=balance,
             temperature=temperature, sym_break_wide=sym_break_wide, sym_break_moe=sym_break_moe,
-            routing_estimator=routing_estimator)
+            routing_estimator=routing_estimator,
+            feature_stat_mix_prob=feature_stat_mix_prob,
+            feature_stat_mix_alpha=feature_stat_mix_alpha)
 
         self.freeze_backbone = bool(freeze_backbone)
         self.unfreeze_last_n_blocks = int(unfreeze_last_n_blocks or 0)
@@ -237,6 +241,8 @@ def build_ccas(cfg):
                      sym_break_wide=m.get("sym_break_wide", 0.1),
                      sym_break_moe=m.get("sym_break_moe", 0.0),
                      routing_estimator=m.get("routing_estimator", "selected_st"),
+                     feature_stat_mix_prob=m.get("feature_stat_mix_prob", 0.0),
+                     feature_stat_mix_alpha=m.get("feature_stat_mix_alpha", 0.1),
                      backbone_source=m.get("backbone_source", "timm"),
                      hub_repo_dir=m.get("hub_repo_dir"),
                      checkpoint_path=m.get("checkpoint_path"),

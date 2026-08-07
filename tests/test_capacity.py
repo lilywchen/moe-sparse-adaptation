@@ -15,9 +15,9 @@ import torch
 import torch.nn as nn
 
 from moe_shift.audit.routing import capture
-from moe_shift.capacity import (MoEFFN, Router, WideFFN, budget_delta_pct, check_budget,
-                                convert_block, convert_blocks, global_lbl, placement_index,
-                                within_batch_lbl)
+from moe_shift.capacity import (MoEFFN, Router, SharedResidualMoEFFN, WideFFN,
+                                budget_delta_pct, check_budget, convert_block, convert_blocks,
+                                global_lbl, mixstyle_tokens, placement_index, within_batch_lbl)
 
 D, H, E, B, T = 32, 64, 4, 6, 5
 
@@ -73,6 +73,45 @@ def test_moe_is_function_preserving(mlp, x):
     for unit in ("image", "token"):
         moe = MoEFFN(mlp, n_experts=E, routing_unit=unit, sym_break=0.0)
         assert torch.allclose(moe(x), mlp(x), atol=1e-6), f"MoE({unit}) must equal dense at init"
+
+
+@pytest.mark.parametrize("top_k", [1, 2, 3])
+def test_shared_residual_moe_is_function_preserving(mlp, x, top_k):
+    shared = SharedResidualMoEFFN(mlp, n_experts=3, top_k=top_k)
+    assert torch.allclose(shared(x), mlp(x), atol=1e-6)
+    assert all(torch.count_nonzero(expert.fc2.weight) == 0 for expert in shared.experts)
+
+
+def test_shared_residual_router_receives_task_gradient_after_first_expert_update(mlp, x):
+    torch.manual_seed(4)
+    shared = SharedResidualMoEFFN(mlp, n_experts=3, top_k=1)
+    optimizer = torch.optim.SGD(shared.parameters(), lr=0.1)
+    target = torch.randn_like(x)
+    (shared(x) - target).square().mean().backward()
+    optimizer.step(); optimizer.zero_grad(set_to_none=True)
+    second_loss = (shared(x) - target).square().mean()
+    gradients = torch.autograd.grad(second_loss, tuple(shared.router.parameters()))
+    norm = torch.stack([gradient.float().square().sum() for gradient in gradients]).sum().sqrt()
+    assert float(norm) > 0
+
+
+def test_shared_residual_and_replacement_have_matched_total_and_active_banks():
+    torch.manual_seed(0)
+    _, replacement = convert_block(TinyViT(), "moe", n_experts=4, top_k=2)
+    torch.manual_seed(0)
+    model, shared = convert_block(TinyViT(), "shared_moe", n_experts=3, top_k=1)
+    assert isinstance(model.blocks[shared.block_index].mlp, SharedResidualMoEFFN)
+    # Both allocate four total FFN banks and activate two. Router size is the only tiny mismatch.
+    assert abs(shared.ffn_block_params - replacement.ffn_block_params) < D * 2
+    assert abs(shared.active_ffn_params - replacement.active_ffn_params) < D * 2
+
+
+def test_mixstyle_tokens_preserves_shape_and_is_eval_opt_in():
+    torch.manual_seed(0)
+    mixed = mixstyle_tokens(x=torch.randn(6, 5, 8), probability=1.0, alpha=0.1)
+    assert tuple(mixed.shape) == (6, 5, 8)
+    source = torch.randn(6, 5, 8)
+    assert torch.equal(mixstyle_tokens(source, probability=0.0), source)
 
 
 @pytest.mark.parametrize("routing_unit", ["image", "token"])
