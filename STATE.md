@@ -1,10 +1,90 @@
 # Current scientific state
 
-Last updated: 2026-08-07 EDT
+Last updated: 2026-08-08 EDT
 
 This is the compact source of truth for the current question, evidence, interpretation, and active
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
+
+## 2026-08-08 resynchronization — two new waves
+
+The state above was written when the shared/residual wave had only reached epochs 1–2. It is now
+complete. A second, independently implemented frontier-MoE wave has also returned 7 of 8 planned
+rows. The first wave answers the immediate performance question; the second distinguishes a
+working conditional-routing mechanism from a mechanism that actually improves mean OOD transfer.
+
+### Completed shared/residual performance wave
+
+Campaign: `shared_residual_performance30_20260807` at code commit `d7fad7a`. All rows are seed-0,
+30-epoch terminal readouts under the same Cell-DINO/RxRx1 protocol.
+
+| Arm | OOD val | OOD test | Worst test batch | ID |
+|---|---:|---:|---:|---:|
+| `replace_E4k2_late2` | 21.768% | 37.634% | 8.361% | 53.716% |
+| `shared_E3k1_late2` | **22.242%** | **38.877%** | 8.361% | **55.380%** |
+| `shared_E3k2_late2` | 21.718% | 38.415% | 8.074% | 53.907% |
+| `shared_E7k1_late2` | 21.240% | 37.143% | 8.730% | 53.260% |
+| `shared_E3k1_late4` | 20.844% | 37.256% | 7.746% | 53.905% |
+| `shared_E3k2_late4` | 20.854% | 36.969% | 8.852% | 53.536% |
+| `shared_E3k1_xbatch` | 18.642% | 33.305% | 6.967% | 47.882% |
+| `shared_E3k1_mixstyle` | 19.972% | 35.856% | 6.189% | 51.916% |
+
+What changed:
+
+- Keeping the pretrained dense FFN and adding a sparse residual correction is the first clean
+  positive result of this phase. `shared_E3k1_late2` beats the current-code replacement reference
+  by `+0.474` validation and `+1.243` test points with equal worst-batch accuracy.
+- It also edges the earlier dense-expansion reference by `+0.728` validation and `+0.146` test
+  points, while its worst test batch is `+0.410` points higher. This is promising single-seed
+  performance evidence, not a replicated result.
+- The useful allocation is specifically *three experts, top-1, and two late blocks*. Top-2,
+  seven experts, and additional depth all reduce mean OOD performance. Deeper top-2 is the only
+  variation that improves the tail, at a substantial mean cost.
+- The two batch-robustness additions are negative in this implementation: cross-experiment
+  consistency and MixStyle both reduce mean, test, and tail accuracy. They are not the next
+  performance lever.
+- No arm reaches the aspirational `30%` validation / `40%` test region. The exact endpoint has
+  moved up modestly, not decisively.
+
+### Frontier-MoE mechanism wave
+
+Campaign: `frontier_moe30_20260807`, code commit `90a4e80` (the newer `main`). It intentionally
+tests stronger conditional mechanisms: ground-truth-indexed oracle ceilings, conditional-statistic
+and low-rank variants, a soft-routing E8 model, a GroupDRO control, and BTX specialists. Its
+external comparison numbers come from a prior commit, so within-wave comparisons are safer than
+cross-wave rankings.
+
+- The two oracle ceilings do **not** clear dense validation: cell-type oracle is `20.276%` OOD
+  validation (`-1.238` points versus the earlier dense reference) and environment oracle is
+  `19.200%`. Thus, even explicitly indexed expert paths did not show enough usable separation to
+  beat dense under this protocol.
+- `soft_moe_E8` is scientifically important but not a performance winner: `20.611%` validation,
+  `38.043%` test, and **10.902%** worst-batch accuracy. Its route reliance is `0.0660` (above the
+  predeclared `0.01` gate), it uses all eight experts, and expert-output cosine is `0.033` rather
+  than approximately one. Routing is therefore genuinely consequential and experts differ; the
+  remaining problem is a mean-versus-tail tradeoff, not merely a dead router.
+- Conditional-statistic, low-rank, annealed-low-rank, and GroupDRO arms do not improve mean OOD
+  validation. The GroupDRO row collapsed (`5.013%` validation) and is an implementation/protocol
+  negative, not usable supporting evidence.
+- BTX specialists have **no scientific result**: their process failed before training at
+  `compute_environment_descriptors` with `KeyError: 'sites'`. Do not include it in any table or
+  conclusion until repaired and rerun.
+
+### Current conclusion and next gate
+
+We now have two distinct findings:
+
+1. **Shared residual sparse capacity can modestly improve Cell-DINO adaptation.** The direct
+   shared-versus-replacement result is the current best performance signal.
+2. **Task-relevant routing can be made real but has not improved mean OOD transfer.** `soft_moe_E8`
+   rules out the old explanation that routing was simply inert, yet it loses validation mean while
+   improving the worst batch.
+
+The next scientific action should not be another broad architecture grid. First replicate the
+frozen `shared_E3k1_late2` recipe against its matched replacement and dense references. If the
+mean gain replicates, audit whether it is due to sparse residual capacity or routing; if the
+soft-routing tail effect is pursued, make that an explicit mean–tail objective rather than treating
+its test score as a win. BTX is a separate engineering repair decision, not evidence.
 
 ## Project question now
 
@@ -94,7 +174,7 @@ specific bespoke trick. Its intended roles are:
 This reframes the immediate empirical question from “does generic sparse widening work?” to
 “does sparse correction work when destructive replacement is removed?”
 
-## Active eight-arm performance wave
+## Shared/residual wave design (completed)
 
 Campaign: `shared_residual_performance30_20260807`
 
@@ -136,7 +216,7 @@ These are performance targets, not statistical success thresholds. A paper claim
 material paired gain over dense, no unacceptable ID/tail regression, fresh seeds, and evidence
 that routing—not merely added parameters—causes the improvement.
 
-## Live operational state
+## Historical launch record
 
 Verified on 2026-08-07 after launch:
 

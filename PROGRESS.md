@@ -1,5 +1,25 @@
 # Progress ledger
 
+Last verified: 2026-08-08 EDT. `STATE.md` contains the current two-wave synthesis.
+
+## 2026-08-08 — shared/residual gain is real at seed 0; frontier routing is causal but not mean-positive
+
+- The completed shared/residual wave makes `shared_E3k1_late2` the current performance leader at
+  `22.242%` OOD validation, `38.877%` OOD test, and `8.361%` worst test batch. It beats the
+  matched current-code replacement arm by `+0.474/+1.243/+0.000` points and the earlier dense
+  expansion reference by `+0.728/+0.146/+0.410`. Top-2, more experts, more depth,
+  cross-experiment consistency, and MixStyle do not improve its mean result.
+- The subsequent frontier-MoE wave is 7/8 complete. Its cell-type and environment oracle ceilings
+  remain below dense validation. `soft_moe_E8` passes the route-reliance gate (`0.0660`), uses all
+  eight experts, and has divergent expert outputs, but reaches only `20.611%` validation despite a
+  strong `10.902%` worst-test batch. This establishes a real mean–tail tradeoff rather than a
+  positive conditional-routing result.
+- BTX failed before training with `KeyError: 'sites'` and is excluded. The next gate is fresh-seed
+  replication of the shared residual winner versus matched replacement/dense controls—not another
+  broad routing grid. Full artifacts remain on SciServer under
+  `substrate_rxrx1/cell_dino_cp5/shared_residual_performance30_20260807` and
+  `substrate_rxrx1/cell_dino_cp5/frontier_moe30_20260807`.
+
 Last verified: 2026-08-07 EDT. The canonical current synthesis is now `STATE.md`.
 
 ## 2026-08-07 — completed table changes the MoE hypothesis; shared/residual wave is live
