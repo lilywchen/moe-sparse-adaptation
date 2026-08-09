@@ -6,6 +6,60 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
+
+The two checkpoint-only mechanism audits and both class-matched geometry reports completed
+cleanly under `shared_confirm30_20260809/diagnostics_hb8`.
+
+| Seed | Full OOD val | Random-route val | Route reliance | Correction-off val | Residual contribution |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 22.346% | 17.688% | **4.658 pt** | 19.180% | **3.166 pt** |
+| 2 | 22.255% | 16.673% | **5.581 pt** | 18.662% | **3.592 pt** |
+
+This decisively rejects an inert-router or ordinary-capacity explanation for the trained shared
+checkpoint. The sparse correction is necessary, and learned conditional assignment is necessary:
+randomly reassigning the already-trained experts costs about five validation points in both seeds.
+Correction-off performance is also below the separately trained original Cell-DINO arm, so the
+full network has co-adapted with the residual path; `full - correction-off` should not be read as
+an independently additive improvement over the original model.
+
+All three experts are used at both routed blocks and routing entropy is near maximal, ruling out
+expert collapse. Block-10 routing is more acquisition-site aligned than class aligned in both
+seeds (site MI `0.103/0.246` versus class MI `0.030/0.024`); block 11 is weaker and more mixed
+(site MI `0.036/0.126`, class MI `0.062/0.046`). This makes placement a concrete next question:
+block 10 may supply useful batch-conditional correction, or it may encode a fragile batch
+shortcut.
+
+The representation diagnostics narrow the claim. Dense and shared make highly overlapping errors
+(validation error Jaccard `0.908/0.924`; test `0.824/0.814`), so shared is moving a modest decision
+boundary rather than solving a new failure mode. Shared's mean validation retrieval advantage over
+dense is only `+0.59` points and its test retrieval is `-0.31`; global CKA to frozen Cell-DINO is
+slightly lower than dense in both seeds. Batch-variance fraction is slightly lower for shared, but
+class variance also falls, so this is not clean batch removal. Accuracy remains strongly negatively
+associated with independently defined frozen-space OOD severity, and shared's correlation is not
+flatter than dense (`-0.670/-0.624` versus `-0.634/-0.580`). The hardest validation experiments
+remain near floor. The supported interpretation is **efficient conditional adaptation with a real
+router**, not general embedding debatching or disproportionate rescue of the most OOD batches.
+
+### Predeclared bounded neighbor wave
+
+The next wave is `shared_neighbors30_20260809`: exactly eight 30-epoch runs, four standard shared-
+residual neighbors at the same two seeds as the frozen E3/top-1 late2 anchor. Active expert compute
+stays top-1; OOD validation decides and all test reads are fixed before launch.
+
+| Arm per seed | Question |
+|---|---|
+| `shared_E2k1_late2` | Does less inactive expert capacity outperform E3 at constant active compute? |
+| `shared_E4k1_late2` | Does one more expert improve specialization at constant active compute? |
+| `shared_E3k1_block10` | Is the more batch-aligned block-10 router sufficient or shortcut-prone? |
+| `shared_E3k1_block11` | Can the later, less site-aligned route retain the gain with less disruption? |
+
+This is two bounded variations of expert-bank size and two of placement, not a new broad grid. It
+reuses seeds 1/2 so every arm has a same-seed comparison to completed `shared_E3k1_late2`. A
+one-command status/aggregate report includes those frozen anchors. No new batch regularizer is
+included because MixStyle and cross-experiment consistency already hurt, while the geometry audit
+does not support a simple debatching objective.
+
 ## 2026-08-09 steward result — shared residual wins both fresh-seed validation comparisons
 
 Campaign `shared_confirm30_20260809` is complete: eight terminal 30-epoch rows, two fresh seeds,

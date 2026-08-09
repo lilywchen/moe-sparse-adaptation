@@ -1,5 +1,21 @@
 # Progress ledger
 
+## 2026-08-09 — mechanism is real; bounded expert-count/placement wave is predeclared
+
+- Randomizing routes in the trained shared model drops OOD validation by `4.658/5.581` points in
+  seeds 1/2; disabling the residual correction drops it by `3.166/3.592`. All experts are used at
+  near-maximal entropy. The shared result is therefore not an inert router or generic parameter-
+  count effect, although correction-off underperforms the separately trained original model and
+  exposes co-adaptation.
+- Block 10 routing carries more acquisition-site than class information in both seeds, while block
+  11 is less site-aligned and mixed. Geometry does not show hardest-batch rescue: shared/dense errors
+  overlap heavily, retrieval and CKA differences are small, and shared does not flatten the strong
+  negative accuracy-versus-frozen-OOD-severity relationship.
+- Predeclared `shared_neighbors30_20260809`: E2/top-1 late2, E4/top-1 late2, E3/top-1 block10, and
+  E3/top-1 block11 at seeds 1/2. This constant-active-compute expert scaling plus placement
+  decomposition uses the completed E3/top-1 late2 rows as same-seed anchors and has one-command
+  status/aggregation. No new batch regularizer is included.
+
 ## 2026-08-09 — two fresh seeds confirm the efficient shared-residual effect
 
 - `shared_confirm30_20260809` is 8/8 terminal. Shared E3/top-1 reaches `22.346/22.255%` OOD
