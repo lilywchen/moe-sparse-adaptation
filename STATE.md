@@ -6,7 +6,7 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
-## 2026-08-09 steward pass — confirmation and batch-geometry analysis predeclared
+## 2026-08-09 steward pass — confirmation wave launched; batch diagnostics queued
 
 Live reconstruction found both scoped bottom SciServer containers running but their four H100s
 idle. The persistent checkout was at `90a4e80`; GitHub `main` is newer (`023bd18`) and contains the
@@ -14,6 +14,15 @@ checkpoint-only mechanism audit. No new scientific number was inferred from GPU 
 
 The next performance wave is now frozen as `shared_confirm30_20260809`: two fresh seeds (`1,2`)
 times four arms, all at 30 epochs and blocks 10–11 under the same Cell-DINO/RxRx1 protocol.
+
+Launch is verified at immutable commit `9365406` after `289` tests passed on SciServer. Shard 0 is
+running on container `2862` and shard 1 on container `2859`, each with two active H100 processes.
+The first four distinct arms started without an immediate error; the remaining four seed-2 runs
+are held by the two live sweep controllers and will start as those GPU slots free. At launch, all
+four GPUs showed active training processes and the four fresh logs contained no traceback. Local
+artifacts are authoritative because W&B and Hugging Face credentials are absent in the containers;
+the result root is
+`substrate_rxrx1/cell_dino_cp5/shared_confirm30_20260809`.
 
 | Arm per seed | Role |
 |---|---|

@@ -1,6 +1,14 @@
 # Progress ledger
 
-## 2026-08-09 — fresh-seed shared-MoE confirmation and independent batch severity are frozen
+## 2026-08-09 — fresh-seed shared-MoE confirmation is live; diagnostics are ready
+
+- Passed the complete SciServer test suite (`289 passed`) at immutable commit `9365406`, then
+  launched campaign `shared_confirm30_20260809` on the two reserved 2xH100 containers. Container
+  `2862` owns shard 0 (original and replacement, seeds 1/2); container `2859` owns shard 1 (dense
+  and shared residual, seeds 1/2). Four runs are actively training and the other four are queued
+  inside the live two-job sweep controllers. Four GPU processes and four non-erroring fresh logs
+  were verified. Tracking is local-first because W&B/HF credentials are absent. Results persist at
+  `substrate_rxrx1/cell_dino_cp5/shared_confirm30_20260809`.
 
 - Reconstructed GitHub and SciServer state before allocating new work. Both scoped bottom
   2xH100 containers were running and the observed GPUs were idle; no healthy RxRx1 process was
