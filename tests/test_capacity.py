@@ -109,6 +109,15 @@ def test_shared_residual_shared_only_switch_removes_the_correction(mlp, x):
     assert not torch.allclose(routed, ablated)
 
 
+def test_shared_residual_frozen_router_has_no_router_gradients(mlp, x):
+    shared = SharedResidualMoEFFN(
+        mlp, n_experts=3, top_k=1, router_frozen=True,
+    )
+    assert shared.router_frozen
+    assert all(not parameter.requires_grad for parameter in shared.router.parameters())
+    assert torch.allclose(shared(x), mlp(x))
+
+
 def test_shared_residual_and_replacement_have_matched_total_and_active_banks():
     torch.manual_seed(0)
     _, replacement = convert_block(TinyViT(), "moe", n_experts=4, top_k=2)

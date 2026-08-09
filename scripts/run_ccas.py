@@ -619,7 +619,7 @@ def main():
     elif cap.variant == "shared_moe":
         protocol["pretrained_shared_expert_always_active"] = True
         protocol["residual_experts_zero_output_initialized"] = True
-        protocol["router_trainable"] = True
+        protocol["router_trainable"] = not bool(cfg["model"].get("router_frozen", False))
         protocol["routing_estimator"] = str(
             cfg["model"].get("routing_estimator", "selected_st"))
     elif cap.variant in ("oracle_moe", "condln_moe", "soft_moe", "lowrank_moe"):
@@ -977,6 +977,7 @@ def main():
         "variant": cap.variant, "placement": cap.placement, "routing_unit": cfg["model"]["routing_unit"],
         "geometry": cfg["model"]["geometry"], "pressure": pressure,
         "balance": cfg["model"]["balance"],
+        "router_frozen": bool(cfg["model"].get("router_frozen", False)),
         "routing_estimator": cfg["model"].get("routing_estimator", "selected_st"),
         "classification_objective": objective,
         "cross_experiment_contrastive_w": consistency_w,

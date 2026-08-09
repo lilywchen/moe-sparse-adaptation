@@ -43,27 +43,53 @@ official index exposes source/plate/well/site plus explicitly stain-named five-c
 in Cell-DINO order; its fixture test verifies semantic ordering independent of CSV column order.
 Only index staging plus an exact selected-object byte audit remain before a pixel-storage decision.
 
-## 2026-08-09 neighbor wave interim — seed 1 favors E3 and the two-block pair
+## 2026-08-09 neighbor wave complete — E3 and the late-block pair replicate
 
-The four seed-1 neighbor rows are terminal. OOD validation remains the decision metric; the
-completed same-seed E3/top-1 late-2 row is the predeclared anchor.
+`shared_neighbors30_20260809` is 8/8 terminal. OOD validation remains the decision metric; the
+completed same-seed E3/top-1 late-2 rows are the predeclared anchors.
 
-| Seed-1 arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
-|---|---:|---:|---:|---:|---:|---:|
-| Shared E3/top-1, blocks 10–11 (anchor) | 100.000% | **55.612%** | **22.346%** | 38.758% | **8.811%** | 0.0466 |
-| Shared E2/top-1, blocks 10–11 | 100.000% | 55.107% | 21.839% | **38.795%** | 8.115% | 0.0242 |
-| Shared E4/top-1, blocks 10–11 | 100.000% | 55.262% | 21.778% | 38.365% | 8.566% | 0.0467 |
-| Shared E3/top-1, block 10 only | 100.000% | 53.957% | 21.057% | 38.127% | 6.598% | 0.0234 |
-| Shared E3/top-1, block 11 only | 100.000% | 54.115% | 21.798% | 38.101% | 7.623% | 0.0182 |
+| Seed | Shared-residual arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | E3/top-1, blocks 10–11 (anchor) | 100.000% | **55.612%** | **22.346%** | 38.758% | **8.811%** | 0.0466 |
+| 1 | E2/top-1, blocks 10–11 | 100.000% | 55.107% | 21.839% | **38.795%** | 8.115% | 0.0242 |
+| 1 | E4/top-1, blocks 10–11 | 100.000% | 55.262% | 21.778% | 38.365% | 8.566% | 0.0467 |
+| 1 | E3/top-1, block 10 only | 100.000% | 53.957% | 21.057% | 38.127% | 6.598% | 0.0234 |
+| 1 | E3/top-1, block 11 only | 100.000% | 54.115% | 21.798% | 38.101% | 7.623% | 0.0182 |
+| 2 | E3/top-1, blocks 10–11 (anchor) | 100.000% | **55.203%** | **22.255%** | 38.833% | 7.910% | 0.0558 |
+| 2 | E2/top-1, blocks 10–11 | 100.000% | **55.592%** | 22.032% | 38.813% | 7.336% | 0.0312 |
+| 2 | E4/top-1, blocks 10–11 | 100.000% | 54.994% | 22.123% | **38.845%** | **8.197%** | 0.0498 |
+| 2 | E3/top-1, block 10 only | 100.000% | 54.134% | 22.082% | 37.965% | 7.910% | 0.0247 |
+| 2 | E3/top-1, block 11 only | 100.000% | 54.575% | 21.981% | 38.418% | 7.418% | 0.0137 |
 
-For seed 1, E3 beats E2/E4 by `+0.507/+0.568` validation points at constant top-1 active
-compute, so expert-count scaling is not monotonic and E3 remains the local sweet spot. The
-two-block anchor beats block 10 alone by `+1.289` and block 11 alone by `+0.548` validation
-points, with higher ID, descriptive test, and worst-batch accuracy than either singleton. This
-supports a genuine two-stage late-block interaction rather than either router being sufficient;
-block 10 alone is especially poor on the tail. E2's `+0.038` descriptive test difference cannot
-override its validation and worst-batch losses. Seed 2 is training at epochs 4–5, so these factor
-conclusions remain interim and no new architecture wave is allocated yet.
+Across seeds, validation mean ± SEM is `22.301±0.046%` for E3/two-block, `21.935±0.096%`
+for E2, `21.950±0.173%` for E4, `21.570±0.512%` for block 10, and `21.890±0.091%` for block 11.
+E3 beats both E2 and E4 in each seed; its paired mean advantages are `+0.365/+0.351` points at
+constant top-1 active compute. The E2-versus-E4 order itself reverses by seed, so neither more nor
+less inactive capacity is monotonically beneficial. The two-block E3 anchor also beats both
+singletons in each seed, by mean paired margins of `+0.731` over block 10 and `+0.411` over block
+11. This supports complementary late-block corrections; a single routed block is insufficient.
+Test and tail differences are mixed and descriptive, and none of these neighbors changes the
+overall conclusion that the gain is small.
+
+### Predeclared routing-control wave
+
+The completed factor sweep freezes E3/top-1 at blocks 10–11. The next bounded wave is
+`shared_routing30_20260809`, exactly four standard routing controls at seeds 1/2, compared with
+the completed same-seed anchors. It changes no expert count, placement, optimizer, or active
+capacity.
+
+| Arm per seed | Question |
+|---|---|
+| `shared_E3k1_image` | Does one field-level decision outperform independent token routing? |
+| `shared_E3k1_balance1e3` | Does a tenfold weaker load-balance loss permit useful specialization? |
+| `shared_E3k1_balance0` | Is the load-balance term helping or constraining the task-trained router? |
+| `shared_E3k1_router_frozen` | Does router learning beat an identical fixed random partition during training? |
+
+The first arm tests routing granularity; the middle pair is a two-point regularization ablation;
+the last is the direct training-time conditional-routing control missing from the inference-only
+random-route audit. OOD validation selects; test remains a fixed descriptive readout. A minimal
+`router_frozen` flag for shared-residual MoE freezes only router parameters and leaves expert and
+shared-path training unchanged. No new batch regularizer or bespoke expert design is included.
 
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
 

@@ -89,6 +89,7 @@ def resolve_block_indices(n_blocks: int, placement: str = "middle",
 
 def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
                  temperature, sym_break_wide, sym_break_moe, routing_estimator,
+                 router_frozen,
                  feature_stat_mix_prob, feature_stat_mix_alpha,
                  expert_rank=16, diversity_w=0.0, diversity_probe_tokens=64,
                  slots_per_expert=1, soft_temperature=1.0, expert_dropout=0.5,
@@ -109,6 +110,7 @@ def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance
             mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
             geometry=geometry, balance=balance, temperature=temperature,
             routing_estimator=routing_estimator,
+            router_frozen=router_frozen,
             feature_stat_mix_prob=feature_stat_mix_prob,
             feature_stat_mix_alpha=feature_stat_mix_alpha,
         )
@@ -134,7 +136,8 @@ def _convert_mlp(mlp, variant, n_experts, top_k, routing_unit, geometry, balance
     else:
         new = MoEFFN(mlp, n_experts=n_experts, top_k=top_k, routing_unit=routing_unit,
                      geometry=geometry, balance=balance, temperature=temperature,
-                     router_frozen=(variant == "moe_frozen"), sym_break=sym_break_moe,
+                     router_frozen=(variant == "moe_frozen" or router_frozen),
+                     sym_break=sym_break_moe,
                      routing_estimator=routing_estimator)
 
     if getattr(new, "router", None) is not None:
@@ -179,6 +182,7 @@ def convert_blocks(model, variant: str, placement: str = "middle",
                    geometry: str = "cosine", balance: str = "global",
                    temperature: float = 0.07, sym_break_wide: float = 0.1,
                    sym_break_moe: float = 0.0, routing_estimator: str = "selected_st",
+                   router_frozen: bool = False,
                    feature_stat_mix_prob: float = 0.0,
                    feature_stat_mix_alpha: float = 0.1,
                    expert_rank: int = 16, diversity_w: float = 0.0,
@@ -209,6 +213,7 @@ def convert_blocks(model, variant: str, placement: str = "middle",
         new, bp, rp, br, ap = _convert_mlp(
             blocks[idx].mlp, variant, n_experts, top_k, routing_unit, geometry, balance,
             temperature, sym_break_wide, sym_break_moe, routing_estimator,
+            router_frozen,
             feature_stat_mix_prob, feature_stat_mix_alpha,
             expert_rank=expert_rank, diversity_w=diversity_w,
             diversity_probe_tokens=diversity_probe_tokens,
@@ -249,6 +254,7 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
                   balance: str = "global", temperature: float = 0.07,
                   sym_break_wide: float = 0.1, sym_break_moe: float = 0.0,
                   routing_estimator: str = "selected_st",
+                  router_frozen: bool = False,
                   feature_stat_mix_prob: float = 0.0,
                   feature_stat_mix_alpha: float = 0.1,
                   reference_total: Optional[int] = None, **frontier):
@@ -263,6 +269,7 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
         routing_unit=routing_unit, geometry=geometry, balance=balance,
         temperature=temperature, sym_break_wide=sym_break_wide,
         sym_break_moe=sym_break_moe, routing_estimator=routing_estimator,
+        router_frozen=router_frozen,
         feature_stat_mix_prob=feature_stat_mix_prob,
         feature_stat_mix_alpha=feature_stat_mix_alpha,
         reference_total=reference_total, **frontier)

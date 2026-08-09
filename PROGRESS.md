@@ -1,5 +1,17 @@
 # Progress ledger
 
+## 2026-08-09 — neighbor factors replicate; routing-control wave is predeclared
+
+- `shared_neighbors30_20260809` is 8/8 terminal. E3/top-1 blocks 10–11 remains the validation
+  winner in both seeds: `22.301±0.046%` across seeds versus `21.935±0.096%` for E2 and
+  `21.950±0.173%` for E4. More inactive expert capacity is not monotonically helpful.
+- The two-block anchor beats block 10 and block 11 alone in both seeds, by mean paired validation
+  margins of `+0.731/+0.411` points. The routed late blocks are complementary; neither singleton
+  retains the whole effect. Descriptive test and tail differences remain mixed.
+- Predeclared exactly eight `shared_routing30_20260809` jobs: field-level routing, balance weight
+  `1e-3`, balance weight `0`, and frozen-router training control, each at seeds 1/2. These retain
+  E3/top-1 blocks 10–11 and use the completed same-seed anchors for paired validation decisions.
+
 ## 2026-08-09 — seed-1 neighbors retain E3/two-block as the validation winner
 
 - Four seed-1 neighbor rows are terminal. E3/top-1 blocks 10–11 reaches `22.346%` OOD validation,
