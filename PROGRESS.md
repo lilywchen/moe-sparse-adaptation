@@ -1,5 +1,18 @@
 # Progress ledger
 
+## 2026-08-09 — seed 1 independently confirms the shared-residual validation gain
+
+- `shared_E3k1_late2_s1` finishes at `22.346%` OOD validation, versus `21.839%` for matched
+  dense E4, `20.926%` for replacement E4/top-2, and `20.459%` for original Cell-DINO. The primary
+  deltas are therefore `+0.507/+1.421/+1.887` points. This repeats the positive seed-0 direction.
+- Against replacement, shared also gains `+1.043` descriptive OOD-test, `+1.967` worst-test-batch,
+  and `+1.389` ID points. Dense test evaluation is still running and is not imputed.
+- Replacement and shared are matched within 768 total and active FFN parameters. Both exceed the
+  route-reliance gate (`0.0507` and `0.0466`), so the result favors the shared residual allocation
+  rather than extra compute or merely stronger route dependence.
+- Both sweep controllers remain healthy. Seed-2 work has started as seed-1 slots finish; no job was
+  interrupted and no follow-up wave was launched.
+
 ## 2026-08-09 — fresh-seed shared-MoE confirmation is live; diagnostics are ready
 
 - Passed the complete SciServer test suite (`289 passed`) at immutable commit `9365406`, then

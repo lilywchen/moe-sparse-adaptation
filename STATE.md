@@ -6,6 +6,36 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-09 steward result — fresh seed 1 replicates the shared-residual advantage
+
+Campaign `shared_confirm30_20260809` has three terminal seed-1 rows and the dense row has emitted
+its terminal train/ID/OOD-validation metrics while its fixed-arm test evaluation is still running.
+OOD validation is the decision metric, so the primary seed-1 comparison is already available.
+
+| Seed-1 arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---|---:|---:|---:|---:|---:|---:|
+| Original Cell-DINO | 100.000% | 52.581% | 20.459% | 36.454% | 6.639% | — |
+| Dense E4, late 2 | 100.000% | 55.188% | 21.839% | pending | pending | — |
+| Replacement E4/top-2, late 2 | 100.000% | 54.223% | 20.926% | 37.715% | 6.844% | 0.0507 |
+| Shared residual E3/top-1, late 2 | 100.000% | **55.612%** | **22.346%** | **38.758%** | **8.811%** | 0.0466 |
+
+The seed-1 validation deltas are `+0.507` points versus matched dense, `+1.421` versus matched
+replacement MoE, and `+1.887` versus original Cell-DINO. Relative to replacement, the descriptive
+fixed-arm test delta is `+1.043`, worst-batch delta is `+1.967`, and ID delta is `+1.389` points.
+The validation direction now agrees with seed 0: shared beat dense by `+0.728` and replacement by
+`+0.474` in the previous wave. Seed 2 remains required before treating the effect size as stable.
+
+This is not an added-compute artifact between the two sparse models. The audit reports replacement
+at `29,494,645` total / `4,729,346` active FFN parameters and shared residual at `29,493,877` total /
+`4,728,578` active—only 768 parameters apart in each count. Both routers are consequential by the
+predeclared reliance gate, but shared wins despite slightly *lower* route reliance. The evidence
+therefore favors preserving the pretrained dense FFN and using routing for a residual correction,
+not simply stronger routing or more active capacity.
+
+Both sweep controllers remain healthy. Seed-2 original and replacement jobs have begun on
+container `2862`; container `2859` is finishing the dense seed-1 test readout before handing its
+slots to dense/shared seed 2. No follow-up architecture wave should displace this replication.
+
 ## 2026-08-09 steward pass — confirmation wave launched; batch diagnostics queued
 
 Live reconstruction found both scoped bottom SciServer containers running but their four H100s
