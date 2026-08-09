@@ -43,6 +43,28 @@ official index exposes source/plate/well/site plus explicitly stain-named five-c
 in Cell-DINO order; its fixture test verifies semantic ordering independent of CSV column order.
 Only index staging plus an exact selected-object byte audit remain before a pixel-storage decision.
 
+## 2026-08-09 neighbor wave interim — seed 1 favors E3 and the two-block pair
+
+The four seed-1 neighbor rows are terminal. OOD validation remains the decision metric; the
+completed same-seed E3/top-1 late-2 row is the predeclared anchor.
+
+| Seed-1 arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---|---:|---:|---:|---:|---:|---:|
+| Shared E3/top-1, blocks 10–11 (anchor) | 100.000% | **55.612%** | **22.346%** | 38.758% | **8.811%** | 0.0466 |
+| Shared E2/top-1, blocks 10–11 | 100.000% | 55.107% | 21.839% | **38.795%** | 8.115% | 0.0242 |
+| Shared E4/top-1, blocks 10–11 | 100.000% | 55.262% | 21.778% | 38.365% | 8.566% | 0.0467 |
+| Shared E3/top-1, block 10 only | 100.000% | 53.957% | 21.057% | 38.127% | 6.598% | 0.0234 |
+| Shared E3/top-1, block 11 only | 100.000% | 54.115% | 21.798% | 38.101% | 7.623% | 0.0182 |
+
+For seed 1, E3 beats E2/E4 by `+0.507/+0.568` validation points at constant top-1 active
+compute, so expert-count scaling is not monotonic and E3 remains the local sweet spot. The
+two-block anchor beats block 10 alone by `+1.289` and block 11 alone by `+0.548` validation
+points, with higher ID, descriptive test, and worst-batch accuracy than either singleton. This
+supports a genuine two-stage late-block interaction rather than either router being sufficient;
+block 10 alone is especially poor on the tail. E2's `+0.038` descriptive test difference cannot
+override its validation and worst-batch losses. Seed 2 is training at epochs 4–5, so these factor
+conclusions remain interim and no new architecture wave is allocated yet.
+
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
 
 The two checkpoint-only mechanism audits and both class-matched geometry reports completed

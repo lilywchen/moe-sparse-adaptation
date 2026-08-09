@@ -1,5 +1,17 @@
 # Progress ledger
 
+## 2026-08-09 — seed-1 neighbors retain E3/two-block as the validation winner
+
+- Four seed-1 neighbor rows are terminal. E3/top-1 blocks 10–11 reaches `22.346%` OOD validation,
+  versus `21.839%` for E2, `21.778%` for E4, `21.057%` for block 10 only, and `21.798%` for block
+  11 only. E3 is therefore the local expert-count sweet spot in this seed; more inactive capacity
+  does not monotonically help.
+- The two-block anchor beats the block-10 and block-11 singletons by `+1.289/+0.548` validation
+  points and also wins ID, descriptive test, and worst-batch accuracy against both. This supports
+  complementary late-block corrections rather than one sufficient routing site.
+- All four seed-2 arms are healthy at epochs 4–5 across the scoped H100 pairs. No follow-up is
+  selected or launched until the second seed determines whether these factor effects replicate.
+
 ## 2026-08-09 — cross-source JUMP scaling task is concrete; pixels remain gated
 
 - Audited canonical JUMP-CP metadata and found 11,423 non-control compounds shared across sources
