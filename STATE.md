@@ -6,6 +6,51 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-09 steward result — shared residual wins both fresh-seed validation comparisons
+
+Campaign `shared_confirm30_20260809` is complete: eight terminal 30-epoch rows, two fresh seeds,
+and the four predeclared matched arms. OOD validation is the decision metric; OOD test is a
+descriptive readout of these fixed checkpoints.
+
+| Seed | Arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | Original Cell-DINO | 100.000% | 52.581% | 20.459% | 36.454% | 6.639% | — |
+| 1 | Dense E4, late 2 | 100.000% | 55.188% | 21.839% | **38.981%** | 7.869% | — |
+| 1 | Replacement E4/top-2, late 2 | 100.000% | 54.223% | 20.926% | 37.715% | 6.844% | 0.0507 |
+| 1 | Shared residual E3/top-1, late 2 | 100.000% | **55.612%** | **22.346%** | 38.758% | **8.811%** | 0.0466 |
+| 2 | Original Cell-DINO | 100.000% | 52.731% | 20.875% | 37.131% | 7.213% | — |
+| 2 | Dense E4, late 2 | 100.000% | 54.742% | 21.737% | **38.877%** | **7.910%** | — |
+| 2 | Replacement E4/top-2, late 2 | 100.000% | 53.753% | 21.240% | 38.011% | 7.705% | 0.0439 |
+| 2 | Shared residual E3/top-1, late 2 | 100.000% | **55.203%** | **22.255%** | 38.833% | **7.910%** | 0.0558 |
+
+Across the two fresh seeds, OOD-validation mean ± SEM is `20.667±0.208` for original,
+`21.788±0.051` for dense, `21.083±0.157` for replacement, and `22.301±0.046` for shared
+residual. Shared beats dense by `+0.507/+0.518` validation points and replacement by
+`+1.421/+1.015` in seeds 1/2. The paired mean gains are therefore `+0.513` versus dense and
+`+1.218` versus replacement. Its mean paired differences versus dense are `-0.134` on descriptive
+test, `+0.472` on worst test batch, and `+0.442` on ID; versus replacement they are
+`+0.933/+1.086/+1.420`. The earlier seed-0 campaign had the same validation direction
+(`+0.728` versus dense and `+0.474` versus replacement), although it was a different campaign and
+is supporting rather than pooled evidence.
+
+This is promising and reproducible as a small effect, not yet a large performance breakthrough.
+It rejects the claim that ordinary dense widening is the whole story: shared residual wins both
+fresh-seed validation comparisons while activating `4,728,578` FFN parameters versus dense's
+`9,454,854`, at matched total capacity near `29.494M`. It also cleanly beats equally active,
+equally capacious replacement MoE, supporting preservation of Cell-DINO's pretrained dense path.
+The descriptive test mean remains essentially tied with dense and no arm reaches `30%` validation
+or `40%` test, so the present claim is efficient held-out-batch adaptation rather than SOTA.
+
+With the two scoped containers verified free, four checkpoint-only diagnostics were launched from
+immutable commit `9365406`: shared correction-off/random-route mechanism audits for seeds 1 and 2,
+plus class-matched batch/embedding geometry reports comparing all four arms separately at each
+seed. All four processes are healthy on the four bottom-container H100s with no immediate error.
+They write to `shared_confirm30_20260809/diagnostics_hb8`. These tests ask whether the routed
+correction itself and learned assignments matter, and whether shared residual changes degradation
+with independently defined OOD severity, batch-versus-class geometry, cross-batch retrieval,
+confidence, or error overlap. No new architecture wave is justified until these diagnostics
+separate mechanism from capacity and representation preservation.
+
 ## 2026-08-09 steward result — fresh seed 1 replicates the shared-residual advantage
 
 Campaign `shared_confirm30_20260809` now has all four terminal seed-1 rows. OOD validation is the
@@ -35,8 +80,8 @@ wins despite slightly *lower* route reliance than replacement. The evidence favo
 pretrained dense FFN and routing a residual correction, not simply stronger routing or more active
 capacity.
 
-Both sweep controllers remain healthy and all four seed-2 arms are training. No follow-up
-architecture wave should displace this replication.
+At this interim snapshot both sweep controllers were healthy and all four seed-2 arms were
+training. Their completed results are recorded in the section above.
 
 ## 2026-08-09 steward pass — confirmation wave launched; batch diagnostics queued
 

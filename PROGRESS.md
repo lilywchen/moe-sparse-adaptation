@@ -1,5 +1,23 @@
 # Progress ledger
 
+## 2026-08-09 — two fresh seeds confirm the efficient shared-residual effect
+
+- `shared_confirm30_20260809` is 8/8 terminal. Shared E3/top-1 reaches `22.346/22.255%` OOD
+  validation in seeds 1/2, versus dense E4 at `21.839/21.737%`, replacement E4/top-2 at
+  `20.926/21.240%`, and original Cell-DINO at `20.459/20.875%`.
+- The shared-minus-dense validation deltas are `+0.507/+0.518`; shared-minus-replacement is
+  `+1.421/+1.015`. Across fresh seeds, shared validation is `22.301±0.046%` (mean ± SEM), and its
+  mean paired delta versus dense is `+0.513` points. The descriptive test mean is `0.134` points
+  below dense, while worst-batch and ID means are `+0.472/+0.442` points higher.
+- Total capacity is matched near `29.494M`, but shared activates `4.729M` FFN parameters versus
+  dense's `9.455M`. Shared also beats the equally active matched replacement MoE, supporting a
+  preserved pretrained FFN plus sparse residual correction rather than replacement upcycling.
+- After verifying both sweep controllers exited and both bottom-container GPU pairs were free,
+  launched four checkpoint-only diagnostics from immutable commit `9365406`: shared correction-off
+  and randomized-route audits for seeds 1/2, and two all-arm class-matched batch/embedding geometry
+  reports. All four H100 processes are healthy; outputs are under
+  `shared_confirm30_20260809/diagnostics_hb8`. No architecture wave was launched.
+
 ## 2026-08-09 — seed 1 independently confirms the shared-residual validation gain
 
 - `shared_E3k1_late2_s1` finishes at `22.346%` OOD validation, versus `21.839%` for matched
