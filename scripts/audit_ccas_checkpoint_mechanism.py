@@ -20,7 +20,13 @@ from moe_shift.audit import routing as audit_routing
 from moe_shift.capacity.model import build_ccas
 from moe_shift.capacity.naming import run_id_from
 from moe_shift.data import make_loaders, make_val_loader
-from scripts.run_ccas import _sha256_file, counterfactual_reroute, evaluate, git_info
+from scripts.run_ccas import (
+    _sha256_file,
+    counterfactual_reroute,
+    evaluate,
+    git_info,
+    shared_only_accuracy,
+)
 
 
 def _validate(payload):
@@ -76,6 +82,7 @@ def main():
             "routing_entropy": float(entropy),
         }
     randomized = counterfactual_reroute(model, val_loader, args.device, seed=cfg["seed"])
+    shared_only = shared_only_accuracy(model, val_loader, args.device)
     sha, dirty = git_info()
     result = {
         "run_id": run_id,
@@ -86,6 +93,8 @@ def main():
         "acc_val": acc_val,
         "randomized_routes_acc": randomized,
         "route_reliance": None if randomized is None else acc_val - randomized,
+        "shared_only_acc": shared_only,
+        "residual_contribution": None if shared_only is None else acc_val - shared_only,
         "routing_by_block": per_block,
         "audit_git_sha": sha,
         "audit_git_dirty": dirty,

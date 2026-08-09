@@ -284,6 +284,10 @@ class SharedResidualMoEFFN(nn.Module):
 
         self.router = Router(fc1.in_features, self.n_experts, geometry, temperature)
         self.router_frozen = False
+        # Inference-only mechanism switch.  The routed correction can now be removed without
+        # retraining, which distinguishes "the shared path learned everything" from a residual
+        # branch that actually contributes to OOD validation accuracy.
+        self.shared_only = False
         self._env = None
         self.last = None
 
@@ -305,6 +309,14 @@ class SharedResidualMoEFFN(nn.Module):
                 alpha=self.feature_stat_mix_alpha)
         shared_input = tokens.reshape(orig) if len(orig) == 4 else tokens
         shared_out = self.shared(shared_input)
+
+        if self.shared_only:
+            self.last = {
+                "logits": None, "probs": None, "assign": None,
+                "env": self._env, "tokens_per_image": tokens.shape[1],
+                "routing_estimator": self.routing_estimator, "shared_only": True,
+            }
+            return shared_out
 
         B, T, C = tokens.shape
         if self.routing_unit == "image":

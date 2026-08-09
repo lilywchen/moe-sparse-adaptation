@@ -510,12 +510,12 @@ def counterfactual_reroute(model, loader, device, seed=0, group_source=None):
 
 @torch.no_grad()
 def shared_only_accuracy(model, loader, device, group_source=None):
-    """Accuracy with every oracle block forced through its shared path alone.
+    """Accuracy with every supported residual/oracle block forced through its shared path alone.
 
-    This is the number the oracle decision rule in ``moe_shift/models/oracle.py`` is written
-    against: if a shared path trained alongside ground-truth-indexed experts still cannot beat the
-    parameter-matched dense control on held-out data, then batch and content are not separable
-    here even with ground truth.  Returns ``None`` when the model has no oracle block.
+    For oracle routing this is the ceiling's held-out-group readout.  For shared residual MoE it
+    removes the learned correction without changing any weights, directly measuring whether the
+    residual branch contributes to the selected-split accuracy.  Returns ``None`` when no block
+    supports the ablation.
     """
     if not any(hasattr(b, "shared_only") for b in model.moe_blocks):
         return None
@@ -944,8 +944,8 @@ def main():
                 mech["route_reliance"] = acc_sel - mech["randomized_routes_acc"]
         except Exception as e:
             mech["reroute_error"] = str(e)
-        # Oracle arms have no randomisable router; their counterfactual is the shared path alone,
-        # which is also the quantity the oracle decision rule is written against.
+        # Oracle arms have no randomisable router; shared residual arms additionally need this
+        # correction-off ablation to separate routing from an independently useful shared path.
         try:
             shared_only = shared_only_accuracy(
                 model, mech_eval_loader, device, group_source=group_source)

@@ -1,5 +1,25 @@
 # Progress ledger
 
+## 2026-08-09 — fresh-seed shared-MoE confirmation and independent batch severity are frozen
+
+- Reconstructed GitHub and SciServer state before allocating new work. Both scoped bottom
+  2xH100 containers were running and the observed GPUs were idle; no healthy RxRx1 process was
+  present in the checked container. The persistent checkout lagged GitHub `main`, so new work is
+  being prepared at an immutable new commit rather than launched from the mutable checkout.
+- Added `shared_confirm30_20260809`, exactly eight runs: original, dense E4, replacement E4/top-2,
+  and shared-residual E3/top-1 at fresh seeds 1 and 2. All expanded arms use blocks 10–11, four
+  FFN banks of total capacity, two active FFN paths, 30 epochs, terminal checkpoints, mechanism
+  auditing, and one-command status/paired aggregation.
+- Added an inference-only correction-off ablation for shared residual MoE and included it in the
+  checkpoint audit. Full versus shared-only measures whether residual capacity contributes;
+  full versus randomized routes measures whether conditional assignment contributes.
+- Added a deterministic class-matched batch/embedding diagnostic. Its OOD severity definition is
+  frozen-pretrained and class-residualized, so adapted-model accuracy is not used to define the
+  x-axis it is later correlated against. The analysis also reports confidence, error overlap,
+  embedding batch/class variance, cross-batch retrieval, CKA/drift, and route-distribution shift.
+- Larger Cell Painting scaling remains blocked on a real compatible corpus and declared task.
+  No duplicated/subsampled RxRx1 surrogate is authorized as evidence of data scaling.
+
 Last verified: 2026-08-08 EDT. `STATE.md` contains the current two-wave synthesis.
 
 ## 2026-08-08 — shared/residual gain is real at seed 0; frontier routing is causal but not mean-positive

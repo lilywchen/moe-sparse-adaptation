@@ -95,6 +95,20 @@ def test_shared_residual_router_receives_task_gradient_after_first_expert_update
     assert float(norm) > 0
 
 
+def test_shared_residual_shared_only_switch_removes_the_correction(mlp, x):
+    torch.manual_seed(5)
+    shared = SharedResidualMoEFFN(mlp, n_experts=3, top_k=1)
+    with torch.no_grad():
+        shared.experts[0].fc2.weight.normal_(std=0.1)
+        shared.experts[1].fc2.weight.normal_(std=0.1)
+        shared.experts[2].fc2.weight.normal_(std=0.1)
+    routed = shared(x)
+    shared.shared_only = True
+    ablated = shared(x)
+    assert torch.allclose(ablated, shared.shared(x), atol=1e-6)
+    assert not torch.allclose(routed, ablated)
+
+
 def test_shared_residual_and_replacement_have_matched_total_and_active_banks():
     torch.manual_seed(0)
     _, replacement = convert_block(TinyViT(), "moe", n_experts=4, top_k=2)

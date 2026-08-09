@@ -1,10 +1,58 @@
 # Current scientific state
 
-Last updated: 2026-08-08 EDT
+Last updated: 2026-08-09 EDT
 
 This is the compact source of truth for the current question, evidence, interpretation, and active
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
+
+## 2026-08-09 steward pass — confirmation and batch-geometry analysis predeclared
+
+Live reconstruction found both scoped bottom SciServer containers running but their four H100s
+idle. The persistent checkout was at `90a4e80`; GitHub `main` is newer (`023bd18`) and contains the
+checkpoint-only mechanism audit. No new scientific number was inferred from GPU idleness.
+
+The next performance wave is now frozen as `shared_confirm30_20260809`: two fresh seeds (`1,2`)
+times four arms, all at 30 epochs and blocks 10–11 under the same Cell-DINO/RxRx1 protocol.
+
+| Arm per seed | Role |
+|---|---|
+| `original` | Untouched Cell-DINO adaptation baseline |
+| `dense_E4_late2` | Ordinary equal-total dense expansion |
+| `replace_E4k2_late2` | Traditional replacement MoE control |
+| `shared_E3k1_late2` | Leading shared residual MoE |
+
+This is an unusually clean comparison. Dense E4, replacement E4/top-2, and shared E3/top-1 each
+allocate approximately four FFN banks at the two converted blocks. Replacement activates two
+experts; shared activates the pretrained FFN plus one residual expert. Thus total capacity and
+active FFN-path compute are matched closely enough that the primary validation contrasts isolate
+allocation and conditional routing, not generic widening. The primary estimands are
+`shared-dense` and `shared-replacement` per seed; OOD validation decides and the fixed-arm OOD test
+readout remains descriptive.
+
+The mechanism audit now includes a correction-off counterfactual for shared residual MoE. At
+inference, the same checkpoint can be evaluated with all routed residual corrections disabled.
+Together with randomized routing, this separates three questions:
+
+1. Does the residual branch contribute at all (`full - shared-only`)?
+2. Does the learned route matter (`full - randomized-route`)?
+3. Does shared sparse allocation beat equally active dense/replacement capacity across seeds?
+
+A checkpoint-only batch/embedding analysis is also predeclared. It uses the same perturbations in
+every experiment within each cell line, preventing label composition from being mistaken for
+batch shift. OOD severity is measured independently in frozen pretrained Cell-DINO space as the
+distance from a held-out experiment's class-residual centroid to its nearest training-experiment
+centroid, normalized by within-cell train distances. The report will join per-experiment
+accuracy/confidence/error overlap with class-versus-batch variance, cross-batch perturbation
+retrieval, CKA/drift from pretraining, routing-distribution shift, and severity–accuracy slopes.
+With only a few held-out experiments, correlations are descriptive diagnostics rather than
+high-powered estimates.
+
+The larger-data scaling branch remains preparation-only. The verified SciServer inventory has
+native RxRx1 but no validated JUMP-CP/Cell Painting Gallery corpus with a declared supervised
+label space and held-out-batch split. Duplicating or resampling RxRx1 would not test data scaling.
+No large-corpus training should launch until the task, channels, controls, batch metadata,
+license, storage, and split are concrete.
 
 ## 2026-08-08 resynchronization — two new waves
 

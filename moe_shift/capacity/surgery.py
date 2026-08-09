@@ -269,15 +269,15 @@ def convert_block(model, variant: str, placement: str = "middle", n_experts: int
 
 
 def set_shared_only(model, shared_only: bool = True):
-    """Toggle shared-path-only inference on every oracle block.
+    """Toggle shared-path-only inference on every residual/shared block.
 
-    This is how the oracle CEILING is read out: an unseen group has no expert, so the honest
-    evaluation of ``oracle_moe`` on a held-out split is the shared path alone.  Returns the number
-    of blocks toggled so callers can assert the switch actually applied.
+    For oracle MoE this is the held-out-group ceiling readout.  For shared residual MoE it is an
+    inference-only ablation of the learned sparse correction.  Returns the number of blocks
+    toggled so callers can assert the switch actually applied.
     """
     toggled = 0
     for block in getattr(model, "_moe_blocks", []) or []:
-        if isinstance(block, SharedRoutedOracleFFN):
+        if isinstance(block, (SharedResidualMoEFFN, SharedRoutedOracleFFN)):
             block.shared_only = bool(shared_only)
             toggled += 1
     return toggled
