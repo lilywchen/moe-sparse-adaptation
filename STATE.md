@@ -54,6 +54,13 @@ This is replication plus causal controls, not another architecture grid. All opt
 placement, expert count, and active compute are held fixed within the three shared arms; OOD
 validation decides every comparison and all test reads are predeclared.
 
+Launch is verified from clean immutable commit `1beae79` after 43 targeted tests passed on
+SciServer. Container `2859` runs shard 0 and `2862` runs shard 1, with two processes on GPUs 0/1
+in each container. All four seed-3 arms reached epoch 1, all fatal-log scans are empty, and the
+four seed-4 arms are queued inside the same healthy controllers. Tracking is local-first because
+W&B/HF credentials remain absent. Results persist at
+`substrate_rxrx1/cell_dino_cp5/shared_causality30_20260809`.
+
 ## 2026-08-09 larger-data substrate — a real cross-source JUMP task is now specified
 
 An audit of canonical JUMP-CP metadata at commit `016e865` replaces the vague "larger Cell

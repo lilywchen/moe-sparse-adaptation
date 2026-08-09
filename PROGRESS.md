@@ -14,6 +14,10 @@
 - Predeclared exactly eight `shared_causality30_20260809` jobs: matched dense, canonical shared
   E3/top-1, shared with balance zero, and shared with frozen router, each at fresh seeds 3/4.
   This is a direct replication/causality audit selected only on OOD validation.
+- Launched both four-run shards from immutable commit `1beae79` on the two reserved 2xH100
+  containers after 43 targeted tests passed. Four distinct seed-3 jobs are at epoch 1 on all four
+  GPUs, seed 4 is queued, fatal-log scans are empty, and tracking is local-first. Results:
+  `substrate_rxrx1/cell_dino_cp5/shared_causality30_20260809`.
 
 ## 2026-08-09 — neighbor factors replicate; routing-control wave is predeclared
 
