@@ -5,12 +5,13 @@
 - `shared_E3k1_late2_s1` finishes at `22.346%` OOD validation, versus `21.839%` for matched
   dense E4, `20.926%` for replacement E4/top-2, and `20.459%` for original Cell-DINO. The primary
   deltas are therefore `+0.507/+1.421/+1.887` points. This repeats the positive seed-0 direction.
-- Against replacement, shared also gains `+1.043` descriptive OOD-test, `+1.967` worst-test-batch,
-  and `+1.389` ID points. Dense test evaluation is still running and is not imputed.
-- Replacement and shared are matched within 768 total and active FFN parameters. Both exceed the
-  route-reliance gate (`0.0507` and `0.0466`), so the result favors the shared residual allocation
-  rather than extra compute or merely stronger route dependence.
-- Both sweep controllers remain healthy. Seed-2 work has started as seed-1 slots finish; no job was
+- Against dense, shared is `-0.224` on descriptive mean test, `+0.943` on worst-test-batch, and
+  `+0.424` on ID. Against replacement, it gains `+1.043/+1.967/+1.389` on those same readouts.
+- Replacement and shared are matched within 768 total and active FFN parameters. Dense has the
+  same total capacity but `9,454,854` active FFN parameters versus shared's `4,728,578`; shared
+  therefore wins validation and tail performance at roughly half dense active FFN compute. Both
+  sparse models exceed the route-reliance gate (`0.0507` and `0.0466`).
+- Both sweep controllers remain healthy and all four seed-2 arms are training; no job was
   interrupted and no follow-up wave was launched.
 
 ## 2026-08-09 — fresh-seed shared-MoE confirmation is live; diagnostics are ready
@@ -28,9 +29,9 @@
   present in the checked container. The persistent checkout lagged GitHub `main`, so new work is
   being prepared at an immutable new commit rather than launched from the mutable checkout.
 - Added `shared_confirm30_20260809`, exactly eight runs: original, dense E4, replacement E4/top-2,
-  and shared-residual E3/top-1 at fresh seeds 1 and 2. All expanded arms use blocks 10–11, four
-  FFN banks of total capacity, two active FFN paths, 30 epochs, terminal checkpoints, mechanism
-  auditing, and one-command status/paired aggregation.
+  and shared-residual E3/top-1 at fresh seeds 1 and 2. All expanded arms use blocks 10–11 and four
+  FFN banks of total capacity; replacement/shared activate two banks while dense activates four.
+  Runs use 30 epochs, terminal checkpoints, mechanism auditing, and one-command status/aggregation.
 - Added an inference-only correction-off ablation for shared residual MoE and included it in the
   checkpoint audit. Full versus shared-only measures whether residual capacity contributes;
   full versus randomized routes measures whether conditional assignment contributes.
