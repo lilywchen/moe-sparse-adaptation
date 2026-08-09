@@ -60,6 +60,13 @@ one-command status/aggregate report includes those frozen anchors. No new batch 
 included because MixStyle and cross-experiment consistency already hurt, while the geometry audit
 does not support a simple debatching objective.
 
+Launch is verified from immutable commit `4f032e0` after all eight targeted wave/aggregator tests
+passed on SciServer. Container `2862` runs shard 0 and `2859` runs shard 1; each printed two
+distinct starts on GPUs 0/1 with no immediate failure. The four seed-1 rows reached epoch 1 and
+the global table advanced to training; the four seed-2 rows are queued inside the two healthy
+foreground sweep controllers. Tracking is local-first because W&B/HF credentials remain absent.
+Results persist at `substrate_rxrx1/cell_dino_cp5/shared_neighbors30_20260809`.
+
 ## 2026-08-09 steward result — shared residual wins both fresh-seed validation comparisons
 
 Campaign `shared_confirm30_20260809` is complete: eight terminal 30-epoch rows, two fresh seeds,

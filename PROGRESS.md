@@ -15,6 +15,10 @@
   E3/top-1 block11 at seeds 1/2. This constant-active-compute expert scaling plus placement
   decomposition uses the completed E3/top-1 late2 rows as same-seed anchors and has one-command
   status/aggregation. No new batch regularizer is included.
+- Launched both four-run shards from immutable commit `4f032e0` on the two reserved 2xH100
+  containers after eight targeted tests passed. Four distinct seed-1 runs are at epoch 1 on all
+  four GPUs; seed 2 is queued, fatal-log scans are empty, and tracking is local-first. Results:
+  `substrate_rxrx1/cell_dino_cp5/shared_neighbors30_20260809`.
 
 ## 2026-08-09 — two fresh seeds confirm the efficient shared-residual effect
 
