@@ -11,6 +11,10 @@
 - No scaling job or pixel download was launched. SciServer has no verified JUMP image index or raw
   pixels; the next gate is an official load-data join and exact S3 byte audit before storage is
   allocated. The one-site all-class pixel estimate is ~0.9 TB, not yet a measured requirement.
+- Audited the public bucket: the five-source join needs 1,025 canonical `load_data.csv` indices
+  totaling exactly 3,624,396,427 bytes. Added and fixture-tested a deterministic resolver that
+  joins source/plate/well to a complete site using stain-named URLs in Cell-DINO channel order;
+  resolved URL manifests remain explicitly non-training-ready until pixels are byte-audited.
 
 ## 2026-08-09 — mechanism is real; bounded expert-count/placement wave is predeclared
 

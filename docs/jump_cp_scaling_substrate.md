@@ -42,6 +42,26 @@ python scripts/build_jump_compound_cross_source_manifest.py \
 It writes source/plate/well rows plus hashes and explicitly reports `training_ready: false`. This
 prevents a metadata manifest from being mistaken for a resolved image dataset.
 
+The official public bucket contains 1,025 canonical `load_data.csv` files for the five selected
+sources, totaling exactly 3,624,396,427 bytes (3.62 GB decimal): 55/381,295,014 for source 1,
+229/576,083,151 for source 2, 303/1,367,937,581 for source 3, 216/579,932,550 for source 8, and
+222/719,148,131 for source 10. These files expose `Metadata_Source/Plate/Well/Site` and stain-
+named `URL_OrigDNA/ER/RNA/AGP/Mito` columns, so the join does not need to infer stain identity
+from numeric image-channel filenames.
+
+After staging those CSV indices, resolve one deterministic complete five-stain site per manifest
+well with:
+
+```bash
+python scripts/resolve_jump_image_manifest.py \
+  --manifest /path/to/manifests/jump_compound_cross_source_1024.tsv \
+  --load-data-root /path/to/load_data_indices \
+  --output /path/to/manifests/jump_compound_cross_source_1024_images.tsv
+```
+
+The resolver preserves the Cell-DINO channel order and still marks the output as not training-
+ready until object existence, exact bytes, and local pixel staging are verified.
+
 ## Acquisition gate
 
 The full Cell Painting Gallery is much too large to mirror casually: the official registry reports
@@ -51,8 +71,8 @@ It must be replaced by an exact unsigned-S3 object listing and byte sum.
 
 Before downloading pixels:
 
-1. Fetch only the official load-data/image index for the five selected sources.
-2. Join it to the frozen source/plate/well manifests and select one deterministic site per well.
+1. Fetch only the 3.62-GB official load-data/image index for the five selected sources.
+2. Join it with `resolve_jump_image_manifest.py` and select one deterministic site per well.
 3. Validate all five stain paths, dimensions, bit depth, and channel semantics on a small sample.
 4. Produce exact object and byte counts for each class ladder.
 5. Verify SciServer storage headroom, then stage the smallest ladder first with checksums.

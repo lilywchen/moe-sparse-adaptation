@@ -36,6 +36,13 @@ manifests to the official image index, audit stain semantics, and compute exact 
 before requesting storage or downloading pixels. No duplicated or resampled RxRx1 data are being
 called a scaling experiment.
 
+The index acquisition is now bounded rather than vague. The official bucket has 1,025 canonical
+`load_data.csv` files across the five sources totaling exactly 3,624,396,427 bytes. A sampled
+official index exposes source/plate/well/site plus explicitly stain-named five-channel URLs.
+`scripts/resolve_jump_image_manifest.py` deterministically selects a complete site and writes URLs
+in Cell-DINO order; its fixture test verifies semantic ordering independent of CSV column order.
+Only index staging plus an exact selected-object byte audit remain before a pixel-storage decision.
+
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
 
 The two checkpoint-only mechanism audits and both class-matched geometry reports completed
