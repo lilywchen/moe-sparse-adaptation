@@ -1,5 +1,20 @@
 # Progress ledger
 
+## 2026-08-09 — routing controls finish; fresh-seed causality wave is predeclared
+
+- `shared_routing30_20260809` is 8/8 terminal. The canonical learned token router remains the
+  validation leader at `22.301±0.046%`, versus `22.133±0.223%` with no balance loss,
+  `22.093±0.193%` with a frozen router, `21.956±0.188%` with balance `1e-3`, and
+  `21.550±0.452%` with field-level routing.
+- Field routing loses to the same-seed anchor by `-1.248/-0.254` points, supporting token-level
+  conditional structure. Balance-zero and frozen-router results reverse by seed, so neither is a
+  reliable improvement. A fixed partition can co-adapt with experts during training even though
+  post-hoc randomization breaks the trained partition; router gradient learning itself is not yet
+  established as necessary.
+- Predeclared exactly eight `shared_causality30_20260809` jobs: matched dense, canonical shared
+  E3/top-1, shared with balance zero, and shared with frozen router, each at fresh seeds 3/4.
+  This is a direct replication/causality audit selected only on OOD validation.
+
 ## 2026-08-09 — neighbor factors replicate; routing-control wave is predeclared
 
 - `shared_neighbors30_20260809` is 8/8 terminal. E3/top-1 blocks 10–11 remains the validation

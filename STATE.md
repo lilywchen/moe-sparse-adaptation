@@ -6,6 +6,54 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-09 routing controls complete — conditional partitioning matters, but the canonical router still wins
+
+`shared_routing30_20260809` is 8/8 terminal. OOD validation remains the decision metric and the
+completed canonical E3/top-1 blocks 10–11 model is the same-seed anchor; test is descriptive.
+
+| Seed | Routing arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | Field/image routing | 100.000% | 54.592% | 21.098% | 38.470% | 8.607% | 0.0376 |
+| 1 | Balance weight `1e-3` | 100.000% | 55.609% | 22.143% | 39.010% | 9.016% | 0.0462 |
+| 1 | Balance weight `0` | 100.000% | 55.220% | 21.910% | 38.787% | 9.180% | 0.0435 |
+| 1 | Frozen router during training | 100.000% | 55.338% | 21.900% | 38.566% | 8.238% | 0.0326 |
+| 2 | Field/image routing | 100.000% | 53.733% | 22.001% | 38.055% | 8.197% | 0.0397 |
+| 2 | Balance weight `1e-3` | 100.000% | 55.065% | 21.768% | 38.621% | 6.762% | 0.0418 |
+| 2 | Balance weight `0` | 100.000% | 54.969% | 22.356% | 38.673% | 6.885% | 0.0443 |
+| 2 | Frozen router during training | 100.000% | 55.373% | 22.285% | 38.755% | 6.844% | 0.0379 |
+
+Mean OOD validation is `21.550±0.452%` for field routing, `21.956±0.188%` for balance `1e-3`,
+`22.133±0.223%` for balance `0`, and `22.093±0.193%` for a frozen router, versus
+`22.301±0.046%` for the canonical balance-`1e-2` learned token router. Field routing loses to the
+anchor in both seeds (`-1.248/-0.254` points), so per-token conditional routing contains useful
+structure. Weaker/no balancing and frozen-router training are mixed across seeds and none beats
+the anchor mean. Thus removing the balance term is not a reliable improvement, and gradient-
+learning router weights is not consistently necessary at this sample size.
+
+The frozen-router result does not contradict the earlier five-point post-hoc random-route drop.
+A fixed input-conditional partition can co-adapt with its experts throughout training; randomizing
+routes only after a learned checkpoint breaks that co-adapted partition. The supported mechanism
+is therefore **conditional partition/expert co-adaptation**, not yet a claim that the router learns
+biologically meaningful semantics. No arm reaches `30%` validation or `40%` test, and the hardest-
+batch evidence still does not support general debatching.
+
+### Predeclared fresh-seed causality wave
+
+The next bounded wave is `shared_causality30_20260809`: exactly eight 30-epoch jobs, four matched
+arms at fresh seeds 3/4. It directly tests whether the small shared-over-dense effect and the two
+ambiguous routing controls survive independent seeds.
+
+| Arm per seed | Question |
+|---|---|
+| `dense_E4_late2` | Does the shared-residual validation gain continue to beat matched dense widening? |
+| `shared_E3k1_late2` | Does the canonical E3/top-1 late-block result replicate again? |
+| `shared_E3k1_balance0` | Is removing load balancing reliably neutral/better, or was seed 2 noise? |
+| `shared_E3k1_router_frozen` | Can a fixed input-conditional partition match learned routing across seeds? |
+
+This is replication plus causal controls, not another architecture grid. All optimization,
+placement, expert count, and active compute are held fixed within the three shared arms; OOD
+validation decides every comparison and all test reads are predeclared.
+
 ## 2026-08-09 larger-data substrate — a real cross-source JUMP task is now specified
 
 An audit of canonical JUMP-CP metadata at commit `016e865` replaces the vague "larger Cell
@@ -71,7 +119,7 @@ singletons in each seed, by mean paired margins of `+0.731` over block 10 and `+
 Test and tail differences are mixed and descriptive, and none of these neighbors changes the
 overall conclusion that the gain is small.
 
-### Predeclared routing-control wave
+### Historical prelaunch declaration for the routing-control wave
 
 The completed factor sweep freezes E3/top-1 at blocks 10–11. The next bounded wave is
 `shared_routing30_20260809`, exactly four standard routing controls at seeds 1/2, compared with
@@ -91,13 +139,11 @@ random-route audit. OOD validation selects; test remains a fixed descriptive rea
 `router_frozen` flag for shared-residual MoE freezes only router parameters and leaves expert and
 shared-path training unchanged. No new batch regularizer or bespoke expert design is included.
 
-Launch is verified from immutable commit `affb51b` in persistent worktree
+The launch was verified from immutable commit `affb51b` in persistent worktree
 `moe-sparse-adaptation-shared-routing-affb51b` after 39 targeted routing/capacity tests passed.
 Container `2859` runs shard 0 and `2862` shard 1; each printed two distinct starts on GPUs 0/1.
-All four first-wave processes hold 8.5–8.7 GB, logs show RxRx1/Cell-DINO initialization without
-tracebacks, the image and zero-balance arms have written epoch 1, and the other two are completing
-first-epoch initialization. Seed 2 is queued behind the same healthy controllers. Tracking is
-local-first because W&B/HF credentials remain absent. Results persist at
+The campaign later completed 8/8; its terminal evidence is synthesized at the top of this file.
+Tracking was local-first because W&B/HF credentials were absent. Results persist at
 `substrate_rxrx1/cell_dino_cp5/shared_routing30_20260809`.
 
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
