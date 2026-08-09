@@ -1,5 +1,17 @@
 # Progress ledger
 
+## 2026-08-09 — cross-source JUMP scaling task is concrete; pixels remain gated
+
+- Audited canonical JUMP-CP metadata and found 11,423 non-control compounds shared across sources
+  1/2/3/8/10. Froze train sources 1/2/3, OOD validation source 8, and descriptive OOD test source
+  10, with 1,024 / 4,096 / 11,423-class ladders and one deterministic well per class/source.
+- Added a standard-library manifest builder, synthetic determinism/control-exclusion test, and a
+  design note covering task, split, channels, controls, licenses, storage, and evaluation. The
+  builder reproduces 5,120 / 20,480 / 57,115 metadata rows on official metadata commit `016e865`.
+- No scaling job or pixel download was launched. SciServer has no verified JUMP image index or raw
+  pixels; the next gate is an official load-data join and exact S3 byte audit before storage is
+  allocated. The one-site all-class pixel estimate is ~0.9 TB, not yet a measured requirement.
+
 ## 2026-08-09 — mechanism is real; bounded expert-count/placement wave is predeclared
 
 - Randomizing routes in the trained shared model drops OOD validation by `4.658/5.581` points in

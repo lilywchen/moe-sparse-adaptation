@@ -6,6 +6,36 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-09 larger-data substrate — a real cross-source JUMP task is now specified
+
+An audit of canonical JUMP-CP metadata at commit `016e865` replaces the vague "larger Cell
+Painting" idea with a reproducible supervised task. Among non-control compounds, **11,423
+compound identities occur in each of sources 1, 2, 3, 8, and 10**. This supports a fixed
+cross-source perturbation-identification protocol: train on `source_1/2/3`, select on OOD
+validation `source_8`, and reserve `source_10` for descriptive fixed-arm test readout. Gene ORF
+and CRISPR identities do not have comparable cross-source replication in this metadata, so they
+are not valid substrates for this particular domain-generalization design.
+
+The predeclared scaling ladder is 1,024 / 4,096 / 11,423 classes, initially balanced to one
+deterministic well per class per source and one site per well. That becomes 5,120 / 20,480 /
+57,115 fields after image sites are resolved. Controls are excluded, class and well selection are
+stable-hash deterministic, and the canonical Cell-DINO order is `[DNA, ER, RNA, AGP, Mito]`.
+Each ladder will compare original Cell-DINO, matched dense expansion, replacement MoE, and
+shared-residual MoE under the same optimizer and seeds; OOD validation remains the selector.
+
+`scripts/build_jump_compound_cross_source_manifest.py` now builds and hashes these metadata-only
+manifests, and `docs/jump_cp_scaling_substrate.md` freezes the task, split, controls, channels,
+license, acquisition gate, and evaluation. The builder was verified both on a synthetic fixture
+and against the current official metadata: it returns exactly 11,423 common non-control compounds
+and 57,115 source/well rows for the all-class ladder.
+
+This is not training-ready yet. Neither a JUMP load-data/image index nor raw JUMP pixels are present
+in the verified SciServer inventory. The full raw collection is roughly 126.8 TB, and the balanced
+one-site all-class subset is only a preliminary ~0.9 TB estimate. The next gate is to join the
+manifests to the official image index, audit stain semantics, and compute exact object/byte counts
+before requesting storage or downloading pixels. No duplicated or resampled RxRx1 data are being
+called a scaling experiment.
+
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
 
 The two checkpoint-only mechanism audits and both class-matched geometry reports completed
