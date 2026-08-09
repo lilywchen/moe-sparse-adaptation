@@ -91,6 +91,15 @@ random-route audit. OOD validation selects; test remains a fixed descriptive rea
 `router_frozen` flag for shared-residual MoE freezes only router parameters and leaves expert and
 shared-path training unchanged. No new batch regularizer or bespoke expert design is included.
 
+Launch is verified from immutable commit `affb51b` in persistent worktree
+`moe-sparse-adaptation-shared-routing-affb51b` after 39 targeted routing/capacity tests passed.
+Container `2859` runs shard 0 and `2862` shard 1; each printed two distinct starts on GPUs 0/1.
+All four first-wave processes hold 8.5–8.7 GB, logs show RxRx1/Cell-DINO initialization without
+tracebacks, the image and zero-balance arms have written epoch 1, and the other two are completing
+first-epoch initialization. Seed 2 is queued behind the same healthy controllers. Tracking is
+local-first because W&B/HF credentials remain absent. Results persist at
+`substrate_rxrx1/cell_dino_cp5/shared_routing30_20260809`.
+
 ## 2026-08-09 mechanism result — routing is causal, but the gain is not hardest-batch rescue
 
 The two checkpoint-only mechanism audits and both class-matched geometry reports completed

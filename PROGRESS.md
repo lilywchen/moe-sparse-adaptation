@@ -11,6 +11,10 @@
 - Predeclared exactly eight `shared_routing30_20260809` jobs: field-level routing, balance weight
   `1e-3`, balance weight `0`, and frozen-router training control, each at seeds 1/2. These retain
   E3/top-1 blocks 10–11 and use the completed same-seed anchors for paired validation decisions.
+- Added the minimal shared-router freeze control, passed 39 targeted tests, and launched both
+  four-run shards from immutable commit `affb51b` on the two reserved H100 pairs. Four distinct
+  first-wave GPU processes are healthy, two arms have reached epoch 1, seed 2 is queued, and
+  tracking is local-first. Results: `substrate_rxrx1/cell_dino_cp5/shared_routing30_20260809`.
 
 ## 2026-08-09 — seed-1 neighbors retain E3/two-block as the validation winner
 
