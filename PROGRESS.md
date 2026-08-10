@@ -14,8 +14,13 @@
   The primary endpoint is the across-seed shared-versus-dense OOD-test interaction; worst batch
   is co-headline. No topology will be added adaptively.
 - Added strict resolved-config pairing, split/coverage audit, deterministic sharding, manifest,
-  and one-command aggregation. Twenty-two focused tests and all 316 local tests pass; SciServer
-  Python 3.10 validation and immutable-worktree preflight are required before launch.
+  and one-command aggregation. Twenty-two focused tests and all 316 tests pass both locally and
+  in the SciServer Python 3.10 runtime.
+- Pushed commit `60ca493`, created its clean immutable SciServer worktree, passed all preflight
+  and four-shard dry-run gates, and launched eight distinct jobs across all eight H100s. Global
+  status confirms eight run logs, four starts per GPU index, no fatal signature, and real epoch
+  progress for all eight rows. Tracking is local-first; results are under
+  `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling_replicate30_20260810`.
 
 ## 2026-08-10 — eight-experiment scaling endpoint completes
 

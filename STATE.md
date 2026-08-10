@@ -60,8 +60,17 @@ The stopping rule is the completion of these eight jobs; no topology is added ad
 The replication launcher fails on any quarter/full resolved-config drift, audits split-index
 disjointness and quarter-scale class/cell-type coverage, writes the full manifest before launch,
 and joins new rows to frozen anchors in one status table. Locally, 22 focused tests and the complete
-316-test suite pass. SciServer Python 3.10 validation, immutable-worktree sync, dry-run, and live
-GPU health remain mandatory before launch.
+316-test suite pass.
+
+Launch is verified from pushed commit `60ca493` and immutable SciServer worktree
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-domain-replicate-60ca493`.
+The actual SciServer Python 3.10 runtime passed the same 22 focused tests and all 316 tests, all
+four dry-run shards contained exactly two unique rows, the manifest audit passed, and all eight
+GPUs were empty before allocation. Four controllers then emitted eight distinct starts: four on
+GPU 0 and four on GPU 1. The global fatal scan is empty, all eight run logs exist, and all eight
+runs have written real epoch-progress records. Tracking is local-first because W&B/Hugging Face
+credentials are absent. Results persist at
+`substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling_replicate30_20260810`.
 
 ## 2026-08-10 correctness and rigor audit of the active scaling wave
 
