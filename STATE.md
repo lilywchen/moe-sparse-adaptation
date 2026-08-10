@@ -6,6 +6,27 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 interim scaling result: the eight-experiment endpoint is complete
+
+The four predeclared quarter-scale arms are terminal and artifact-valid; all four full-scale arms
+remain healthy at epochs 18--20. These are one-seed diagnostic results, and the architecture-by-
+scale interaction is deliberately withheld until the full endpoint completes.
+
+| Arm (8 train experiments / 9,856 fields) | Train | Standard `id_test`* | OOD val | OOD test | Worst test batch |
+|---|---:|---:|---:|---:|---:|
+| Original Cell-DINO | 100.000% | 9.049% | 4.343% | 6.044% | 2.664% |
+| Dense E4, blocks 10--11 | 100.000% | 9.689% | 4.496% | 6.273% | 2.828% |
+| Replacement E4/top-2 | 100.000% | 9.655% | 4.506% | 6.270% | 3.320% |
+| Shared-residual E3/top-1 | 100.000% | 10.076% | 4.800% | 6.491% | 2.910% |
+
+At this low-data endpoint, shared-residual is `+0.218` OOD-test points versus dense and `+0.221`
+versus replacement. It also leads dense by `+0.304` OOD-validation points, while replacement has
+the best worst-batch accuracy (`+0.410` over shared). This is promising directional evidence that
+preserving the dense path plus sparse correction helps mean OOD accuracy when independent batches
+are scarce, but it is not yet a scaling result or a replicated claim. `id_test` is marked only as
+a raw audit readout because it contains 25 training experiments unseen by the quarter-scale arms;
+the fixed eight-environment ID re-evaluation remains required.
+
 ## 2026-08-10 correctness and rigor audit of the active scaling wave
 
 The executable commit `628606c` passed 51 targeted tests in the actual SciServer Python 3.10

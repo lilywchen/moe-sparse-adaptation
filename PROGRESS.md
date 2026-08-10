@@ -1,5 +1,15 @@
 # Progress ledger
 
+## 2026-08-10 — eight-experiment scaling endpoint completes
+
+- All four quarter-scale arms are terminal and artifact-valid. OOD test is `6.491%` shared E3,
+  `6.273%` dense E4, `6.270%` replacement E4/top-2, and `6.044%` original Cell-DINO.
+- Shared leads dense by `+0.218` test and `+0.304` OOD-validation points, but replacement leads
+  shared by `+0.410` on worst-test-batch accuracy. This is a one-seed low-scale endpoint, not the
+  architecture-by-scale conclusion.
+- All four full-scale controls are healthy at epochs 18--20. The manifest remains 8/8 intact,
+  four terminal artifacts are present, all run logs are fresh, and the fatal scan is empty.
+
 ## 2026-08-10 — scaling-wave correctness audit and steward gates tightened
 
 - Rechecked the resolved configs: every quarter/full architecture pair differs only in the exact
