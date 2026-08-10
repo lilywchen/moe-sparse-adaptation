@@ -1,5 +1,22 @@
 # Progress ledger
 
+## 2026-08-10 — seed-5 scaling wave completes; seed-1/2 replication predeclared
+
+- `rxrx1_domain_scaling30_20260810` is 8/8 terminal and artifact-valid. Shared versus dense is
+  `+0.218` OOD-test points at 8 experiments and `+0.392` at 33 experiments, for a `+0.174`
+  architecture × scale interaction. Worst-test-batch and validation interactions are
+  `-0.123/-0.051`, so the one-seed evidence is mixed rather than a scaling claim.
+- At full scale seed 5, shared reaches `38.914%` test, dense `38.522%`, replacement `37.764%`,
+  and original `36.539%`. Adding this seed still leaves shared below dense on average across the
+  five existing full-data seeds (about `-0.100` points, four losses in five seeds).
+- Predeclared `rxrx1_domain_scaling_replicate30_20260810`: exactly eight quarter-scale jobs,
+  four matched architectures at seeds 1/2, joined to the completed exact-protocol full anchors.
+  The primary endpoint is the across-seed shared-versus-dense OOD-test interaction; worst batch
+  is co-headline. No topology will be added adaptively.
+- Added strict resolved-config pairing, split/coverage audit, deterministic sharding, manifest,
+  and one-command aggregation. Twenty-two focused tests and all 316 local tests pass; SciServer
+  Python 3.10 validation and immutable-worktree preflight are required before launch.
+
 ## 2026-08-10 — eight-experiment scaling endpoint completes
 
 - All four quarter-scale arms are terminal and artifact-valid. OOD test is `6.491%` shared E3,

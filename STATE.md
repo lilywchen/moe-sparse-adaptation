@@ -6,26 +6,62 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
-## 2026-08-10 interim scaling result: the eight-experiment endpoint is complete
+## 2026-08-10 seed-5 domain-scaling wave complete: weak positive test interaction, mixed endpoints
 
-The four predeclared quarter-scale arms are terminal and artifact-valid; all four full-scale arms
-remain healthy at epochs 18--20. These are one-seed diagnostic results, and the architecture-by-
-scale interaction is deliberately withheld until the full endpoint completes.
+All eight predeclared artifacts are terminal and valid. The global audit found eight manifest
+rows, eight results, eight run logs, eight starts, eight clean exits, and no traceback, OOM,
+runtime error, or nonzero exit. All four sweep controllers exited and all eight H100s are free.
 
-| Arm (8 train experiments / 9,856 fields) | Train | Standard `id_test`* | OOD val | OOD test | Worst test batch |
-|---|---:|---:|---:|---:|---:|
-| Original Cell-DINO | 100.000% | 9.049% | 4.343% | 6.044% | 2.664% |
-| Dense E4, blocks 10--11 | 100.000% | 9.689% | 4.496% | 6.273% | 2.828% |
-| Replacement E4/top-2 | 100.000% | 9.655% | 4.506% | 6.270% | 3.320% |
-| Shared-residual E3/top-1 | 100.000% | 10.076% | 4.800% | 6.491% | 2.910% |
+| Scale | Arm | Train | Standard `id_test`* | OOD val | OOD test | Worst test batch |
+|---|---|---:|---:|---:|---:|---:|
+| 8 experiments / 9,856 fields | Original Cell-DINO | 100.000% | 9.049% | 4.343% | 6.044% | 2.664% |
+| 8 experiments / 9,856 fields | Dense E4, blocks 10--11 | 100.000% | 9.689% | 4.496% | 6.273% | 2.828% |
+| 8 experiments / 9,856 fields | Replacement E4/top-2 | 100.000% | 9.655% | 4.506% | 6.270% | 3.320% |
+| 8 experiments / 9,856 fields | Shared-residual E3/top-1 | 100.000% | 10.076% | 4.800% | 6.491% | 2.910% |
+| 33 experiments / 40,612 fields | Original Cell-DINO | 100.000% | 52.384% | 20.662% | 36.539% | 6.639% |
+| 33 experiments / 40,612 fields | Dense E4, blocks 10--11 | 100.000% | 54.553% | 21.555% | 38.522% | 9.180% |
+| 33 experiments / 40,612 fields | Replacement E4/top-2 | 100.000% | 53.876% | 20.936% | 37.764% | 8.402% |
+| 33 experiments / 40,612 fields | Shared-residual E3/top-1 | 100.000% | 55.370% | 21.808% | 38.914% | 9.139% |
 
-At this low-data endpoint, shared-residual is `+0.218` OOD-test points versus dense and `+0.221`
-versus replacement. It also leads dense by `+0.304` OOD-validation points, while replacement has
-the best worst-batch accuracy (`+0.410` over shared). This is promising directional evidence that
-preserving the dense path plus sparse correction helps mean OOD accuracy when independent batches
-are scarce, but it is not yet a scaling result or a replicated claim. `id_test` is marked only as
-a raw audit readout because it contains 25 training experiments unseen by the quarter-scale arms;
-the fixed eight-environment ID re-evaluation remains required.
+The shared-minus-dense OOD-test advantage rises from `+0.218` points at quarter scale to
+`+0.392` at full scale, an architecture × scale interaction of `+0.174` points. The other
+predeclared interactions are mixed: worst-test-batch is `-0.123` and OOD validation is `-0.051`.
+This is therefore a weak one-seed positive test signal, not evidence that MoE scales better.
+Across the five existing full-data seeds, shared loses to dense in four and the mean paired
+test difference is still about `-0.100` points. The scientifically live question is whether the
+quarter endpoint and interaction replicate across seeds, not which neighboring topology happens
+to win seed 5.
+
+`id_test` is only a raw audit readout because it includes 25 training experiments unseen by the
+quarter-scale arms. It must not be used as a scale interaction. Fixed 30 epochs also gives full
+scale 4.12× more optimizer updates; a fixed-update control is warranted only if the replicated
+architecture × scale interaction is positive.
+
+## 2026-08-10 predeclared seed-1/2 domain-scaling replication
+
+The next bounded wave is `rxrx1_domain_scaling_replicate30_20260810`: exactly eight new jobs,
+all at the frozen quarter-scale subset `[5,2,14,12,17,15,41,46]`, with original Cell-DINO,
+dense E4 late-2, replacement E4/top-2 late-2, and shared-residual E3/top-1 late-2 at seeds 1 and
+2. Their already-completed, exact-protocol full-data counterparts in `shared_confirm30_20260809`
+are frozen anchors; no full run is repeated or selected from seed-5 test noise.
+
+| Seed | Original | Dense E4 late-2 | Replacement E4/top-2 | Shared E3/top-1 |
+|---:|---|---|---|---|
+| 1 | `quarter_original_s1` | `quarter_dense_E4_late2_s1` | `quarter_replace_E4k2_late2_s1` | `quarter_shared_E3k1_late2_s1` |
+| 2 | `quarter_original_s2` | `quarter_dense_E4_late2_s2` | `quarter_replace_E4k2_late2_s2` | `quarter_shared_E3k1_late2_s2` |
+
+The primary estimand is the across-seed mean of
+`(shared − dense at full) − (shared − dense at quarter)` for OOD test accuracy; worst-test-batch
+is the co-headline robustness endpoint. Terminal epoch 30 is fixed, every architecture and split
+factor is matched, and all eight rows receive stage-3 evaluation. Total shared/dense capacity is
+approximately matched, while shared activates `4.729M` FFN parameters versus dense's `9.455M`.
+The stopping rule is the completion of these eight jobs; no topology is added adaptively.
+
+The replication launcher fails on any quarter/full resolved-config drift, audits split-index
+disjointness and quarter-scale class/cell-type coverage, writes the full manifest before launch,
+and joins new rows to frozen anchors in one status table. Locally, 22 focused tests and the complete
+316-test suite pass. SciServer Python 3.10 validation, immutable-worktree sync, dry-run, and live
+GPU health remain mandatory before launch.
 
 ## 2026-08-10 correctness and rigor audit of the active scaling wave
 
@@ -63,9 +99,9 @@ The 20-minute automation `rxrx-moe-scaling-research-steward` has been strengthen
 source, test, resolved-config, data/split, evaluation/artifact, and live-launch correctness gates.
 Any failed gate must stop downstream interpretation and launches until repaired and revalidated.
 
-## 2026-08-10 predeclared RxRx1 domain-count scaling wave
+## 2026-08-10 completed seed-5 RxRx1 domain-count scaling protocol
 
-The next experiment is `rxrx1_domain_scaling30_20260810`, a matched 2×4 factorial designed to
+`rxrx1_domain_scaling30_20260810` was a matched 2×4 factorial designed to
 answer whether the relative value of sparse adaptation changes with independent batch diversity.
 It is explicitly a **training-environment-count curve**, not a generic sample-size curve: adding
 experiments simultaneously adds fields and acquisition domains. Site-density and class-count
@@ -100,13 +136,13 @@ and one-command status/aggregation with test-first paired contrasts. The full lo
 The intended result root is
 `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling30_20260810`.
 
-Launch is verified from immutable commit `628606c` in worktree
+Execution is verified from immutable commit `628606c` in worktree
 `/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-domain-scaling-628606c`.
-All four 2xH100 containers each emitted two distinct starts on GPUs 0/1. The four quarter-scale
-jobs reached epoch 1 at the first global status check; all four full-scale jobs were started and
-still initializing. A global scan found 12 launcher/run logs and no traceback, runtime error,
-OOM, or `rc=1`. Tracking is local-first because W&B, Hugging Face, and repository credentials are
-absent inside the containers. Results persist at the root above.
+All four 2xH100 containers each emitted two distinct starts on GPUs 0/1 and later exited cleanly.
+The terminal audit found all eight artifacts and no traceback, runtime error, OOM, or `rc=1`.
+Tracking was local-first because W&B, Hugging Face, and repository credentials were absent inside
+the containers. Results persist at the root above; the completed interaction is summarized at the
+top of this file.
 
 ## 2026-08-10 causality wave complete — shared MoE is efficient, but does not improve mean test accuracy
 
