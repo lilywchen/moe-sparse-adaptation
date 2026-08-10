@@ -1,5 +1,19 @@
 # Progress ledger
 
+## 2026-08-10 — RxRx3-core loader implemented and pilot frozen
+
+- Added a lazy Parquet/JPEG-2000 six-channel dataset, manifest-scoped key index, bounded row-group
+  cache/locality shuffle, exact native-six-to-Cell-DINO-five mapping, raw experiment metrics, and
+  explicit `id_val` checkpoint semantics without altering RxRx1 behavior.
+- Added fail-closed synthetic tests for split/class leakage, missing/duplicate/corrupt channels,
+  cache correctness, domain IDs, dispatch, and five-channel output. Source `7cdae29` passed 24
+  focused and all 338 SciServer tests; its first real-data smoke passed at the exact
+  21,404/2,708/23,855 rows with the locality sampler active.
+- Predeclared exactly eight 10-epoch pilot jobs: original, dense E4 late-2, replacement E4/top-2
+  late-2, and shared-residual E3/top-1 late-2 at seeds 1/2 on the immutable full 8-plate/4-guide
+  manifest. Added one-command status/aggregation, strict resolved-config/source/artifact checks,
+  per-experiment denominators, and dynamic total/active compute accounting.
+
 ## 2026-08-10 — RxRx3-core metadata turns the larger-substrate idea into two clean curves
 
 - Located the official compact release: 222,601 wells, 1.335M six-channel rows, 1,744

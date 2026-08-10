@@ -6,6 +6,53 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 RxRx3-core loader passes its first gate; competence pilot predeclared
+
+The training path is now explicit rather than inferred from the metadata audit. A Parquet-backed
+dataset indexes only the selected channel keys, lazily reads the row groups required by each well,
+decodes exactly six grayscale acquisitions, applies one joint geometric transform, maps
+`[w1,w2,w4,mean(w3,w6),w5]` before per-channel standardization, and returns both the contiguous
+train-site ID and a stable raw experiment ID. A manifest-scoped persistent index prevents eight
+jobs from rescanning 1.336M keys, while a row-group-local shuffle preserves stochastic training
+without rereading a roughly 1.3-MB/100-channel row group for every well. Missing, duplicate, or
+corrupt channels; label/split drift; incomplete class coverage; and experiment leakage fail
+closed. RxRx1 dispatch and OOD-validation semantics remain unchanged; RxRx3 explicitly records
+its frozen checkpoint split as `id_val`.
+
+Source `7cdae29` passed compilation, 24 focused loader/runner/native-channel tests, and all 338
+tests in the SciServer Python 3.10 environment. Its real-data smoke resolved the exact frozen
+21,404/2,708/23,855 train/ID-validation/OOD-test rows, emitted `Bx5x128x128` finite tensors with
+train sites non-negative and every OOD site equal to `-1`, and decoded four batches from every
+split. Initial four-worker throughput was about 50/68/67 wells/s for train/ID/OOD. The locality
+sampler was active in that measurement; the exact pilot execution source must still repeat the
+same smoke/config gate before launch.
+
+The first GPU wave is now predeclared as a **competence pilot**, not a scaling result. The atomic
+unit is one six-channel well. Data are the full eight-train-plate/four-guide manifest with SHA-256
+`131815361655c6f795929bee6de5da5f249bacad8ded50f20e3a036243d5af2f`: 674 fixed classes,
+85 train experiments, 85 disjoint paired OOD-test experiments, one fixed ID-validation plate per
+train experiment, and identical evaluation rows in every arm. Exactly eight jobs use seeds 1/2
+and the established matched architectures:
+
+| Arm | Architecture | Scientific role |
+|---|---|---|
+| `original` | Original Cell-DINO-S; blocks 10--11 identified but unchanged | Pretrained supervised-adaptation baseline |
+| `dense_E4_late2` | Dense E4 widening in blocks 10--11 | Ordinary added-capacity control |
+| `replace_E4k2_late2` | Replacement sparse E4/top-2 in blocks 10--11 | Traditional sparse-upcycling control |
+| `shared_E3k1_late2` | Shared-residual E3/top-1 in blocks 10--11 | Pretrained-path-preserving sparse model |
+
+Every non-architecture field is programmatically matched: channel map, splits, labels,
+augmentation, batch size 64, optimizer, learning rate, weight decay, warmup, LLRD, drop path,
+losses, 10-epoch terminal checkpoint/readout, and stage-3 evaluation. The primary contrast is
+shared residual versus dense at matched total capacity; shared versus replacement isolates path
+preservation and dense versus original isolates generic capacity. OOD-test accuracy,
+worst-OOD-experiment accuracy, and total/active parameter and relative active-FFN-FLOP accounting
+are headline; the fixed ID plate is only the internal checkpoint/competence readout. The pilot
+stops after exactly 10 epochs for all eight arms, with no adaptive topology addition. The
+predeclared competence gate is finite artifacts with train accuracy at least 5% and ID validation
+at least 1% for every arm. Only if it passes do the separate 1/2/4/8-plate and 1/2/4-guide curves
+become launchable.
+
 ## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
 
 The official RxRx3-core release is now located and its complete 24,860,992-byte metadata table has
