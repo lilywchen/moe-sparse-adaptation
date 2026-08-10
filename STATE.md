@@ -41,6 +41,14 @@ and one-command status/aggregation with test-first paired contrasts. The full lo
 The intended result root is
 `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling30_20260810`.
 
+Launch is verified from immutable commit `628606c` in worktree
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-domain-scaling-628606c`.
+All four 2xH100 containers each emitted two distinct starts on GPUs 0/1. The four quarter-scale
+jobs reached epoch 1 at the first global status check; all four full-scale jobs were started and
+still initializing. A global scan found 12 launcher/run logs and no traceback, runtime error,
+OOM, or `rc=1`. Tracking is local-first because W&B, Hugging Face, and repository credentials are
+absent inside the containers. Results persist at the root above.
+
 ## 2026-08-10 causality wave complete — shared MoE is efficient, but does not improve mean test accuracy
 
 `shared_causality30_20260809` is 8/8 terminal. The current project readout is test-first; validation

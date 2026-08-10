@@ -13,6 +13,10 @@
   architecture × scale contrasts. The complete local test suite passes. Launch target:
   `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling30_20260810` across all four 2xH100
   containers after immutable commit sync and final SciServer preflight.
+- Pushed commit `628606c`, passed 51 targeted tests in the SciServer Python 3.10 environment, and
+  launched all eight jobs from its immutable worktree. Eight distinct starts were observed; the
+  four quarter-scale jobs reached epoch 1, full-scale jobs were initializing, and the global fatal
+  scan was empty. Tracking is local-first.
 
 ## 2026-08-10 — four-seed test conclusion: shared MoE matches efficiently, but does not beat dense
 
