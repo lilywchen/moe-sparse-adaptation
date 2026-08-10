@@ -1,5 +1,24 @@
 # Progress ledger
 
+## 2026-08-10 — three-point curve completes; no shared-over-dense scaling crossover
+
+- All eight 16-experiment rows are terminal and pass a strict manifest/source/config/epoch/split/
+  batch-denominator/parameter audit. Shared averages `19.465%` OOD test, dense `19.481%`,
+  replacement `19.185%`, and original `17.841%` at the midpoint.
+- Across 8/16/33 training experiments and seeds 1/2, the shared-minus-dense OOD-test gap is
+  `+0.494/−0.016/−0.134` points. Its mean slope is `−0.305` points per data doubling with paired
+  seed+batch 95% CI `[−0.598,−0.070]`; both seed slopes are negative and only 14.3% of held-out
+  batches have a positive mean slope.
+- Shared-minus-replacement scales positively (`+0.354`, CI `[+0.043,+0.628]`), while
+  dense-minus-original grows more strongly (`+0.975`, `[+0.693,+1.263]`). The supported mechanism
+  is preservation plus compute efficiency, not a hidden MoE performance crossover.
+- Added strict terminal artifact auditing and 20,000-draw three-point seed/batch uncertainty.
+  Commit `290d281` passes 10 focused and all 326 tests in the SciServer Python 3.10 runtime.
+- Verified all four 2xH100 containers have zero experiment processes, zero midpoint controllers,
+  and zero GPU compute applications. No new RxRx1 topology wave was launched. Persistent-storage
+  inventory did not locate training-ready RxRx3/JUMP pixels, so the next gate is the larger-data
+  index/storage/channel/leakage audit rather than pretending the substrate is ready.
+
 ## 2026-08-10 — replication overturns the one-seed scaling hint; midpoint predeclared
 
 - All eight seed-1/2 quarter-scale replications are terminal with clean exits and valid artifacts.

@@ -6,6 +6,63 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 three-point RxRx1 conclusion: scale strengthens capacity, not shared-over-dense
+
+The predeclared 16-experiment midpoint wave is 8/8 terminal and artifact-valid. All rows are
+stage-3 epoch-30 evaluations from clean source `ab309d3`; run identity, seed, checkpoint split,
+environment subset, train-accuracy recording, per-batch denominators, worst-batch calculation,
+and total/active parameter counts pass. The only literal manifest/result config difference is the
+deterministic runtime dataset summary `sites={K:33,n_cell_types:4}`, which is explicitly ignored
+by the artifact comparison because it is derived metadata rather than a training factor.
+
+| Seed | Arm | Train | raw ID* | OOD val | OOD test | Worst test batch |
+|---:|---|---:|---:|---:|---:|---:|
+| 1 | Original Cell-DINO | 100.000% | 25.985% | 9.915% | 18.137% | 3.893% |
+| 1 | Dense E4, blocks 10--11 | 100.000% | 28.021% | 10.229% | 19.328% | 4.344% |
+| 1 | Replacement E4/top-2 | 100.000% | 27.977% | 10.037% | 19.305% | 4.918% |
+| 1 | Shared-residual E3/top-1 | 100.000% | 28.206% | 10.331% | 19.685% | 4.098% |
+| 2 | Original Cell-DINO | 100.000% | 25.185% | 10.037% | 17.545% | 3.320% |
+| 2 | Dense E4, blocks 10--11 | 100.000% | 27.888% | 10.686% | 19.633% | 3.934% |
+| 2 | Replacement E4/top-2 | 100.000% | 27.416% | 10.533% | 19.064% | 4.344% |
+| 2 | Shared-residual E3/top-1 | 100.000% | 28.029% | 10.838% | 19.244% | 4.508% |
+
+The three-point paired analysis uses the fixed 8/16/33-experiment curve, seeds 1/2, and 20,000
+hierarchical bootstrap draws over paired seeds and the seven held-out test batches. Slopes are
+OOD-test architecture-gap percentage points per doubling of training experiments:
+
+| Contrast | Gap @8 | Gap @16 | Gap @33 | Mean slope | Seed+batch 95% CI | Positive test batches |
+|---|---:|---:|---:|---:|---:|---:|
+| Shared residual − dense widening | +0.494 | −0.016 | −0.134 | **−0.305** | **[−0.598, −0.070]** | 14.3% |
+| Shared residual − replacement MoE | +0.212 | +0.280 | +0.932 | **+0.354** | **[+0.043, +0.628]** | 85.7% |
+| Dense widening − original Cell-DINO | +0.135 | +1.639 | +2.136 | **+0.975** | **[+0.693, +1.263]** | 100.0% |
+
+Both shared-minus-dense seed slopes are negative (`−0.233/−0.378`). The new midpoint therefore
+does not reveal a hidden crossover: shared is useful in the smallest regime, ties dense at the
+middle point, and trails slightly at full scale. Conversely, the benefit of preserving the
+pretrained dense path over replacement sparse upcycling grows with scale, and ordinary added
+capacity grows even more strongly. Midpoint deviations from endpoint log-linear interpolation
+are `−0.203/−0.284/+0.526` points for the three contrasts, so the curve is not perfectly linear;
+the slope signs, however, are paired and consistent. With only two midpoint seeds this remains a
+strong diagnostic rather than a universal scaling-law estimate.
+
+The RxRx1 endpoint is now scientifically clear: shared-residual MoE gives near-dense mean test
+accuracy at about half the active FFN parameters and beats replacement upcycling, but increasing
+RxRx1 training experiments does not make it outperform dense widening. Another nearby topology
+grid or a fixed-update rescue experiment is lower leverage. The next paper-critical step is a
+genuinely larger, independently batched substrate (RxRx3-core first, then JUMP-CP), with separate
+within-dataset curves and the same four matched arms. A fresh SciServer persistent-storage
+inventory found only JUMP code/docs and no RxRx3/JUMP object larger than 1 GB at the searched
+depth, so no honest GPU scaling launch was possible in this heartbeat; acquisition/index/channel
+and leakage audits remain the gate.
+
+Analysis/audit source `290d281` passed compilation, 10 focused tests, and all 326 tests in the
+actual SciServer Python 3.10 environment. Reports live beside the results as
+`midpoint_terminal_audit.json`, `three_point_table.md`, and `three_point_uncertainty.{json,md}`
+under `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_midpoint30_20260810`. All four containers now
+report zero run processes, zero midpoint controllers, and zero GPU compute applications.
+
+*The raw ID column still spans the original training environments and is not scale-comparable.*
+
 ## 2026-08-10 three-seed domain-scaling conclusion: preservation scales; shared does not beat dense
 
 The seed-1/2 quarter-scale replication is 8/8 terminal and valid, and its exact-protocol full
