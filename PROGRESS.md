@@ -1,5 +1,17 @@
 # Progress ledger
 
+## 2026-08-10 — RxRx3 competence pilot completes 8/8
+
+- The recovered replacement E4/top-2 seeds completed epoch 10 and terminal stage-3 ID/OOD
+  evaluation. All eight pilot rows now pass the manifest/source/config/artifact gates.
+- Two-seed mean train/ID/OOD-test accuracy is `27.746/16.027/2.025%` original,
+  `29.713/16.839/2.048%` dense, `28.077/15.916/1.811%` replacement, and
+  `27.014/15.694/1.918%` shared residual. Every arm has a zero-accuracy worst held-out experiment.
+- Shared trails dense by `0.130` OOD-test points but exceeds replacement by `0.107`; dense exceeds
+  original by only `0.023`. These are descriptive pilot gaps, not scaling claims. Every arm clears
+  the frozen train/ID competence thresholds, so the separate plate-count and guide-count scaling
+  curves are now scientifically launchable under the unchanged four-architecture protocol.
+
 ## 2026-08-10 — interrupted replacement shard recovered without protocol drift
 
 - Both replacement E4/top-2 rows reached epoch 3 before their SciServer container endpoint became

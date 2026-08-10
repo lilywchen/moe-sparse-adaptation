@@ -54,21 +54,36 @@ predeclared competence gate is finite artifacts with train accuracy at least 5% 
 at least 1% for every arm. Only if it passes do the separate 1/2/4/8-plate and 1/2/4-guide curves
 become launchable.
 
-Execution began from the immutable source on 2026-08-10. The original, dense, and
-shared-residual arms are terminal at both seeds with valid stage-3 artifacts. Their descriptive
-two-seed means are:
+Execution completed from the immutable source on 2026-08-10. All eight jobs are terminal with
+valid stage-3 artifacts and exact manifest/source/config identity. The full per-seed table is:
+
+| Seed | Arm | Train | ID validation | OOD test | Worst OOD experiment |
+|---:|---|---:|---:|---:|---:|
+| 1 | Original | 27.423% | 16.322% | 1.966% | 0.000% |
+| 1 | Dense E4 late-2 | 28.588% | 16.581% | 1.966% | 0.000% |
+| 1 | Replacement E4/top-2 late-2 | 27.456% | 15.879% | 1.748% | 0.000% |
+| 1 | Shared E3/top-1 late-2 | 26.670% | 16.211% | 1.953% | 0.000% |
+| 2 | Original | 28.069% | 15.733% | 2.083% | 0.000% |
+| 2 | Dense E4 late-2 | 30.838% | 17.097% | 2.130% | 0.000% |
+| 2 | Replacement E4/top-2 late-2 | 28.698% | 15.953% | 1.874% | 0.000% |
+| 2 | Shared E3/top-1 late-2 | 27.358% | 15.177% | 1.882% | 0.000% |
+
+The corresponding descriptive two-seed means are:
 
 | Arm | Train | ID validation | OOD test | Worst OOD experiment |
 |---|---:|---:|---:|---:|
 | Original | 27.746% | 16.027% | 2.025% | 0.000% |
 | Dense E4 late-2 | 29.713% | 16.839% | 2.048% | 0.000% |
+| Replacement E4/top-2 late-2 | 28.077% | 15.916% | 1.811% | 0.000% |
 | Shared E3/top-1 late-2 | 27.014% | 15.694% | 1.918% | 0.000% |
 
-Thus the task is learnable but sharply out-of-experiment: all completed arms clear the pilot's
-train/ID competence thresholds, yet mean OOD test is only about 2% and every architecture has at
-least one zero-accuracy held-out experiment. At this budget, shared trails dense by 0.130 OOD-test
-points and 1.145 ID points; this is evidence against an immediate shared-MoE advantage, not yet
-the complete four-arm pilot conclusion.
+Thus the task is learnable but sharply out-of-experiment: every arm clears the frozen train/ID
+competence thresholds, yet mean OOD test is only about 2% and every architecture has at least one
+zero-accuracy held-out experiment. At this budget, shared trails dense by 0.130 OOD-test points
+and 1.145 ID points, while exceeding replacement by 0.107 OOD-test points. Dense exceeds original
+by only 0.023 OOD-test points. These small two-seed pilot gaps are descriptive, not a material
+architecture claim; the pilot's decision is simply that the loader, task, optimization, and
+stage-3 evaluation are competent enough to license the predeclared within-RxRx3 scaling curves.
 
 Once those six controllers exited, three containers were re-audited at zero experiment processes
 and zero GPU applications. Replacement E4/top-2 seeds 1/2 were then launched as the predeclared
@@ -78,10 +93,9 @@ infrastructure interruption rather than a scientific artifact. The six partial f
 intact to `recovery_dead_container_20260810T1515EDT` under the persistent result directory so that
 duplicate epoch records cannot contaminate the rerun. A second container was proved free by both
 an empty GPU-application query and an empty experiment-process query, then the same exact-source
-shard was relaunched without changing its manifest rows, run IDs, configs, or protocol. The
-recovery controller has two distinct starts on GPUs 0/1 and no immediate fatal signature; terminal
-artifacts are still pending. All eight terminal artifacts remain required before the pilot is
-interpreted or scaling curves are launched. Results live at
+shard was relaunched without changing its manifest rows, run IDs, configs, or protocol. Both
+recovery rows then completed epoch 10 plus ID and OOD evaluation, with two distinct starts, live
+GPU/process verification, clean controller exits, and no fatal signature. Results live at
 `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`, with local-first tracking.
 
 ## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
