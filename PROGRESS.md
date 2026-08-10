@@ -1,5 +1,21 @@
 # Progress ledger
 
+## 2026-08-10 — scaling-wave correctness audit and steward gates tightened
+
+- Rechecked the resolved configs: every quarter/full architecture pair differs only in the exact
+  eight-versus-33 training-environment subset and run tag. Seed, architecture, native channel
+  mapping, optimizer, epochs, checkpointing, augmentation, losses, and evaluation code match.
+- The primary OOD-test design remains valid, but found an ID-reporting caveat: the standard
+  `id_test` loader spans all 33 original training environments, so 25 are unseen at quarter scale.
+  The active `acc_within` column will not be interpreted; all checkpoints require a matched
+  eight-environment ID re-evaluation.
+- Fixed 30 epochs implies 4.12× more optimizer updates at full scale. This wave measures the
+  practical joint effect of more fields, training domains, and compute; a fixed-update control is
+  required before a causal data-scale interpretation. One seed remains diagnostic only.
+- Updated the 20-minute steward with mandatory source/test, complete relevant regression,
+  resolved-config whitelist, atomic split/duplicate, channel mapping, artifact, metric, uncertainty,
+  and launch-health gates. Any failed gate now blocks follow-up execution and interpretation.
+
 ## 2026-08-10 — rigorous RxRx1 architecture-by-domain-scale wave predeclared
 
 - Froze an eight-experiment, cell-stratified nested prefix with 9,856 fields, all 1,139 classes,

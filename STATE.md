@@ -6,6 +6,42 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 correctness and rigor audit of the active scaling wave
+
+The executable commit `628606c` passed 51 targeted tests in the actual SciServer Python 3.10
+runtime, after Python compilation, local regression testing, sweep dry-run, metadata audit, and
+run-identity/sharding checks. A programmatic resolved-config comparison confirms that each
+quarter/full pair differs only in `train.environment_subset` and its descriptive `run_tag`;
+architecture, seed, preprocessing, optimizer, epochs, checkpoint rule, augmentation, losses, and
+evaluation code are identical. The quarter subset has all 1,139 labels, all four cell types, and
+no outcome-dependent selection. Eight unique start lines were observed and the initial global
+fatal scan was empty.
+
+Two limitations are now explicitly frozen rather than hidden:
+
+1. **The current `acc_within` column is not comparable as ID accuracy across scale.** The WILDS
+   `id_test` loader contains all 33 original training experiments. At quarter scale, 25 of those
+   experiments were not used for training, so calling that aggregate “ID” would be incorrect.
+   OOD validation/test are unaffected and remain the primary valid endpoints. The saved terminal
+   checkpoints must be re-evaluated on the same eight-experiment `id_test` subset for every arm;
+   until then, ignore the active wave's `acc_within` interaction.
+2. **Fixed epochs are exposure-matched, not optimizer-step/compute-matched.** Full scale has
+   4.12× as many fields and therefore about 4.12× as many updates at 30 epochs. The active wave
+   estimates the practical combined effect of more examples, more independent training domains,
+   and proportionally more training compute. A positive interaction must be followed by a
+   fixed-update control before attributing it specifically to data availability rather than
+   optimization compute.
+
+This remains a useful first experiment: its OOD-test interaction directly tests whether the
+shared-versus-dense gap changes between a data-poor multi-batch regime and full RxRx1, while
+replacement and original arms locate the source of any change. It is a diagnostic at one seed,
+not a paper claim. Intermediate points, batch-bootstrap uncertainty, fixed-ID re-evaluation,
+fixed-update controls, and fresh-seed replication are required before a scaling conclusion.
+
+The 20-minute automation `rxrx-moe-scaling-research-steward` has been strengthened with mandatory
+source, test, resolved-config, data/split, evaluation/artifact, and live-launch correctness gates.
+Any failed gate must stop downstream interpretation and launches until repaired and revalidated.
+
 ## 2026-08-10 predeclared RxRx1 domain-count scaling wave
 
 The next experiment is `rxrx1_domain_scaling30_20260810`, a matched 2×4 factorial designed to
@@ -29,12 +65,14 @@ augmentations, and seed 5 are also fixed.
 
 This wave estimates the architecture × scale interaction
 `(shared − dense at full) − (shared − dense at quarter)` with OOD test accuracy as the headline,
-then worst-test-batch and ID accuracy. The replacement arm separates preserving the pretrained
-dense path from generic sparse capacity; original separates all expansion from ordinary
-fine-tuning. A positive interaction supports the data-starvation hypothesis even if shared remains
-slightly below dense at the current endpoint. A flat/negative interaction argues that more
-training batches alone will not rescue this MoE design. Subsequent intermediate scale points and
-seed replication are gated on this interaction rather than the best noisy cell.
+then worst-test-batch accuracy. ID is deferred to the matched eight-environment checkpoint
+re-evaluation described above. The replacement arm separates preserving the pretrained dense
+path from generic sparse capacity; original separates all expansion from ordinary fine-tuning.
+A positive interaction supports the joint data/domain/compute scaling hypothesis even if shared
+remains slightly below dense at the current endpoint; the fixed-update follow-up must then isolate
+compute. A flat/negative interaction argues that practical scaling under this schedule will not
+rescue this MoE design. Subsequent intermediate points and seed replication are gated on this
+interaction rather than the best noisy cell.
 
 Implementation adds exact environment-set hashes to run identity, metadata-only manifest audits,
 and one-command status/aggregation with test-first paired contrasts. The full local suite passes.
