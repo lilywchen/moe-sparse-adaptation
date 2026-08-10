@@ -56,8 +56,8 @@ become launchable.
 
 Execution began from the immutable source on 2026-08-10. Three proven-idle 2xH100 containers
 launched shards 0, 1, and 3: both original seeds, both dense seeds, and both shared-residual seeds.
-The persistent launcher audit shows six unique starts (two per shard, GPUs 0/1), six train-log
-artifacts, and no traceback/OOM/nonzero exit signature. The replacement shard remains pending:
+The persistent launcher audit shows six unique starts (two per shard, GPUs 0/1), one real epoch
+record for each of the six jobs, and no traceback/OOM/nonzero exit signature. The replacement shard remains pending:
 the fourth old container route returned HTTP 401, while its fresh GPU state could not be proven,
 so it was deliberately not touched. This is an operationally incomplete pilot, not six-arm
 evidence; all eight terminal artifacts are still required before scientific interpretation.

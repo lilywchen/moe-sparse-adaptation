@@ -10,8 +10,8 @@
   matched within four total parameters, while shared and replacement use about half dense's
   active FFN parameters.
 - Launched original, dense, and shared-residual seeds 1/2 on three proven-idle 2xH100 containers.
-  Six unique starts are present (two per shard on GPUs 0/1), six training logs were created, and
-  the fatal scan is empty. Results are under
+  Six unique starts are present (two per shard on GPUs 0/1), every job has emitted its first real
+  epoch record, and the fatal scan is empty. Results are under
   `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`.
 - Did not guess about the fourth container: its old Jupyter routes now return 401, so current GPU
   freedom could not be proved. The two replacement-MoE rows remain predeclared and pending; the
