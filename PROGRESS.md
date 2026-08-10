@@ -1,5 +1,19 @@
 # Progress ledger
 
+## 2026-08-10 — six RxRx3 pilot rows complete; replacement control launched
+
+- Original, dense E4 late-2, and shared-residual E3/top-1 late-2 are terminal at seeds 1/2 with
+  valid stage-3 artifacts. Mean train/ID/OOD-test accuracy is `27.746/16.027/2.025%` original,
+  `29.713/16.839/2.048%` dense, and `27.014/15.694/1.918%` shared; worst OOD experiment is zero
+  for every completed architecture.
+- The completed arms all clear the frozen competence thresholds, but the experiment-pair shift is
+  severe. Shared is `-0.130` OOD-test and `-1.145` ID points versus dense at 10 epochs; this is a
+  descriptive partial-pilot result, not a four-arm or scaling conclusion.
+- After verifying zero experiment processes and zero GPU applications on three accessible
+  containers, launched both predeclared replacement E4/top-2 seeds on one 2xH100 container. Two
+  distinct starts, GPUs 0/1, two GPU applications, and an empty fatal scan are verified; initial
+  epoch setup is in progress. No scaling wave will launch before all eight pilot rows are terminal.
+
 ## 2026-08-10 — exact-source RxRx3 pilot gates pass; six of eight jobs launched safely
 
 - Final source `79f19f5` passed 27 focused tests and all 341 tests in the SciServer Python 3.10

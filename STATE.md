@@ -54,14 +54,28 @@ predeclared competence gate is finite artifacts with train accuracy at least 5% 
 at least 1% for every arm. Only if it passes do the separate 1/2/4/8-plate and 1/2/4-guide curves
 become launchable.
 
-Execution began from the immutable source on 2026-08-10. Three proven-idle 2xH100 containers
-launched shards 0, 1, and 3: both original seeds, both dense seeds, and both shared-residual seeds.
-The persistent launcher audit shows six unique starts (two per shard, GPUs 0/1), one real epoch
-record for each of the six jobs, and no traceback/OOM/nonzero exit signature. The replacement shard remains pending:
-the fourth old container route returned HTTP 401, while its fresh GPU state could not be proven,
-so it was deliberately not touched. This is an operationally incomplete pilot, not six-arm
-evidence; all eight terminal artifacts are still required before scientific interpretation.
-Results live at
+Execution began from the immutable source on 2026-08-10. The original, dense, and
+shared-residual arms are terminal at both seeds with valid stage-3 artifacts. Their descriptive
+two-seed means are:
+
+| Arm | Train | ID validation | OOD test | Worst OOD experiment |
+|---|---:|---:|---:|---:|
+| Original | 27.746% | 16.027% | 2.025% | 0.000% |
+| Dense E4 late-2 | 29.713% | 16.839% | 2.048% | 0.000% |
+| Shared E3/top-1 late-2 | 27.014% | 15.694% | 1.918% | 0.000% |
+
+Thus the task is learnable but sharply out-of-experiment: all completed arms clear the pilot's
+train/ID competence thresholds, yet mean OOD test is only about 2% and every architecture has at
+least one zero-accuracy held-out experiment. At this budget, shared trails dense by 0.130 OOD-test
+points and 1.145 ID points; this is evidence against an immediate shared-MoE advantage, not yet
+the complete four-arm pilot conclusion.
+
+Once those six controllers exited, three containers were re-audited at zero experiment processes
+and zero GPU applications. Replacement E4/top-2 seeds 1/2 were then launched as the predeclared
+shard 2 on one proven-idle 2xH100 container. The persistent audit has two unique starts on GPUs
+0/1, two live GPU applications, two train-log artifacts, and no traceback/OOM/nonzero exit
+signature; first-epoch initialization is still in progress. All eight terminal artifacts remain
+required before the pilot is interpreted or scaling curves are launched. Results live at
 `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`, with local-first tracking.
 
 ## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
