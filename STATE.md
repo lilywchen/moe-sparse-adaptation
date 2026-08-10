@@ -6,6 +6,42 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 RxRx3 plate-count curve: one-plate endpoint predeclared
+
+The competence pilot passed, so the first honest RxRx3 scaling axis is now frozen. The scientific
+question is whether the OOD-test architecture gap changes as **train plates per experiment** grow
+from 1 to 2 to 4 to 8 while four guides per gene, 674 labels, 85 train experiments, 85 paired
+held-out experiments, ID-validation wells, OOD-test wells, preprocessing, optimization, and
+checkpointing remain fixed. Plate count and examples per class necessarily co-vary on this axis;
+it is not called pure sample scaling or experiment-count scaling. The atomic sampling unit remains
+one six-channel well, and the four manifests must form strictly nested train-well sets with
+identical evaluation-well sets.
+
+The first new wave is the one-plate endpoint: exactly eight jobs, comprising the unchanged
+original, dense E4 late-2, replacement E4/top-2 late-2, and shared-residual E3/top-1 late-2 arms at
+seeds 1/2. The completed eight-plate competence pilot is the protocol-matched full-data anchor;
+two- and four-plate points will be separate later waves. OOD-test accuracy and worst held-out
+experiment accuracy are headline. The primary estimand is the shared-minus-dense change over
+`log2(plate count)`; shared-minus-replacement and dense-minus-original are secondary mechanism
+contrasts. Material claims require the full 1/2/4/8 curve, paired per-experiment differences,
+seed replication, and hierarchical uncertainty. This endpoint alone cannot establish a scaling
+interaction.
+
+All jobs stop at epoch 10 and use fixed ID-validation plates plus the terminal checkpoint; test
+does not select topology. Only `seed`, `run_tag`, `rxrx3_manifest`, and the declared architecture
+fields may differ. Total/active FFN parameters remain 22,044,578/2,363,136 original,
+29,136,296/9,454,854 dense, 29,137,060/4,729,346 replacement, and
+29,136,292/4,728,578 shared. Thus dense and shared are matched in total capacity to four
+parameters, while shared activates about half the dense FFN parameters.
+
+The predeclared result directory is
+`substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_plate1_scale10_20260810`. The new launcher audits
+all four plate manifests together, requires 2,696/5,376/10,706/21,404 nested train wells, freezes
+2,708 ID and 23,855 OOD wells, rejects split or coverage drift, and provides the same one-command
+status table as the pilot. Before launch, its exact clean source must pass SciServer compilation,
+focused tests, all regression tests, real-manifest audit, resolved-config comparison, dry-run
+sharding, and eight-GPU freedom checks.
+
 ## 2026-08-10 RxRx3-core loader passes its first gate; competence pilot predeclared
 
 The training path is now explicit rather than inferred from the metadata audit. A Parquet-backed

@@ -1,5 +1,18 @@
 # Progress ledger
 
+## 2026-08-10 — one-plate RxRx3 scaling endpoint frozen in code
+
+- Added a dedicated RxRx3 plate-count launcher that audits the full nested 1/2/4/8-manifest curve
+  while launching one two-seed/four-architecture point at a time. It freezes the 8-plate pilot as
+  the full anchor and records scale, manifest hashes, capacity, allowed config differences, and
+  exact run identities in one command-ready manifest.
+- Predeclared the first eight-job endpoint at one train plate with four guides fixed. The primary
+  eventual estimand is the shared-minus-dense architecture gap over `log2(plate count)`; this
+  endpoint alone is explicitly non-conclusive.
+- The new entrypoint compiles, its six focused/pilot tests pass, and all 344 local tests pass. The
+  real SciServer manifest/config audit and complete Python 3.10 regression suite remain mandatory
+  launch gates.
+
 ## 2026-08-10 — RxRx3 competence pilot completes 8/8
 
 - The recovered replacement E4/top-2 seeds completed epoch 10 and terminal stage-3 ID/OOD
