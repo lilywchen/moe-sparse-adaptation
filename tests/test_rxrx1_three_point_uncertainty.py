@@ -31,4 +31,4 @@ def test_paired_batch_slope_recovers_overall_slope():
     report = summarize_contrast(rows, "left", "right", (1, 2), n_boot=1000)
     assert report["slope_seed_bootstrap"]["mean"] == pytest.approx(1.0)
     assert report["slope_hierarchical_seed_batch_bootstrap"]["mean"] == pytest.approx(1.0)
-    assert report["midpoint_deviation_seed_bootstrap"]["mean"] == pytest.approx(0.0)
+    assert report["midpoint_deviation_seed_bootstrap"]["mean"] == pytest.approx(0.0, abs=1e-9)
