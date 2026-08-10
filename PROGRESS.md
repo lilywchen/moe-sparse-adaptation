@@ -1,5 +1,18 @@
 # Progress ledger
 
+## 2026-08-10 — interrupted replacement shard recovered without protocol drift
+
+- Both replacement E4/top-2 rows reached epoch 3 before their SciServer container endpoint became
+  unavailable with HTTP 503. Their train logs then remained unchanged for more than an hour, so
+  the interruption is operational rather than a usable terminal result.
+- Preserved all six partial log/milestone files under
+  `recovery_dead_container_20260810T1515EDT`, preventing duplicate epoch records while retaining
+  the incident evidence. No completed artifact was moved or overwritten.
+- Proved a fallback 2xH100 container had zero GPU applications and zero experiment processes, then
+  relaunched the exact predeclared shard from immutable source `79f19f5`. The two replacement seeds
+  have distinct starts on GPUs 0/1 and no immediate traceback, OOM, or nonzero exit signature.
+  The eight-row pilot remains uninterpretable until these two recovery rows finish stage 3.
+
 ## 2026-08-10 — six RxRx3 pilot rows complete; replacement control launched
 
 - Original, dense E4 late-2, and shared-residual E3/top-1 late-2 are terminal at seeds 1/2 with

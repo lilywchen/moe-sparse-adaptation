@@ -72,10 +72,16 @@ the complete four-arm pilot conclusion.
 
 Once those six controllers exited, three containers were re-audited at zero experiment processes
 and zero GPU applications. Replacement E4/top-2 seeds 1/2 were then launched as the predeclared
-shard 2 on one proven-idle 2xH100 container. The persistent audit has two unique starts on GPUs
-0/1, two live GPU applications, two train-log artifacts, and no traceback/OOM/nonzero exit
-signature; first-epoch initialization is still in progress. All eight terminal artifacts remain
-required before the pilot is interpreted or scaling curves are launched. Results live at
+shard 2 on one proven-idle 2xH100 container. Both reached epoch 3, after which their Jupyter
+endpoint returned HTTP 503 and both train logs stopped changing for more than an hour. This is an
+infrastructure interruption rather than a scientific artifact. The six partial files were moved
+intact to `recovery_dead_container_20260810T1515EDT` under the persistent result directory so that
+duplicate epoch records cannot contaminate the rerun. A second container was proved free by both
+an empty GPU-application query and an empty experiment-process query, then the same exact-source
+shard was relaunched without changing its manifest rows, run IDs, configs, or protocol. The
+recovery controller has two distinct starts on GPUs 0/1 and no immediate fatal signature; terminal
+artifacts are still pending. All eight terminal artifacts remain required before the pilot is
+interpreted or scaling curves are launched. Results live at
 `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`, with local-first tracking.
 
 ## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
