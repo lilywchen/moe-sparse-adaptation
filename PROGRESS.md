@@ -1,5 +1,22 @@
 # Progress ledger
 
+## 2026-08-10 — exact-source RxRx3 pilot gates pass; six of eight jobs launched safely
+
+- Final source `79f19f5` passed 27 focused tests and all 341 tests in the SciServer Python 3.10
+  runtime. The exact-source real-data smoke passed all frozen row/channel/domain checks at about
+  49/65/64 train/ID/OOD wells/s, and the full manifest/config/capacity/sharding dry run passed.
+- Created and verified the clean immutable worktree
+  `moe-sparse-adaptation-rxrx3-pilot-79f19f5`. Capacity accounting confirms dense and shared are
+  matched within four total parameters, while shared and replacement use about half dense's
+  active FFN parameters.
+- Launched original, dense, and shared-residual seeds 1/2 on three proven-idle 2xH100 containers.
+  Six unique starts are present (two per shard on GPUs 0/1), six training logs were created, and
+  the fatal scan is empty. Results are under
+  `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`.
+- Did not guess about the fourth container: its old Jupyter routes now return 401, so current GPU
+  freedom could not be proved. The two replacement-MoE rows remain predeclared and pending; the
+  eight-row pilot is not interpretable until that shard is launched and terminal.
+
 ## 2026-08-10 — RxRx3-core loader implemented and pilot frozen
 
 - Added a lazy Parquet/JPEG-2000 six-channel dataset, manifest-scoped key index, bounded row-group

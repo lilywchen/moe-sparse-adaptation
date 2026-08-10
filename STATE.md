@@ -19,13 +19,14 @@ corrupt channels; label/split drift; incomplete class coverage; and experiment l
 closed. RxRx1 dispatch and OOD-validation semantics remain unchanged; RxRx3 explicitly records
 its frozen checkpoint split as `id_val`.
 
-Source `7cdae29` passed compilation, 24 focused loader/runner/native-channel tests, and all 338
-tests in the SciServer Python 3.10 environment. Its real-data smoke resolved the exact frozen
+Final execution source `79f19f5` passed compilation, 27 focused loader/runner/native-channel/
+pilot-sweeper tests, and all 341 tests in the SciServer Python 3.10 environment. Its exact-source
+real-data smoke resolved the frozen
 21,404/2,708/23,855 train/ID-validation/OOD-test rows, emitted `Bx5x128x128` finite tensors with
 train sites non-negative and every OOD site equal to `-1`, and decoded four batches from every
-split. Initial four-worker throughput was about 50/68/67 wells/s for train/ID/OOD. The locality
-sampler was active in that measurement; the exact pilot execution source must still repeat the
-same smoke/config gate before launch.
+split. Eight-worker throughput was about 49/65/64 wells/s for train/ID/OOD. The immutable
+worktree is `moe-sparse-adaptation-rxrx3-pilot-79f19f5`; the exact-source dry run passed the
+manifest, data, resolved-config, capacity, unique-ID, and sharding gates.
 
 The first GPU wave is now predeclared as a **competence pilot**, not a scaling result. The atomic
 unit is one six-channel well. Data are the full eight-train-plate/four-guide manifest with SHA-256
@@ -52,6 +53,16 @@ stops after exactly 10 epochs for all eight arms, with no adaptive topology addi
 predeclared competence gate is finite artifacts with train accuracy at least 5% and ID validation
 at least 1% for every arm. Only if it passes do the separate 1/2/4/8-plate and 1/2/4-guide curves
 become launchable.
+
+Execution began from the immutable source on 2026-08-10. Three proven-idle 2xH100 containers
+launched shards 0, 1, and 3: both original seeds, both dense seeds, and both shared-residual seeds.
+The persistent launcher audit shows six unique starts (two per shard, GPUs 0/1), six train-log
+artifacts, and no traceback/OOM/nonzero exit signature. The replacement shard remains pending:
+the fourth old container route returned HTTP 401, while its fresh GPU state could not be proven,
+so it was deliberately not touched. This is an operationally incomplete pilot, not six-arm
+evidence; all eight terminal artifacts are still required before scientific interpretation.
+Results live at
+`substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_pilot10_20260810`, with local-first tracking.
 
 ## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
 
