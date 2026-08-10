@@ -22,6 +22,12 @@
   fields, all 1,139 classes, minimum 15 examples/class, and all four cell types. It estimates
   architecture-gap slopes over `log2(8,16,33)` while keeping the domain/field/update confound
   explicit.
+- Pushed execution source `ab309d3`, passed compilation plus 20 focused and all 324 tests in the
+  SciServer Python 3.10 runtime, and passed the exact-SHA/clean-worktree, resolved-config,
+  nested-data, class/cell coverage, split-disjointness, parameter/active-FLOP, unique-ID, and
+  four-shard dry-run gates. After proving all eight H100s free, launched four two-job controllers.
+  Eight distinct starts and eight real epoch records are present with no fatal signature; results
+  are under `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_midpoint30_20260810` in local-first tracking.
 
 ## 2026-08-10 — seed-5 scaling wave completes; seed-1/2 replication predeclared
 

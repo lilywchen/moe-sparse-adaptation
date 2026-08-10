@@ -66,6 +66,20 @@ co-vary; it does not by itself identify which of those three is causal. The one-
 view joins the new rows to the completed quarter/full anchors and fails on resolved-config or
 artifact drift.
 
+The wave is live from pushed source `ab309d3a14b9859033ad166aba8bb6990899169e` and clean immutable
+SciServer worktree
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-domain-midpoint-ab309d3`.
+The actual SciServer Python 3.10 runtime passed compilation, 20 focused tests, and all 324 tests.
+All four dry-run shards contain exactly two unique rows; the manifest records the exact source SHA,
+clean state, resolved configs, total/active parameter accounting, relative active FFN FLOPs, nested
+subset hashes/statistics, and zero split-index overlap. Immediately before launch, every container
+reported zero controllers, zero training processes, and zero GPU compute applications. Four
+controllers then emitted eight distinct starts, two per container and one on each GPU. All eight
+run logs have reached real epoch records, all H100s have active workers, and the global fatal scan
+is empty. Tracking is local-first because W&B/Hugging Face credentials remain absent. Results and
+the one-command table persist under
+`substrate_rxrx1/cell_dino_cp5/rxrx1_domain_midpoint30_20260810`.
+
 ## 2026-08-10 seed-5 domain-scaling wave complete: weak positive test interaction, mixed endpoints
 
 All eight predeclared artifacts are terminal and valid. The global audit found eight manifest
