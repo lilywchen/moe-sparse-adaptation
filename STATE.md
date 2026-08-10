@@ -6,6 +6,53 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 RxRx3-core is viable, but its honest scaling axes differ from RxRx1
+
+The official RxRx3-core release is now located and its complete 24,860,992-byte metadata table has
+been audited (SHA-256 `0f69ea7d2122c0c2ccace20a34fc70f0fec11a06cc4fca5eed550c0bc6985913`).
+The release contains 222,601 unique HUVEC wells, 1,335,606 channel-image rows, 1,744
+experiment-plate pairs, 736 CRISPR targets, and 1,674 compounds. The 35 image Parquet shards total
+about 17.4 GB; the 23.1-GB repository total also includes unrelated pretrained embeddings and
+CellProfiler features. The images are six 512×512 uint8 JPEG-2000 center crops per well, so they
+fit the existing fixed native map `[w1,w2,w4,mean(w3,w6),w5]` into Cell-DINO's
+`[DNA,ER,RNA,AGP,Mito]` slots.
+
+The key split structure is stronger than the previous inventory suggested. Query-guide metadata
+has 734 genes: 695 occur in two experiments, 24 in four, and 15 in one. Of 176 CRISPR experiments,
+174 form 87 exact pairs with identical query-gene sets. This licenses a paired supervised task:
+train on one member of every pair and evaluate on the independently repeated mate. A deterministic
+metadata-only builder now requires four guide IDs shared across paired experiments, reserves one
+class-complete train plate for ID validation, and requires a second complete plate so the smallest
+train point keeps all classes. Two pairs fail this QC gate. The frozen substrate therefore has:
+
+| Quantity | Audited value |
+|---|---:|
+| Fixed gene classes | 674 |
+| Train / OOD-test experiments | 85 / 85 |
+| Train / OOD experiment overlap | 0 |
+| Train wells at 1 / 2 / 4 / 8 plates | 2,696 / 5,376 / 10,706 / 21,404 |
+| Fixed ID-validation / OOD-test wells | 2,708 / 23,855 |
+| Class coverage at every split and scale | 674 / 674 |
+
+This dataset cannot support an honest fixed-label **experiment-count** curve: genes are partitioned
+across experiment pairs, so removing experiment pairs also removes classes. Instead, RxRx3-core
+supports two distinct nested curves: (1) 1/2/4/8 train plates with four guides fixed, where
+plate-batch count and sample density co-vary; and (2) 1/2/4 guides with all eight train plates
+fixed, which changes guide diversity/examples per class while holding plate domains fixed. These
+axes directly test whether sparse capacity benefits from more independently repeated plates or
+from more biological guides, without calling a class-count confound domain scaling.
+
+`scripts/build_rxrx3_core_gene_manifests.py` and
+`docs/rxrx3_core_scaling_substrate.md` freeze the split, curves, channel map, hashes, and pixel
+gate. The real-metadata build succeeds and produces deterministic nested manifests, but generated
+manifests remain outside git because they are licensed data derivatives. Training is still blocked
+until the 35 image shards are staged and every selected well resolves to exactly six unique channel
+rows with the expected dimensions/dtype/order. Recursion's current EULA permits this research use
+subject to attribution and restrictions, but its derivative/share-alike terms mean checkpoints
+cannot be published under an incompatible license. All four SciServer containers were rechecked
+at zero experiment processes and zero GPU compute applications; persistent storage reports ample
+headroom for the image-only download. No GPU job was launched before the image gate.
+
 ## 2026-08-10 three-point RxRx1 conclusion: scale strengthens capacity, not shared-over-dense
 
 The predeclared 16-experiment midpoint wave is 8/8 terminal and artifact-valid. All rows are

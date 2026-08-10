@@ -1,5 +1,24 @@
 # Progress ledger
 
+## 2026-08-10 — RxRx3-core metadata turns the larger-substrate idea into two clean curves
+
+- Located the official compact release: 222,601 wells, 1.335M six-channel rows, 1,744
+  experiment-plate pairs, 17.4 GB of image shards, and a 23.1-GB repository including optional
+  embeddings/features. All four SciServer containers are idle and persistent storage has ample
+  headroom; no GPU work was disturbed or launched.
+- Audited all 222,601 metadata rows. Among 176 CRISPR experiments, 174 form 87 exact
+  identical-gene-set pairs. After four-common-guide and two-class-complete-plate QC gates, the
+  frozen task has 674 classes, 85 train experiments, 85 paired OOD-test experiments, zero
+  experiment overlap, and complete class coverage in every split.
+- Defined separate 1/2/4/8 plate and 1/2/4 guide curves. The former varies plate batches plus
+  density; the latter holds eight plate domains fixed and varies guide diversity. A fixed-label
+  experiment-count curve is explicitly rejected because RxRx3-core partitions labels across
+  experiment pairs.
+- Added a deterministic manifest/audit builder, synthetic regression tests, and a full substrate
+  specification. The real metadata build succeeds with 2,696/5,376/10,706/21,404 training wells
+  and fixed 2,708/23,855 ID-validation/OOD-test wells. Pixel staging and exact six-channel joins
+  remain the launch gate; licensed manifests and data stay outside git.
+
 ## 2026-08-10 — three-point curve completes; no shared-over-dense scaling crossover
 
 - All eight 16-experiment rows are terminal and pass a strict manifest/source/config/epoch/split/
