@@ -1,5 +1,19 @@
 # Progress ledger
 
+## 2026-08-10 — four-seed test conclusion: shared MoE matches efficiently, but does not beat dense
+
+- `shared_causality30_20260809` is 8/8 terminal. Seed-4 test accuracy is `38.165%` canonical
+  shared, `38.781%` dense, `38.075%` balance-zero shared, and `38.026%` frozen-router shared.
+- Across clean matched seeds 1–4, canonical shared averages `38.541%` test versus `38.764%` for
+  dense (`-0.223` paired mean), while using about half the active FFN parameters. It averages
+  `+0.596` points better worst-batch accuracy and `+0.359` better ID accuracy.
+- No routing control produces a robust test gain and no arm reaches `40%`. The replicated result
+  is compute-efficient matching plus better average tail behavior, not a mean-test improvement.
+- Both reserved GPU pairs are free. No new neighboring architecture grid was launched because the
+  local E3/top-1 late-block neighborhood is now adequately replicated and test-negative versus
+  dense; the next higher-leverage branch is optimization/data scaling or the validated JUMP-CP
+  acquisition gate.
+
 ## 2026-08-09 — seed 3 is terminal; the shared-over-dense effect does not repeat in this seed
 
 - Seed-3 OOD validation is `21.737%` canonical shared, `21.829%` matched dense, `21.940%`

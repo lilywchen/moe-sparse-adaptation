@@ -6,6 +6,37 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 causality wave complete — shared MoE is efficient, but does not improve mean test accuracy
+
+`shared_causality30_20260809` is 8/8 terminal. The current project readout is test-first; validation
+is retained as secondary diagnostic context. Fresh seeds 3/4 complete the predeclared comparison:
+
+| Seed | Arm | Train | ID | OOD val | OOD test | Worst test batch | Route reliance |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 3 | Shared E3/top-1, blocks 10–11 | 100.000% | 55.250% | 21.737% | 38.409% | 9.713% | 0.0497 |
+| 3 | Dense E4, blocks 10–11 | 100.000% | 54.511% | 21.829% | 38.418% | 9.426% | — |
+| 3 | Shared, balance weight `0` | 100.000% | 55.343% | 21.940% | 38.441% | 9.221% | 0.0471 |
+| 3 | Shared, frozen router | 100.000% | 54.841% | 21.342% | 38.136% | 9.016% | 0.0289 |
+| 4 | Shared E3/top-1, blocks 10–11 | 100.000% | 54.792% | 21.555% | 38.165% | 8.448% | 0.0457 |
+| 4 | Dense E4, blocks 10–11 | 100.000% | 54.981% | 21.788% | 38.781% | 7.295% | — |
+| 4 | Shared, balance weight `0` | 100.000% | 54.457% | 21.717% | 38.075% | 8.033% | 0.0401 |
+| 4 | Shared, frozen router | 100.000% | 54.691% | 21.717% | 38.026% | 7.910% | 0.0358 |
+
+Across all four clean matched seeds 1–4, canonical shared test accuracy is `38.541%` versus
+`38.764%` for dense, a paired mean difference of `-0.223` points. Shared loses the mean-test
+comparison in every seed (`-0.223/-0.044/-0.009/-0.616`). Its advantages are instead efficiency
+and tail behavior: it activates `4.729M` FFN parameters versus dense's `9.455M`, while averaging
+`8.721%` worst-batch accuracy versus `8.125%` for dense (`+0.596`) and `55.214%` ID accuracy versus
+`54.856%` (`+0.359`). Secondary validation averages `21.973%` versus `21.798%` (`+0.175`).
+
+The routing variants do not uncover a hidden test gain. Across seeds 1–4, balance-zero averages
+`38.494%` test and frozen-router averages `38.371%`, versus `38.541%` for canonical shared. The
+single `39.010%` balance-`1e-3` result did not repeat (`38.621%` in its paired seed). No arm reaches
+`40%` test. The supported claim is therefore **near-dense test accuracy at about half active FFN
+compute, with better average tail accuracy**, not higher RxRx1 test accuracy. This local E3/top-1
+late-block routing neighborhood is now sufficiently replicated; another nearby architecture grid
+is lower leverage than improving optimization/data scale or making the JUMP-CP substrate real.
+
 ## 2026-08-09 routing controls complete — conditional partitioning matters, but the canonical router still wins
 
 `shared_routing30_20260809` is 8/8 terminal. OOD validation remains the decision metric and the
