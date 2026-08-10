@@ -93,6 +93,10 @@ def normalized_config(config):
     normalized = copy.deepcopy(config)
     normalized.pop("run_tag", None)
     normalized.get("train", {}).pop("environment_subset", None)
+    # ``router_frozen`` was added after the seed-1/2 full anchors were executed.
+    # Its historical absence means the same false/default behavior; preserve true as a
+    # material difference so a genuinely frozen-router artifact still fails pairing.
+    normalized.setdefault("model", {}).setdefault("router_frozen", False)
     return normalized
 
 

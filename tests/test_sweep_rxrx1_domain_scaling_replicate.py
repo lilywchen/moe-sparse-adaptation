@@ -48,7 +48,11 @@ def test_normalized_config_allows_only_endpoint_and_tag_changes():
     changed = copy.deepcopy(cfg)
     changed["run_tag"] = "different"
     changed["train"].pop("environment_subset")
+    changed["model"].pop("router_frozen")
     assert normalized_config(cfg) == normalized_config(changed)
+    changed["model"]["router_frozen"] = True
+    assert normalized_config(cfg) != normalized_config(changed)
+    changed["model"]["router_frozen"] = False
     changed["train"]["optim"]["lr"] *= 2
     assert normalized_config(cfg) != normalized_config(changed)
 
