@@ -4,6 +4,8 @@ The run_id encodes every factor that changes the experiment, so results are addr
 sweeps are idempotent (a cell whose JSON exists is skipped).
 """
 
+import hashlib
+
 
 def explicit_block_indices(model_cfg):
     """Return the canonical explicit FFN indices, accepting the public descriptive alias.
@@ -60,7 +62,9 @@ def run_id_from(cfg) -> str:
     if m.get("btx_manifest"):
         parts.append("btx" if m.get("btx_freeze_experts", True) else "btxopen")
     if t.get("environment_subset"):
-        parts.append(f"envsub{len(t['environment_subset'])}")
+        environments = sorted(int(value) for value in t["environment_subset"])
+        digest = hashlib.sha256(",".join(map(str, environments)).encode()).hexdigest()[:8]
+        parts.append(f"envsub{len(environments)}-{digest}")
     if str(t.get("objective", "erm")) == "group_dro" or t.get("group_dro"):
         parts.append("dro")
     if float(t.get("label_smoothing", 0.0) or 0.0) > 0:

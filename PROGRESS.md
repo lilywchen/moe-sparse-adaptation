@@ -1,5 +1,19 @@
 # Progress ledger
 
+## 2026-08-10 — rigorous RxRx1 architecture-by-domain-scale wave predeclared
+
+- Froze an eight-experiment, cell-stratified nested prefix with 9,856 fields, all 1,139 classes,
+  all four cell types, and minimum seven examples per class; the matched full point has 33
+  experiments and 40,612 fields. Evaluation sets and every non-scale training control are fixed.
+- Predeclared exactly eight seed-5 jobs: original, dense E4 late-2, replacement E4/top-2 late-2,
+  and shared-residual E3/top-1 late-2 at quarter and full training-environment counts. The
+  headline is the shared-versus-dense OOD-test interaction across scale, with worst-batch and ID
+  interactions as secondary endpoints.
+- Added exact environment-set run identities, metadata audits, a one-command terminal table, and
+  architecture × scale contrasts. The complete local test suite passes. Launch target:
+  `substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling30_20260810` across all four 2xH100
+  containers after immutable commit sync and final SciServer preflight.
+
 ## 2026-08-10 — four-seed test conclusion: shared MoE matches efficiently, but does not beat dense
 
 - `shared_causality30_20260809` is 8/8 terminal. Seed-4 test accuracy is `38.165%` canonical

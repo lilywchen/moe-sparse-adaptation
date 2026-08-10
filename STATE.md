@@ -1,10 +1,45 @@
 # Current scientific state
 
-Last updated: 2026-08-09 EDT
+Last updated: 2026-08-10 EDT
 
 This is the compact source of truth for the current question, evidence, interpretation, and active
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
+
+## 2026-08-10 predeclared RxRx1 domain-count scaling wave
+
+The next experiment is `rxrx1_domain_scaling30_20260810`, a matched 2×4 factorial designed to
+answer whether the relative value of sparse adaptation changes with independent batch diversity.
+It is explicitly a **training-environment-count curve**, not a generic sample-size curve: adding
+experiments simultaneously adds fields and acquisition domains. Site-density and class-count
+scaling remain separate axes for later waves.
+
+The low-data point is a stable-hash, cell-stratified prefix of eight of the 33 training
+experiments: `[5, 2, 14, 12, 17, 15, 41, 46]`. Metadata audit shows 9,856 training fields, all
+1,139 perturbation classes (minimum seven examples per class), and all four cell types. The full
+point uses all 33 training experiments and 40,612 fields. OOD validation, OOD test, and ID
+evaluation sets are identical across the two points. The label task, native six-channel input,
+6→5 Cell-DINO mapping, initialization, optimizer, 30-epoch budget, terminal checkpoint rule,
+augmentations, and seed 5 are also fixed.
+
+| Scale | Original Cell-DINO | Dense E4, blocks 10–11 | Replacement E4/top-2 | Shared E3/top-1 |
+|---|---|---|---|---|
+| 8 train experiments / 9,856 fields | `quarter_original` | `quarter_dense_E4_late2` | `quarter_replace_E4k2_late2` | `quarter_shared_E3k1_late2` |
+| 33 train experiments / 40,612 fields | `full_original` | `full_dense_E4_late2` | `full_replace_E4k2_late2` | `full_shared_E3k1_late2` |
+
+This wave estimates the architecture × scale interaction
+`(shared − dense at full) − (shared − dense at quarter)` with OOD test accuracy as the headline,
+then worst-test-batch and ID accuracy. The replacement arm separates preserving the pretrained
+dense path from generic sparse capacity; original separates all expansion from ordinary
+fine-tuning. A positive interaction supports the data-starvation hypothesis even if shared remains
+slightly below dense at the current endpoint. A flat/negative interaction argues that more
+training batches alone will not rescue this MoE design. Subsequent intermediate scale points and
+seed replication are gated on this interaction rather than the best noisy cell.
+
+Implementation adds exact environment-set hashes to run identity, metadata-only manifest audits,
+and one-command status/aggregation with test-first paired contrasts. The full local suite passes.
+The intended result root is
+`substrate_rxrx1/cell_dino_cp5/rxrx1_domain_scaling30_20260810`.
 
 ## 2026-08-10 causality wave complete — shared MoE is efficient, but does not improve mean test accuracy
 
