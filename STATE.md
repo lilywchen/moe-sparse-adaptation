@@ -61,6 +61,14 @@ four seed-4 arms are queued inside the same healthy controllers. Tracking is loc
 W&B/HF credentials remain absent. Results persist at
 `substrate_rxrx1/cell_dino_cp5/shared_causality30_20260809`.
 
+Seed 3 is now terminal while seed 4 remains in progress. This is an interim readout, not the
+predeclared across-seed decision: canonical shared reaches `21.737%` OOD validation, matched
+dense `21.829%`, balance-zero shared `21.940%`, and frozen-router shared `21.342%`. Canonical
+shared therefore loses narrowly to dense by `0.091` points in this seed, balance zero beats
+canonical by `0.203`, and learned routing beats the frozen partition by `0.396`. The corresponding
+descriptive test scores are essentially tied (`38.409/38.418/38.441/38.136%`); seed 4 must decide
+whether any of these small directions replicate.
+
 ## 2026-08-09 larger-data substrate — a real cross-source JUMP task is now specified
 
 An audit of canonical JUMP-CP metadata at commit `016e865` replaces the vague "larger Cell

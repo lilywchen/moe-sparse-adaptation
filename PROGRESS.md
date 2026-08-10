@@ -1,5 +1,16 @@
 # Progress ledger
 
+## 2026-08-09 — seed 3 is terminal; the shared-over-dense effect does not repeat in this seed
+
+- Seed-3 OOD validation is `21.737%` canonical shared, `21.829%` matched dense, `21.940%`
+  balance-zero shared, and `21.342%` frozen-router shared. Canonical shared is `-0.091` points
+  versus dense, `-0.203` versus balance zero, and `+0.396` versus the frozen router.
+- Descriptive test scores are nearly tied at `38.409/38.418/38.441/38.136%`; worst-batch scores
+  are `9.713/9.426/9.221/9.016%` in the same order. No interpretation is promoted until the
+  predeclared seed-4 comparisons finish.
+- All four seed-4 jobs are healthy at epochs 3–5 across the two reserved GPU pairs. Fatal-log
+  scans are empty and no job was disturbed.
+
 ## 2026-08-09 — routing controls finish; fresh-seed causality wave is predeclared
 
 - `shared_routing30_20260809` is 8/8 terminal. The canonical learned token router remains the
