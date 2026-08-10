@@ -56,7 +56,15 @@ def test_manifest_and_report_join_three_protocol_matched_points(tmp_path, monkey
     monkeypatch.setattr(
         "scripts.sweep_rxrx1_domain_midpoint._dataset_audit",
         lambda _config: {"scales": {"quarter": {}, "midpoint": {}, "full": {}}})
+    monkeypatch.setattr(
+        "scripts.sweep_rxrx1_domain_midpoint._source_identity",
+        lambda: ("a" * 40, False))
     manifest = write_manifest(midpoint, rows)
+    assert manifest["source_git_commit"] == "a" * 40
+    assert manifest["source_git_dirty"] is False
+    assert all(spec["resolved_config"] for spec in manifest["runs"])
+    assert (manifest["compute_accounting"]["dense_E4_late2"]
+            ["estimated_active_ffn_flops_relative"] == 2.0)
     manifest["quarter_anchor_root"] = str(quarter)
     manifest["full_anchor_root"] = str(full)
     (midpoint / "wave_manifest.json").write_text(json.dumps(manifest))

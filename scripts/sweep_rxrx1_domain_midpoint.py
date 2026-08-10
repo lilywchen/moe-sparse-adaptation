@@ -49,6 +49,15 @@ WANDB_GROUP = "rxrx1-cell-dino-domain-midpoint30-20260810"
 HF_PREFIX = "rxrx1/cell_dino_cp5/rxrx1_domain_midpoint30_20260810"
 
 
+def _source_identity():
+    sha = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    dirty = bool(subprocess.check_output(
+        ["git", "status", "--porcelain", "--untracked-files=no"],
+        cwd=ROOT, text=True).strip())
+    return sha, dirty
+
+
 def wave_rows(config=CONFIG):
     environments = midpoint_environment_subset()
     rows = []
@@ -126,6 +135,7 @@ def write_manifest(out, rows, config=CONFIG):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     anchors = {(row[1], int(row[2])): row[4] for row in full_anchor_rows(config)}
+    source_sha, source_dirty = _source_identity()
     payload = {
         "schema_version": 1,
         "campaign": CAMPAIGN,
@@ -143,11 +153,26 @@ def write_manifest(out, rows, config=CONFIG):
         "headline_endpoints": ["acc_heldout", "worst_env_heldout", "active_ffn_params"],
         "primary_contrast": "slope of shared-minus-dense OOD test gap over log2(train experiments)",
         "stopping_rule": "exactly 30 epochs for every new arm; no adaptive extension",
+        "source_git_commit": source_sha,
+        "source_git_dirty": source_dirty,
+        "compute_accounting": {
+            "dense_E4_late2": {"total_params": 29493881,
+                                "active_ffn_params": 9454854,
+                                "estimated_active_ffn_flops_relative": 2.0},
+            "replace_E4k2_late2": {"total_params": 29494645,
+                                    "active_ffn_params": 4729346,
+                                    "estimated_active_ffn_flops_relative": 1.0},
+            "shared_E3k1_late2": {"total_params": 29493877,
+                                   "active_ffn_params": 4728578,
+                                   "estimated_active_ffn_flops_relative": 1.0},
+            "note": "Relative active FFN FLOPs use common token/sequence shapes; exact end-to-end FLOPs are not claimed. Terminal artifacts re-audit parameter counts.",
+        },
         "dataset_audit": _dataset_audit(config),
         "runs": [
             {"label": label, "scale": "midpoint", "arm": arm, "seed": seed,
              "run_id": run_id, "environment_subset": list(environments),
              "overrides": overrides, "variant": cfg["model"]["variant"],
+             "resolved_config": cfg,
              "full_anchor_run_id": anchors[(arm, int(seed))]}
             for label, arm, seed, environments, overrides, run_id, cfg in rows
         ],
