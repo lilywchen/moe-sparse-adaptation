@@ -8,6 +8,23 @@ experiment. `PROGRESS.md` remains the chronological ledger; older exploratory an
 
 ## 2026-08-10 RxRx3 plate-count curve: one-plate endpoint predeclared
 
+Launch gate is now closed and the endpoint is active. Immutable execution source
+`3f9aca5889b08d173775ea77ee460d944be28db4` lives at
+`/home/idies/workspace/Storage/lchen5/persistent/moe-sparse-adaptation-rxrx3-plate1-3f9aca5`.
+In SciServer Python 3.10 it passed entrypoint compilation, 17 focused RxRx3 loader/manifest/audit/
+sweeper tests, and all 344 regression tests. The real-data dry run reverified eight unique run IDs,
+two jobs on each of four shards, a clean exact-source manifest, 2,696/2,708/23,855 train/ID/OOD
+wells, strict 1/2/4/8 train-well nesting, fixed evaluation wells, the six-channel pixel gate, and
+zero pre-existing result artifacts.
+
+All four distinct 2xH100 containers were then proven free of GPU applications and experiment
+processes. The eight predeclared jobs launched two per container on GPUs 0/1 in local-first
+tracking mode. Eight distinct start lines and child PIDs were observed, the global status command
+shows all eight arms training at epoch 1 or 2, and a recursive launch-log scan found no traceback,
+OOM, kill, segmentation fault, or `rc=1` signature. Results and the one-command manifest/status
+view are under
+`substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_plate1_scale10_20260810`.
+
 The competence pilot passed, so the first honest RxRx3 scaling axis is now frozen. The scientific
 question is whether the OOD-test architecture gap changes as **train plates per experiment** grow
 from 1 to 2 to 4 to 8 while four guides per gene, 674 labels, 85 train experiments, 85 paired

@@ -1,5 +1,22 @@
 # Progress ledger
 
+## 2026-08-10 — one-plate RxRx3 endpoint launches on all eight H100s
+
+- Closed every predeclared launch gate at immutable source
+  `3f9aca5889b08d173775ea77ee460d944be28db4`: compilation, 17 focused RxRx3 tests, all 344
+  SciServer Python 3.10 tests, real-data manifest/pixel/config audit, collision-free dry run, exact
+  source identity, and zero prior result artifacts.
+- Proved four distinct 2xH100 containers free, then launched exactly eight jobs: original, dense
+  E4, replacement E4/top-2, and shared-residual E3/top-1 at seeds 1/2. Each container owns one
+  two-job shard with distinct GPU-0/GPU-1 starts and child PIDs.
+- The global one-command table already shows all eight rows training at epoch 1 or 2. Twelve logs
+  were fresh at first health check, and a recursive scan found no traceback, OOM, kill,
+  segmentation-fault, or nonzero-exit signature. Tracking is local-first because W&B/HF
+  credentials are absent; persistent artifacts remain authoritative.
+- Results/status:
+  `substrate_rxrx3_core/cell_dino_cp5/rxrx3_core_plate1_scale10_20260810`. This endpoint is not a
+  scaling conclusion; it must be joined to the frozen 8-plate anchor and later 2/4-plate points.
+
 ## 2026-08-10 — one-plate RxRx3 scaling endpoint frozen in code
 
 - Added a dedicated RxRx3 plate-count launcher that audits the full nested 1/2/4/8-manifest curve
