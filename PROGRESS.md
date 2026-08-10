@@ -18,6 +18,12 @@
   specification. The real metadata build succeeds with 2,696/5,376/10,706/21,404 training wells
   and fixed 2,708/23,855 ID-validation/OOD-test wells. Pixel staging and exact six-channel joins
   remain the launch gate; licensed manifests and data stay outside git.
+- Closed that gate in the same heartbeat: staged exactly 35 image shards totaling
+  17,390,577,507 bytes, exhaustively validated 1,335,606 channel keys/222,601 wells, resolved all
+  47,967 manifest-union wells with one unique channel 1--6 each, and decoded one 512×512 grayscale
+  image from every shard without error. Source `e3a6f61` passes 14 focused/native-channel tests in
+  SciServer Python 3.10. The next blocker is the Parquet-backed loader and predeclared pilot, not
+  storage or data integrity.
 
 ## 2026-08-10 — three-point curve completes; no shared-over-dense scaling crossover
 

@@ -99,6 +99,15 @@ Only after this gate should the same four matched Cell-DINO arms—original, den
 replacement sparse MoE, and shared-residual MoE—be predeclared. OOD test and worst-test-
 experiment accuracy are headline outcomes; checkpointing uses the fixed ID-validation plates.
 
+## Current staged status (2026-08-10)
+
+The image gate now passes on SciServer. All 35 shards are staged at exactly 17,390,577,507 bytes.
+The audit reads all 1,335,606 keys, finds 222,601 unique wells with exactly one channel 1–6 each,
+resolves all 47,967 wells used by the union of the seven manifests, and decodes one 512×512
+grayscale image from every shard without error. The remaining pre-launch work is a tested
+Parquet-backed loader and frozen four-arm pilot configuration; no pixel acquisition blocker
+remains.
+
 ## License and provenance
 
 RxRx3-core is distributed under Recursion's current End User License Agreement, not CC0. It

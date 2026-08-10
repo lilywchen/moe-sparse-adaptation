@@ -42,16 +42,24 @@ fixed, which changes guide diversity/examples per class while holding plate doma
 axes directly test whether sparse capacity benefits from more independently repeated plates or
 from more biological guides, without calling a class-count confound domain scaling.
 
-`scripts/build_rxrx3_core_gene_manifests.py` and
+`scripts/build_rxrx3_core_gene_manifests.py`, `scripts/audit_rxrx3_core_images.py`, and
 `docs/rxrx3_core_scaling_substrate.md` freeze the split, curves, channel map, hashes, and pixel
-gate. The real-metadata build succeeds and produces deterministic nested manifests, but generated
-manifests remain outside git because they are licensed data derivatives. Training is still blocked
-until the 35 image shards are staged and every selected well resolves to exactly six unique channel
-rows with the expected dimensions/dtype/order. Recursion's current EULA permits this research use
+gate. Generated manifests remain outside git because they are licensed data derivatives. The
+image-only release is now staged at
+`/home/idies/workspace/Storage/lchen5/persistent/datasets/rxrx3-core`: all 35 shards are present at
+the exact expected 17,390,577,507 bytes. The exhaustive audit passes all checks over 1,335,606
+keys and 222,601 wells: every well has one each of channels 1--6, all 47,967 wells in the union of
+the seven manifests resolve, and one decoded image from every shard is 512×512 grayscale with no
+decode error. Source `e3a6f61` compiles and passes 14 focused plus native-channel regression tests
+in the SciServer Python 3.10 environment.
+
+The data/acquisition gate is therefore closed. The remaining launch blocker is implementation and
+testing of the Parquet-backed six-channel dataset loader, exact resolved-config matching, and the
+four-arm predeclared pilot—not missing pixels. Recursion's current EULA permits this research use
 subject to attribution and restrictions, but its derivative/share-alike terms mean checkpoints
-cannot be published under an incompatible license. All four SciServer containers were rechecked
-at zero experiment processes and zero GPU compute applications; persistent storage reports ample
-headroom for the image-only download. No GPU job was launched before the image gate.
+cannot be published under an incompatible license. All four SciServer containers remain at zero
+experiment processes and zero GPU compute applications; no GPU job was launched before the loader
+and experiment correctness gates.
 
 ## 2026-08-10 three-point RxRx1 conclusion: scale strengthens capacity, not shared-over-dense
 
