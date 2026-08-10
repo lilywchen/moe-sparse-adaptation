@@ -1,0 +1,38 @@
+_base_: ccas_base.yaml
+dataset: rxrx3_core
+rxrx3_data_dir: /home/idies/workspace/Storage/lchen5/persistent/datasets/rxrx3-core/data
+rxrx3_manifest: /home/idies/workspace/Storage/lchen5/persistent/datasets/rxrx3-core/manifests/rxrx3_core_gene_plate_8.tsv
+rxrx3_index_dir: /home/idies/workspace/Storage/lchen5/persistent/datasets/rxrx3-core/index_cache
+img_size: 128
+stage: 3
+model:
+  num_classes: 674
+  backbone_source: cell_dino
+  hub_model: cell_dino_cp_vits8
+  hub_repo_dir: /home/idies/workspace/Storage/lchen5/persistent/vendor/dinov2
+  expected_hub_repo_commit: 7764ea0f912e53c92e82eb78a2a1631e92725fc8
+  checkpoint_path: /home/idies/workspace/Storage/lchen5/persistent/models/cell_dino/cell_dino_vits8_pretrain_cp-37d20e9c.pth
+  input_channels: 5
+  feature_pool: cls_patch_mean
+  pretrained: true
+  drop_path: 0.1
+  variant: original
+  freeze_backbone: false
+  placement: middle
+  routing_unit: token
+  geometry: cosine
+  pressure: canonical
+  n_experts: 8
+  top_k: 1
+train:
+  epochs: 10
+  batch_size: 64
+  num_workers: 8
+  optim: {name: adamw, lr: 1.0e-4, weight_decay: 0.05}
+  warmup_epochs: 1
+  llrd: 1.0
+  rand_resized_crop: false
+  rxrx3_channel_layout: cell_dino_native_cp5
+analysis:
+  record_train_accuracy: true
+  run_mechanism: false

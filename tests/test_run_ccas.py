@@ -115,3 +115,21 @@ def test_stage3_publication_requires_finite_test_and_keeps_milestones_blind(tmp_
     result["stage"] = 2
     with pytest.raises(ValueError, match="stage >= 3"):
         validate_publishable_artifacts(result, path)
+
+
+def test_stage3_publication_accepts_frozen_id_validation_and_matching_milestone(tmp_path):
+    result = {
+        "run_id": "rxrx3", "stage": 3, "selection_split": "id_val",
+        "test_evaluated": True, "acc_selection": 0.3, "acc_val": 0.3,
+        "worst_env_val": 0.2, "acc_within": 0.3, "acc_heldout": 0.25,
+        "worst_env_heldout": 0.1, "per_env_heldout": {2: 0.25},
+        "per_env_n_heldout": {2: 10},
+    }
+    milestone = {
+        "run_id": "rxrx3", "epoch": 10, "selection_split": "id_val",
+        "test_evaluated": False, "acc_train": 0.5, "acc_within": 0.3,
+        "acc_selection": 0.3, "worst_env_val": 0.2,
+    }
+    path = tmp_path / "rxrx3.jsonl"
+    path.write_text(json.dumps(milestone) + "\n")
+    assert validate_publishable_artifacts(result, path) == [milestone]

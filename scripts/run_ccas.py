@@ -32,6 +32,7 @@ HELDOUT_RESULT_FIELDS = (
     "acc_heldout", "worst_env_heldout", "per_env_heldout",
     "per_env_n_heldout", "degradation_gap_test",
 )
+ALLOWED_SELECTION_SPLITS = ("ood_val", "id_val")
 
 
 def git_info():
@@ -311,8 +312,10 @@ def normalize_withheld_ood_fields(result):
 
 def validate_stage1_artifacts(result, milestone_path=None):
     """Fail closed before publishing any selection-stage artifact externally."""
-    if result.get("selection_split") != "ood_val" or result.get("test_evaluated") is not False:
-        raise ValueError("publish requires selection_split=ood_val and test_evaluated=false")
+    selection_split = result.get("selection_split")
+    if selection_split not in ALLOWED_SELECTION_SPLITS or result.get("test_evaluated") is not False:
+        raise ValueError(
+            "publish requires a declared validation split and test_evaluated=false")
     if any(result.get(key) is not None for key in HELDOUT_RESULT_FIELDS):
         raise ValueError("publish requires all OOD-test metrics to remain null")
     required = ("acc_selection", "acc_val", "worst_env_val", "acc_within")
@@ -325,7 +328,8 @@ def validate_stage1_artifacts(result, milestone_path=None):
         for row in milestones:
             if row.get("run_id") != result.get("run_id"):
                 raise ValueError("milestone run identity mismatch")
-            if row.get("selection_split") != "ood_val" or row.get("test_evaluated") is not False:
+            if (row.get("selection_split") != selection_split
+                    or row.get("test_evaluated") is not False):
                 raise ValueError("milestone violates OOD-test blindness")
             for key in ("acc_train", "acc_within", "acc_selection", "worst_env_val"):
                 if not math.isfinite(float(row[key])):
@@ -335,8 +339,9 @@ def validate_stage1_artifacts(result, milestone_path=None):
 
 def validate_publishable_artifacts(result, milestone_path=None):
     """Validate either a test-blind selection run or an explicitly declared stage-3 run."""
-    if result.get("selection_split") != "ood_val":
-        raise ValueError("publish requires selection on ood_val")
+    selection_split = result.get("selection_split")
+    if selection_split not in ALLOWED_SELECTION_SPLITS:
+        raise ValueError("publish requires selection on a declared validation split")
     required = ("acc_selection", "acc_val", "worst_env_val", "acc_within")
     if any(not math.isfinite(float(result[key])) for key in required):
         raise ValueError("publish requires finite selection/ID metrics")
@@ -362,7 +367,8 @@ def validate_publishable_artifacts(result, milestone_path=None):
         for row in milestones:
             if row.get("run_id") != result.get("run_id"):
                 raise ValueError("milestone run identity mismatch")
-            if row.get("selection_split") != "ood_val" or row.get("test_evaluated") is not False:
+            if (row.get("selection_split") != selection_split
+                    or row.get("test_evaluated") is not False):
                 raise ValueError("milestones must remain OOD-test blind")
             for key in ("acc_train", "acc_within", "acc_selection", "worst_env_val"):
                 if not math.isfinite(float(row[key])):
@@ -555,6 +561,10 @@ def main():
 
     train_loader, test_within, test_heldout, audit_loader = make_loaders(cfg)
     val_loader = make_val_loader(cfg)
+    validation_split = (
+        getattr(val_loader, "selection_split_name", "ood_val")
+        if val_loader is not None else None
+    )
 
     model = build_ccas(cfg).to(device)
     cap = model.capacity
@@ -846,7 +856,7 @@ def main():
                 "acc_within": m_id, "worst_env_within": m_worst_id,
                 "acc_selection": m_val, "acc_val": m_val, "worst_env_val": m_worst_val,
                 "per_env_val": m_per_env, "per_env_n_val": m_per_env_n,
-                "selection_split": "ood_val", "test_evaluated": False,
+                "selection_split": validation_split, "test_evaluated": False,
                 "classification_objective": objective,
             }
             if epoch_number in checkpoint_epochs:
@@ -893,7 +903,7 @@ def main():
         # split, which is recorded explicitly so the contamination is visible in the JSON.
         sel_loader, selection_split = test_heldout, "ood_test(no_val_split)"
     else:
-        sel_loader, selection_split = val_loader, "ood_val"
+        sel_loader, selection_split = val_loader, validation_split
 
     acc_val, worst_val, per_env_val, per_env_n_val = evaluate(
         model, sel_loader, device, group_source=group_source)
