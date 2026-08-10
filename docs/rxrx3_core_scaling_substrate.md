@@ -76,6 +76,25 @@ Before a GPU launch:
    and joint geometric transforms.
 5. Keep all raw data, generated manifests, checkpoints, and offline tracking outside git.
 
+After staging, run the exact join/pixel gate over every generated manifest:
+
+```bash
+python scripts/audit_rxrx3_core_images.py \
+  --data-dir /path/to/rxrx3-core/data \
+  --manifest /path/to/manifests/rxrx3_core_gene_plate_1.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_plate_2.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_plate_4.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_plate_8.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_guides_1.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_guides_2.tsv \
+  --manifest /path/to/manifests/rxrx3_core_gene_guides_4.tsv \
+  --output /path/to/rxrx3_core_image_audit.json
+```
+
+The audit streams only channel keys for the exhaustive join check and decodes one image from every
+shard. It fails on wrong shard count/bytes, malformed or duplicate keys, any well without channels
+1–6, any unresolved manifest well, or any decoded sample that is not 512×512 grayscale.
+
 Only after this gate should the same four matched Cell-DINO arms—original, dense widening,
 replacement sparse MoE, and shared-residual MoE—be predeclared. OOD test and worst-test-
 experiment accuracy are headline outcomes; checkpointing uses the fixed ID-validation plates.
