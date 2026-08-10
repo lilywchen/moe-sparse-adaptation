@@ -6,6 +6,66 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 three-seed domain-scaling conclusion: preservation scales; shared does not beat dense
+
+The seed-1/2 quarter-scale replication is 8/8 terminal and valid, and its exact-protocol full
+anchors are complete. A historical config-audit false positive was repaired: the old artifacts
+predate `model.router_frozen`, whose missing value is semantically the same as the current default
+`false`. The audit still rejects `true` and every other unexpected drift. Commit `2a6a06e` passes
+13 focused and all 316 SciServer Python 3.10 tests; the final aggregate reports all configs and
+artifacts passing, eight clean launcher exits, and no fatal signature.
+
+Paired seed and test-batch uncertainty over seeds 1, 2, and 5 changes the interpretation. Values
+below are OOD-test percentage points for `(full architecture gap) - (quarter architecture gap)`:
+
+| Contrast | Quarter gap | Full gap | Interaction | Seed 95% CI | Seed+batch 95% CI | Positive test batches |
+|---|---:|---:|---:|---:|---:|---:|
+| Shared residual − dense widening | +0.402 | +0.042 | **−0.360** | [−0.784, +0.174] | [−0.977, +0.244] | 28.6% |
+| Shared residual − replacement MoE | +0.215 | +1.005 | **+0.790** | [+0.444, +0.996] | [+0.315, +1.212] | 100.0% |
+| Dense widening − original Cell-DINO | +0.167 | +2.085 | **+1.919** | [+1.754, +2.059] | [+1.384, +2.449] | 100.0% |
+
+The completed evidence supports two effects and rejects one hoped-for story. More training scale
+reliably increases the value of added capacity, and retaining the pretrained dense FFN path lets
+shared-residual MoE scale substantially better than replacement sparse upcycling. However, shared
+does **not** scale better than matched dense widening on mean OOD test: its small advantage is
+larger in the data-poor endpoint and disappears at full scale. The defensible result is therefore
+near-dense performance at roughly half the active FFN parameters plus better preservation than
+traditional replacement upcycling—not a performance win over dense. Analysis commit `0724202`
+passes 9 focused and all 319 SciServer tests and writes 20,000-draw paired seed/batch bootstrap
+reports into `rxrx1_domain_scaling_replicate30_20260810`.
+
+## 2026-08-10 predeclared 16-experiment midpoint wave
+
+RxRx1's WILDS training metadata has only site value `1` for all 40,612 fields, so it cannot support
+a genuine within-experiment site/replicate-density curve. A one-site subset would equal the full
+training set and would not change examples per expert. The next honest in-dataset step is therefore
+a third point on the already-defined **training-experiment-count** curve, not a mislabeled density
+experiment.
+
+Campaign `rxrx1_domain_midpoint30_20260810` contains exactly eight new runs: original Cell-DINO,
+dense E4 late-2, replacement E4/top-2 late-2, and shared-residual E3/top-1 late-2 at seeds 1 and 2.
+The midpoint is the deterministic, outcome-independent 16-environment nested prefix
+`[5,2,4,14,12,17,15,13,21,20,22,41,35,37,46,47]`. It strictly contains the frozen eight-
+environment point and is strictly contained in the 33-environment endpoint. The SciServer metadata
+audit finds 19,712 fields/wells/sites, all 1,139 classes, at least 15 examples per class, and all
+four cell types; per-class counts are 15/16/68 (minimum/median/maximum). OOD evaluation domains,
+label set, six-to-five channel adapter, optimizer,
+30-epoch checkpoint rule, architecture controls, and seeds are fixed.
+
+| Seed | Original | Dense E4 late-2 | Replacement E4/top-2 | Shared E3/top-1 |
+|---:|---|---|---|---|
+| 1 | `midpoint_original_s1` | `midpoint_dense_E4_late2_s1` | `midpoint_replace_E4k2_late2_s1` | `midpoint_shared_E3k1_late2_s1` |
+| 2 | `midpoint_original_s2` | `midpoint_dense_E4_late2_s2` | `midpoint_replace_E4k2_late2_s2` | `midpoint_shared_E3k1_late2_s2` |
+
+The headline estimand is the per-seed slope of the shared-minus-dense OOD-test gap over
+`log2(8,16,33)` training experiments; worst-test-batch is co-headline. Shared-minus-replacement
+and dense-minus-original locate preservation and generic-capacity effects. The wave stops after
+all eight terminal epoch-30 evaluations and no topology is added adaptively. It improves curve
+shape and interaction estimation, but experiment count, fields, and optimizer updates still
+co-vary; it does not by itself identify which of those three is causal. The one-command status
+view joins the new rows to the completed quarter/full anchors and fails on resolved-config or
+artifact drift.
+
 ## 2026-08-10 seed-5 domain-scaling wave complete: weak positive test interaction, mixed endpoints
 
 All eight predeclared artifacts are terminal and valid. The global audit found eight manifest

@@ -21,6 +21,10 @@ TRAIN_EXPERIMENTS_BY_CELL = {
 # Hamilton-style proportional allocation with at least one experiment from each cell type.  The
 # quarter-data point therefore holds cell-type coverage fixed while reducing independent batches.
 QUARTER_QUOTAS = {0: 2, 1: 4, 2: 1, 3: 1}
+# Proportional Hamilton-style allocation rounded to 16 environments while preserving at least
+# two experiments from every cell type.  Because both endpoints use the same stable ordering,
+# the eight-environment point is a strict subset of this midpoint.
+MIDPOINT_QUOTAS = {0: 3, 1: 8, 2: 3, 3: 2}
 
 
 def _stable_order(cell_type: int, experiments, seed: int = DESIGN_SEED):
@@ -37,6 +41,15 @@ def quarter_environment_subset(seed: int = DESIGN_SEED):
     for cell_type in sorted(TRAIN_EXPERIMENTS_BY_CELL):
         ordered = _stable_order(cell_type, TRAIN_EXPERIMENTS_BY_CELL[cell_type], seed)
         selected.extend(ordered[:QUARTER_QUOTAS[cell_type]])
+    return tuple(selected)
+
+
+def midpoint_environment_subset(seed: int = DESIGN_SEED):
+    """Return the fixed 16-experiment nested prefix, independent of labels and outcomes."""
+    selected = []
+    for cell_type in sorted(TRAIN_EXPERIMENTS_BY_CELL):
+        ordered = _stable_order(cell_type, TRAIN_EXPERIMENTS_BY_CELL[cell_type], seed)
+        selected.extend(ordered[:MIDPOINT_QUOTAS[cell_type]])
     return tuple(selected)
 
 

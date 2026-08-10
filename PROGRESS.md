@@ -1,5 +1,28 @@
 # Progress ledger
 
+## 2026-08-10 — replication overturns the one-seed scaling hint; midpoint predeclared
+
+- All eight seed-1/2 quarter-scale replications are terminal with clean exits and valid artifacts.
+  Paired seeds 1/2/5 give a shared-minus-dense OOD-test scaling interaction of `-0.360` points
+  (seed+batch 95% CI `[-0.977,+0.244]`), so there is no evidence that shared MoE scales better
+  than dense widening. The small shared advantage shrinks from `+0.402` at quarter scale to
+  `+0.042` at full scale.
+- Two effects replicate strongly: shared-minus-replacement interaction is `+0.790` points
+  (`[+0.315,+1.212]` hierarchical CI), and dense-minus-original is `+1.919`
+  (`[+1.384,+2.449]`). More scale enables capacity, while preserving the pretrained dense path
+  matters; shared matches dense at about half active FFN parameters but does not outperform it.
+- Repaired a historical config-audit false positive by normalizing missing `router_frozen` to its
+  old/default `false` behavior while continuing to reject `true`. Commits `2a6a06e` and `0724202`
+  pass their focused and complete local/SciServer regression suites; the latter adds 20,000-draw
+  paired seed and hierarchical test-batch uncertainty.
+- Audited the proposed site-density axis and found WILDS RxRx1 site metadata is constant (`1`) for
+  all 40,612 training fields, so no fake site curve will be run. Predeclared exactly eight
+  16-experiment midpoint jobs (four matched architectures × seeds 1/2) to turn the existing
+  endpoint comparison into a three-point nested domain-count curve. The midpoint has 19,712
+  fields, all 1,139 classes, minimum 15 examples/class, and all four cell types. It estimates
+  architecture-gap slopes over `log2(8,16,33)` while keeping the domain/field/update confound
+  explicit.
+
 ## 2026-08-10 — seed-5 scaling wave completes; seed-1/2 replication predeclared
 
 - `rxrx1_domain_scaling30_20260810` is 8/8 terminal and artifact-valid. Shared versus dense is
