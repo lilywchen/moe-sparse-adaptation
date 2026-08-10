@@ -129,6 +129,25 @@ def test_shared_residual_and_replacement_have_matched_total_and_active_banks():
     assert abs(shared.active_ffn_params - replacement.active_ffn_params) < D * 2
 
 
+def test_e1_e3_and_dense_e2_match_inference_active_ffn_budget():
+    reports = []
+    for variant, experts, estimator in (
+            ("shared_moe", 1, "selected_st"),
+            ("shared_moe", 3, "selected_st"),
+            ("shared_moe", 3, "full_st"),
+            ("dense_wide", 2, "selected_st")):
+        torch.manual_seed(0)
+        _, report = convert_blocks(
+            TinyViT(), variant, block_indices=[6, 7], n_experts=experts, top_k=1,
+            routing_estimator=estimator)
+        reports.append(report)
+    active = [report.active_ffn_params for report in reports]
+    # On this deliberately tiny fixture router parameters are a larger fraction than in ViT-S;
+    # the production manifest enforces the stricter 0.1% gate on the real model.
+    assert max(active) / min(active) < 1.01
+    assert reports[1].active_ffn_params == reports[2].active_ffn_params
+
+
 def test_mixstyle_tokens_preserves_shape_and_is_eval_opt_in():
     torch.manual_seed(0)
     mixed = mixstyle_tokens(x=torch.randn(6, 5, 8), probability=1.0, alpha=0.1)
@@ -152,6 +171,100 @@ def test_selected_st_top1_receives_task_gradient_and_preserves_forward(mlp, x, r
     grads = torch.autograd.grad(loss, tuple(moe.router.parameters()), allow_unused=False)
     norm = torch.stack([grad.float().square().sum() for grad in grads]).sum().sqrt()
     assert float(norm) > 1e-6, "classification loss must train a selected-ST top-1 router"
+
+
+@pytest.mark.parametrize("routing_unit", ["image", "token"])
+def test_full_st_has_hard_forward_and_complete_soft_backward(mlp, x, routing_unit):
+    """The full-ST surrogate must compare all experts without changing hard inference output."""
+    torch.manual_seed(17)
+    moe = MoEFFN(
+        mlp, n_experts=3, top_k=1, routing_unit=routing_unit,
+        routing_estimator="full_st", sym_break=0.0,
+    )
+    with torch.no_grad():
+        for index, expert in enumerate(moe.experts):
+            expert.fc2.weight.add_(0.03 * index)
+    moe.train()
+    flat = x.reshape(B * T, D)
+    decision_input = x.mean(dim=1) if routing_unit == "image" else flat
+    logits = moe.router(decision_input)
+    probabilities = logits.softmax(dim=-1)
+    ids = probabilities.argmax(dim=-1)
+    if routing_unit == "image":
+        probabilities = probabilities.repeat_interleave(T, dim=0)
+        ids = ids.repeat_interleave(T, dim=0)
+    all_outputs = torch.stack([expert(flat) for expert in moe.experts], dim=1)
+    expected_hard = all_outputs.gather(
+        1, ids[:, None, None].expand(-1, 1, D)
+    ).squeeze(1).reshape_as(x)
+    target = torch.randn_like(x)
+    actual = moe(x)
+    assert torch.allclose(actual, expected_hard, atol=1e-6)
+    actual_parameters = tuple(moe.router.parameters()) + tuple(moe.experts.parameters())
+    actual_gradients = torch.autograd.grad((actual * target).sum(), actual_parameters)
+    flat = x.reshape(B * T, D)
+    decision_input = x.mean(dim=1) if routing_unit == "image" else flat
+    probabilities = moe.router(decision_input).softmax(dim=-1)
+    if routing_unit == "image":
+        probabilities = probabilities.repeat_interleave(T, dim=0)
+    all_outputs = torch.stack([expert(flat) for expert in moe.experts], dim=1)
+    soft_reference = (probabilities.unsqueeze(-1) * all_outputs).sum(dim=1).reshape_as(x)
+    reference_gradients = torch.autograd.grad((soft_reference * target).sum(), actual_parameters)
+    for actual_gradient, reference_gradient in zip(actual_gradients, reference_gradients):
+        assert torch.allclose(actual_gradient, reference_gradient, atol=1e-6, rtol=1e-5)
+
+
+def test_full_st_router_gradient_is_zero_for_identical_experts(mlp, x):
+    torch.manual_seed(23)
+    moe = MoEFFN(
+        mlp, n_experts=3, top_k=1, routing_estimator="full_st", sym_break=0.0
+    ).double()
+    inputs = x.double()
+    loss = (moe(inputs) * torch.randn_like(inputs)).sum()
+    gradients = torch.autograd.grad(loss, tuple(moe.router.parameters()))
+    norm = torch.stack([gradient.float().square().sum() for gradient in gradients]).sum().sqrt()
+    assert float(norm) < 1e-10
+
+
+def test_full_st_trains_every_zero_initialized_residual_expert(mlp, x):
+    torch.manual_seed(29)
+    shared = SharedResidualMoEFFN(mlp, n_experts=3, top_k=1, routing_estimator="full_st")
+    loss = (shared(x) - torch.randn_like(x)).square().mean()
+    loss.backward()
+    norms = [float(expert.fc2.weight.grad.norm()) for expert in shared.experts]
+    assert min(norms) > 0.0
+    assert shared.last["training_all_experts_active"] is True
+
+
+def test_full_st_evaluation_executes_only_the_selected_expert(mlp, x):
+    class CountingExpert(nn.Module):
+        def __init__(self, base):
+            super().__init__()
+            self.base, self.calls = base, 0
+
+        def forward(self, value):
+            self.calls += 1
+            return self.base(value)
+
+    class FixedRouter(nn.Module):
+        def forward(self, value):
+            logits = value.new_full((value.shape[0], 3), -20.0)
+            logits[:, 1] = 20.0
+            return logits
+
+    shared = SharedResidualMoEFFN(mlp, n_experts=3, top_k=1, routing_estimator="full_st")
+    shared.experts = nn.ModuleList([CountingExpert(expert) for expert in shared.experts])
+    shared.router = FixedRouter()
+    shared.eval()
+    with torch.no_grad():
+        shared(x)
+    assert [expert.calls for expert in shared.experts] == [0, 1, 0]
+    assert shared.last["training_all_experts_active"] is False
+
+
+def test_full_st_rejects_top_k_greater_than_one(mlp):
+    with pytest.raises(ValueError, match="requires top_k=1"):
+        SharedResidualMoEFFN(mlp, n_experts=3, top_k=2, routing_estimator="full_st")
 
 
 def test_routing_estimator_rejects_unknown_value(mlp):

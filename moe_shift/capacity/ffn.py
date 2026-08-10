@@ -25,6 +25,40 @@ from .balance import global_lbl, within_environment_lbl, z_loss
 from .routers import Router
 
 
+ROUTING_ESTIMATORS = ("selected_st", "full_st", "legacy_renorm")
+
+
+def _full_soft_backward_top1(flat: torch.Tensor, probs: torch.Tensor,
+                             hard_ids: torch.Tensor, experts: nn.ModuleList) -> torch.Tensor:
+    """Hard top-1 forward with the complete soft mixture as its backward surrogate.
+
+    ``selected_st`` only differentiates the probability of the already-selected expert. It can
+    therefore give the router a task gradient even when every expert computes the same function,
+    and it never compares that expert with its counterfactual alternatives. This estimator uses
+    the actual hard expert output in the forward pass, but differentiates the full soft mixture::
+
+        y = y_soft + stop_gradient(y_hard - y_soft)
+
+    Consequently the router gradient is zero when all experts are functionally identical, and
+    becomes a comparison between expert outputs once they differ. All experts receive the soft
+    surrogate's training gradient; evaluation remains genuinely sparse and does not call this
+    helper. The extra training compute is intentional and is recorded separately by the runner.
+    """
+    if flat.ndim != 2 or probs.ndim != 2 or hard_ids.ndim != 1:
+        raise ValueError("full-ST expects flat=[N,C], probs=[N,E], hard_ids=[N]")
+    if probs.shape[0] != flat.shape[0] or hard_ids.shape[0] != flat.shape[0]:
+        raise ValueError("full-ST routing decisions must align with flattened tokens")
+    if probs.shape[1] != len(experts):
+        raise ValueError("full-ST probability width must equal the expert count")
+
+    outputs = torch.stack([expert(flat).to(flat.dtype) for expert in experts], dim=1)
+    soft = (probs.unsqueeze(-1) * outputs).sum(dim=1)
+    hard = outputs.gather(
+        1, hard_ids[:, None, None].expand(-1, 1, outputs.shape[-1])
+    ).squeeze(1)
+    return soft + (hard - soft).detach()
+
+
 def _mlp_parts(mlp: nn.Module):
     """Pull (fc1, act, fc2) out of a timm Mlp (or anything with that shape)."""
     fc1, fc2 = getattr(mlp, "fc1", None), getattr(mlp, "fc2", None)
@@ -106,6 +140,8 @@ class MoEFFN(nn.Module):
     routing_estimator:
         "selected_st"  -> top-1 is exactly one in the forward pass but carries the selected
                           softmax probability's gradient (function-preserving straight-through)
+        "full_st"      -> top-1 in the forward pass and the complete soft expert mixture in the
+                          backward pass; dense during training, sparse during evaluation
         "legacy_renorm" -> historical top-k renormalisation; retained only to reproduce old runs
     """
 
@@ -119,10 +155,12 @@ class MoEFFN(nn.Module):
             balance = "within_environment"
         if balance not in ("global", "within_environment"):
             raise ValueError(f"balance must be global|within_environment, got {balance!r}")
-        if routing_estimator not in ("selected_st", "legacy_renorm"):
+        if routing_estimator not in ROUTING_ESTIMATORS:
             raise ValueError(
-                "routing_estimator must be selected_st|legacy_renorm, "
+                "routing_estimator must be selected_st|full_st|legacy_renorm, "
                 f"got {routing_estimator!r}")
+        if routing_estimator == "full_st" and int(top_k) != 1:
+            raise ValueError("routing_estimator=full_st requires top_k=1")
         fc1, _, _ = _mlp_parts(mlp)
         self.n_experts, self.top_k = n_experts, top_k
         self.routing_unit, self.balance = routing_unit, balance
@@ -163,24 +201,33 @@ class MoEFFN(nn.Module):
 
         probs = logits.softmax(dim=-1)
         topv, topi = probs.topk(self.top_k, dim=-1)
+        full_st_training = self.training and self.routing_estimator == "full_st"
         if self.top_k == 1 and self.routing_estimator == "selected_st":
             # The historical ``topv / topv.sum()`` makes a top-1 gate identically one, so the
             # task loss cannot train the router through the hard expert choice.  This estimator
             # remains exactly one in the forward pass (and therefore preserves the pretrained
             # FFN at upcycling) while using d(topv)/d(logits) in the backward pass.
             topv = topv + (torch.ones_like(topv) - topv).detach()
-        else:
+        elif not full_st_training:
             topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
         self.last = {"logits": logits, "probs": probs, "assign": topi[:, 0].detach(),
                      "env": env_dec, "tokens_per_image": T,
-                     "routing_estimator": self.routing_estimator}
+                     "routing_estimator": self.routing_estimator,
+                     "training_all_experts_active": full_st_training}
 
         flat = x.reshape(B * T, C)
         if self.routing_unit == "image":                 # expand per-image choice to its tokens
             idx = topi.repeat_interleave(T, dim=0)
             wts = topv.repeat_interleave(T, dim=0)
+            decision_probs = probs.repeat_interleave(T, dim=0)
         else:
             idx, wts = topi, topv
+            decision_probs = probs
+
+        if full_st_training:
+            out = _full_soft_backward_top1(flat, decision_probs, idx[:, 0], self.experts)
+            out = out.reshape(B, T, C)
+            return out.reshape(orig) if len(orig) == 4 else out
 
         out = torch.zeros_like(flat)
         for slot in range(self.top_k):
@@ -259,10 +306,12 @@ class SharedResidualMoEFFN(nn.Module):
             balance = "within_environment"
         if balance not in ("global", "within_environment"):
             raise ValueError(f"balance must be global|within_environment, got {balance!r}")
-        if routing_estimator not in ("selected_st", "legacy_renorm"):
+        if routing_estimator not in ROUTING_ESTIMATORS:
             raise ValueError(
-                "routing_estimator must be selected_st|legacy_renorm, "
+                "routing_estimator must be selected_st|full_st|legacy_renorm, "
                 f"got {routing_estimator!r}")
+        if routing_estimator == "full_st" and int(top_k) != 1:
+            raise ValueError("routing_estimator=full_st requires top_k=1")
         if int(n_experts) < 1 or not 1 <= int(top_k) <= int(n_experts):
             raise ValueError("shared residual MoE requires 1 <= top_k <= n_experts")
 
@@ -332,22 +381,33 @@ class SharedResidualMoEFFN(nn.Module):
 
         probs = logits.softmax(dim=-1)
         topv, topi = probs.topk(self.top_k, dim=-1)
+        full_st_training = self.training and self.routing_estimator == "full_st"
         if self.top_k == 1 and self.routing_estimator == "selected_st":
             topv = topv + (torch.ones_like(topv) - topv).detach()
-        else:
+        elif not full_st_training:
             topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
         self.last = {
             "logits": logits, "probs": probs, "assign": topi[:, 0].detach(),
             "env": env_dec, "tokens_per_image": T,
             "routing_estimator": self.routing_estimator,
+            "training_all_experts_active": full_st_training,
         }
 
         flat = tokens.reshape(B * T, C)
         if self.routing_unit == "image":
             idx = topi.repeat_interleave(T, dim=0)
             wts = topv.repeat_interleave(T, dim=0)
+            decision_probs = probs.repeat_interleave(T, dim=0)
         else:
             idx, wts = topi, topv
+            decision_probs = probs
+
+        if full_st_training:
+            correction = _full_soft_backward_top1(flat, decision_probs, idx[:, 0], self.experts)
+            correction = correction.reshape(B, T, C)
+            if len(orig) == 4:
+                correction = correction.reshape(orig)
+            return shared_out + correction
 
         correction = torch.zeros_like(flat)
         for slot in range(self.top_k):

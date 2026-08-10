@@ -6,6 +6,66 @@ This is the compact source of truth for the current question, evidence, interpre
 experiment. `PROGRESS.md` remains the chronological ledger; older exploratory analyses remain in
 `analysis/`.
 
+## 2026-08-10 conditionality audit: one implementation repair and one bounded salvage gate
+
+The RxRx3 one-plate endpoint is terminal. Two-seed mean train/ID/OOD-test accuracy is
+`2.939/1.126/0.321%` original, `3.795/1.163/0.321%` dense E4, `3.888/1.348/0.371%`
+replacement E4/top-2, and `3.646/1.071/0.335%` shared E3/top-1; every worst held-out
+experiment remains zero. Joined to the completed eight-plate anchor, this is a floor effect rather
+than evidence for or against an architecture-by-plate interaction. More importantly, RxRx3-core
+places nearly every gene in only one supervised train experiment. Its plate curve changes fields
+and plates *within that experiment*; it cannot identify whether learned conditional computation
+generalizes across repeated train environments for the same label.
+
+A source-level audit found that the historical `selected_st` top-1 surrogate is not the
+counterfactual expert comparison its name suggested. Its forward gate is one, while its backward
+path contains only the selected softmax probability. It can therefore give the router a task
+gradient even when every expert implements the same function and never asks whether an
+alternative expert would have reduced the loss. This does not invalidate the measured model
+accuracies, but it weakens every claim about *learned routing* and may have prevented useful expert
+allocation. The repair adds `full_st`: hard top-1 forward evaluation with the complete soft expert
+mixture as the backward surrogate,
+`y = y_soft + stop_gradient(y_hard - y_soft)`. It is dense across experts during training and
+genuinely top-1 sparse at inference, so training and inference compute are recorded separately.
+
+The audit also found that same integer seeds did not guarantee paired architecture comparisons:
+model construction consumed the global RNG before the loader and stochastic training trajectory.
+The runner and both RxRx loaders now use explicit, separately recorded model/data/training RNG
+streams, resetting the training RNG only after all parameters are constructed. A one-expert shared
+residual arm was also missing. That arm is the necessary unconditional-adapter control: without it,
+E3 shared residual cannot be distinguished from simply adding one always-useful residual FFN.
+
+Exactly one generic-router salvage wave is predeclared as
+`rxrx1_conditionality_gate30_20260810`: three fresh seeds `11/23/37`, 30 fixed epochs, blocks
+10--11, and four otherwise identical arms: shared E1 unconditional, shared E3 historical
+selected-ST, shared E3 full-ST, and dense E2. E1, E3 top-1 inference, and dense E2 are required to
+match inference-active converted-FFN parameters within 0.1% on the production model. The primary
+contrasts are full-ST minus selected-ST (estimator), E3 minus E1 (conditional banking), and
+full-ST E3 minus dense E2 (conditionality versus equal active inference compute). Headline
+endpoints are OOD-test accuracy, worst-decile held-out-experiment accuracy, paired per-experiment
+deltas, and hierarchical seed-plus-experiment uncertainty. Checkpointing and topology are fixed;
+test is read once for all twelve predeclared arms.
+
+The stop rule is explicit: if neither E3 arm beats E1 and full-ST does not beat dense E2 with
+positive paired uncertainty, generic supervised token routing is closed. No adjacent router grid
+will follow. MoE is then retained only as an efficiency/Pareto result unless a separate
+control-conditioned design passes a feasibility gate. Source changes compile, 59 focused tests
+and all 357 local regressions pass. Launch remains blocked until the same complete suite, exact
+capacity/data/config dry run, immutable-source check, and four-container freedom audit pass in the
+SciServer Python 3.10 environment.
+
+The remaining performance-motivated MoE hypothesis is qualitatively different: a new experimental
+batch is probably not a new discrete expert, but a new *combination* of recurring nuisance factors
+(illumination, stain intensity, focus, confluence, instrument/channel shifts). The plausible model
+is therefore shared biology plus a soft mixture of small nuisance-correction bases conditioned on
+a batch descriptor computed from negative-control wells. This is not licensed for training yet.
+It first requires (1) an all-experts/model oracle showing complementary correct predictions, and
+(2) train-only control descriptors that predict which correction/model wins on held-out
+experiments. JUMP's same compounds crossed over five acquisition sources is the appropriate main
+substrate; its earlier one-well/one-site plan is rejected as too sample-poor and must be replaced
+by site-grouped multi-well source folds. RxRx3 remains useful for plate/guide density, not for this
+crossed-domain question.
+
 ## 2026-08-10 RxRx3 plate-count curve: one-plate endpoint predeclared
 
 Launch gate is now closed and the endpoint is active. Immutable execution source

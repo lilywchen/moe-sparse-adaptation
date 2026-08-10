@@ -19,7 +19,9 @@ model:
   balance: global                         # derived: route -> within_environment, else global
   n_experts: 8
   top_k: 1
-  routing_estimator: selected_st          # function-preserving task gradient for hard top-1
+  # selected_st = historical selected-probability surrogate; full_st = hard forward plus the
+  # complete soft-mixture backward (dense train, sparse eval); legacy_renorm = reproduction only.
+  routing_estimator: selected_st
   router_frozen: false                    # fixed-route training control; shared/replacement MoE
   temperature: 0.07
   sym_break_wide: 0.1                     # exact-preserving unequal Net2Wider output splits
@@ -30,6 +32,8 @@ train:
   epochs: 30
   batch_size: 64
   num_workers: 8
+  # Optional model_seed/data_seed/training_seed default to the top-level seed. Keeping them
+  # separate prevents model size from changing sample order or stochastic-depth streams.
   optim: {name: adamw, lr: 1.0e-4, weight_decay: 0.05}
   warmup_epochs: 5
   llrd: 0.7

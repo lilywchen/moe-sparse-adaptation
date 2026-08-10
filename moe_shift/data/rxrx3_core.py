@@ -352,8 +352,9 @@ class ParquetLocalitySampler(Sampler):
     wells in a batch.
     """
 
-    def __init__(self, dataset):
+    def __init__(self, dataset, generator=None):
         self.dataset = dataset
+        self.generator = generator
         groups = {}
         for index in range(len(dataset)):
             groups.setdefault(dataset.locality_key(index), []).append(index)
@@ -365,11 +366,11 @@ class ParquetLocalitySampler(Sampler):
     def __iter__(self):
         if not self.groups:
             return iter(())
-        order = torch.randperm(len(self.groups)).tolist()
+        order = torch.randperm(len(self.groups), generator=self.generator).tolist()
         indices = []
         for group_index in order:
             group = self.groups[group_index]
-            inner = torch.randperm(len(group)).tolist()
+            inner = torch.randperm(len(group), generator=self.generator).tolist()
             indices.extend(group[position] for position in inner)
         return iter(indices)
 
@@ -421,14 +422,19 @@ def _make_context(cfg):
 def _loader_key(cfg):
     return _context_key(cfg) + (
         int(cfg["train"]["batch_size"]), int(cfg["train"]["num_workers"]),
+        int(cfg["train"].get("data_seed", cfg.get("seed", 0))),
     )
 
 
-def _make_loader(dataset, batch_size, num_workers, shuffle):
+def _make_loader(dataset, batch_size, num_workers, shuffle, data_seed):
+    sampler_generator = torch.Generator().manual_seed(int(data_seed))
+    worker_generator = torch.Generator().manual_seed(int(data_seed) + 1)
     return DataLoader(
         dataset, batch_size=batch_size, shuffle=False,
-        sampler=(ParquetLocalitySampler(dataset) if shuffle else None), num_workers=num_workers,
+        sampler=(ParquetLocalitySampler(dataset, generator=sampler_generator)
+                 if shuffle else None), num_workers=num_workers,
         pin_memory=True, drop_last=shuffle, persistent_workers=(num_workers > 0),
+        generator=(worker_generator if shuffle else None),
     )
 
 
@@ -440,10 +446,10 @@ def _loader_bundle(cfg):
     summary = context["summary"]
     cfg.setdefault("sites", {})["K"] = summary["train_experiments"]
     cfg["sites"]["n_cell_types"] = len(summary["cell_types"])
-    batch_size, workers = key[-2:]
-    train = _make_loader(context["datasets"]["train"], batch_size, workers, True)
-    id_val = _make_loader(context["datasets"]["id_val"], batch_size, workers, False)
-    ood_test = _make_loader(context["datasets"]["ood_test"], batch_size, workers, False)
+    batch_size, workers, data_seed = key[-3:]
+    train = _make_loader(context["datasets"]["train"], batch_size, workers, True, data_seed)
+    id_val = _make_loader(context["datasets"]["id_val"], batch_size, workers, False, data_seed)
+    ood_test = _make_loader(context["datasets"]["ood_test"], batch_size, workers, False, data_seed)
     id_val.selection_split_name = "id_val"
     print(
         f"[rxrx3_core] {summary['classes']} classes; "

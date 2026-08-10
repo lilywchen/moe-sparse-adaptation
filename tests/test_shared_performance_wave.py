@@ -59,6 +59,22 @@ def test_cross_experiment_sampler_forms_label_pairs_across_experiments_within_ce
         assert batch_experiments[selected].unique().numel() == 2
 
 
+def test_cross_experiment_sampler_is_reproducible_from_its_own_generator():
+    labels = torch.arange(16).repeat_interleave(3)
+    experiments = torch.arange(3).repeat(16)
+    cells = torch.zeros_like(labels)
+    left = CrossExperimentBatchSampler(
+        labels, experiments, cells, batch_size=8,
+        generator=torch.Generator().manual_seed(91),
+    )
+    torch.rand(200)
+    right = CrossExperimentBatchSampler(
+        labels, experiments, cells, batch_size=8,
+        generator=torch.Generator().manual_seed(91),
+    )
+    assert list(left) == list(right)
+
+
 def test_manifest_and_live_summary_merge_milestone_and_terminal_results(tmp_path):
     rows = wave_rows()
     write_manifest(tmp_path, rows)

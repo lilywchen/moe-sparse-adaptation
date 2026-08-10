@@ -123,9 +123,15 @@ def test_dataset_reads_six_channels_and_emits_raw_domain(tmp_path):
     assert (y, site, environment, cell) == (0, 0, summary["environment_map"]["ExpA"], 0)
     assert float(x[1, 0, 0]) > float(x[0, 0, 0])
     torch = pytest.importorskip("torch")
-    torch.manual_seed(3)
-    sampled = list(ParquetLocalitySampler(dataset))
+    sampled = list(ParquetLocalitySampler(
+        dataset, generator=torch.Generator().manual_seed(3)
+    ))
     assert sorted(sampled) == list(range(len(dataset)))
+    torch.rand(100)
+    repeated = list(ParquetLocalitySampler(
+        dataset, generator=torch.Generator().manual_seed(3)
+    ))
+    assert sampled == repeated
 
 
 @pytest.mark.parametrize("kind", ["missing", "duplicate"])

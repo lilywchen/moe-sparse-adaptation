@@ -229,11 +229,13 @@ class CrossExperimentBatchSampler(Sampler):
 
     Every batch contains pairs with the same perturbation and cell type but distinct source
     experiments.  Pairing within cell type avoids treating true cell-line biology as a nuisance.
-    The sampler uses only training labels/metadata and the global torch RNG, so the runner's
-    existing RNG save/restore around milestone evaluation preserves the optimization trajectory.
+    The sampler uses only training labels/metadata and its explicit generator. Keeping data RNG
+    separate from model construction is essential for paired architecture comparisons: adding an
+    expert must not silently change the minibatch sequence.
     """
 
-    def __init__(self, labels, experiments, cell_types, batch_size, drop_last=True):
+    def __init__(self, labels, experiments, cell_types, batch_size, drop_last=True,
+                 generator=None):
         self.labels = torch.as_tensor(labels, dtype=torch.long).flatten()
         self.experiments = torch.as_tensor(experiments, dtype=torch.long).flatten()
         self.cell_types = torch.as_tensor(cell_types, dtype=torch.long).flatten()
@@ -241,6 +243,7 @@ class CrossExperimentBatchSampler(Sampler):
             raise ValueError("cross-experiment sampler metadata lengths disagree")
         self.batch_size = int(batch_size)
         self.drop_last = bool(drop_last)
+        self.generator = generator
         if self.batch_size < 2 or self.batch_size % 2:
             raise ValueError("cross-experiment pairing requires an even batch size >= 2")
 
@@ -265,24 +268,27 @@ class CrossExperimentBatchSampler(Sampler):
             return len(self.labels) // self.batch_size
         return (len(self.labels) + self.batch_size - 1) // self.batch_size
 
-    @staticmethod
-    def _choice(values):
-        return values[int(torch.randint(len(values), (1,)).item())]
+    def _choice(self, values):
+        return values[int(torch.randint(
+            len(values), (1,), generator=self.generator
+        ).item())]
 
     def __iter__(self):
         n_pairs = self.batch_size // 2
         for _ in range(len(self)):
             cell = self._choice(self.cells)
             keys = self.keys_by_cell[cell]
-            selected = torch.randperm(len(keys))[:n_pairs].tolist()
+            selected = torch.randperm(len(keys), generator=self.generator)[:n_pairs].tolist()
             batch = []
             for key_index in selected:
                 by_experiment = self.groups[keys[key_index]]
                 experiments = list(by_experiment)
-                chosen = torch.randperm(len(experiments))[:2].tolist()
+                chosen = torch.randperm(
+                    len(experiments), generator=self.generator
+                )[:2].tolist()
                 for position in chosen:
                     batch.append(self._choice(by_experiment[experiments[position]]))
-            order = torch.randperm(len(batch)).tolist()
+            order = torch.randperm(len(batch), generator=self.generator).tolist()
             yield [batch[index] for index in order]
 
 
@@ -346,8 +352,13 @@ def make_rxrx1_loaders(cfg):
     cell_col = _cell_type_column(ds)
     cfg.setdefault("sites", {})["n_cell_types"] = (
         int(ds.metadata_array[:, cell_col].max()) + 1 if cell_col is not None else 0)
-    mk = lambda d, sh: DataLoader(d, batch_size=bs, shuffle=sh, num_workers=nw,
-                                  pin_memory=True, drop_last=sh, persistent_workers=(nw > 0))
+    data_seed = int(cfg["train"].get("data_seed", cfg.get("seed", 0)))
+    train_generator = torch.Generator().manual_seed(data_seed)
+    worker_generator = torch.Generator().manual_seed(data_seed + 1)
+    mk = lambda d, sh: DataLoader(
+        d, batch_size=bs, shuffle=sh, num_workers=nw, pin_memory=True, drop_last=sh,
+        persistent_workers=(nw > 0), generator=(train_generator if sh else None),
+    )
     view = (lambda subset, transform: _RawSiteView(
         subset, exp_col, remap, raw_root, transform, cell_col=cell_col)) if raw_root else (
         lambda subset, transform: _SiteView(subset, exp_col, remap, cell_col=cell_col))
@@ -382,10 +393,11 @@ def make_rxrx1_loaders(cfg):
         labels = ds.y_array[global_indices]
         metadata = ds.metadata_array[global_indices]
         sampler = CrossExperimentBatchSampler(
-            labels, metadata[:, exp_col], metadata[:, cell_col], bs, drop_last=True)
+            labels, metadata[:, exp_col], metadata[:, cell_col], bs, drop_last=True,
+            generator=train_generator)
         train_loader = DataLoader(
             train_view, batch_sampler=sampler, num_workers=nw, pin_memory=True,
-            persistent_workers=(nw > 0))
+            persistent_workers=(nw > 0), generator=worker_generator)
         print("[rxrx1] class-paired training batches: same perturbation/cell type, "
               "different experiments")
     else:

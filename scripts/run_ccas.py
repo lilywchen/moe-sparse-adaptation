@@ -555,7 +555,13 @@ def main():
     if out_json.exists():
         print(f"[skip] {rid} already done"); return
 
-    torch.manual_seed(cfg["seed"]); np.random.seed(cfg["seed"])
+    # Explicit RNG streams make same-seed architecture contrasts genuinely paired. Data loaders
+    # own ``data_seed`` generators; model construction uses ``model_seed``; stochastic depth and
+    # dropout are reset to ``training_seed`` after every parameter has been constructed.
+    model_seed = int(cfg["train"].get("model_seed", cfg["seed"]))
+    data_seed = int(cfg["train"].get("data_seed", cfg["seed"]))
+    training_seed = int(cfg["train"].get("training_seed", cfg["seed"]))
+    torch.manual_seed(model_seed); np.random.seed(model_seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     t0 = time.time()
 
@@ -587,6 +593,9 @@ def main():
         raise ValueError("pressure=output requires losses.invariance_w > 0")
     adversary = (SiteAdversary(model.dim, int(cfg["sites"]["K"])).to(device)
                  if pressure == "output" else None)
+    torch.manual_seed(training_seed); np.random.seed(training_seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(training_seed)
 
     # Start tracking before optimization so long SciServer runs expose live progress. Tracking is
     # deliberately non-fatal: the persistent JSON/JSONL files remain the source of truth.
@@ -621,17 +630,34 @@ def main():
     protocol["classification_objective"] = str(cfg["train"].get("objective", "erm"))
     protocol["milestone_epochs"] = milestones
     protocol["checkpoint_epochs"] = checkpoint_epochs
+    protocol["rng_streams"] = {
+        "model_seed": model_seed, "data_seed": data_seed, "training_seed": training_seed,
+        "architecture_independent_data_generator": True,
+        "training_rng_reset_after_model_construction": True,
+    }
     if cap.variant in ("moe", "moe_frozen"):
         protocol["experts_are_upcycled_copies"] = True
         protocol["router_trainable"] = (cap.variant == "moe")
         protocol["routing_estimator"] = str(
             cfg["model"].get("routing_estimator", "selected_st"))
+        full_st = protocol["routing_estimator"] == "full_st"
+        protocol["training_all_routed_experts_active"] = full_st
+        protocol["inference_sparse_top_k"] = int(cfg["model"].get("top_k", 1))
+        protocol["inference_active_ffn_params"] = cap.active_ffn_params
+        protocol["training_active_converted_ffn_params"] = (
+            cap.ffn_block_params if full_st else cap.active_ffn_params)
     elif cap.variant == "shared_moe":
         protocol["pretrained_shared_expert_always_active"] = True
         protocol["residual_experts_zero_output_initialized"] = True
         protocol["router_trainable"] = not bool(cfg["model"].get("router_frozen", False))
         protocol["routing_estimator"] = str(
             cfg["model"].get("routing_estimator", "selected_st"))
+        full_st = protocol["routing_estimator"] == "full_st"
+        protocol["training_all_routed_experts_active"] = full_st
+        protocol["inference_sparse_top_k"] = int(cfg["model"].get("top_k", 1))
+        protocol["inference_active_ffn_params"] = cap.active_ffn_params
+        protocol["training_active_converted_ffn_params"] = (
+            cap.ffn_block_params if full_st else cap.active_ffn_params)
     elif cap.variant in ("oracle_moe", "condln_moe", "soft_moe", "lowrank_moe"):
         # Every frontier variant keeps the pretrained dense FFN active for all inputs: replacement
         # is the one design the completed campaigns showed to be actively harmful.

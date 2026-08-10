@@ -1,5 +1,33 @@
 # Progress ledger
 
+## 2026-08-10 — routing audit finds a real surrogate flaw; bounded conditionality gate implemented
+
+- Closed the RxRx3 one-plate endpoint at 8/8 terminal rows. Mean OOD test is `0.321%` original,
+  `0.321%` dense, `0.371%` replacement, and `0.335%` shared, with zero worst-experiment accuracy
+  for every arm. This point is at the task floor and the current RxRx3 label structure cannot
+  identify experiment-level conditionality, so no nearby RxRx3 architecture claim is made.
+- Found a genuine mechanism bug in historical top-1 `selected_st`: the backward surrogate sees
+  only the chosen probability, not counterfactual expert outputs, and can train a router even when
+  experts are identical. Added a hard-forward/full-soft-backward estimator whose gradient exactly
+  matches the full soft mixture while evaluation remains sparse. Tests cover token/image routing,
+  identical-expert zero gradients, first-step training of every zero-initialized residual expert,
+  sparse evaluation, and invalid top-k rejection.
+- Repaired architecture pairing with explicit model/data/training RNG streams in both RxRx1 and
+  RxRx3 loaders and the common runner. Added the missing E1 unconditional residual control and a
+  dense E2 active-inference-compute control. A strict launcher predeclares 12 rows (four arms x
+  seeds 11/23/37), four three-job shards, allowed config differences, a 0.1% production active-
+  budget gate, and a one-command status/paired hierarchical-bootstrap report.
+- Entry points compile, 59 focused tests pass, and the full local regression suite passes
+  `357/357`. The status aggregator no longer imports NumPy at planning time, avoiding a broken
+  local scientific-Python installation from blocking config generation. No GPU launch has occurred;
+  exact-source SciServer Python 3.10 tests, the real data/config/capacity dry run, and four-container
+  health proof remain mandatory.
+- Scientific decision is a partial pivot. This is the only remaining generic token-router salvage
+  wave. If expert banking does not beat E1 and equal-active dense E2, stop topology search. The one
+  remaining causal MoE angle is shared biology plus soft nuisance-factor residuals conditioned on
+  negative-control plate statistics, contingent on expert-oracle and context-predictability
+  headroom and ultimately tested on a multi-well, five-source crossed JUMP design.
+
 ## 2026-08-10 — one-plate RxRx3 endpoint launches on all eight H100s
 
 - Closed every predeclared launch gate at immutable source
