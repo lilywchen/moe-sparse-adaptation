@@ -4,6 +4,7 @@ import torch
 
 from moe_shift.data.rxrx1_huvec import EXPECTED_TREATMENTS, deterministic_split
 from moe_shift.models.huvec import MaskedAutoencoder, build_study_model
+from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
 from scripts.sweep_rxrx1_huvec_study import planned_runs
 
@@ -35,6 +36,25 @@ def test_custom_split_holds_out_experiments_and_never_splits_sites():
         "train": EXPECTED_TREATMENTS,
     }
     assert split[split.role == "iid_validation"].well_id.nunique() == 2 * EXPECTED_TREATMENTS
+
+
+def test_probe_split_accepts_the_cached_well_level_manifest_without_site_column():
+    well_frame = (_site_frame().drop_duplicates("well_id")
+                  [["well_id", "experiment", "label"]].copy())
+    well_frame["n_sites"] = 2
+    features = torch.zeros((len(well_frame), 4)).numpy()
+    metadata, indices = _split_arrays(well_frame, features, {
+        "source_experiments": list(range(16)),
+        "target_experiments": list(range(16, 24)),
+        "split_id": "well_level_probe",
+    })
+    assert "site" not in metadata.columns
+    assert len(metadata) == len(well_frame)
+    assert {role: len(selected) for role, selected in indices.items()} == {
+        "train": 14 * EXPECTED_TREATMENTS,
+        "iid_validation": 2 * EXPECTED_TREATMENTS,
+        "target": 8 * EXPECTED_TREATMENTS,
+    }
 
 
 def test_custom_split_allows_small_audited_target_missingness_only():

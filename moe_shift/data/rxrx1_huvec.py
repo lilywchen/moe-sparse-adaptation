@@ -177,7 +177,7 @@ def build_huvec_manifest(data_root, raw_root, output_path, verify_paths=True):
 
 def deterministic_split(frame, source_experiments, target_experiments, split_key,
                         validation_occurrences=2):
-    """Return a site manifest with train/iid_validation/target roles.
+    """Return a site- or well-level manifest with train/iid_validation/target roles.
 
     Validation assignment is made per perturbation at the well level.  Exactly
     ``validation_occurrences`` source-experiment wells are held out whenever coverage permits.
@@ -227,7 +227,10 @@ def deterministic_split(frame, source_experiments, target_experiments, split_key
     for well_id, roles in selected.groupby("well_id").role.nunique().items():
         if int(roles) != 1:
             raise ValueError(f"well {well_id} crosses split roles")
-    return selected.sort_values(["role", "experiment", "label", "well_id", "site"])
+    sort_columns = ["role", "experiment", "label", "well_id"]
+    if "site" in selected.columns:
+        sort_columns.append("site")
+    return selected.sort_values(sort_columns)
 
 
 def normalization_from_qc(site_frame, qc_frame):
