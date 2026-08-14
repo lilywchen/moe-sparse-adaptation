@@ -208,10 +208,14 @@ def format_status(payload):
         f"split={payload.get('split_id', '?')}"
     )]
     if payload.get("attempt_name"):
+        displayed_epoch = payload.get("epoch")
+        if not displayed_epoch and payload.get("state") == "certified":
+            displayed_epoch = payload.get("certified_at_epoch") or payload.get("selected_epoch")
+        displayed_max = payload.get("max_epochs") or (payload.get("recipe") or {}).get(
+            "max_epochs", "?")
         lines.append(
             f"attempt={payload.get('attempt_index', '?')}/{payload.get('n_attempts', '?')} "
-            f"{payload['attempt_name']}  epoch={payload.get('epoch', 0)}/"
-            f"{payload.get('max_epochs', '?')}")
+            f"{payload['attempt_name']}  epoch={displayed_epoch or 0}/{displayed_max}")
     augmented = payload.get("latest_augmented") or {}
     if augmented:
         lines.append(

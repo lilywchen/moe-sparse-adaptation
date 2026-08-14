@@ -12,7 +12,7 @@ from scripts.certify_rxrx1_huvec_recipe import (
     format_status,
 )
 from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
-from scripts.launch_rxrx1_huvec_recipe_pair import pair_plan
+from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
 from scripts.sweep_rxrx1_huvec_study import planned_runs
@@ -163,6 +163,12 @@ def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable()
     })
     assert "full unaugmented train: site=0.2000 well=0.3000" in rendered
     assert "target batches: excluded" in rendered
+    certified = format_status({
+        "state": "certified", "model": "resnet18", "split_id": "primary_fold0",
+        "attempt_index": 1, "n_attempts": 1, "attempt_name": "standard",
+        "certified_at_epoch": 60, "recipe": {"max_epochs": 120},
+    })
+    assert "epoch=60/120" in certified
 
 
 def test_two_gpu_recipe_pair_launcher_covers_all_six_candidates_without_collisions():
@@ -176,6 +182,16 @@ def test_two_gpu_recipe_pair_launcher_covers_all_six_candidates_without_collisio
         "adamw_standard_extended", "adamw_low_regularization",
         "sgd_low_regularization",
     ]
+
+
+def test_recipe_monitor_signature_changes_only_when_persisted_status_changes():
+    payload = {
+        "state": "training", "attempt_name": "standard", "epoch": 5,
+        "updated_at": 100.0,
+    }
+    assert _status_signature(payload) == _status_signature(dict(payload))
+    assert _status_signature(payload) != _status_signature({**payload, "epoch": 6})
+    assert _status_signature(None) is None
 
 
 def test_site_metrics_keep_both_fields_and_audit_mean_logit_pooling():
