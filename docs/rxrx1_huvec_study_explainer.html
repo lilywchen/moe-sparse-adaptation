@@ -374,7 +374,7 @@
     <div class="grid-2" style="margin-top:18px">
       <article class="panel">
         <h3>Training unit: site</h3>
-        <p>A site is one model example. Both sites from a well have the same perturbation label, but each must be recognizable on its own. The optimization study therefore reports full, unaugmented <strong>site accuracy</strong> throughout the complete schedule.</p>
+        <p>A site is one model example. Both sites from a well have the same perturbation label, but each must be recognizable on its own. The optimization study therefore reports full, unaugmented <strong>site accuracy</strong> until source-IID performance has clearly plateaued.</p>
       </article>
       <article class="panel">
         <h3>Secondary summary: well</h3>
@@ -483,8 +483,8 @@
     <div class="pipeline">
       <article class="phase"><span class="number">1</span><div><h3>Freeze data and embeddings</h3></div><p>Audit native six-channel files, treatment labels, sites, wells, coverage, Cell-DINO embeddings, and split definitions.</p><span class="state done">done</span></article>
       <article class="phase"><span class="number">2</span><div><h3>Establish batch geometry</h3></div><p>Measure matched experiment distances, visualize experiment structure, and run cheap centroid and linear probes.</p><span class="state done">done</span></article>
-      <article class="phase"><span class="number">3</span><div><h3>Establish a real training recipe</h3></div><p>Train every candidate on the complete source fold with production augmentation and finish its predefined schedule. Compare complete learning curves rather than stopping at an accuracy cutoff.</p><span class="state active">active</span></article>
-      <article class="phase"><span class="number">4</span><div><h3>Confirm difficulty with raw images</h3></div><p>Rerun the primary and controlled splits using the selected full-horizon recipe. Relate target accuracy to frozen Cell-DINO difficulty.</p><span class="state blocked">waiting</span></article>
+      <article class="phase"><span class="number">3</span><div><h3>Establish a real training recipe</h3></div><p>Train every candidate on the complete source fold with production augmentation. Continue past the 80% marker and stop only after the frozen source-IID plateau rule fires.</p><span class="state active">active</span></article>
+      <article class="phase"><span class="number">4</span><div><h3>Confirm difficulty with raw images</h3></div><p>Rerun the primary and controlled splits using the selected peak source-IID recipe. Relate target accuracy to frozen Cell-DINO difficulty.</p><span class="state blocked">waiting</span></article>
       <article class="phase"><span class="number">5</span><div><h3>Compare dense versus MoE</h3></div><p>Use identical data, optimization, checkpoint rules, and active-compute budget. Add a total-parameter-matched dense control conditionally.</p><span class="state future">later</span></article>
       <article class="phase"><span class="number">6</span><div><h3>Test targeted pretraining</h3></div><p>Run the small MAE study only after supervised optimization is trustworthy, then decide whether broader scaling is justified.</p><span class="state future">later</span></article>
     </div>
@@ -492,16 +492,16 @@
 
   <section aria-labelledby="gate-title">
     <p class="eyebrow">Current optimization study</p>
-    <h2 id="gate-title">Train the whole schedule, then compare trajectories</h2>
+    <h2 id="gate-title">Train through the peak, then stop on a frozen plateau rule</h2>
     <div class="gate">
-      <div><span class="threshold">Full horizon</span><h3>No accuracy-based stopping</h3><p>Every recipe runs to its predefined terminal epoch. Full unaugmented site accuracy is measured throughout, not used as a cutoff.</p></div>
+      <div><span class="threshold">20 epochs</span><h3>Source-IID patience</h3><p>Evaluate every five epochs and stop after four evaluations without at least a 0.1-point source-IID improvement, never before epoch 30.</p></div>
       <div class="gate-arrow" aria-hidden="true">→</div>
-      <div><h3>Compare terminal recipes using source IID</h3><p>The complete learning curve, terminal training accuracy, and terminal source-IID performance are reported together. Target accuracy is never consulted. The chosen horizon is then frozen for matched dense-versus-MoE training.</p></div>
+      <div><h3>Preserve both peak and terminal states</h3><p>The complete learning curve, peak source-IID checkpoint, and terminal training state are reported together. Target accuracy is never consulted.</p></div>
     </div>
     <div class="grid-3" style="margin-top:18px">
       <article class="panel"><h3>Online signal</h3><p>Augmented site accuracy and loss update each epoch. They should improve overall but need not be monotonic.</p></article>
       <article class="panel"><h3>Evaluation signal</h3><p>Full unaugmented site and well accuracies are measured every five epochs so optimization and generalization can be viewed separately.</p></article>
-      <article class="panel"><h3>Six candidates</h3><p>Three ResNet and three ViT recipes run in parallel across six GPUs. Finishing first does not make a recipe best; the full trajectories and terminal source-IID results decide.</p></article>
+      <article class="panel"><h3>Six candidates on four GPUs</h3><p>Three ViT-Micro and three ViT-Tiny recipes run as paired jobs across two 2×H100 containers; the third pair is queued. Peak source-IID performance decides.</p></article>
     </div>
   </section>
 
@@ -520,7 +520,7 @@
       <article class="panel">
         <h3>Evidence that MoE helps</h3>
         <ul class="rule-list">
-          <li>Dense and MoE models complete the same frozen training horizon and show credible learning.</li>
+          <li>Dense and MoE models use the same frozen source-IID plateau rule and show credible learning.</li>
           <li>They use the same splits, recipe, checkpoint rule, and active-compute budget.</li>
           <li>MoE improves target accuracy or the difficulty slope across more than one frozen split.</li>
         </ul>

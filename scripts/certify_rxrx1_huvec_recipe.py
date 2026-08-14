@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-"""Certify a full-data RxRx1 HUVEC training recipe before model comparisons.
+"""Measure full-data RxRx1 HUVEC recipes until source-IID performance plateaus.
 
 This is deliberately different from the small memorization canary.  It uses the complete
 ``primary_fold0`` source training set, production image augmentation, and the frozen source-IID
-split.  Every recipe completes its predefined schedule.  Training accuracy and source-IID
-accuracy are recorded throughout, but neither causes an early stop.  Target-batch images are
-never loaded or evaluated here.
+split. Training continues past the diagnostic 80% marker and stops only after a predefined
+source-IID plateau rule. Target-batch images are never loaded or evaluated here.
 """
 from __future__ import annotations
 
@@ -14,6 +13,7 @@ import hashlib
 import json
 import math
 import os
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -58,7 +58,7 @@ def default_recipes(model):
                 "augmentation": True,
             },
         ]
-    if model == "vit_tiny":
+    if model in ("vit_tiny", "vit_micro"):
         return [
             {
                 "name": "adamw_standard_extended", "optimizer": "adamw",
@@ -219,6 +219,31 @@ def _curve_history(path):
             best_source_iid = choose_source_iid_checkpoint(best_source_iid, candidate)
             threshold_ever_reached = threshold_ever_reached or threshold_reached
     return latest_augmented, latest_evaluation, best_source_iid, threshold_ever_reached
+
+
+def _plateau_history(path, min_delta):
+    """Return the meaningful best IID score and evaluations since it improved."""
+    best_score = None
+    best_epoch = None
+    stale_evaluations = 0
+    if not path.is_file():
+        return best_score, best_epoch, stale_evaluations
+    for line in path.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if row.get("phase") != "supervised" or not row.get("evaluated"):
+            continue
+        if "selection_iid_top1" not in row:
+            continue
+        score = float(row["selection_iid_top1"])
+        if best_score is None or score >= best_score + float(min_delta):
+            best_score = score
+            best_epoch = int(row["epoch"])
+            stale_evaluations = 0
+        else:
+            stale_evaluations += 1
+    return best_score, best_epoch, stale_evaluations
 
 
 def _normalize_attempt_summary(summary, attempt_dir, recipe):
@@ -409,7 +434,7 @@ def certify(args):
     status_path = output_dir / "status.json"
     certificate_path = output_dir / "CERTIFIED_RECIPE.json"
     exhausted_path = output_dir / "EXHAUSTED.json"
-    full_horizon_path = output_dir / "FULL_HORIZON_RESULT.json"
+    plateau_result_path = output_dir / "PLATEAU_RESULT.json"
     minimum_iid = (2.0 / EXPECTED_TREATMENTS if args.min_iid is None else float(args.min_iid))
     config = {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
@@ -430,9 +455,27 @@ def certify(args):
                 f"certification configuration changed in {output_dir}; choose a new --run-name")
     else:
         _atomic_json(config_path, config)
-    if full_horizon_path.is_file():
-        payload = json.loads(full_horizon_path.read_text())
-        print(f"[complete] existing full-horizon result: {full_horizon_path}", flush=True)
+    plateau_config = {
+        "schema_version": 1,
+        "metric": f"source_iid_{args.iid_unit}_top1",
+        "eval_every_epochs": int(args.eval_every),
+        "patience_evaluations": int(args.plateau_patience_evals),
+        "minimum_delta": float(args.plateau_min_delta),
+        "minimum_epochs": int(args.plateau_min_epochs),
+        "target_policy": config["target_policy"],
+    }
+    plateau_config["fingerprint"] = _fingerprint(plateau_config)
+    plateau_config_path = output_dir / "plateau_config.json"
+    if plateau_config_path.is_file():
+        existing = json.loads(plateau_config_path.read_text())
+        if existing.get("fingerprint") != plateau_config["fingerprint"]:
+            raise RuntimeError(
+                f"plateau configuration changed in {output_dir}; choose a new --run-name")
+    else:
+        _atomic_json(plateau_config_path, plateau_config)
+    if plateau_result_path.is_file():
+        payload = json.loads(plateau_result_path.read_text())
+        print(f"[complete] existing plateau result: {plateau_result_path}", flush=True)
         return payload
     early_snapshot_path = output_dir / "EARLY_THRESHOLD_SNAPSHOT.json"
     if certificate_path.is_file() and not early_snapshot_path.is_file():
@@ -455,7 +498,12 @@ def certify(args):
         "train_threshold": float(args.train_threshold), "train_unit": args.train_unit,
         "iid_unit": args.iid_unit, "minimum_iid": minimum_iid,
         "git_commit": sha, "git_dirty": dirty,
-        "stopping_rule": "complete the predefined recipe schedule; no accuracy cutoff",
+        "stopping_rule": (
+            f"source-IID plateau: {args.plateau_patience_evals} evaluations without "
+            f">= {args.plateau_min_delta:.4f} improvement after epoch "
+            f"{args.plateau_min_epochs}"
+        ),
+        "plateau_config": plateau_config,
     }
     _write_status(
         status_path, common, state="initializing", epoch=0,
@@ -505,12 +553,18 @@ def certify(args):
         elapsed_seconds_extension = float(
             resume.get("elapsed_seconds_extension", 0.0) if resume else 0.0)
         curve_path = attempt_dir / "curves.jsonl"
+        best_checkpoint_path = attempt_dir / "best_source_iid_checkpoint.pt"
+        legacy_checkpoint_path = output_dir / "certified_checkpoint.pt"
+        if (not best_checkpoint_path.is_file() and legacy_checkpoint_path.is_file()
+                and early_snapshot.get("attempt_name") == recipe["name"]):
+            shutil.copy2(legacy_checkpoint_path, best_checkpoint_path)
         historical_augmented, historical_evaluation, historical_best, historical_threshold = (
             _curve_history(curve_path))
-        if historical_best is not None:
-            best_source_iid = choose_source_iid_checkpoint(
-                best_source_iid, historical_best)
+        if best_source_iid is None and historical_best is not None:
+            best_source_iid = historical_best
         threshold_ever_reached = threshold_ever_reached or historical_threshold
+        plateau_best_score, plateau_best_epoch, stale_evaluations = _plateau_history(
+            curve_path, args.plateau_min_delta)
         del resume
         latest_evaluation = historical_evaluation
         augmented = historical_augmented
@@ -521,7 +575,17 @@ def certify(args):
                 early_snapshot.get("elapsed_seconds_this_attempt", 0.0))
         if was_resumed:
             print(f"[resume] {recipe['name']} after epoch {start_epoch}", flush=True)
+        stop_reason = None
+        if (start_epoch >= int(args.plateau_min_epochs)
+                and stale_evaluations >= int(args.plateau_patience_evals)):
+            stop_reason = (
+                f"source-IID plateau already satisfied at resume: {stale_evaluations} "
+                f"evaluations without >= {args.plateau_min_delta:.4f} improvement"
+            )
+        terminal_epoch = start_epoch
         for epoch in range(start_epoch, int(recipe["max_epochs"])):
+            if stop_reason:
+                break
             _schedule(optimizer, epoch, recipe)
             model.train()
             total_loss = total_correct = total_count = 0
@@ -561,6 +625,7 @@ def certify(args):
                 "train_augmented_site_top1": augmented["site_top1"],
                 "learning_rate": augmented["learning_rate"], "evaluated": should_evaluate,
             }
+            should_stop_for_plateau = False
             if should_evaluate:
                 train_metrics, _, _ = evaluate(model, loaders["train_eval"], device)
                 iid_metrics, _, _ = evaluate(model, loaders["iid_validation"], device)
@@ -583,8 +648,38 @@ def certify(args):
                 selected = choose_source_iid_checkpoint(best_source_iid, candidate)
                 if selected is candidate:
                     best_source_iid = candidate
+                    _atomic_torch(best_checkpoint_path, {
+                        "schema_version": 1,
+                        "model": {
+                            key: value.detach().cpu()
+                            for key, value in model.state_dict().items()
+                        },
+                        "model_kind": args.model, "model_audit": model_audit,
+                        "split_id": args.split_id, "split_hash": split_digest,
+                        "recipe": recipe, "selected_checkpoint": candidate,
+                        "selected_epoch": candidate["epoch"],
+                    })
+                iid_score = float(candidate["selection_iid_top1"])
+                meaningful_improvement = bool(
+                    plateau_best_score is None
+                    or iid_score >= plateau_best_score + float(args.plateau_min_delta)
+                )
+                if meaningful_improvement:
+                    plateau_best_score = iid_score
+                    plateau_best_epoch = epoch + 1
+                    stale_evaluations = 0
+                else:
+                    stale_evaluations += 1
+                should_stop_for_plateau = bool(
+                    epoch + 1 >= int(args.plateau_min_epochs)
+                    and stale_evaluations >= int(args.plateau_patience_evals)
+                )
                 latest_evaluation = {
                     **candidate, "threshold_reached": threshold_reached,
+                    "meaningful_iid_improvement": meaningful_improvement,
+                    "plateau_best_score": plateau_best_score,
+                    "plateau_best_epoch": plateau_best_epoch,
+                    "stale_evaluations": stale_evaluations,
                 }
                 row.update(latest_evaluation)
                 _save_resume(
@@ -593,6 +688,12 @@ def certify(args):
                     elapsed_seconds_extension + time.time() - started,
                     device, loaders["train"].generator)
             _append_jsonl(curve_path, row)
+            terminal_epoch = epoch + 1
+            if should_evaluate and should_stop_for_plateau:
+                stop_reason = (
+                    f"source-IID plateau after {stale_evaluations} evaluations without "
+                    f">= {args.plateau_min_delta:.4f} improvement"
+                )
             payload = _write_status(
                 status_path, common, state="training", attempt_index=attempt_index,
                 attempt_name=recipe["name"], max_epochs=recipe["max_epochs"],
@@ -602,28 +703,44 @@ def certify(args):
                 elapsed_seconds=(
                     prior_elapsed_seconds + elapsed_seconds_extension
                     + time.time() - started),
-                message="Running the complete predefined schedule; accuracy does not stop training.",
+                stale_evaluations=stale_evaluations,
+                message=(
+                    stop_reason or
+                    f"Plateau watch: {stale_evaluations}/{args.plateau_patience_evals} "
+                    "stale source-IID evaluations; the 80% marker never stops training."
+                ),
             )
             print("[recipe] " + format_status(payload).replace("\n", " | "), flush=True)
+            if stop_reason:
+                break
         if latest_evaluation is None:
-            raise RuntimeError("full schedule ended without an evaluation")
+            raise RuntimeError("training ended without a source-IID evaluation")
+        if not best_checkpoint_path.is_file():
+            raise RuntimeError(
+                f"best source-IID checkpoint was not persisted: {best_checkpoint_path}")
+        if stop_reason is None:
+            stop_reason = "maximum safety horizon reached before the plateau rule fired"
         checkpoint_path = attempt_dir / "terminal_checkpoint.pt"
         _atomic_torch(checkpoint_path, {
             "schema_version": 1,
             "model": {key: value.detach().cpu() for key, value in model.state_dict().items()},
             "model_kind": args.model, "model_audit": model_audit,
             "split_id": args.split_id, "split_hash": split_digest,
-            "recipe": recipe, "terminal_epoch": recipe["max_epochs"],
+            "recipe": recipe, "terminal_epoch": terminal_epoch,
         })
         resumed_elapsed = elapsed_seconds_extension + time.time() - started
         summary = {
             "attempt_index": attempt_index, "attempt_name": recipe["name"],
             "state": "complete", "recipe": recipe,
-            "terminal_epoch": recipe["max_epochs"],
+            "terminal_epoch": terminal_epoch,
+            "maximum_safety_epochs": recipe["max_epochs"],
+            "stop_reason": stop_reason,
             "terminal_evaluation": latest_evaluation,
             "best_source_iid": best_source_iid,
+            "best_source_iid_checkpoint": str(best_checkpoint_path),
             "threshold_ever_reached": threshold_ever_reached,
-            "checkpoint": str(checkpoint_path),
+            "checkpoint": str(best_checkpoint_path),
+            "terminal_checkpoint": str(checkpoint_path),
             "latest_augmented": augmented,
             "elapsed_seconds_resumed": resumed_elapsed,
             "elapsed_seconds": prior_elapsed_seconds + resumed_elapsed,
@@ -633,29 +750,32 @@ def certify(args):
 
     selected_attempt = max(
         attempt_summaries,
-        key=lambda row: float(row["terminal_evaluation"]["selection_iid_top1"]),
+        key=lambda row: float(row["best_source_iid"]["selection_iid_top1"]),
     )
     result = {
-        **common, "state": "complete", "full_horizon_complete": True,
+        **common, "state": "complete", "plateau_complete": True,
         "attempts": attempt_summaries, "selected_attempt": selected_attempt,
         "split_hash": split_digest,
         "target_policy": config["target_policy"],
-        "selection_rule": f"highest terminal source-IID {args.iid_unit} accuracy",
-        "message": "Every recipe completed its predefined schedule; no accuracy cutoff was used.",
+        "selection_rule": f"highest peak source-IID {args.iid_unit} accuracy",
+        "message": (
+            "Training continued past the diagnostic marker and stopped only under the "
+            "frozen source-IID plateau rule."
+        ),
     }
-    _atomic_json(full_horizon_path, result)
+    _atomic_json(plateau_result_path, result)
     _write_status(
         status_path, common, **result,
         attempt_index=selected_attempt["attempt_index"],
         attempt_name=selected_attempt["attempt_name"],
         recipe=selected_attempt["recipe"],
         epoch=selected_attempt["terminal_epoch"],
-        max_epochs=selected_attempt["terminal_epoch"],
+        max_epochs=selected_attempt["maximum_safety_epochs"],
         latest_augmented=selected_attempt["latest_augmented"],
         latest_evaluation=selected_attempt["terminal_evaluation"],
         best_source_iid=selected_attempt["best_source_iid"],
     )
-    print(f"[complete] {full_horizon_path}", flush=True)
+    print(f"[complete] {plateau_result_path}", flush=True)
     return result
 
 
@@ -663,7 +783,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--result-root", required=True)
     parser.add_argument("--run-name", default="production_v1")
-    parser.add_argument("--model", choices=("resnet18", "vit_tiny"), default="resnet18")
+    parser.add_argument(
+        "--model", choices=("resnet18", "vit_tiny", "vit_micro"),
+        default="resnet18")
     parser.add_argument("--split-id", default="primary_fold0")
     parser.add_argument("--train-threshold", type=float, default=0.80)
     parser.add_argument("--train-unit", choices=("site", "well"), default="site")
@@ -671,6 +793,9 @@ def main():
     parser.add_argument("--min-iid", type=float)
     parser.add_argument("--eval-every", type=int, default=5)
     parser.add_argument("--confirmation-evaluations", type=int, default=1)
+    parser.add_argument("--plateau-patience-evals", type=int, default=4)
+    parser.add_argument("--plateau-min-delta", type=float, default=0.001)
+    parser.add_argument("--plateau-min-epochs", type=int, default=30)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--num-workers", type=int, default=6)
     parser.add_argument("--image-size", type=int, default=224)
@@ -685,6 +810,10 @@ def main():
     args = parser.parse_args()
     if args.eval_every <= 0 or args.confirmation_evaluations <= 0:
         parser.error("--eval-every and --confirmation-evaluations must be positive")
+    if args.plateau_patience_evals <= 0 or args.plateau_min_epochs <= 0:
+        parser.error("plateau patience and minimum epochs must be positive")
+    if args.plateau_min_delta < 0:
+        parser.error("--plateau-min-delta must be nonnegative")
     if not 0 < args.train_threshold <= 1:
         parser.error("--train-threshold must lie in (0, 1]")
     if args.status and args.watch:
@@ -703,7 +832,7 @@ def main():
     except Exception as error:
         _record_terminal_error(args, "failed", error)
         raise
-    if not result.get("full_horizon_complete"):
+    if not result.get("plateau_complete"):
         raise SystemExit(2)
 
 

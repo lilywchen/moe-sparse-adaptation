@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""One-command, two-GPU launcher for parallel full-horizon HUVEC recipe studies."""
+"""One-command, two-GPU launcher for plateau-stopped HUVEC recipe studies."""
 from __future__ import annotations
 
 import argparse
@@ -31,8 +31,8 @@ def pair_plan(pair_index):
     run_name = f"parallel_recipe_{pair_index + 1}"
     return [
         {
-            "model": "resnet18", "gpu": "0", "run_name": run_name,
-            "recipe": default_recipes("resnet18")[pair_index],
+            "model": "vit_micro", "gpu": "0", "run_name": run_name,
+            "recipe": default_recipes("vit_micro")[pair_index],
         },
         {
             "model": "vit_tiny", "gpu": "1", "run_name": run_name,
@@ -57,6 +57,16 @@ def _status_entries(result_root):
                 payload = {
                     **payload,
                     "elapsed_seconds": legacy.get("elapsed_seconds_this_attempt"),
+                }
+            if (payload and payload.get("state") == "certified"
+                    and not (output_dir / "PLATEAU_RESULT.json").is_file()):
+                payload = {
+                    **payload,
+                    "state": "awaiting_plateau_extension",
+                    "message": (
+                        "Legacy 80% stop is preserved; waiting to resume under the "
+                        "source-IID plateau rule."
+                    ),
                 }
             entries.append((item["run_name"], item["model"], payload))
     return entries
@@ -128,6 +138,8 @@ def launch_pair(result_root, pair_index):
             "--result-root", str(result_root), "--run-name", run_name,
             "--model", model, "--train-threshold", "0.80",
             "--recipes-json", str(recipe_path),
+            "--eval-every", "5", "--plateau-patience-evals", "4",
+            "--plateau-min-delta", "0.001", "--plateau-min-epochs", "30",
         ]
         environment = dict(
             os.environ, CUDA_VISIBLE_DEVICES=item["gpu"], PYTHONUNBUFFERED="1")
@@ -160,7 +172,7 @@ def launch_pair(result_root, pair_index):
         if stopping:
             return
         stopping = True
-        print("[stop] terminating both full-horizon training children", flush=True)
+        print("[stop] terminating both plateau-sweep training children", flush=True)
         for item in processes:
             if item["process"].poll() is None:
                 item["process"].terminate()
@@ -206,21 +218,36 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--result-root", default=str(DEFAULT_RESULT_ROOT))
     parser.add_argument("--pair-index", type=int, choices=(0, 1, 2))
+    parser.add_argument(
+        "--pair-indices",
+        help="comma-separated pair indices to run sequentially, for example 0,2")
     parser.add_argument("--status", action="store_true")
     parser.add_argument("--watch", action="store_true")
     parser.add_argument("--watch-interval", type=float, default=30.0)
     args = parser.parse_args()
     if args.status or args.watch:
-        if args.pair_index is not None:
-            parser.error("--pair-index is not used with --status or --watch")
+        if args.pair_index is not None or args.pair_indices is not None:
+            parser.error("pair indices are not used with --status or --watch")
         if args.watch:
             _watch(args.result_root, args.watch_interval)
         else:
             _all_status(args.result_root)
         return
-    if args.pair_index is None:
-        parser.error("--pair-index is required for launch")
-    launch_pair(args.result_root, args.pair_index)
+    if args.pair_index is not None and args.pair_indices is not None:
+        parser.error("choose either --pair-index or --pair-indices")
+    if args.pair_indices is not None:
+        try:
+            pair_indices = [int(value) for value in args.pair_indices.split(",")]
+        except ValueError as error:
+            parser.error(f"invalid --pair-indices: {error}")
+        if not pair_indices or any(index not in range(3) for index in pair_indices):
+            parser.error("--pair-indices must contain only 0, 1, or 2")
+    elif args.pair_index is not None:
+        pair_indices = [args.pair_index]
+    else:
+        parser.error("--pair-index or --pair-indices is required for launch")
+    for pair_index in pair_indices:
+        launch_pair(args.result_root, pair_index)
 
 
 if __name__ == "__main__":

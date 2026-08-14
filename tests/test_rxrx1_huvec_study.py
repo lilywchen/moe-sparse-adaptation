@@ -9,6 +9,7 @@ from moe_shift.models.huvec import MaskedAutoencoder, build_study_model
 from scripts.aggregate_rxrx1_huvec_study import _target_rows
 from scripts.certify_rxrx1_huvec_recipe import (
     _curve_history,
+    _plateau_history,
     choose_source_iid_checkpoint,
     default_recipes,
     format_status,
@@ -86,12 +87,19 @@ def test_custom_split_allows_small_audited_target_missingness_only():
 
 def test_six_channel_models_and_parameter_match_are_shape_correct():
     images = torch.randn(2, 6, 32, 32)
-    for kind in ("resnet18", "vit_tiny", "vit_tiny_moe", "vit_tiny_dense_matched"):
+    for kind in (
+        "resnet18", "vit_micro", "vit_tiny", "vit_tiny_moe",
+        "vit_tiny_dense_matched",
+    ):
         model, audit = build_study_model(kind, num_classes=17, image_size=32)
         assert model(images).shape == (2, 17)
         assert audit["total_params"] > 0
     _, matched = build_study_model("vit_tiny_dense_matched", num_classes=17, image_size=32)
     assert matched["absolute_delta"] <= 2 * 192 + 2
+    _, micro = build_study_model("vit_micro", num_classes=1108, image_size=224)
+    _, tiny = build_study_model("vit_tiny", num_classes=1108, image_size=224)
+    assert micro["total_params"] == 1_554_900
+    assert micro["total_params"] < tiny["total_params"]
 
 
 def test_mae_uses_visible_tokens_and_reconstructs_six_channels():
@@ -168,6 +176,27 @@ def test_recipe_curve_recovery_keeps_low_train_high_iid_checkpoint(tmp_path):
     assert latest["epoch"] == 10
     assert best["epoch"] == 5
     assert threshold is True
+    plateau_score, plateau_epoch, stale = _plateau_history(curve, min_delta=0.001)
+    assert plateau_score == 0.3
+    assert plateau_epoch == 5
+    assert stale == 1
+
+
+def test_plateau_history_resets_only_for_meaningful_source_iid_improvement(tmp_path):
+    curve = tmp_path / "curves.jsonl"
+    scores = [0.2000, 0.2005, 0.2011, 0.2009, 0.2008]
+    rows = [
+        {
+            "phase": "supervised", "epoch": 5 * (index + 1),
+            "evaluated": True, "selection_iid_top1": score,
+        }
+        for index, score in enumerate(scores)
+    ]
+    curve.write_text("".join(f"{json.dumps(row)}\n" for row in rows))
+    score, epoch, stale = _plateau_history(curve, min_delta=0.001)
+    assert score == 0.2011
+    assert epoch == 15
+    assert stale == 2
 
 
 def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable():
@@ -199,13 +228,13 @@ def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable()
 def test_two_gpu_recipe_pair_launcher_covers_all_six_candidates_without_collisions():
     plans = [pair_plan(index) for index in range(3)]
     assert all([item["gpu"] for item in plan] == ["0", "1"] for plan in plans)
-    assert all([item["model"] for item in plan] == ["resnet18", "vit_tiny"]
+    assert all([item["model"] for item in plan] == ["vit_micro", "vit_tiny"]
                for plan in plans)
     assert len({(item["run_name"], item["model"])
                 for plan in plans for item in plan}) == 6
     assert [plan[0]["recipe"]["name"] for plan in plans] == [
         "adamw_standard_extended", "adamw_low_regularization",
-        "sgd_low_regularization",
+        "adamw_weak_regularization",
     ]
 
 

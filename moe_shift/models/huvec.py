@@ -18,9 +18,10 @@ class StudyViT(ViT):
     """DeiT-Tiny-sized six-channel ViT with optional late sparse FFNs."""
 
     def __init__(self, num_classes=1108, image_size=224, experts=1, top_k=1,
-                 moe_layers=0, matched_hidden=None):
+                 moe_layers=0, matched_hidden=None, dim=192, depth=12, heads=3):
         super().__init__(
-            num_classes=num_classes, img=image_size, patch=16, dim=192, depth=12, heads=3,
+            num_classes=num_classes, img=image_size, patch=16, dim=int(dim),
+            depth=int(depth), heads=int(heads),
             mlp_ratio=4.0, drop=0.0, instance_norm=False, input_channels=6,
         )
         self.moe_block_indices = []
@@ -78,6 +79,13 @@ def build_study_model(kind, num_classes=1108, image_size=224):
     if kind in ("vit_tiny", "mae_vit_tiny"):
         model = StudyViT(num_classes, image_size)
         return model, {"kind": kind, "total_params": parameter_count(model)}
+    if kind == "vit_micro":
+        model = StudyViT(
+            num_classes, image_size, dim=128, depth=6, heads=4)
+        return model, {
+            "kind": kind, "total_params": parameter_count(model),
+            "dim": 128, "depth": 6, "heads": 4, "patch_size": 16,
+        }
     if kind in ("vit_tiny_moe", "mae_vit_tiny_moe"):
         model = StudyViT(num_classes, image_size, experts=4, top_k=1, moe_layers=2)
         return model, {
