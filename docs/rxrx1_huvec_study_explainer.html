@@ -374,7 +374,7 @@
     <div class="grid-2" style="margin-top:18px">
       <article class="panel">
         <h3>Training unit: site</h3>
-        <p>A site is one model example. Both sites from a well have the same perturbation label, but each must be recognizable on its own. The new certification gate therefore uses full, unaugmented <strong>site accuracy</strong>.</p>
+        <p>A site is one model example. Both sites from a well have the same perturbation label, but each must be recognizable on its own. The optimization study therefore reports full, unaugmented <strong>site accuracy</strong> throughout the complete schedule.</p>
       </article>
       <article class="panel">
         <h3>Secondary summary: well</h3>
@@ -478,30 +478,30 @@
   </section>
 
   <section id="pipeline" aria-labelledby="pipeline-title">
-    <p class="eyebrow">Decision-gated pipeline</p>
+    <p class="eyebrow">Decision-ordered pipeline</p>
     <h2 id="pipeline-title">Do not ask the MoE question until the learning question is answered</h2>
     <div class="pipeline">
       <article class="phase"><span class="number">1</span><div><h3>Freeze data and embeddings</h3></div><p>Audit native six-channel files, treatment labels, sites, wells, coverage, Cell-DINO embeddings, and split definitions.</p><span class="state done">done</span></article>
       <article class="phase"><span class="number">2</span><div><h3>Establish batch geometry</h3></div><p>Measure matched experiment distances, visualize experiment structure, and run cheap centroid and linear probes.</p><span class="state done">done</span></article>
-      <article class="phase"><span class="number">3</span><div><h3>Certify a real training recipe</h3></div><p>Train on the complete source fold with production augmentation. Try bounded recipes until full unaugmented site accuracy clears the threshold.</p><span class="state active">active</span></article>
-      <article class="phase"><span class="number">4</span><div><h3>Confirm difficulty with raw images</h3></div><p>Rerun the primary and controlled splits using the certified recipe. Relate target accuracy to frozen Cell-DINO difficulty.</p><span class="state blocked">gated</span></article>
+      <article class="phase"><span class="number">3</span><div><h3>Establish a real training recipe</h3></div><p>Train every candidate on the complete source fold with production augmentation and finish its predefined schedule. Compare complete learning curves rather than stopping at an accuracy cutoff.</p><span class="state active">active</span></article>
+      <article class="phase"><span class="number">4</span><div><h3>Confirm difficulty with raw images</h3></div><p>Rerun the primary and controlled splits using the selected full-horizon recipe. Relate target accuracy to frozen Cell-DINO difficulty.</p><span class="state blocked">waiting</span></article>
       <article class="phase"><span class="number">5</span><div><h3>Compare dense versus MoE</h3></div><p>Use identical data, optimization, checkpoint rules, and active-compute budget. Add a total-parameter-matched dense control conditionally.</p><span class="state future">later</span></article>
       <article class="phase"><span class="number">6</span><div><h3>Test targeted pretraining</h3></div><p>Run the small MAE study only after supervised optimization is trustworthy, then decide whether broader scaling is justified.</p><span class="state future">later</span></article>
     </div>
   </section>
 
   <section aria-labelledby="gate-title">
-    <p class="eyebrow">Current certification gate</p>
-    <h2 id="gate-title">What “the recipe passed” actually means</h2>
+    <p class="eyebrow">Current optimization study</p>
+    <h2 id="gate-title">Train the whole schedule, then compare trajectories</h2>
     <div class="gate">
-      <div><span class="threshold">≥ 80%</span><h3>Full unaugmented training-site accuracy</h3><p>Measured on every individual source training site, not hidden by averaging two sites into a well.</p></div>
+      <div><span class="threshold">Full horizon</span><h3>No accuracy-based stopping</h3><p>Every recipe runs to its predefined terminal epoch. Full unaugmented site accuracy is measured throughout, not used as a cutoff.</p></div>
       <div class="gate-arrow" aria-hidden="true">→</div>
-      <div><h3>Then select using source IID</h3><p>Among eligible checkpoints, source-IID performance selects the checkpoint. Target accuracy is never consulted. If no bounded recipe passes, the state is <strong>exhausted</strong> and the comparison remains blocked.</p></div>
+      <div><h3>Compare terminal recipes using source IID</h3><p>The complete learning curve, terminal training accuracy, and terminal source-IID performance are reported together. Target accuracy is never consulted. The chosen horizon is then frozen for matched dense-versus-MoE training.</p></div>
     </div>
     <div class="grid-3" style="margin-top:18px">
       <article class="panel"><h3>Online signal</h3><p>Augmented site accuracy and loss update each epoch. They should improve overall but need not be monotonic.</p></article>
-      <article class="panel"><h3>Gate signal</h3><p>Full unaugmented site and well accuracies are measured every five epochs. Site accuracy is the default gate.</p></article>
-      <article class="panel"><h3>Six candidates</h3><p>Three ResNet and three ViT recipes run in parallel across six GPUs. Finishing first does not make a recipe best; source-IID performance breaks the tie among passing recipes.</p></article>
+      <article class="panel"><h3>Evaluation signal</h3><p>Full unaugmented site and well accuracies are measured every five epochs so optimization and generalization can be viewed separately.</p></article>
+      <article class="panel"><h3>Six candidates</h3><p>Three ResNet and three ViT recipes run in parallel across six GPUs. Finishing first does not make a recipe best; the full trajectories and terminal source-IID results decide.</p></article>
     </div>
   </section>
 
@@ -520,7 +520,7 @@
       <article class="panel">
         <h3>Evidence that MoE helps</h3>
         <ul class="rule-list">
-          <li>Dense and MoE models both pass the same learning gate.</li>
+          <li>Dense and MoE models complete the same frozen training horizon and show credible learning.</li>
           <li>They use the same splits, recipe, checkpoint rule, and active-compute budget.</li>
           <li>MoE improves target accuracy or the difficulty slope across more than one frozen split.</li>
         </ul>
@@ -543,14 +543,14 @@
       <div class="term"><strong>MoE</strong><span>A model with multiple expert pathways where only a subset is active for each input or token.</span></div>
     </div>
     <div class="panel" style="margin-top:22px">
-      <details open><summary>Why did the small canary pass while full training failed?</summary><p>The canary proved that the model and optimizer could memorize a small, simplified subset without the full regularization and variability. It did not prove that the production recipe could optimize the complete multi-experiment task. That is why the new gate operates on the full source fold.</p></details>
+      <details open><summary>Why did the small canary pass while full training initially looked weak?</summary><p>The canary proved that the model and optimizer could memorize a small, simplified subset without the full regularization and variability. It did not prove that the production recipe could optimize the complete multi-experiment task. That is why the new study follows the entire trajectory on the full source fold.</p></details>
       <details><summary>Why not average the two sites during training?</summary><p>Site-level training gives the model more observations and requires each field to carry the signal. Keeping both sites in the same split prevents leakage. Well-level averaging remains useful as a secondary robustness summary.</p></details>
-      <details><summary>Does an 80% training threshold guarantee good target performance?</summary><p>No. It only removes severe underfitting as the dominant explanation. Generalization can still be poor, which is exactly what the held-out experiment analysis is designed to measure.</p></details>
+      <details><summary>Does high training accuracy guarantee good target performance?</summary><p>No. It shows that severe underfitting is not the dominant explanation. Generalization can still be poor, which is exactly what the held-out experiment analysis is designed to measure. The study records 80% as a diagnostic milestone but never stops there.</p></details>
     </div>
   </section>
 
   <footer>
-    <strong>Study status:</strong> data, embeddings, folds, and preliminary probes are frozen. The original raw-image screen was stopped for underfitting. Full-data recipe certification is the active gate before raw-image difficulty confirmation or dense-versus-MoE comparison.
+    <strong>Study status:</strong> data, embeddings, folds, and preliminary probes are frozen. The original raw-image screen was stopped for underfitting. Full-horizon recipe optimization is active before raw-image difficulty confirmation or dense-versus-MoE comparison.
   </footer>
 </main>
 </body>

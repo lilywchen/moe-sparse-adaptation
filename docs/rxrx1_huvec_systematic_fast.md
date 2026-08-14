@@ -2,11 +2,11 @@
 
 This campaign is a one-seed screening study over the official six-channel HUVEC images. It is
 designed to establish whether independently measured experiment distance predicts perturbation
-classification difficulty, then test a matched dense/MoE pair only after both a ResNet and dense
-ViT pass explicit training gates.
+classification difficulty, then test a matched dense/MoE pair only after full-horizon ResNet and
+dense-ViT recipe studies establish a well-optimized training setup.
 
 For a non-specialist visual explanation of experiments, wells, sites, channels, custom splits,
-Cell-DINO difficulty, preliminary evidence, and the full-data certification gate, open
+Cell-DINO difficulty, preliminary evidence, and the full-horizon training study, open
 [`rxrx1_huvec_study_explainer.html`](rxrx1_huvec_study_explainer.html).
 
 ## Persistent root
@@ -26,7 +26,7 @@ probe results, raw-model logs/results/checkpoints/predictions, and the final ana
 3. Freeze three experiment folds and controlled low/medium/high source resamples.
 4. Run centroid and linear probes and render the initial embedding/QC figures.
 5. Require ResNet-18 and ViT-Tiny to memorize a fixed canary set.
-6. Run ResNet confirmation and certify the full-source dense ViT.
+6. Run full-horizon ResNet and dense-ViT optimization studies on the full source split.
 7. Run the matched dense/MoE primary and controlled comparisons.
 8. If mean primary MoE gain is positive, run the total-parameter-matched dense control.
 9. Run dense and MoE masked-autoencoder pretraining on the hardest frozen controlled split.

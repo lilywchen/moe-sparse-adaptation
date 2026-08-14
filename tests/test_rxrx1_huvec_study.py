@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 import pytest
 import torch
@@ -6,8 +8,8 @@ from moe_shift.data.rxrx1_huvec import EXPECTED_TREATMENTS, deterministic_split
 from moe_shift.models.huvec import MaskedAutoencoder, build_study_model
 from scripts.aggregate_rxrx1_huvec_study import _target_rows
 from scripts.certify_rxrx1_huvec_recipe import (
-    checkpoint_is_eligible,
-    choose_eligible_checkpoint,
+    _curve_history,
+    choose_source_iid_checkpoint,
     default_recipes,
     format_status,
 )
@@ -128,22 +130,44 @@ def test_well_metric_averages_two_site_logits_before_scoring():
     assert set(predictions.n_sites) == {2}
 
 
-def test_full_data_recipe_gate_is_site_level_and_source_only_by_default():
-    train = {"site_top1": 0.81, "top1": 0.90}
-    iid = {"site_top1": 0.03, "top1": 0.04}
-    assert checkpoint_is_eligible(train, iid, 0.80, 0.002)
-    assert not checkpoint_is_eligible(
-        {**train, "site_top1": 0.79}, iid, 0.80, 0.002)
-    assert not checkpoint_is_eligible(
-        train, {**iid, "site_top1": 0.001}, 0.80, 0.002)
-
-
-def test_recipe_checkpoint_selection_uses_source_iid_after_train_gate():
+def test_recipe_checkpoint_audit_tracks_best_source_iid_without_a_train_gate():
     earlier = {"epoch": 40, "selection_train_top1": 0.81, "selection_iid_top1": 0.07}
-    later_better = {"epoch": 50, "selection_train_top1": 0.90, "selection_iid_top1": 0.08}
+    later_better = {"epoch": 50, "selection_train_top1": 0.20, "selection_iid_top1": 0.08}
     later_tie = {"epoch": 60, "selection_train_top1": 0.95, "selection_iid_top1": 0.08}
-    assert choose_eligible_checkpoint(earlier, later_better) is later_better
-    assert choose_eligible_checkpoint(later_better, later_tie) is later_better
+    assert choose_source_iid_checkpoint(earlier, later_better) is later_better
+    assert choose_source_iid_checkpoint(later_better, later_tie) is later_better
+
+
+def test_recipe_curve_recovery_keeps_low_train_high_iid_checkpoint(tmp_path):
+    curve = tmp_path / "curves.jsonl"
+    rows = [
+        {
+            "phase": "supervised", "epoch": 5, "evaluated": True,
+            "train_augmented_loss": 5.0, "train_augmented_site_top1": 0.1,
+            "learning_rate": 1e-3, "selection_train_top1": 0.2,
+            "selection_iid_top1": 0.3, "train_site_top1": 0.2,
+            "train_well_top1": 0.3, "train_site_loss": 4.0,
+            "train_well_loss": 3.0, "iid_site_top1": 0.3,
+            "iid_well_top1": 0.4, "iid_site_loss": 3.5, "iid_well_loss": 3.0,
+            "eligible": False,
+        },
+        {
+            "phase": "supervised", "epoch": 10, "evaluated": True,
+            "train_augmented_loss": 1.0, "train_augmented_site_top1": 0.9,
+            "learning_rate": 5e-4, "selection_train_top1": 0.9,
+            "selection_iid_top1": 0.25, "train_site_top1": 0.9,
+            "train_well_top1": 0.95, "train_site_loss": 0.5,
+            "train_well_loss": 0.4, "iid_site_top1": 0.25,
+            "iid_well_top1": 0.35, "iid_site_loss": 3.7, "iid_well_loss": 3.2,
+            "threshold_reached": True,
+        },
+    ]
+    curve.write_text("".join(f"{json.dumps(row)}\n" for row in rows))
+    augmented, latest, best, threshold = _curve_history(curve)
+    assert augmented["site_top1"] == 0.9
+    assert latest["epoch"] == 10
+    assert best["epoch"] == 5
+    assert threshold is True
 
 
 def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable():
@@ -163,12 +187,13 @@ def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable()
     })
     assert "full unaugmented train: site=0.2000 well=0.3000" in rendered
     assert "target batches: excluded" in rendered
-    certified = format_status({
-        "state": "certified", "model": "resnet18", "split_id": "primary_fold0",
+    complete = format_status({
+        "state": "complete", "model": "resnet18", "split_id": "primary_fold0",
         "attempt_index": 1, "n_attempts": 1, "attempt_name": "standard",
-        "certified_at_epoch": 60, "recipe": {"max_epochs": 120},
+        "epoch": 120, "recipe": {"max_epochs": 120}, "elapsed_seconds": 600,
     })
-    assert "epoch=60/120" in certified
+    assert "epoch=120/120" in complete
+    assert "wall clock: 10.0 minutes" in complete
 
 
 def test_two_gpu_recipe_pair_launcher_covers_all_six_candidates_without_collisions():

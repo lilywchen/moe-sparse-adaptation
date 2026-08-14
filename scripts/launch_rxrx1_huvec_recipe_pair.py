@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""One-command, two-GPU launcher for parallel HUVEC recipe certification."""
+"""One-command, two-GPU launcher for parallel full-horizon HUVEC recipe studies."""
 from __future__ import annotations
 
 import argparse
@@ -46,9 +46,18 @@ def _status_entries(result_root):
     entries = []
     for pair_index in range(3):
         for item in pair_plan(pair_index):
-            path = (root / "recipe_certification" / item["run_name"] /
-                    item["model"] / "status.json")
+            output_dir = (root / "recipe_certification" / item["run_name"] /
+                          item["model"])
+            path = output_dir / "status.json"
             payload = json.loads(path.read_text()) if path.is_file() else None
+            certificate = output_dir / "CERTIFIED_RECIPE.json"
+            if (payload and payload.get("elapsed_seconds") is None
+                    and certificate.is_file()):
+                legacy = json.loads(certificate.read_text())
+                payload = {
+                    **payload,
+                    "elapsed_seconds": legacy.get("elapsed_seconds_this_attempt"),
+                }
             entries.append((item["run_name"], item["model"], payload))
     return entries
 
@@ -74,7 +83,7 @@ def _all_status(result_root):
 
 def _watch(result_root, interval):
     previous = {}
-    terminal_states = {"certified", "exhausted", "failed", "interrupted"}
+    terminal_states = {"complete", "failed", "interrupted"}
     while True:
         entries = _status_entries(result_root)
         changed = []
@@ -151,7 +160,7 @@ def launch_pair(result_root, pair_index):
         if stopping:
             return
         stopping = True
-        print("[stop] terminating both certification children", flush=True)
+        print("[stop] terminating both full-horizon training children", flush=True)
         for item in processes:
             if item["process"].poll() is None:
                 item["process"].terminate()

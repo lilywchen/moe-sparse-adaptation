@@ -2,15 +2,14 @@
 """Certify a full-data RxRx1 HUVEC training recipe before model comparisons.
 
 This is deliberately different from the small memorization canary.  It uses the complete
-``primary_fold0`` source training set, the production image augmentation, and the frozen
-source-IID split.  A checkpoint is eligible only after its full, unaugmented source-training
-accuracy clears the requested threshold.  Among eligible checkpoints, source-IID accuracy
-selects the checkpoint.  Target-batch images are never loaded or evaluated here.
+``primary_fold0`` source training set, production image augmentation, and the frozen source-IID
+split.  Every recipe completes its predefined schedule.  Training accuracy and source-IID
+accuracy are recorded throughout, but neither causes an early stop.  Target-batch images are
+never loaded or evaluated here.
 """
 from __future__ import annotations
 
 import argparse
-import copy
 import hashlib
 import json
 import math
@@ -145,15 +144,7 @@ def _metric(metrics, unit):
     return float(metrics["site_top1"] if unit == "site" else metrics["top1"])
 
 
-def checkpoint_is_eligible(train_metrics, iid_metrics, train_threshold, min_iid,
-                           train_unit="site", iid_unit="site"):
-    return bool(
-        _metric(train_metrics, train_unit) >= float(train_threshold)
-        and _metric(iid_metrics, iid_unit) >= float(min_iid)
-    )
-
-
-def choose_eligible_checkpoint(current, candidate):
+def choose_source_iid_checkpoint(current, candidate):
     """Select by source-IID accuracy, with earlier epoch as a deterministic tiebreaker."""
     if current is None:
         return candidate
@@ -196,6 +187,64 @@ def _append_jsonl(path, row):
         os.fsync(handle.fileno())
 
 
+def _curve_history(path):
+    """Recover live metrics from an existing curve when extending an older run."""
+    latest_augmented = None
+    latest_evaluation = None
+    best_source_iid = None
+    threshold_ever_reached = False
+    if not path.is_file():
+        return latest_augmented, latest_evaluation, best_source_iid, threshold_ever_reached
+    evaluation_keys = (
+        "epoch", "selection_train_top1", "selection_iid_top1",
+        "train_site_top1", "train_well_top1", "train_site_loss", "train_well_loss",
+        "iid_site_top1", "iid_well_top1", "iid_site_loss", "iid_well_loss",
+    )
+    for line in path.read_text().splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if row.get("phase") != "supervised":
+            continue
+        latest_augmented = {
+            "loss": float(row["train_augmented_loss"]),
+            "site_top1": float(row["train_augmented_site_top1"]),
+            "learning_rate": float(row["learning_rate"]),
+        }
+        if row.get("evaluated") and all(key in row for key in evaluation_keys):
+            threshold_reached = bool(
+                row.get("threshold_reached", row.get("eligible", False)))
+            candidate = {key: row[key] for key in evaluation_keys}
+            latest_evaluation = {**candidate, "threshold_reached": threshold_reached}
+            best_source_iid = choose_source_iid_checkpoint(best_source_iid, candidate)
+            threshold_ever_reached = threshold_ever_reached or threshold_reached
+    return latest_augmented, latest_evaluation, best_source_iid, threshold_ever_reached
+
+
+def _normalize_attempt_summary(summary, attempt_dir, recipe):
+    """Read both new full-horizon and legacy exhausted-at-horizon summaries."""
+    if "terminal_evaluation" in summary:
+        return summary
+    augmented, evaluation, best, threshold_reached = _curve_history(
+        attempt_dir / "curves.jsonl")
+    evaluation = summary.get("latest_evaluation") or evaluation
+    best = summary.get("best_source_iid", summary.get("best_eligible")) or best
+    if evaluation is None:
+        raise RuntimeError(f"completed attempt has no terminal evaluation: {attempt_dir}")
+    normalized = {
+        **summary,
+        "state": "complete",
+        "terminal_epoch": int(recipe["max_epochs"]),
+        "terminal_evaluation": evaluation,
+        "best_source_iid": best,
+        "threshold_ever_reached": bool(
+            summary.get("threshold_ever_reached", threshold_reached)),
+        "latest_augmented": summary.get("latest_augmented") or augmented,
+    }
+    _atomic_json(attempt_dir / "COMPLETE.json", normalized)
+    return normalized
+
+
 def _status_path(result_root, run_name, model):
     return Path(result_root) / "recipe_certification" / run_name / model / "status.json"
 
@@ -209,7 +258,7 @@ def format_status(payload):
     )]
     if payload.get("attempt_name"):
         displayed_epoch = payload.get("epoch")
-        if not displayed_epoch and payload.get("state") == "certified":
+        if not displayed_epoch and payload.get("state") in {"certified", "complete"}:
             displayed_epoch = payload.get("certified_at_epoch") or payload.get("selected_epoch")
         displayed_max = payload.get("max_epochs") or (payload.get("recipe") or {}).get(
             "max_epochs", "?")
@@ -226,19 +275,25 @@ def format_status(payload):
     if measured:
         lines.append(
             f"full unaugmented train: site={measured['train_site_top1']:.4f} "
-            f"well={measured['train_well_top1']:.4f}  "
-            f"threshold({payload.get('train_unit', 'site')})="
-            f"{payload.get('train_threshold', float('nan')):.4f}")
+            f"well={measured['train_well_top1']:.4f}")
         lines.append(
             f"source IID only: site={measured['iid_site_top1']:.4f} "
-            f"well={measured['iid_well_top1']:.4f}  "
-            f"eligible={measured['eligible']}")
-    selected = payload.get("best_eligible")
+            f"well={measured['iid_well_top1']:.4f}")
+        lines.append(
+            f"diagnostic train marker >= {payload.get('train_threshold', float('nan')):.2f}: "
+            f"reached={measured.get('threshold_reached', measured.get('eligible', False))} "
+            "(never stops training)")
+    selected = payload.get("best_source_iid") or payload.get("best_eligible")
     if selected:
         lines.append(
-            f"best eligible: epoch={selected['epoch']} "
+            f"best source-IID so far: epoch={selected['epoch']} "
             f"train={selected['selection_train_top1']:.4f} "
             f"IID={selected['selection_iid_top1']:.4f}")
+    elapsed = payload.get("elapsed_seconds")
+    if elapsed is None and payload.get("selected_attempt"):
+        elapsed = payload["selected_attempt"].get("elapsed_seconds")
+    if elapsed is not None:
+        lines.append(f"wall clock: {float(elapsed) / 60.0:.1f} minutes")
     lines.append("target batches: excluded from loading, evaluation, stopping, and selection")
     if payload.get("message"):
         lines.append(str(payload["message"]))
@@ -262,7 +317,7 @@ def watch_status(result_root, run_name, model, interval):
         print(time.strftime("%Y-%m-%d %H:%M:%S"), flush=True)
         print(format_status(payload), flush=True)
         if payload and payload.get("state") in {
-            "certified", "exhausted", "failed", "interrupted",
+            "complete", "failed", "interrupted",
         }:
             return payload
         time.sleep(max(float(interval), 1.0))
@@ -318,14 +373,17 @@ def _resume_state(path, fingerprint, model, optimizer, device):
 
 
 def _save_resume(path, fingerprint, model, optimizer, epoch, initial_loss,
-                 best_eligible, best_eligible_state, consecutive_passes, device,
-                 train_generator):
+                 best_source_iid, threshold_ever_reached, elapsed_seconds_extension,
+                 device, train_generator):
     _atomic_torch(path, {
         "schema_version": 1, "recipe_fingerprint": fingerprint, "epoch": int(epoch),
         "model": {key: value.detach().cpu() for key, value in model.state_dict().items()},
         "optimizer": optimizer.state_dict(), "initial_loss": initial_loss,
-        "best_eligible": best_eligible, "best_eligible_state": best_eligible_state,
-        "consecutive_passes": int(consecutive_passes),
+        "best_source_iid": best_source_iid,
+        # Backward-compatible names allow an old threshold-stopped run to resume.
+        "best_eligible": best_source_iid,
+        "threshold_ever_reached": bool(threshold_ever_reached),
+        "elapsed_seconds_extension": float(elapsed_seconds_extension),
         "torch_rng_state": torch.get_rng_state(),
         "cuda_rng_state": torch.cuda.get_rng_state(device) if device.type == "cuda" else None,
         "numpy_rng_state": np.random.get_state(),
@@ -351,6 +409,7 @@ def certify(args):
     status_path = output_dir / "status.json"
     certificate_path = output_dir / "CERTIFIED_RECIPE.json"
     exhausted_path = output_dir / "EXHAUSTED.json"
+    full_horizon_path = output_dir / "FULL_HORIZON_RESULT.json"
     minimum_iid = (2.0 / EXPECTED_TREATMENTS if args.min_iid is None else float(args.min_iid))
     config = {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
@@ -371,15 +430,19 @@ def certify(args):
                 f"certification configuration changed in {output_dir}; choose a new --run-name")
     else:
         _atomic_json(config_path, config)
-    if certificate_path.is_file():
-        payload = json.loads(certificate_path.read_text())
-        print(f"[certified] existing certificate: {certificate_path}", flush=True)
-        print(json.dumps(payload, indent=2, sort_keys=True), flush=True)
+    if full_horizon_path.is_file():
+        payload = json.loads(full_horizon_path.read_text())
+        print(f"[complete] existing full-horizon result: {full_horizon_path}", flush=True)
         return payload
+    early_snapshot_path = output_dir / "EARLY_THRESHOLD_SNAPSHOT.json"
+    if certificate_path.is_file() and not early_snapshot_path.is_file():
+        _atomic_json(early_snapshot_path, json.loads(certificate_path.read_text()))
+    early_snapshot = (
+        json.loads(early_snapshot_path.read_text()) if early_snapshot_path.is_file() else {})
     if exhausted_path.is_file():
-        payload = json.loads(exhausted_path.read_text())
-        print(f"[exhausted] existing bounded ladder: {exhausted_path}", flush=True)
-        return payload
+        old_exhausted_path = output_dir / "EARLY_GATE_EXHAUSTED.json"
+        if not old_exhausted_path.is_file():
+            _atomic_json(old_exhausted_path, json.loads(exhausted_path.read_text()))
 
     torch.manual_seed(int(args.seed))
     np.random.seed(int(args.seed))
@@ -392,6 +455,7 @@ def certify(args):
         "train_threshold": float(args.train_threshold), "train_unit": args.train_unit,
         "iid_unit": args.iid_unit, "minimum_iid": minimum_iid,
         "git_commit": sha, "git_dirty": dirty,
+        "stopping_rule": "complete the predefined recipe schedule; no accuracy cutoff",
     }
     _write_status(
         status_path, common, state="initializing", epoch=0,
@@ -410,7 +474,8 @@ def certify(args):
         attempt_dir.mkdir(parents=True, exist_ok=True)
         attempt_complete = attempt_dir / "COMPLETE.json"
         if attempt_complete.is_file():
-            summary = json.loads(attempt_complete.read_text())
+            summary = _normalize_attempt_summary(
+                json.loads(attempt_complete.read_text()), attempt_dir, recipe)
             attempt_summaries.append(summary)
             continue
         torch.manual_seed(int(args.seed))
@@ -427,17 +492,34 @@ def certify(args):
         resume_path = attempt_dir / "resume.pt"
         resume = _resume_state(
             resume_path, recipe_fingerprint, model, optimizer, device)
+        was_resumed = resume is not None
         if resume and resume.get("train_generator_state") is not None:
             loaders["train"].generator.set_state(resume["train_generator_state"])
         start_epoch = int(resume["epoch"]) if resume else 0
         initial_loss = resume.get("initial_loss") if resume else None
-        best_eligible = resume.get("best_eligible") if resume else None
-        best_eligible_state = resume.get("best_eligible_state") if resume else None
-        consecutive_passes = int(resume.get("consecutive_passes", 0)) if resume else 0
-        latest_evaluation = None
+        best_source_iid = (
+            resume.get("best_source_iid", resume.get("best_eligible")) if resume else None)
+        threshold_ever_reached = bool(
+            resume.get("threshold_ever_reached", best_source_iid is not None)
+            if resume else False)
+        elapsed_seconds_extension = float(
+            resume.get("elapsed_seconds_extension", 0.0) if resume else 0.0)
         curve_path = attempt_dir / "curves.jsonl"
+        historical_augmented, historical_evaluation, historical_best, historical_threshold = (
+            _curve_history(curve_path))
+        if historical_best is not None:
+            best_source_iid = choose_source_iid_checkpoint(
+                best_source_iid, historical_best)
+        threshold_ever_reached = threshold_ever_reached or historical_threshold
+        del resume
+        latest_evaluation = historical_evaluation
+        augmented = historical_augmented
         started = time.time()
-        if resume:
+        prior_elapsed_seconds = 0.0
+        if early_snapshot.get("attempt_name") == recipe["name"]:
+            prior_elapsed_seconds = float(
+                early_snapshot.get("elapsed_seconds_this_attempt", 0.0))
+        if was_resumed:
             print(f"[resume] {recipe['name']} after epoch {start_epoch}", flush=True)
         for epoch in range(start_epoch, int(recipe["max_epochs"])):
             _schedule(optimizer, epoch, recipe)
@@ -482,10 +564,9 @@ def certify(args):
             if should_evaluate:
                 train_metrics, _, _ = evaluate(model, loaders["train_eval"], device)
                 iid_metrics, _, _ = evaluate(model, loaders["iid_validation"], device)
-                eligible = checkpoint_is_eligible(
-                    train_metrics, iid_metrics, args.train_threshold, minimum_iid,
-                    args.train_unit, args.iid_unit)
-                consecutive_passes = consecutive_passes + 1 if eligible else 0
+                threshold_reached = bool(
+                    _metric(train_metrics, args.train_unit) >= float(args.train_threshold))
+                threshold_ever_reached = threshold_ever_reached or threshold_reached
                 candidate = {
                     "epoch": epoch + 1,
                     "selection_train_top1": _metric(train_metrics, args.train_unit),
@@ -499,88 +580,83 @@ def certify(args):
                     "iid_site_loss": float(iid_metrics["site_loss"]),
                     "iid_well_loss": float(iid_metrics["loss"]),
                 }
-                if eligible:
-                    selected = choose_eligible_checkpoint(best_eligible, candidate)
-                    if selected is candidate:
-                        best_eligible = candidate
-                        best_eligible_state = copy.deepcopy({
-                            key: value.detach().cpu() for key, value in model.state_dict().items()
-                        })
-                latest_evaluation = {**candidate, "eligible": eligible}
+                selected = choose_source_iid_checkpoint(best_source_iid, candidate)
+                if selected is candidate:
+                    best_source_iid = candidate
+                latest_evaluation = {
+                    **candidate, "threshold_reached": threshold_reached,
+                }
                 row.update(latest_evaluation)
                 _save_resume(
                     resume_path, recipe_fingerprint, model, optimizer, epoch + 1,
-                    initial_loss, best_eligible, best_eligible_state,
-                    consecutive_passes, device, loaders["train"].generator)
+                    initial_loss, best_source_iid, threshold_ever_reached,
+                    elapsed_seconds_extension + time.time() - started,
+                    device, loaders["train"].generator)
             _append_jsonl(curve_path, row)
             payload = _write_status(
                 status_path, common, state="training", attempt_index=attempt_index,
                 attempt_name=recipe["name"], max_epochs=recipe["max_epochs"],
                 epoch=epoch + 1, latest_augmented=augmented,
-                latest_evaluation=latest_evaluation, best_eligible=best_eligible,
-                consecutive_passes=consecutive_passes,
-                message=(
-                    "Threshold-clearing checkpoints are selected by source-IID accuracy."
-                    if best_eligible else "No checkpoint has cleared the full-data gate yet."
-                ),
+                latest_evaluation=latest_evaluation, best_source_iid=best_source_iid,
+                threshold_ever_reached=threshold_ever_reached,
+                elapsed_seconds=(
+                    prior_elapsed_seconds + elapsed_seconds_extension
+                    + time.time() - started),
+                message="Running the complete predefined schedule; accuracy does not stop training.",
             )
             print("[recipe] " + format_status(payload).replace("\n", " | "), flush=True)
-            if best_eligible and consecutive_passes >= int(args.confirmation_evaluations):
-                checkpoint_path = output_dir / "certified_checkpoint.pt"
-                _atomic_torch(checkpoint_path, {
-                    "schema_version": 1, "model": best_eligible_state,
-                    "model_kind": args.model, "model_audit": model_audit,
-                    "split_id": args.split_id, "split_hash": split_digest,
-                    "recipe": recipe, "selected_epoch": best_eligible["epoch"],
-                    "certified_at_epoch": epoch + 1,
-                })
-                certificate = {
-                    **common, "state": "certified", "certified": True,
-                    "attempt_index": attempt_index, "attempt_name": recipe["name"],
-                    "recipe": recipe, "selected_checkpoint": best_eligible,
-                    "selected_epoch": best_eligible["epoch"],
-                    "certified_at_epoch": epoch + 1,
-                    "schedule_total_epochs": recipe["max_epochs"],
-                    "checkpoint": str(checkpoint_path), "split_hash": split_digest,
-                    "model_audit": model_audit, "initial_batch_loss": initial_loss,
-                    "selection_rule": (
-                        f"highest source-IID {args.iid_unit} top1 among checkpoints with "
-                        f"unaugmented train {args.train_unit} top1 >= {args.train_threshold}"
-                    ),
-                    "target_policy": config["target_policy"],
-                    "attempts_before_certificate": attempt_summaries,
-                    "elapsed_seconds_this_attempt": time.time() - started,
-                }
-                _atomic_json(certificate_path, certificate)
-                _write_status(
-                    status_path, common, **certificate,
-                    latest_augmented=augmented, latest_evaluation=latest_evaluation,
-                    best_eligible=best_eligible,
-                    message=f"Certified recipe written to {certificate_path}")
-                print(f"[certified] {certificate_path}", flush=True)
-                return certificate
+        if latest_evaluation is None:
+            raise RuntimeError("full schedule ended without an evaluation")
+        checkpoint_path = attempt_dir / "terminal_checkpoint.pt"
+        _atomic_torch(checkpoint_path, {
+            "schema_version": 1,
+            "model": {key: value.detach().cpu() for key, value in model.state_dict().items()},
+            "model_kind": args.model, "model_audit": model_audit,
+            "split_id": args.split_id, "split_hash": split_digest,
+            "recipe": recipe, "terminal_epoch": recipe["max_epochs"],
+        })
+        resumed_elapsed = elapsed_seconds_extension + time.time() - started
         summary = {
             "attempt_index": attempt_index, "attempt_name": recipe["name"],
-            "certified": False, "recipe": recipe, "best_eligible": best_eligible,
-            "latest_evaluation": latest_evaluation,
-            "elapsed_seconds": time.time() - started,
+            "state": "complete", "recipe": recipe,
+            "terminal_epoch": recipe["max_epochs"],
+            "terminal_evaluation": latest_evaluation,
+            "best_source_iid": best_source_iid,
+            "threshold_ever_reached": threshold_ever_reached,
+            "checkpoint": str(checkpoint_path),
+            "latest_augmented": augmented,
+            "elapsed_seconds_resumed": resumed_elapsed,
+            "elapsed_seconds": prior_elapsed_seconds + resumed_elapsed,
         }
         _atomic_json(attempt_complete, summary)
         attempt_summaries.append(summary)
 
-    exhausted = {
-        **common, "state": "exhausted", "certified": False,
-        "attempts": attempt_summaries, "split_hash": split_digest,
+    selected_attempt = max(
+        attempt_summaries,
+        key=lambda row: float(row["terminal_evaluation"]["selection_iid_top1"]),
+    )
+    result = {
+        **common, "state": "complete", "full_horizon_complete": True,
+        "attempts": attempt_summaries, "selected_attempt": selected_attempt,
+        "split_hash": split_digest,
         "target_policy": config["target_policy"],
-        "message": (
-            "The bounded full-data recipe ladder ended without clearing the threshold. "
-            "Do not launch the dense-versus-MoE comparison."
-        ),
+        "selection_rule": f"highest terminal source-IID {args.iid_unit} accuracy",
+        "message": "Every recipe completed its predefined schedule; no accuracy cutoff was used.",
     }
-    _atomic_json(exhausted_path, exhausted)
-    _write_status(status_path, common, **exhausted)
-    print(f"[exhausted] {exhausted_path}", flush=True)
-    return exhausted
+    _atomic_json(full_horizon_path, result)
+    _write_status(
+        status_path, common, **result,
+        attempt_index=selected_attempt["attempt_index"],
+        attempt_name=selected_attempt["attempt_name"],
+        recipe=selected_attempt["recipe"],
+        epoch=selected_attempt["terminal_epoch"],
+        max_epochs=selected_attempt["terminal_epoch"],
+        latest_augmented=selected_attempt["latest_augmented"],
+        latest_evaluation=selected_attempt["terminal_evaluation"],
+        best_source_iid=selected_attempt["best_source_iid"],
+    )
+    print(f"[complete] {full_horizon_path}", flush=True)
+    return result
 
 
 def main():
@@ -627,7 +703,7 @@ def main():
     except Exception as error:
         _record_terminal_error(args, "failed", error)
         raise
-    if not result.get("certified"):
+    if not result.get("full_horizon_complete"):
         raise SystemExit(2)
 
 
