@@ -4,6 +4,8 @@ import torch
 
 from moe_shift.data.rxrx1_huvec import EXPECTED_TREATMENTS, deterministic_split
 from moe_shift.models.huvec import MaskedAutoencoder, build_study_model
+from scripts.aggregate_rxrx1_huvec_study import _target_rows
+from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
 from scripts.sweep_rxrx1_huvec_study import planned_runs
@@ -116,6 +118,68 @@ def test_well_metric_averages_two_site_logits_before_scoring():
     assert metrics["n_wells"] == 2
     assert metrics["top1"] == 1.0
     assert set(predictions.n_sites) == {2}
+
+
+def test_site_metrics_keep_both_fields_and_audit_mean_logit_pooling():
+    logits = torch.zeros(4, EXPECTED_TREATMENTS)
+    logits[0, 1] = 5.0  # well A site 1 correct
+    logits[1, 0] = 5.0  # well A site 2 incorrect
+    logits[2, 0] = 5.0  # well B site 1 correct
+    logits[3, 0] = 4.0  # well B site 2 correct
+    metrics, sites = _site_metrics(
+        logits, torch.tensor([1, 1, 0, 0]), torch.tensor([9, 9, 10, 10]),
+        ["A", "A", "B", "B"], torch.tensor([1, 2, 1, 2]), torch.arange(4))
+    wells = pd.DataFrame({
+        "well_id": ["A", "B"], "correct_top1": [True, True],
+    })
+    agreement = _agreement_summary(sites, wells)
+    assert metrics["n_sites"] == 4 and metrics["n_wells"] == 2
+    assert metrics["top1"] == 0.75
+    assert metrics["per_experiment"]["9"]["top1"] == 0.5
+    assert agreement["two_site_prediction_agreement"] == 0.5
+    assert agreement["both_sites_correct"] == 0.5
+    assert agreement["exactly_one_site_correct"] == 0.5
+    assert agreement["well_top1_on_two_site_wells"] == 1.0
+
+
+def test_aggregator_joins_site_and_well_target_metrics_by_experiment():
+    result = {
+        "run_id": "example", "model": "vit_tiny", "split_id": "primary_fold0",
+        "split_kind": "primary", "difficulty_tier": "natural",
+        "target": {"per_experiment": {
+            "5": {"top1": 0.3, "top5": 0.5, "mean_rank": 12.0},
+        }},
+        "train": {"top1": 0.8}, "iid_validation": {"top1": 0.4},
+        "target_difficulty": {"5": 0.1}, "raw_qc_target_difficulty": {"5": 0.2},
+        "target_label_coverage": {"5": {
+            "observed_labels": EXPECTED_TREATMENTS,
+            "source_matched_labels": EXPECTED_TREATMENTS, "fraction": 1.0,
+        }},
+        "role_label_coverage": {
+            "train": {"fraction": 1.0}, "iid_validation": {"fraction": 1.0},
+        },
+        "training_certified": True, "model_audit": {"total_params": 10}, "best_epoch": 5,
+    }
+    site_result = {"roles": {
+        "train": {"top1": 0.75}, "iid_validation": {"top1": 0.35},
+        "target": {
+            "per_experiment": {"5": {"top1": 0.25, "top5": 0.45, "mean_rank": 15.0}},
+            "agreement": {"per_experiment": {"5": {
+                "two_site_prediction_agreement": 0.6,
+                "both_sites_correct": 0.2, "exactly_one_site_correct": 0.1,
+                "neither_site_correct": 0.7,
+                "well_correct_when_neither_site_correct": 0.02,
+                "well_incorrect_when_at_least_one_site_correct": 0.01,
+            }}},
+        },
+    }}
+    target = _target_rows([{
+        "spec": {"stage": "H"}, "result": result, "site_result": site_result,
+    }]).iloc[0]
+    assert target.site_target_top1 == 0.25
+    assert target.well_minus_site_target_top1 == pytest.approx(0.05)
+    assert target.site_iid_to_target_gap == pytest.approx(0.10)
+    assert target.two_site_prediction_agreement == 0.6
 
 
 def _registry():

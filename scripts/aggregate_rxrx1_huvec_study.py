@@ -24,7 +24,8 @@ def load_rows(result_root):
     rows = []
     for spec in manifest.get("runs", []):
         result = _json(root / "runs" / f"{spec['run_id']}.json")
-        rows.append({"spec": spec, "result": result})
+        site_result = _json(root / "runs" / f"{spec['run_id']}.site_metrics.json")
+        rows.append({"spec": spec, "result": result, "site_result": site_result})
     return root, manifest, rows
 
 
@@ -42,6 +43,10 @@ def status_table(result_root):
              "stage     complete  certified", "--------- --------- ----------"]
     lines.extend(f"{stage:<9} {complete:>3}/{total:<3}   {certified:>3}"
                  for stage, complete, total, certified in by_stage)
+    completed_full = [row for row in rows if row["result"] is not None
+                      and not row["result"].get("canary")]
+    site_complete = sum(row["site_result"] is not None for row in completed_full)
+    lines += ["", f"Site-level backfill: {site_complete}/{len(completed_full)} completed full runs"]
     failures = sorted((root / "failures").glob("*.json")) if (root / "failures").is_dir() else []
     if failures:
         lines += ["", f"FAILURES: {len(failures)}"] + [f"- {path.stem}" for path in failures]
@@ -54,10 +59,18 @@ def status_table(result_root):
 def _target_rows(rows):
     output = []
     for row in rows:
-        result, spec = row["result"], row["spec"]
+        result, spec, site_result = row["result"], row["spec"], row.get("site_result")
         if not result or result.get("canary"):
             continue
         for experiment, metrics in result["target"]["per_experiment"].items():
+            site_roles = (site_result or {}).get("roles", {})
+            site_train = site_roles.get("train", {}).get("top1", np.nan)
+            site_iid = site_roles.get("iid_validation", {}).get("top1", np.nan)
+            site_target = site_roles.get("target", {}).get(
+                "per_experiment", {}).get(experiment, {})
+            site_target_top1 = site_target.get("top1", np.nan)
+            agreement = site_roles.get("target", {}).get(
+                "agreement", {}).get("per_experiment", {}).get(experiment, {})
             output.append({
                 "run_id": result["run_id"], "stage": spec["stage"], "model": result["model"],
                 "split_id": result["split_id"], "split_kind": result["split_kind"],
@@ -67,6 +80,24 @@ def _target_rows(rows):
                 "iid_top1": result["iid_validation"]["top1"],
                 "train_top1": result["train"]["top1"],
                 "iid_to_target_gap": result["iid_validation"]["top1"] - metrics["top1"],
+                "site_metrics_available": site_result is not None,
+                "site_target_top1": site_target_top1,
+                "site_target_top5": site_target.get("top5", np.nan),
+                "site_mean_rank": site_target.get("mean_rank", np.nan),
+                "site_train_top1": site_train,
+                "site_iid_top1": site_iid,
+                "site_iid_to_target_gap": site_iid - site_target_top1,
+                "well_minus_site_target_top1": metrics["top1"] - site_target_top1,
+                "two_site_prediction_agreement": agreement.get(
+                    "two_site_prediction_agreement", np.nan),
+                "both_sites_correct": agreement.get("both_sites_correct", np.nan),
+                "exactly_one_site_correct": agreement.get(
+                    "exactly_one_site_correct", np.nan),
+                "neither_site_correct": agreement.get("neither_site_correct", np.nan),
+                "well_correct_when_neither_site_correct": agreement.get(
+                    "well_correct_when_neither_site_correct", np.nan),
+                "well_incorrect_when_at_least_one_site_correct": agreement.get(
+                    "well_incorrect_when_at_least_one_site_correct", np.nan),
                 "cell_dino_difficulty": result["target_difficulty"][experiment],
                 "raw_qc_difficulty": result["raw_qc_target_difficulty"][experiment],
                 "observed_target_labels": result["target_label_coverage"][experiment][
@@ -115,7 +146,7 @@ def should_run_parameter_match(result_root):
     }
 
 
-def aggregate(result_root, require_complete=False):
+def aggregate(result_root, require_complete=False, require_site_metrics=False):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -126,6 +157,11 @@ def aggregate(result_root, require_complete=False):
     incomplete = [row["spec"]["run_id"] for row in expected if row["result"] is None]
     if require_complete and incomplete:
         raise RuntimeError(f"cannot finalize; incomplete runs: {incomplete}")
+    missing_site = [row["spec"]["run_id"] for row in rows
+                    if row["result"] is not None and not row["result"].get("canary")
+                    and row["site_result"] is None]
+    if require_site_metrics and missing_site:
+        raise RuntimeError(f"cannot finalize; site metrics missing: {missing_site}")
     analysis = root / "analysis"; figures = analysis / "figures"
     analysis.mkdir(parents=True, exist_ok=True); figures.mkdir(parents=True, exist_ok=True)
     target = _target_rows(rows)
@@ -134,6 +170,7 @@ def aggregate(result_root, require_complete=False):
     contrasts = []
     for model, group in target.groupby("model"):
         natural = group[group.split_kind == "primary"]
+        natural_site = natural[natural.site_metrics_available]
         contrasts.append({
             "model": model, "n_target_rows": len(group),
             "mean_target_top1": float(group.target_top1.mean()),
@@ -144,6 +181,14 @@ def aggregate(result_root, require_complete=False):
                 natural.cell_dino_difficulty, natural.target_top1),
             "raw_qc_difficulty_accuracy_correlation": _corr(
                 natural.raw_qc_difficulty, natural.target_top1),
+            "n_site_target_rows": len(natural_site),
+            "mean_site_target_top1": (
+                float(natural_site.site_target_top1.mean()) if len(natural_site) else None),
+            "mean_well_minus_site_target_top1": (
+                float(natural_site.well_minus_site_target_top1.mean())
+                if len(natural_site) else None),
+            "cell_dino_difficulty_site_accuracy_correlation": _corr(
+                natural_site.cell_dino_difficulty, natural_site.site_target_top1),
         })
     contrasts = pd.DataFrame(contrasts)
     contrasts.to_csv(analysis / "model_contrasts.csv", index=False)
@@ -169,6 +214,28 @@ def aggregate(result_root, require_complete=False):
     ax.set_xlabel("Cell-DINO matched target difficulty"); ax.set_ylabel("Well-level top-1")
     ax.legend(fontsize=8); fig.tight_layout()
     fig.savefig(figures / "raw_model_accuracy_vs_difficulty.png", dpi=180); plt.close(fig)
+
+    site_target = target[target.site_metrics_available]
+    if not site_target.empty:
+        fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+        for model, group in site_target[site_target.split_kind == "primary"].groupby("model"):
+            axes[0].scatter(group.site_target_top1, group.target_top1,
+                            label=model, alpha=0.75)
+            axes[1].scatter(group.cell_dino_difficulty, group.site_target_top1,
+                            label=model, alpha=0.75)
+        maximum = float(max(site_target.site_target_top1.max(), site_target.target_top1.max()))
+        axes[0].plot([0, maximum], [0, maximum], color="black", linewidth=1)
+        axes[0].set_xlabel("Site-level target top-1")
+        axes[0].set_ylabel("Mean-logit well-level target top-1")
+        axes[0].set_title("Does pooling two sites change accuracy?")
+        axes[1].set_xlabel("Cell-DINO matched target difficulty")
+        axes[1].set_ylabel("Site-level target top-1")
+        axes[1].set_title("Site-level accuracy versus batch difficulty")
+        for ax in axes:
+            ax.legend(fontsize=8)
+        fig.tight_layout()
+        fig.savefig(figures / "site_vs_well_evaluation.png", dpi=180)
+        plt.close(fig)
 
     controlled = target[target.split_kind == "controlled"]
     if not controlled.empty:
@@ -206,15 +273,24 @@ def aggregate(result_root, require_complete=False):
         "This is a one-seed screening study. It supports direction finding, not final uncertainty claims.", "",
         f"Completed raw-image runs: **{sum(row['result'] is not None for row in rows)}/{len(rows)}**.", "",
         "## Model summary", "",
-        "| Model | Target rows | Mean target top-1 | Mean IID top-1 | Cell-DINO difficulty→accuracy r | Slope |",
-        "|---|---:|---:|---:|---:|---:|",
+        "| Model | Target rows | Mean well target top-1 | Mean IID top-1 | Well difficulty→accuracy r | Mean site target top-1 | Site difficulty→accuracy r |",
+        "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for row in contrasts.itertuples(index=False):
         lines.append(f"| {row.model} | {row.n_target_rows} | {fmt(row.mean_target_top1)} | "
                      f"{fmt(row.mean_iid_top1)} | "
                      f"{fmt(row.cell_dino_difficulty_accuracy_correlation)} | "
-                     f"{fmt(row.cell_dino_difficulty_accuracy_slope)} |")
-    lines += ["", "## Conditional parameter-matched control", "",
+                     f"{fmt(row.mean_site_target_top1)} | "
+                     f"{fmt(row.cell_dino_difficulty_site_accuracy_correlation)} |")
+    site_rows = int(target.site_metrics_available.sum())
+    lines += ["", "## Site-versus-well evaluation", "",
+              (f"Site-level checkpoint evaluation is available for **{site_rows}/{len(target)}** "
+               "target experiment rows."), "",
+              ("Site accuracy treats each microscope field as one prediction. Well accuracy "
+               "averages the two site-logit vectors before making one prediction. The raw target "
+               "table additionally reports site agreement, both/one/neither-site correctness, "
+               "strict pooling rescues, and pooling overrides."), "",
+              "## Conditional parameter-matched control", "",
               f"Launch gate: **{'run' if parameter_gate else 'skip'}**.", "",
               "```json", json.dumps(parameter_detail, indent=2, sort_keys=True), "```", "",
               "## Interpretation guardrails", "",
@@ -228,6 +304,8 @@ def aggregate(result_root, require_complete=False):
     (analysis / "REPORT.md").write_text("\n".join(lines))
     marker = {"completed_at": time.time(), "complete_results": sum(r["result"] is not None for r in rows),
               "declared_runs": len(rows), "report": str(analysis / "REPORT.md"),
+              "site_evaluated_runs": sum(r["site_result"] is not None for r in rows),
+              "missing_site_metrics": missing_site,
               "parameter_match_gate": parameter_gate, "parameter_match_detail": parameter_detail}
     temporary = root / f"AGGREGATED.{os.getpid()}.tmp"
     temporary.write_text(json.dumps(marker, indent=2, sort_keys=True))
@@ -240,10 +318,12 @@ def main():
     parser.add_argument("--result-root", required=True)
     parser.add_argument("--status", action="store_true")
     parser.add_argument("--require-complete", action="store_true")
+    parser.add_argument("--require-site-metrics", action="store_true")
     args = parser.parse_args()
     if args.status:
         print(status_table(args.result_root)); return
-    print(json.dumps(aggregate(args.result_root, args.require_complete), indent=2, sort_keys=True))
+    print(json.dumps(aggregate(args.result_root, args.require_complete,
+                               args.require_site_metrics), indent=2, sort_keys=True))
 
 
 if __name__ == "__main__":
