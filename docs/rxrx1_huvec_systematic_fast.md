@@ -5,6 +5,10 @@ designed to establish whether independently measured experiment distance predict
 classification difficulty, then test a matched dense/MoE pair only after both a ResNet and dense
 ViT pass explicit training gates.
 
+For a non-specialist visual explanation of experiments, wells, sites, channels, custom splits,
+Cell-DINO difficulty, preliminary evidence, and the full-data certification gate, open
+[`rxrx1_huvec_study_explainer.html`](rxrx1_huvec_study_explainer.html).
+
 ## Persistent root
 
 ```text

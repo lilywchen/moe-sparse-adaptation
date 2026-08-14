@@ -44,6 +44,8 @@ canonical dense control because a dense model has no routing distribution to bal
   certified scratch models, targeted MAE, and automatic aggregation.
 - `tests/`: protocol and analysis guards.
 - `docs/research_plan.html`: detailed operational research plan.
+- `docs/rxrx1_huvec_study_explainer.html`: non-specialist visual guide to the HUVEC data hierarchy,
+  batch-difficulty design, preliminary evidence, and model-certification gate.
 - `SCISERVER.md`: cluster paths and safe execution/check-in contract.
 - `STATE.md`: compact current evidence, interpretation, active wave, and next decisions.
 - `PROGRESS.md`: shared handoff ledger for humans and scheduled Codex checks.

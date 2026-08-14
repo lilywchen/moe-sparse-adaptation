@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>RxRx1 HUVEC study — visual guide</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5c667a;
+      --paper: #f7f8fb;
+      --surface: #ffffff;
+      --line: #dbe0ea;
+      --blue: #315ea8;
+      --blue-soft: #e9f0fb;
+      --teal: #147b72;
+      --teal-soft: #e3f4f1;
+      --amber: #a75f09;
+      --amber-soft: #fff1d8;
+      --red: #a1404a;
+      --red-soft: #fae9eb;
+      --green: #34784f;
+      --green-soft: #e7f4eb;
+      --shadow: 0 16px 40px rgba(28, 42, 71, .08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.6 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: var(--blue); }
+    .page { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 54px 56px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, #fff 0%, #eef4ff 58%, #e5f5f1 100%);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -150px;
+      top: -190px;
+      border: 54px solid rgba(49, 94, 168, .08);
+      border-radius: 50%;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { line-height: 1.15; letter-spacing: -.025em; }
+    h1 { max-width: 820px; margin: 0; font-size: clamp(2.25rem, 5vw, 4.3rem); }
+    h2 { margin: 0 0 12px; font-size: clamp(1.65rem, 3vw, 2.4rem); }
+    h3 { margin: 0 0 8px; font-size: 1.08rem; }
+    .hero .lead { max-width: 810px; margin: 22px 0 0; color: #39465e; font-size: 1.2rem; }
+    .hero .question {
+      max-width: 850px;
+      margin: 28px 0 0;
+      padding-left: 18px;
+      border-left: 4px solid var(--teal);
+      font-size: 1.08rem;
+      font-weight: 650;
+    }
+    .jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 26px 0 0;
+    }
+    .jump a {
+      padding: 7px 11px;
+      border: 1px solid rgba(49, 94, 168, .22);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      text-decoration: none;
+      font-size: .86rem;
+      font-weight: 700;
+    }
+    section { margin-top: 70px; scroll-margin-top: 20px; }
+    .section-intro { max-width: 800px; margin: 0 0 26px; color: var(--muted); font-size: 1.05rem; }
+    .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .fact, .panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(28, 42, 71, .05);
+    }
+    .fact { padding: 20px; }
+    .fact strong { display: block; font-size: 1.5rem; line-height: 1.2; }
+    .fact span { display: block; margin-top: 6px; color: var(--muted); font-size: .9rem; }
+    .panel { padding: 26px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .hierarchy {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 22px;
+    }
+    .level {
+      position: relative;
+      min-height: 192px;
+      padding: 19px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+    }
+    .level:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -18px;
+      top: 78px;
+      color: var(--muted);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+    .level .index {
+      display: inline-flex;
+      width: 27px;
+      height: 27px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      color: white;
+      background: var(--blue);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+    .level p { margin: 8px 0 0; color: var(--muted); font-size: .88rem; }
+    .well-icon {
+      width: 72px;
+      height: 72px;
+      margin: 12px auto 0;
+      border: 8px solid #cad4e6;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #b9e4da 0 8%, #75b5a8 9% 18%, #e4f4f1 19% 100%);
+    }
+    .sites { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 16px; }
+    .site {
+      aspect-ratio: 1;
+      border: 1px solid #9eabc2;
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at 30% 30%, #61b3a1 0 4%, transparent 5%),
+        radial-gradient(circle at 70% 60%, #6689c4 0 5%, transparent 6%),
+        radial-gradient(circle at 45% 78%, #d6a24a 0 4%, transparent 5%), #1e293d;
+    }
+    .channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 15px; }
+    .channel { aspect-ratio: 1; border-radius: 7px; border: 1px solid rgba(0,0,0,.08); }
+    .channel:nth-child(1) { background: #738be9; }
+    .channel:nth-child(2) { background: #54b39e; }
+    .channel:nth-child(3) { background: #c36eb7; }
+    .channel:nth-child(4) { background: #d7a44c; }
+    .channel:nth-child(5) { background: #74b5cf; }
+    .channel:nth-child(6) { background: #d3696e; }
+    .plain-note {
+      margin-top: 18px;
+      padding: 15px 17px;
+      border-left: 4px solid var(--blue);
+      background: var(--blue-soft);
+      border-radius: 4px 12px 12px 4px;
+    }
+    .plain-note strong { color: #234c8d; }
+    .split-map {
+      display: grid;
+      grid-template-columns: 1.5fr .72fr .86fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .split-box { padding: 19px; border-radius: 15px; }
+    .split-box strong { display: block; font-size: 1.05rem; }
+    .split-box small { display: block; margin-top: 7px; line-height: 1.45; }
+    .train { background: var(--blue-soft); border: 1px solid #c4d5f0; }
+    .iid { background: var(--green-soft); border: 1px solid #bedec8; }
+    .target { background: var(--amber-soft); border: 1px solid #ead0a1; }
+    .rule-list { margin: 14px 0 0; padding: 0; list-style: none; }
+    .rule-list li { position: relative; margin: 10px 0; padding-left: 28px; }
+    .rule-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--teal);
+      font-weight: 900;
+    }
+    .danger-list li::before { content: "×"; color: var(--red); }
+    .difficulty {
+      display: grid;
+      grid-template-columns: 1fr 52px 1fr 52px 1fr;
+      align-items: center;
+      gap: 8px;
+      margin: 24px 0 8px;
+    }
+    .difficulty .step {
+      min-height: 148px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+    .difficulty .arrow { text-align: center; color: var(--muted); font-size: 1.5rem; }
+    .formula {
+      margin-top: 11px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #eff2f7;
+      color: #344158;
+      font: 600 .82rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .result-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .result {
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .result .value { display: block; margin: 3px 0 8px; font-size: 1.65rem; font-weight: 850; }
+    .result p { margin: 0; color: var(--muted); font-size: .88rem; }
+    .support { border-top: 5px solid var(--teal); }
+    .warning { border-top: 5px solid var(--amber); }
+    .reject { border-top: 5px solid var(--red); }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th { background: #eef1f6; color: #39465e; font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .pipeline { display: grid; gap: 12px; margin-top: 22px; }
+    .phase {
+      display: grid;
+      grid-template-columns: 58px 1.1fr 1.5fr 150px;
+      gap: 16px;
+      align-items: center;
+      padding: 17px 19px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+    .phase .number {
+      display: flex;
+      width: 42px;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 13px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 900;
+    }
+    .phase p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .state { justify-self: end; padding: 5px 9px; border-radius: 999px; font-size: .74rem; font-weight: 800; text-transform: uppercase; }
+    .done { color: var(--green); background: var(--green-soft); }
+    .active { color: var(--amber); background: var(--amber-soft); }
+    .blocked { color: var(--red); background: var(--red-soft); }
+    .future { color: var(--muted); background: #edf0f5; }
+    .gate {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 24px;
+      border: 1px solid #e5c27e;
+      border-radius: 18px;
+      background: linear-gradient(90deg, #fff9ed, #fff3d9);
+    }
+    .gate .threshold { font-size: 2.4rem; font-weight: 900; color: var(--amber); }
+    .gate p { margin: 4px 0 0; color: #67523c; }
+    .gate-arrow { font-size: 1.7rem; color: var(--amber); }
+    .glossary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 22px; }
+    .term { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .term strong { display: block; }
+    .term span { color: var(--muted); font-size: .9rem; }
+    details { border-top: 1px solid var(--line); padding: 15px 0; }
+    details:first-child { border-top: 0; padding-top: 0; }
+    summary { cursor: pointer; font-weight: 750; }
+    details p { margin: 9px 0 0; color: var(--muted); }
+    footer { margin-top: 70px; padding-top: 26px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #edf1f8; --muted: #aeb8c9; --paper: #10141d; --surface: #171d29;
+        --line: #30394a; --blue: #8eb2f0; --blue-soft: #202e48; --teal: #6bc8b8;
+        --teal-soft: #183a36; --amber: #edb45f; --amber-soft: #422f17; --red: #ef969e;
+        --red-soft: #422329; --green: #7bc896; --green-soft: #1d3827;
+      }
+      .hero { background: linear-gradient(135deg, #171d29 0%, #1a2941 58%, #173732 100%); }
+      .hero .lead, .hero .question { color: #c7d0de; }
+      .jump a { background: rgba(20,27,39,.76); }
+      .formula, th { background: #202735; color: #ccd5e5; }
+      .gate { background: linear-gradient(90deg, #292318, #382c18); }
+      .gate p { color: #d6c5a6; }
+      .plain-note strong { color: #a7c5f4; }
+    }
+    @media (max-width: 900px) {
+      .facts, .grid-3, .result-strip { grid-template-columns: repeat(2, 1fr); }
+      .hierarchy { grid-template-columns: 1fr; }
+      .level { min-height: 0; }
+      .level:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -24px; }
+      .difficulty { grid-template-columns: 1fr; }
+      .difficulty .arrow { transform: rotate(90deg); }
+      .phase { grid-template-columns: 48px 1fr; }
+      .phase p { grid-column: 2; }
+      .state { grid-column: 2; justify-self: start; }
+    }
+    @media (max-width: 620px) {
+      .page { padding: 14px 14px 50px; }
+      .hero { padding: 34px 24px; border-radius: 20px; }
+      section { margin-top: 52px; }
+      .facts, .grid-2, .grid-3, .result-strip, .glossary { grid-template-columns: 1fr; }
+      .split-map { grid-template-columns: 1fr; }
+      .gate { grid-template-columns: 1fr; }
+      .gate-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+  <header class="hero">
+    <p class="eyebrow">RxRx1 · HUVEC · native six-channel images</p>
+    <h1>What changes when the biology stays the same, but the experimental batch changes?</h1>
+    <p class="lead">This study asks whether acquisition differences between experiments make the same perturbation harder to recognize—and whether a mixture-of-experts model handles that shift better than an equally controlled dense model.</p>
+    <p class="question">The order matters: first understand the data and measure batch difficulty, then prove the models can learn, and only then compare dense versus MoE.</p>
+    <nav class="jump" aria-label="Page sections">
+      <a href="#data">What is one example?</a>
+      <a href="#splits">How are splits made?</a>
+      <a href="#difficulty">What is difficulty?</a>
+      <a href="#evidence">What do we know?</a>
+      <a href="#pipeline">What happens next?</a>
+    </nav>
+  </header>
+
+  <section aria-labelledby="scope-title">
+    <p class="eyebrow">The study in four facts</p>
+    <h2 id="scope-title">A deliberately narrow substrate</h2>
+    <p class="section-intro">Restricting the first study to one cell type makes the batch question easier to interpret. Cell type is not allowed to masquerade as batch difficulty.</p>
+    <div class="facts">
+      <div class="fact"><strong>1 cell type</strong><span>HUVEC only. RPE, HepG2, and U2OS are outside this first analysis.</span></div>
+      <div class="fact"><strong>24 experiments</strong><span>Each experiment is treated as a distinct acquisition environment or batch.</span></div>
+      <div class="fact"><strong>1,108 classes</strong><span>Treatment perturbations only. Positive and negative controls are excluded from the classification labels.</span></div>
+      <div class="fact"><strong>6 channels</strong><span>The end-to-end model receives all six native grayscale acquisitions for each microscope site.</span></div>
+    </div>
+    <div class="plain-note"><strong>Approximate scale:</strong> the complete design has a ceiling of 24 × 1,108 = 26,592 treatment wells and about twice as many microscope sites. The frozen manifest records the real total because a small number of experiment–perturbation combinations or sites can be missing.</div>
+  </section>
+
+  <section id="data" aria-labelledby="data-title">
+    <p class="eyebrow">Data anatomy</p>
+    <h2 id="data-title">From experiment to model input</h2>
+    <p class="section-intro">The words “experiment,” “well,” “site,” and “channel” refer to different levels. Confusing them changes what a split or an accuracy number means.</p>
+    <div class="hierarchy" role="img" aria-label="An experiment contains plates, a plate contains wells, each treatment well has two microscope sites, and every site has six image channels">
+      <div class="level"><span class="index">1</span><h3>Experiment</h3><p>One acquisition environment. Different dates, plates, instruments, reagents, or handling can create a batch signature.</p></div>
+      <div class="level"><span class="index">2</span><h3>Plate</h3><p>A physical multi-well plate inside an experiment. Plate identity is nested within the larger experiment batch.</p></div>
+      <div class="level"><span class="index">3</span><h3>Well</h3><div class="well-icon" aria-hidden="true"></div><p>One treatment is applied to the cells in this physical well.</p></div>
+      <div class="level"><span class="index">4</span><h3>Two sites</h3><div class="sites" aria-hidden="true"><div class="site"></div><div class="site"></div></div><p>Two microscope fields from different locations in the same well. They are related views, not two independent treatments.</p></div>
+      <div class="level"><span class="index">5</span><h3>Six channels/site</h3><div class="channels" aria-hidden="true"><div class="channel"></div><div class="channel"></div><div class="channel"></div><div class="channel"></div><div class="channel"></div><div class="channel"></div></div><p>The six grayscale channels are stacked into a single six-channel tensor.</p></div>
+    </div>
+    <div class="grid-2" style="margin-top:18px">
+      <article class="panel">
+        <h3>Training unit: site</h3>
+        <p>A site is one model example. Both sites from a well have the same perturbation label, but each must be recognizable on its own. The new certification gate therefore uses full, unaugmented <strong>site accuracy</strong>.</p>
+      </article>
+      <article class="panel">
+        <h3>Secondary summary: well</h3>
+        <p>For a well-level number, the two site logits can be averaged before making one prediction. That can reduce field-of-view noise, but it can also hide one bad site. We now report site and well results side by side.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="splits" aria-labelledby="split-title">
+    <p class="eyebrow">Isolation by design</p>
+    <h2 id="split-title">The target experiment is not a validation set</h2>
+    <p class="section-intro">The main split is made by experiment, while the source-IID split is made by whole wells. Both sites from the same well always stay together.</p>
+    <div class="panel">
+      <h3>One primary fold</h3>
+      <div class="split-map">
+        <div class="split-box train"><strong>Source training</strong><small>Most treatment wells from 16 source experiments. Used for normalization and supervised learning.</small></div>
+        <div class="split-box iid"><strong>Source IID</strong><small>Whole source wells held out per perturbation. Used for checkpoint selection.</small></div>
+        <div class="split-box target"><strong>8 target experiments</strong><small>Entire experiments held out. Used only for the final batch-shift measurement.</small></div>
+      </div>
+      <p style="margin:18px 0 0;color:var(--muted)">Across the three primary folds, every one of the 24 experiments serves as a target exactly once, with 16 source and 8 target experiments per fold.</p>
+    </div>
+    <div class="grid-2" style="margin-top:18px">
+      <article class="panel">
+        <h3>The target is excluded from</h3>
+        <ul class="rule-list danger-list">
+          <li>Image normalization statistics</li>
+          <li>Supervised training</li>
+          <li>Source-IID validation</li>
+          <li>Checkpoint and recipe selection</li>
+          <li>Masked-autoencoder pretraining</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h3>Why not use the WILDS split for everything?</h3>
+        <p>The custom folds let us ask more specific questions: which experiment is hard, whether independently measured distance predicts performance, and what happens when the target stays fixed but the source experiments change.</p>
+        <p>The WILDS split can remain an external reference; it is not the only way to study the acquisition structure.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="difficulty" aria-labelledby="difficulty-title">
+    <p class="eyebrow">Independent difficulty measurement</p>
+    <h2 id="difficulty-title">Difficulty is perturbation-matched embedding shift</h2>
+    <p class="section-intro">Cell-DINO is used here as a frozen measuring instrument, not as the initialization for the end-to-end model comparison.</p>
+    <div class="difficulty">
+      <div class="step"><h3>1. Match one class</h3><p>Take perturbation <em>c</em> in target experiment <em>t</em>. Find the same perturbation in every selected source experiment.</p></div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="step"><h3>2. Compare embeddings</h3><p>Compute the source centroid for that perturbation, then compare it with the target well embedding.</p><div class="formula">d(c,t) = 1 − cosine(target, source centroid)</div></div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="step"><h3>3. Summarize the split</h3><p>Repeat across shared perturbations and take the median. A larger number means the same biology looks more different across batches.</p></div>
+    </div>
+    <div class="plain-note"><strong>Important:</strong> the calculation begins per perturbation, but the current registry stores one median difficulty per target/source split. A stronger follow-up will retain the full per-class distribution and ask whether high-shift classes are the ones the raw model misses.</div>
+
+    <div class="grid-2" style="margin-top:18px">
+      <article class="panel">
+        <h3>Natural held-out folds</h3>
+        <p>The 24 experiments are balanced into three groups using their Cell-DINO centrality. Each group becomes an eight-experiment target fold in turn.</p>
+      </article>
+      <article class="panel">
+        <h3>Controlled source resampling</h3>
+        <p>For a fixed target experiment, twelve source experiments are selected from low, medium, or high distance tiers. The target images and source count stay fixed; only source composition changes. Three resamples support cheap probes, while the raw-image screen uses one per tier for speed.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="evidence" aria-labelledby="evidence-title">
+    <p class="eyebrow">Preliminary evidence</p>
+    <h2 id="evidence-title">There is a difficulty signal, but the causal story is not finished</h2>
+    <p class="section-intro">These results are useful for deciding what to run next. They are not yet a claim that MoE solves batch shift.</p>
+    <div class="result-strip">
+      <article class="result support"><span class="eyebrow">Supports difficulty</span><span class="value">r = −0.60 / −0.68</span><p>Greater Cell-DINO target difficulty was associated with lower centroid and linear-probe target accuracy across the primary target experiments.</p></article>
+      <article class="result warning"><span class="eyebrow">Needs explanation</span><span class="value">Target &gt; IID on average</span><p>The mean embedding-probe target accuracy was not below source-IID accuracy. The evidence is the variation among target experiments, not a universal average OOD gap.</p></article>
+      <article class="result reject"><span class="eyebrow">Do not use</span><span class="value">Raw QC</span><p>Raw-QC distance had weak accuracy relationships and a saturated distance structure. It is not an appropriate primary difficulty measure.</p></article>
+    </div>
+
+    <h3 style="margin-top:30px">Frozen embedding probes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Probe</th><th class="num">Train</th><th class="num">Source IID</th><th class="num">Target</th><th>Difficulty relationship</th></tr></thead>
+        <tbody>
+          <tr><td>Nearest centroid</td><td class="num">22.27%</td><td class="num">9.63%</td><td class="num">12.22%</td><td>Cell-DINO r = −0.601</td></tr>
+          <tr><td>Linear probe</td><td class="num">12.56%</td><td class="num">6.80%</td><td class="num">7.75%</td><td>Cell-DINO r = −0.683</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:30px">Why the first raw-image sweep was stopped</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ResNet split</th><th class="num">Train</th><th class="num">Source IID</th><th class="num">Target</th><th>Interpretation</th></tr></thead>
+        <tbody>
+          <tr><td>Primary fold 0</td><td class="num">7.53%</td><td class="num">5.55%</td><td class="num">2.94%</td><td>Underfit</td></tr>
+          <tr><td>Primary fold 1</td><td class="num">9.11%</td><td class="num">5.64%</td><td class="num">4.80%</td><td>Underfit</td></tr>
+          <tr><td>Controlled target 19 · low</td><td class="num">6.45%</td><td class="num">3.66%</td><td class="num">1.90%</td><td>Underfit</td></tr>
+          <tr><td>Controlled target 19 · medium</td><td class="num">9.45%</td><td class="num">4.47%</td><td class="num">2.17%</td><td>Underfit</td></tr>
+          <tr><td>Controlled target 19 · high</td><td class="num">0.10%</td><td class="num">0.14%</td><td class="num">0.09%</td><td>Approximately chance</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="plain-note"><strong>Why this matters:</strong> when a model has not learned its training data, low target accuracy cannot be cleanly attributed to batch difficulty. Optimization failure and distribution shift are mixed together.</div>
+  </section>
+
+  <section id="pipeline" aria-labelledby="pipeline-title">
+    <p class="eyebrow">Decision-gated pipeline</p>
+    <h2 id="pipeline-title">Do not ask the MoE question until the learning question is answered</h2>
+    <div class="pipeline">
+      <article class="phase"><span class="number">1</span><div><h3>Freeze data and embeddings</h3></div><p>Audit native six-channel files, treatment labels, sites, wells, coverage, Cell-DINO embeddings, and split definitions.</p><span class="state done">done</span></article>
+      <article class="phase"><span class="number">2</span><div><h3>Establish batch geometry</h3></div><p>Measure matched experiment distances, visualize experiment structure, and run cheap centroid and linear probes.</p><span class="state done">done</span></article>
+      <article class="phase"><span class="number">3</span><div><h3>Certify a real training recipe</h3></div><p>Train on the complete source fold with production augmentation. Try bounded recipes until full unaugmented site accuracy clears the threshold.</p><span class="state active">active</span></article>
+      <article class="phase"><span class="number">4</span><div><h3>Confirm difficulty with raw images</h3></div><p>Rerun the primary and controlled splits using the certified recipe. Relate target accuracy to frozen Cell-DINO difficulty.</p><span class="state blocked">gated</span></article>
+      <article class="phase"><span class="number">5</span><div><h3>Compare dense versus MoE</h3></div><p>Use identical data, optimization, checkpoint rules, and active-compute budget. Add a total-parameter-matched dense control conditionally.</p><span class="state future">later</span></article>
+      <article class="phase"><span class="number">6</span><div><h3>Test targeted pretraining</h3></div><p>Run the small MAE study only after supervised optimization is trustworthy, then decide whether broader scaling is justified.</p><span class="state future">later</span></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="gate-title">
+    <p class="eyebrow">Current certification gate</p>
+    <h2 id="gate-title">What “the recipe passed” actually means</h2>
+    <div class="gate">
+      <div><span class="threshold">≥ 80%</span><h3>Full unaugmented training-site accuracy</h3><p>Measured on every individual source training site, not hidden by averaging two sites into a well.</p></div>
+      <div class="gate-arrow" aria-hidden="true">→</div>
+      <div><h3>Then select using source IID</h3><p>Among eligible checkpoints, source-IID performance selects the checkpoint. Target accuracy is never consulted. If no bounded recipe passes, the state is <strong>exhausted</strong> and the comparison remains blocked.</p></div>
+    </div>
+    <div class="grid-3" style="margin-top:18px">
+      <article class="panel"><h3>Online signal</h3><p>Augmented site accuracy and loss update each epoch. They should improve overall but need not be monotonic.</p></article>
+      <article class="panel"><h3>Gate signal</h3><p>Full unaugmented site and well accuracies are measured every five epochs. Site accuracy is the default gate.</p></article>
+      <article class="panel"><h3>Six candidates</h3><p>Three ResNet and three ViT recipes run in parallel across six GPUs. Finishing first does not make a recipe best; source-IID performance breaks the tie among passing recipes.</p></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="claims-title">
+    <p class="eyebrow">Interpretation guardrails</p>
+    <h2 id="claims-title">What each result would—and would not—show</h2>
+    <div class="grid-2">
+      <article class="panel">
+        <h3>Evidence for a batch-difficulty effect</h3>
+        <ul class="rule-list">
+          <li>A trained model performs worse on independently measured harder targets.</li>
+          <li>The relationship appears at both aggregate and per-perturbation levels.</li>
+          <li>With the target fixed, changing only source composition changes performance in the predicted direction.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h3>Evidence that MoE helps</h3>
+        <ul class="rule-list">
+          <li>Dense and MoE models both pass the same learning gate.</li>
+          <li>They use the same splits, recipe, checkpoint rule, and active-compute budget.</li>
+          <li>MoE improves target accuracy or the difficulty slope across more than one frozen split.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="plain-note"><strong>Not the premise:</strong> the study does not require batch information to be removed from the representation. The claim of interest is narrower: whether measured acquisition shift predicts difficulty, and whether conditional capacity improves perturbation recognition under that shift.</div>
+  </section>
+
+  <section aria-labelledby="glossary-title">
+    <p class="eyebrow">Plain-language glossary</p>
+    <h2 id="glossary-title">Terms used throughout the study</h2>
+    <div class="glossary">
+      <div class="term"><strong>Perturbation</strong><span>The biological treatment the classifier is asked to identify.</span></div>
+      <div class="term"><strong>Batch / experiment</strong><span>An acquisition environment that can change image appearance without changing the treatment label.</span></div>
+      <div class="term"><strong>Well</strong><span>A physical plate location containing cells exposed to one treatment.</span></div>
+      <div class="term"><strong>Site</strong><span>One microscope field photographed within a well; usually two are available.</span></div>
+      <div class="term"><strong>Source IID</strong><span>Held-out wells from source experiments, used to choose checkpoints without touching target batches.</span></div>
+      <div class="term"><strong>Target / OOD</strong><span>Entire experiments withheld to measure acquisition shift.</span></div>
+      <div class="term"><strong>Cell-DINO difficulty</strong><span>Frozen, perturbation-matched embedding distance between a target and its selected source experiments.</span></div>
+      <div class="term"><strong>MoE</strong><span>A model with multiple expert pathways where only a subset is active for each input or token.</span></div>
+    </div>
+    <div class="panel" style="margin-top:22px">
+      <details open><summary>Why did the small canary pass while full training failed?</summary><p>The canary proved that the model and optimizer could memorize a small, simplified subset without the full regularization and variability. It did not prove that the production recipe could optimize the complete multi-experiment task. That is why the new gate operates on the full source fold.</p></details>
+      <details><summary>Why not average the two sites during training?</summary><p>Site-level training gives the model more observations and requires each field to carry the signal. Keeping both sites in the same split prevents leakage. Well-level averaging remains useful as a secondary robustness summary.</p></details>
+      <details><summary>Does an 80% training threshold guarantee good target performance?</summary><p>No. It only removes severe underfitting as the dominant explanation. Generalization can still be poor, which is exactly what the held-out experiment analysis is designed to measure.</p></details>
+    </div>
+  </section>
+
+  <footer>
+    <strong>Study status:</strong> data, embeddings, folds, and preliminary probes are frozen. The original raw-image screen was stopped for underfitting. Full-data recipe certification is the active gate before raw-image difficulty confirmation or dense-versus-MoE comparison.
+  </footer>
+</main>
+</body>
+</html>
