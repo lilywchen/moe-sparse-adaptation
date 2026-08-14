@@ -25,8 +25,8 @@ import copy
 import math
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def input_instance_norm(x):
@@ -79,10 +79,13 @@ class PatchMoE(nn.Module):
     granularity='sample' : one decision per image (pooled token) -> all its tokens share experts.
     N=1 reduces to the original MLP (== dense block); experts are deep-copies of `mlp` (upcycle)."""
     def __init__(self, mlp: nn.Module, dim: int, N=8, k=2, granularity="patch",
-                 router="cosine", router_temp=0.07):
+                 router="cosine", router_temp=0.07, routing_estimator="selected_st"):
         super().__init__()
         self.N, self.k = N, max(1, min(k, N))
         self.granularity = granularity
+        if routing_estimator not in ("selected_st", "legacy_renorm"):
+            raise ValueError("PatchMoE routing_estimator must be selected_st|legacy_renorm")
+        self.routing_estimator = str(routing_estimator)
         self.experts = nn.ModuleList([copy.deepcopy(mlp) for _ in range(N)])   # upcycle from the MLP
         self.router_type = router
         if router == "linear":
@@ -128,8 +131,15 @@ class PatchMoE(nn.Module):
             logits = self._route(x.reshape(B * T, C))       # [B*T, N] per token
         gates = F.softmax(logits, dim=-1)
         topv, topi = torch.topk(gates, self.k, dim=-1)
-        topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
-        self.last = {"logits": logits, "gates": gates, "idx": topi}
+        if self.k == 1 and self.routing_estimator == "selected_st":
+            # Forward value is exactly one (hard sparse dispatch), while the backward pass keeps
+            # the selected softmax probability's task gradient. Renormalizing a single value by
+            # itself would make the router invisible to the classification objective.
+            topv = topv + (torch.ones_like(topv) - topv).detach()
+        else:
+            topv = topv / (topv.sum(dim=-1, keepdim=True) + 1e-9)
+        self.last = {"logits": logits, "gates": gates, "idx": topi,
+                     "routing_estimator": self.routing_estimator}
 
         if self.granularity == "sample":
             # expand per-image choice to all tokens, then dispatch on the flat token set
@@ -174,9 +184,12 @@ class Block(nn.Module):
 
 class ViT(nn.Module):
     def __init__(self, num_classes, img=32, patch=4, dim=192, depth=9, heads=6,
-                 mlp_ratio=4.0, drop=0.1, instance_norm=False, **_ignore):
+                 mlp_ratio=4.0, drop=0.1, instance_norm=False, input_channels=3, **_ignore):
         super().__init__()
-        self.patch_embed = nn.Conv2d(3, dim, patch, patch)
+        self.input_channels = int(input_channels)
+        self.patch_size = int(patch)
+        self.image_size = int(img)
+        self.patch_embed = nn.Conv2d(self.input_channels, dim, patch, patch)
         n_patches = (img // patch) ** 2
         self.cls = nn.Parameter(torch.zeros(1, 1, dim))
         self.pos = nn.Parameter(torch.zeros(1, n_patches + 1, dim))

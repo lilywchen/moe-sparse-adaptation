@@ -39,6 +39,9 @@ canonical dense control because a dense model has no routing distribution to bal
 - `scripts/sweep_rxrx1_shared_performance.py`: eight-run shared/residual-MoE performance wave,
   sharded two jobs per 2×H100 container.
 - `scripts/summarize_rxrx1_performance_wave.py`: one-command live validation/test result table.
+- `scripts/sweep_rxrx1_huvec_study.py`: one-seed, three-container native-six-channel HUVEC
+  batch-difficulty study with frozen Cell-DINO/QC geometry, custom folds, source resampling,
+  certified scratch models, targeted MAE, and automatic aggregation.
 - `tests/`: protocol and analysis guards.
 - `docs/research_plan.html`: detailed operational research plan.
 - `SCISERVER.md`: cluster paths and safe execution/check-in contract.

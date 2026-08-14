@@ -1,7 +1,7 @@
 """ResNet-18 with configurable stem + norm, exposing forward_features and .layer4
 (whose final block build.py swaps for an MoEBlock)."""
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def norm_layer(norm: str, channels: int) -> nn.Module:
@@ -36,17 +36,21 @@ class BasicBlock(nn.Module):
 
 
 class ResNet18(nn.Module):
-    def __init__(self, num_classes, stem="cifar", norm="groupnorm", input_norm=False):
+    def __init__(self, num_classes, stem="cifar", norm="groupnorm", input_norm=False,
+                 input_channels=3):
         super().__init__()
         # InstanceNorm baseline: per-image, per-channel standardization of the INPUT cancels
         # any per-image affine nuisance for free (the trivial floor for homogeneous batch effects).
-        self.input_norm = nn.InstanceNorm2d(3, affine=False) if input_norm else None
+        input_channels = int(input_channels)
+        self.input_norm = nn.InstanceNorm2d(input_channels, affine=False) if input_norm else None
         if stem == "cifar":
             self.stem = nn.Sequential(
-                nn.Conv2d(3, 64, 3, 1, 1, bias=False), norm_layer(norm, 64), nn.ReLU(inplace=True))
+                nn.Conv2d(input_channels, 64, 3, 1, 1, bias=False),
+                norm_layer(norm, 64), nn.ReLU(inplace=True))
         else:
             self.stem = nn.Sequential(
-                nn.Conv2d(3, 64, 7, 2, 3, bias=False), norm_layer(norm, 64), nn.ReLU(inplace=True),
+                nn.Conv2d(input_channels, 64, 7, 2, 3, bias=False),
+                norm_layer(norm, 64), nn.ReLU(inplace=True),
                 nn.MaxPool2d(3, 2, 1))
         self.in_c = 64
         self.layer1 = self._make(64, 2, 1, norm)
@@ -77,8 +81,9 @@ class ResNet18(nn.Module):
         return self.fc(self.forward_features(x))
 
 
-def resnet18(num_classes, stem="cifar", norm="groupnorm", input_norm=False):
-    return ResNet18(num_classes, stem, norm, input_norm)
+def resnet18(num_classes, stem="cifar", norm="groupnorm", input_norm=False,
+             input_channels=3):
+    return ResNet18(num_classes, stem, norm, input_norm, input_channels)
 
 
 # ---------------------------------------------------------------------------
