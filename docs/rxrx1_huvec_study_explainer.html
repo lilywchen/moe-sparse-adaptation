@@ -494,7 +494,7 @@
     <p class="eyebrow">Current optimization study</p>
     <h2 id="gate-title">Train through the peak, then stop on a frozen plateau rule</h2>
     <div class="gate">
-      <div><span class="threshold">20 epochs</span><h3>Source-IID patience</h3><p>Evaluate every five epochs and stop after four evaluations without at least a 0.1-point source-IID improvement, never before epoch 30.</p></div>
+      <div><span class="threshold">20 epochs</span><h3>Source-IID patience</h3><p>Evaluate every five epochs and stop after four evaluations without at least a 0.1-point source-IID improvement, never before epoch 30 and never later than epoch 80.</p></div>
       <div class="gate-arrow" aria-hidden="true">→</div>
       <div><h3>Preserve both peak and terminal states</h3><p>The complete learning curve, peak source-IID checkpoint, and terminal training state are reported together. Target accuracy is never consulted.</p></div>
     </div>

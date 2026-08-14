@@ -140,6 +140,7 @@ def launch_pair(result_root, pair_index):
             "--recipes-json", str(recipe_path),
             "--eval-every", "5", "--plateau-patience-evals", "4",
             "--plateau-min-delta", "0.001", "--plateau-min-epochs", "30",
+            "--plateau-max-epochs", "80",
         ]
         environment = dict(
             os.environ, CUDA_VISIBLE_DEVICES=item["gpu"], PYTHONUNBUFFERED="1")

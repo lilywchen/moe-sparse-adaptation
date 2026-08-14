@@ -462,6 +462,7 @@ def certify(args):
         "patience_evaluations": int(args.plateau_patience_evals),
         "minimum_delta": float(args.plateau_min_delta),
         "minimum_epochs": int(args.plateau_min_epochs),
+        "maximum_epochs": int(args.plateau_max_epochs),
         "target_policy": config["target_policy"],
     }
     plateau_config["fingerprint"] = _fingerprint(plateau_config)
@@ -501,7 +502,7 @@ def certify(args):
         "stopping_rule": (
             f"source-IID plateau: {args.plateau_patience_evals} evaluations without "
             f">= {args.plateau_min_delta:.4f} improvement after epoch "
-            f"{args.plateau_min_epochs}"
+            f"{args.plateau_min_epochs}; hard safety ceiling {args.plateau_max_epochs}"
         ),
         "plateau_config": plateau_config,
     }
@@ -583,7 +584,8 @@ def certify(args):
                 f"evaluations without >= {args.plateau_min_delta:.4f} improvement"
             )
         terminal_epoch = start_epoch
-        for epoch in range(start_epoch, int(recipe["max_epochs"])):
+        safety_horizon = min(int(recipe["max_epochs"]), int(args.plateau_max_epochs))
+        for epoch in range(start_epoch, safety_horizon):
             if stop_reason:
                 break
             _schedule(optimizer, epoch, recipe)
@@ -617,7 +619,7 @@ def certify(args):
             }
             should_evaluate = (
                 (epoch + 1) % int(args.eval_every) == 0
-                or epoch + 1 == int(recipe["max_epochs"])
+                or epoch + 1 == safety_horizon
             )
             row = {
                 "phase": "supervised", "attempt": attempt_index, "recipe": recipe["name"],
@@ -733,7 +735,7 @@ def certify(args):
             "attempt_index": attempt_index, "attempt_name": recipe["name"],
             "state": "complete", "recipe": recipe,
             "terminal_epoch": terminal_epoch,
-            "maximum_safety_epochs": recipe["max_epochs"],
+            "maximum_safety_epochs": safety_horizon,
             "stop_reason": stop_reason,
             "terminal_evaluation": latest_evaluation,
             "best_source_iid": best_source_iid,
@@ -796,6 +798,7 @@ def main():
     parser.add_argument("--plateau-patience-evals", type=int, default=4)
     parser.add_argument("--plateau-min-delta", type=float, default=0.001)
     parser.add_argument("--plateau-min-epochs", type=int, default=30)
+    parser.add_argument("--plateau-max-epochs", type=int, default=80)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--num-workers", type=int, default=6)
     parser.add_argument("--image-size", type=int, default=224)
@@ -812,6 +815,8 @@ def main():
         parser.error("--eval-every and --confirmation-evaluations must be positive")
     if args.plateau_patience_evals <= 0 or args.plateau_min_epochs <= 0:
         parser.error("plateau patience and minimum epochs must be positive")
+    if args.plateau_max_epochs < args.plateau_min_epochs:
+        parser.error("--plateau-max-epochs must be at least --plateau-min-epochs")
     if args.plateau_min_delta < 0:
         parser.error("--plateau-min-delta must be nonnegative")
     if not 0 < args.train_threshold <= 1:
