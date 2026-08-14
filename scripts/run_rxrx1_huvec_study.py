@@ -77,7 +77,7 @@ def _load_spec(result_root, run_id):
 
 
 def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
-                  canary=False):
+                  canary=False, include_target=True, train_augmentation=None):
     sites = pd.read_parquet(registry["site_manifest"])
     assignment = deterministic_split(
         sites, split_spec["source_experiments"], split_spec["target_experiments"],
@@ -97,20 +97,23 @@ def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
         roles["train"] = roles["train"][roles["train"].well_id.isin(wells.well_id)].copy()
     normalization = split_spec["normalization"]
     raw_root = registry["raw_root"]
+    if train_augmentation is None:
+        train_augmentation = not canary
     datasets = {
         "train": Native6SiteDataset(
             roles["train"], raw_root, image_size, normalization["mean"], normalization["std"],
-            train=not canary),
+            train=bool(train_augmentation)),
         "train_eval": Native6SiteDataset(
             roles["train"], raw_root, image_size, normalization["mean"], normalization["std"],
             train=False),
         "iid_validation": Native6SiteDataset(
             roles["iid_validation"], raw_root, image_size, normalization["mean"],
             normalization["std"], train=False),
-        "target": Native6SiteDataset(
-            roles["target"], raw_root, image_size, normalization["mean"], normalization["std"],
-            train=False),
     }
+    if include_target:
+        datasets["target"] = Native6SiteDataset(
+            roles["target"], raw_root, image_size, normalization["mean"], normalization["std"],
+            train=False)
     generator = torch.Generator().manual_seed(20260814)
     loaders = {
         name: DataLoader(
@@ -154,12 +157,20 @@ def _well_metrics(logits, labels, experiments, well_ids):
             "top5": float(group.correct_top5.mean()),
             "mean_rank": float(group.true_class_rank.mean()),
         }
+    site_truth = logits.gather(1, labels[:, None])
+    site_rank = (logits > site_truth).sum(1) + 1
+    site_prediction = logits.argmax(1)
+    site_top5 = logits.topk(min(5, logits.shape[1]), dim=1).indices
     metrics = {
         "n_wells": len(prediction_frame), "n_sites": len(labels),
         "top1": float(prediction_frame.correct_top1.mean()),
         "top5": float(prediction_frame.correct_top5.mean()),
         "loss": float(F.cross_entropy(averaged, truth)),
         "mean_rank": float(prediction_frame.true_class_rank.mean()),
+        "site_top1": float((site_prediction == labels).float().mean()),
+        "site_top5": float((site_top5 == labels[:, None]).any(1).float().mean()),
+        "site_loss": float(F.cross_entropy(logits, labels)),
+        "site_mean_rank": float(site_rank.float().mean()),
         "per_experiment": per_experiment,
     }
     return metrics, prediction_frame

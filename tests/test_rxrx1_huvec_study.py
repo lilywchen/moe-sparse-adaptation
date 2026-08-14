@@ -5,6 +5,12 @@ import torch
 from moe_shift.data.rxrx1_huvec import EXPECTED_TREATMENTS, deterministic_split
 from moe_shift.models.huvec import MaskedAutoencoder, build_study_model
 from scripts.aggregate_rxrx1_huvec_study import _target_rows
+from scripts.certify_rxrx1_huvec_recipe import (
+    checkpoint_is_eligible,
+    choose_eligible_checkpoint,
+    default_recipes,
+    format_status,
+)
 from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
@@ -117,7 +123,45 @@ def test_well_metric_averages_two_site_logits_before_scoring():
     metrics, predictions = _well_metrics(logits, labels, experiments, ["A", "A", "B", "B"])
     assert metrics["n_wells"] == 2
     assert metrics["top1"] == 1.0
+    assert metrics["site_top1"] == 0.75
     assert set(predictions.n_sites) == {2}
+
+
+def test_full_data_recipe_gate_is_site_level_and_source_only_by_default():
+    train = {"site_top1": 0.81, "top1": 0.90}
+    iid = {"site_top1": 0.03, "top1": 0.04}
+    assert checkpoint_is_eligible(train, iid, 0.80, 0.002)
+    assert not checkpoint_is_eligible(
+        {**train, "site_top1": 0.79}, iid, 0.80, 0.002)
+    assert not checkpoint_is_eligible(
+        train, {**iid, "site_top1": 0.001}, 0.80, 0.002)
+
+
+def test_recipe_checkpoint_selection_uses_source_iid_after_train_gate():
+    earlier = {"epoch": 40, "selection_train_top1": 0.81, "selection_iid_top1": 0.07}
+    later_better = {"epoch": 50, "selection_train_top1": 0.90, "selection_iid_top1": 0.08}
+    later_tie = {"epoch": 60, "selection_train_top1": 0.95, "selection_iid_top1": 0.08}
+    assert choose_eligible_checkpoint(earlier, later_better) is later_better
+    assert choose_eligible_checkpoint(later_better, later_tie) is later_better
+
+
+def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable():
+    recipes = default_recipes("resnet18")
+    assert recipes and all(recipe["augmentation"] for recipe in recipes)
+    assert all(recipe["max_epochs"] > 30 for recipe in recipes)
+    rendered = format_status({
+        "state": "training", "model": "resnet18", "split_id": "primary_fold0",
+        "attempt_index": 1, "n_attempts": len(recipes), "attempt_name": recipes[0]["name"],
+        "epoch": 5, "max_epochs": recipes[0]["max_epochs"], "train_unit": "site",
+        "train_threshold": 0.8,
+        "latest_augmented": {"site_top1": 0.1, "loss": 5.0, "learning_rate": 1e-3},
+        "latest_evaluation": {
+            "train_site_top1": 0.2, "train_well_top1": 0.3,
+            "iid_site_top1": 0.04, "iid_well_top1": 0.05, "eligible": False,
+        },
+    })
+    assert "full unaugmented train: site=0.2000 well=0.3000" in rendered
+    assert "target batches: excluded" in rendered
 
 
 def test_site_metrics_keep_both_fields_and_audit_mean_logit_pooling():
