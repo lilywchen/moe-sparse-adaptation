@@ -29,6 +29,7 @@ from moe_shift.capacity.model import build_ccas
 from moe_shift.data.rxrx1 import _native_channel_paths, _rxrx1_raw_transform
 from moe_shift.data.rxrx1_huvec import (
     EXPECTED_TREATMENTS,
+    MIN_TARGET_CLASS_FRACTION,
     build_huvec_manifest,
     deterministic_split,
     normalization_from_qc,
@@ -188,6 +189,11 @@ def _matched_distance(experiments, labels, features, experiment_order):
         for right_index in range(left_index + 1, len(experiment_order)):
             right = experiment_order[right_index]
             shared = sorted(set(labels[experiments == left]) & set(labels[experiments == right]))
+            minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
+            if len(shared) < minimum:
+                raise ValueError(
+                    f"experiments {left} and {right} share only {len(shared)} of "
+                    f"{EXPECTED_TREATMENTS} treatment labels; require at least {minimum}")
             a = _unit(np.stack([by_key[(left, label)] for label in shared]))
             b = _unit(np.stack([by_key[(right, label)] for label in shared]))
             value = float(np.median(1.0 - (a * b).sum(1)))
@@ -205,10 +211,12 @@ def _target_difficulty(target, sources, experiments, labels, features):
         if source_mask.any():
             source_centroid = features[source_mask].mean(0)
             rows.append(1.0 - float(_unit(target_feature[None])[0] @ _unit(source_centroid[None])[0]))
-    if len(rows) != EXPECTED_TREATMENTS:
+    minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
+    if len(rows) < minimum:
         raise ValueError(
-            f"target {target} difficulty uses {len(rows)} of {EXPECTED_TREATMENTS} labels")
-    return float(np.median(rows))
+            f"target {target} difficulty uses only {len(rows)} of {EXPECTED_TREATMENTS} labels; "
+            f"require at least {minimum}")
+    return float(np.median(rows)), len(rows)
 
 
 def _folds(experiment_order, distance):
@@ -447,16 +455,24 @@ def finalize(result_root, num_shards=6, device="cuda"):
 
     difficulty_rows = []
     for spec in all_specs:
-        spec["target_difficulty"] = {
-            str(target): _target_difficulty(
+        spec["target_difficulty"] = {}
+        spec["raw_qc_target_difficulty"] = {}
+        spec["target_label_coverage"] = {}
+        for target in spec["target_experiments"]:
+            cell_value, cell_count = _target_difficulty(
                 target, spec["source_experiments"], experiments, labels, well_embeddings)
-            for target in spec["target_experiments"]
-        }
-        spec["raw_qc_target_difficulty"] = {
-            str(target): _target_difficulty(
+            qc_value, qc_count = _target_difficulty(
                 target, spec["source_experiments"], experiments, labels, standardized_qc)
-            for target in spec["target_experiments"]
-        }
+            if cell_count != qc_count:
+                raise ValueError(f"target {target} Cell-DINO/QC label coverage disagrees")
+            observed = int(np.unique(labels[experiments == int(target)]).size)
+            spec["target_difficulty"][str(target)] = cell_value
+            spec["raw_qc_target_difficulty"][str(target)] = qc_value
+            spec["target_label_coverage"][str(target)] = {
+                "observed_labels": observed,
+                "source_matched_labels": int(cell_count),
+                "fraction": float(cell_count / EXPECTED_TREATMENTS),
+            }
         assignment = deterministic_split(
             site_manifest, spec["source_experiments"], spec["target_experiments"], spec["split_id"])
         means, stds = normalization_from_qc(
@@ -466,6 +482,11 @@ def finalize(result_root, num_shards=6, device="cuda"):
             "split_id": spec["split_id"], "target_experiment": int(target),
             "cell_dino_difficulty": spec["target_difficulty"][str(target)],
             "raw_qc_difficulty": spec["raw_qc_target_difficulty"][str(target)],
+            "observed_target_labels": spec["target_label_coverage"][str(target)][
+                "observed_labels"],
+            "source_matched_labels": spec["target_label_coverage"][str(target)][
+                "source_matched_labels"],
+            "target_label_fraction": spec["target_label_coverage"][str(target)]["fraction"],
         } for target in spec["target_experiments"])
 
     probe_rows = []
@@ -487,6 +508,8 @@ def finalize(result_root, num_shards=6, device="cuda"):
                     "target_accuracy": result["target"]["per_experiment"][str(target)],
                     "cell_dino_difficulty": spec["target_difficulty"][str(target)],
                     "raw_qc_difficulty": spec["raw_qc_target_difficulty"][str(target)],
+                    "target_label_fraction": spec["target_label_coverage"][str(target)][
+                        "fraction"],
                 })
     (root / "analysis").mkdir(parents=True, exist_ok=True)
     pd.DataFrame(probe_rows).to_csv(root / "analysis" / "probe_results.csv", index=False)
@@ -503,6 +526,11 @@ def finalize(result_root, num_shards=6, device="cuda"):
         "primary_splits": primary, "controlled_splits": controlled,
         "main_training_splits": main_specs,
         "training_unit": "site", "evaluation_unit": "well",
+        "target_class_policy": {
+            "description": "score each target experiment on its observed treatment wells",
+            "minimum_fraction": MIN_TARGET_CLASS_FRACTION,
+            "denominator": EXPECTED_TREATMENTS,
+        },
         "target_is_excluded_from": [
             "normalization", "training", "iid_validation", "checkpoint_selection",
             "masked_autoencoder_pretraining"],

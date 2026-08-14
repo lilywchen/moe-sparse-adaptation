@@ -69,6 +69,11 @@ def _target_rows(rows):
                 "iid_to_target_gap": result["iid_validation"]["top1"] - metrics["top1"],
                 "cell_dino_difficulty": result["target_difficulty"][experiment],
                 "raw_qc_difficulty": result["raw_qc_target_difficulty"][experiment],
+                "observed_target_labels": result["target_label_coverage"][experiment][
+                    "observed_labels"],
+                "source_matched_labels": result["target_label_coverage"][experiment][
+                    "source_matched_labels"],
+                "target_label_fraction": result["target_label_coverage"][experiment]["fraction"],
                 "training_certified": result["training_certified"],
                 "total_params": result["model_audit"]["total_params"],
                 "best_epoch": result["best_epoch"],
@@ -215,6 +220,8 @@ def aggregate(result_root, require_complete=False):
               "- MoE evidence requires a paired improvement over the certified dense ViT, especially on more distant targets.",
               "- The parameter-matched dense control separates conditional computation from ordinary added capacity.",
               "- MAE target images are excluded from pretraining; supervised fine-tuning is end to end.", ""]
+    lines.insert(-1, "- Target accuracy is computed over each experiment's observed treatment "
+                       "wells; label coverage is reported in the raw metrics table.")
     (analysis / "REPORT.md").write_text("\n".join(lines))
     marker = {"completed_at": time.time(), "complete_results": sum(r["result"] is not None for r in rows),
               "declared_runs": len(rows), "report": str(analysis / "REPORT.md"),

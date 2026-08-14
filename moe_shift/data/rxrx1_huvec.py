@@ -22,6 +22,7 @@ from .rxrx1 import _native_channel_paths
 
 EXPECTED_HUVEC_EXPERIMENTS = 24
 EXPECTED_TREATMENTS = 1108
+MIN_TARGET_CLASS_FRACTION = 0.95
 
 
 def _sha256(path: Path) -> str:
@@ -205,11 +206,21 @@ def deterministic_split(frame, source_experiments, target_experiments, split_key
     selected.loc[source_mask, "role"] = "train"
     selected.loc[selected.well_id.isin(validation_wells), "role"] = "iid_validation"
 
-    for role in ("train", "iid_validation", "target"):
+    for role in ("train", "iid_validation"):
         rows = selected[selected.role == role]
         if rows.empty or rows.label.nunique() != EXPECTED_TREATMENTS:
             raise ValueError(
                 f"{split_key}: {role} has {rows.label.nunique()} of {EXPECTED_TREATMENTS} classes")
+    target_rows = selected[selected.role == "target"]
+    if target_rows.empty:
+        raise ValueError(f"{split_key}: target role is empty")
+    minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
+    for experiment, rows in target_rows.groupby("experiment"):
+        observed = int(rows.label.nunique())
+        if observed < minimum:
+            raise ValueError(
+                f"{split_key}: target experiment {experiment} has {observed} of "
+                f"{EXPECTED_TREATMENTS} classes; require at least {minimum}")
     for well_id, roles in selected.groupby("well_id").role.nunique().items():
         if int(roles) != 1:
             raise ValueError(f"well {well_id} crosses split roles")
