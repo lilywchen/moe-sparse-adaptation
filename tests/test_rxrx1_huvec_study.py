@@ -12,6 +12,7 @@ from scripts.certify_rxrx1_huvec_recipe import (
     format_status,
 )
 from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
+from scripts.launch_rxrx1_huvec_recipe_pair import pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
 from scripts.sweep_rxrx1_huvec_study import planned_runs
@@ -162,6 +163,19 @@ def test_recipe_ladder_is_bounded_regularized_and_live_status_is_interpretable()
     })
     assert "full unaugmented train: site=0.2000 well=0.3000" in rendered
     assert "target batches: excluded" in rendered
+
+
+def test_two_gpu_recipe_pair_launcher_covers_all_six_candidates_without_collisions():
+    plans = [pair_plan(index) for index in range(3)]
+    assert all([item["gpu"] for item in plan] == ["0", "1"] for plan in plans)
+    assert all([item["model"] for item in plan] == ["resnet18", "vit_tiny"]
+               for plan in plans)
+    assert len({(item["run_name"], item["model"])
+                for plan in plans for item in plan}) == 6
+    assert [plan[0]["recipe"]["name"] for plan in plans] == [
+        "adamw_standard_extended", "adamw_low_regularization",
+        "sgd_low_regularization",
+    ]
 
 
 def test_site_metrics_keep_both_fields_and_audit_mean_logit_pooling():
