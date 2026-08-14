@@ -423,6 +423,7 @@ def train_run(result_root, run_id):
         "target_difficulty": split_spec["target_difficulty"],
         "raw_qc_target_difficulty": split_spec["raw_qc_target_difficulty"],
         "target_label_coverage": split_spec["target_label_coverage"],
+        "role_label_coverage": split_spec["role_label_coverage"],
         "normalization": split_spec["normalization"],
         "split_hash": _split_hash(assignment), "best_epoch": best_epoch,
         "training_certified": training_certified, "initial_batch_loss": initial_loss,

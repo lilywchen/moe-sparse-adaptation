@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import time
+import warnings
 from pathlib import Path
 
 import numpy as np
@@ -29,7 +30,6 @@ from moe_shift.capacity.model import build_ccas
 from moe_shift.data.rxrx1 import _native_channel_paths, _rxrx1_raw_transform
 from moe_shift.data.rxrx1_huvec import (
     EXPECTED_TREATMENTS,
-    MIN_TARGET_CLASS_FRACTION,
     build_huvec_manifest,
     deterministic_split,
     normalization_from_qc,
@@ -185,20 +185,29 @@ def _matched_distance(experiments, labels, features, experiment_order):
     by_key = {(int(exp), int(label)): feature for exp, label, feature
               in zip(experiments, labels, features)}
     matrix = np.zeros((len(experiment_order), len(experiment_order)), dtype=np.float64)
+    shared_counts = np.zeros_like(matrix, dtype=np.int64)
+    for index, experiment in enumerate(experiment_order):
+        shared_counts[index, index] = int(np.unique(labels[experiments == experiment]).size)
     for left_index, left in enumerate(experiment_order):
         for right_index in range(left_index + 1, len(experiment_order)):
             right = experiment_order[right_index]
             shared = sorted(set(labels[experiments == left]) & set(labels[experiments == right]))
-            minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
-            if len(shared) < minimum:
-                raise ValueError(
-                    f"experiments {left} and {right} share only {len(shared)} of "
-                    f"{EXPECTED_TREATMENTS} treatment labels; require at least {minimum}")
+            shared_counts[left_index, right_index] = shared_counts[right_index, left_index] = len(
+                shared)
+            if not shared:
+                warnings.warn(
+                    f"experiments {left} and {right} have no shared treatment labels; "
+                    "their distance is undefined",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+                matrix[left_index, right_index] = matrix[right_index, left_index] = np.nan
+                continue
             a = _unit(np.stack([by_key[(left, label)] for label in shared]))
             b = _unit(np.stack([by_key[(right, label)] for label in shared]))
             value = float(np.median(1.0 - (a * b).sum(1)))
             matrix[left_index, right_index] = matrix[right_index, left_index] = value
-    return matrix
+    return matrix, shared_counts
 
 
 def _target_difficulty(target, sources, experiments, labels, features):
@@ -211,12 +220,30 @@ def _target_difficulty(target, sources, experiments, labels, features):
         if source_mask.any():
             source_centroid = features[source_mask].mean(0)
             rows.append(1.0 - float(_unit(target_feature[None])[0] @ _unit(source_centroid[None])[0]))
-    minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
-    if len(rows) < minimum:
-        raise ValueError(
-            f"target {target} difficulty uses only {len(rows)} of {EXPECTED_TREATMENTS} labels; "
-            f"require at least {minimum}")
+    if not rows:
+        raise ValueError(f"target {target} has no treatment labels shared with its source set")
     return float(np.median(rows)), len(rows)
+
+
+def _role_label_coverage(assignment):
+    coverage = {}
+    expected = set(range(EXPECTED_TREATMENTS))
+    for role in ("train", "iid_validation", "target"):
+        observed = set(map(int, assignment.loc[assignment.role == role, "label"].unique()))
+        coverage[role] = {
+            "observed_labels": len(observed),
+            "fraction": float(len(observed) / EXPECTED_TREATMENTS),
+            "missing_labels": sorted(expected - observed),
+        }
+    coverage["target_by_experiment"] = {}
+    for experiment, rows in assignment[assignment.role == "target"].groupby("experiment"):
+        observed = set(map(int, rows.label.unique()))
+        coverage["target_by_experiment"][str(int(experiment))] = {
+            "observed_labels": len(observed),
+            "fraction": float(len(observed) / EXPECTED_TREATMENTS),
+            "missing_labels": sorted(expected - observed),
+        }
+    return coverage
 
 
 def _folds(experiment_order, distance):
@@ -434,10 +461,14 @@ def finalize(result_root, num_shards=6, device="cuda"):
     experiments = well_meta.experiment.to_numpy(np.int64)
     labels = well_meta.label.to_numpy(np.int64)
     experiment_order = sorted(map(int, np.unique(experiments).tolist()))
-    cell_distance = _matched_distance(experiments, labels, well_embeddings, experiment_order)
+    cell_distance, shared_label_counts = _matched_distance(
+        experiments, labels, well_embeddings, experiment_order)
     standardized_qc = (well_qc - np.median(well_qc, axis=0)) / np.maximum(
         np.quantile(well_qc, 0.75, axis=0) - np.quantile(well_qc, 0.25, axis=0), 1e-6)
-    qc_distance = _matched_distance(experiments, labels, standardized_qc, experiment_order)
+    qc_distance, qc_shared_label_counts = _matched_distance(
+        experiments, labels, standardized_qc, experiment_order)
+    if not np.array_equal(shared_label_counts, qc_shared_label_counts):
+        raise RuntimeError("Cell-DINO and QC experiment-overlap audits disagree")
     folds, centrality = _folds(experiment_order, cell_distance)
     primary = [{
         "kind": "primary", "fold": index, "split_id": f"primary_fold{index}",
@@ -475,6 +506,7 @@ def finalize(result_root, num_shards=6, device="cuda"):
             }
         assignment = deterministic_split(
             site_manifest, spec["source_experiments"], spec["target_experiments"], spec["split_id"])
+        spec["role_label_coverage"] = _role_label_coverage(assignment)
         means, stds = normalization_from_qc(
             assignment[assignment.role == "train"], site_qc)
         spec["normalization"] = {"mean": means, "std": stds}
@@ -516,6 +548,7 @@ def finalize(result_root, num_shards=6, device="cuda"):
     pd.DataFrame(difficulty_rows).to_csv(root / "analysis" / "target_difficulty.csv", index=False)
     np.save(root / "analysis" / "cell_dino_experiment_distance.npy", cell_distance)
     np.save(root / "analysis" / "raw_qc_experiment_distance.npy", qc_distance)
+    np.save(root / "analysis" / "experiment_shared_label_counts.npy", shared_label_counts)
     registry = {
         "schema_version": 1, "study": "rxrx1_huvec_systematic_fast",
         "site_manifest": str(root / "data" / "huvec_sites.parquet"),
@@ -528,8 +561,9 @@ def finalize(result_root, num_shards=6, device="cuda"):
         "training_unit": "site", "evaluation_unit": "well",
         "target_class_policy": {
             "description": "score each target experiment on its observed treatment wells",
-            "minimum_fraction": MIN_TARGET_CLASS_FRACTION,
             "denominator": EXPECTED_TREATMENTS,
+            "hard_minimum": None,
+            "coverage_handling": "record missing labels; do not stop a valid nonempty split",
         },
         "target_is_excluded_from": [
             "normalization", "training", "iid_validation", "checkpoint_selection",

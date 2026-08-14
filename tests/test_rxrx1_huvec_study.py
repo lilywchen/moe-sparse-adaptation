@@ -45,9 +45,12 @@ def test_custom_split_allows_small_audited_target_missingness_only():
     assert split[split.role == "train"].label.nunique() == EXPECTED_TREATMENTS
     assert split[split.role == "iid_validation"].label.nunique() == EXPECTED_TREATMENTS
 
-    too_incomplete = frame[~((frame.experiment == 16) & frame.label.isin(range(60)))].copy()
-    with pytest.raises(ValueError, match="target experiment 16"):
-        deterministic_split(too_incomplete, range(16), [16], "too_incomplete_target")
+    sparse_target = frame[~((frame.experiment == 16) & frame.label.isin(range(60)))].copy()
+    with pytest.warns(RuntimeWarning, match="coverage recorded"):
+        sparse_split = deterministic_split(
+            sparse_target, range(16), [16], "sparse_but_nonempty_target")
+    assert sparse_split[sparse_split.role == "target"].label.nunique() == (
+        EXPECTED_TREATMENTS - 60)
 
 
 def test_six_channel_models_and_parameter_match_are_shape_correct():

@@ -74,6 +74,9 @@ def _target_rows(rows):
                 "source_matched_labels": result["target_label_coverage"][experiment][
                     "source_matched_labels"],
                 "target_label_fraction": result["target_label_coverage"][experiment]["fraction"],
+                "train_label_fraction": result["role_label_coverage"]["train"]["fraction"],
+                "iid_label_fraction": result["role_label_coverage"]["iid_validation"][
+                    "fraction"],
                 "training_certified": result["training_certified"],
                 "total_params": result["model_audit"]["total_params"],
                 "best_epoch": result["best_epoch"],

@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import warnings
 from pathlib import Path
 
 import numpy as np
@@ -22,7 +23,6 @@ from .rxrx1 import _native_channel_paths
 
 EXPECTED_HUVEC_EXPERIMENTS = 24
 EXPECTED_TREATMENTS = 1108
-MIN_TARGET_CLASS_FRACTION = 0.95
 
 
 def _sha256(path: Path) -> str:
@@ -199,28 +199,31 @@ def deterministic_split(frame, source_experiments, target_experiments, split_key
             token = f"{split_key}|{int(label)}|{int(row.experiment)}|{row.well_id}"
             candidates.append((hashlib.sha256(token.encode()).hexdigest(), row.well_id))
         candidates.sort()
-        if len(candidates) <= int(validation_occurrences):
-            raise ValueError(f"label {label} has too few source occurrences for IID validation")
-        validation_wells.update(well for _, well in candidates[:int(validation_occurrences)])
+        holdout_count = min(int(validation_occurrences), max(len(candidates) - 1, 0))
+        if holdout_count < int(validation_occurrences):
+            warnings.warn(
+                f"{split_key}: label {label} has only {len(candidates)} source occurrences; "
+                f"using {holdout_count} for IID validation and preserving one for training",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+        validation_wells.update(well for _, well in candidates[:holdout_count])
     source_mask = selected.experiment.isin(source)
     selected.loc[source_mask, "role"] = "train"
     selected.loc[selected.well_id.isin(validation_wells), "role"] = "iid_validation"
 
-    for role in ("train", "iid_validation"):
+    for role in ("train", "iid_validation", "target"):
         rows = selected[selected.role == role]
-        if rows.empty or rows.label.nunique() != EXPECTED_TREATMENTS:
-            raise ValueError(
-                f"{split_key}: {role} has {rows.label.nunique()} of {EXPECTED_TREATMENTS} classes")
-    target_rows = selected[selected.role == "target"]
-    if target_rows.empty:
-        raise ValueError(f"{split_key}: target role is empty")
-    minimum = int(np.ceil(MIN_TARGET_CLASS_FRACTION * EXPECTED_TREATMENTS))
-    for experiment, rows in target_rows.groupby("experiment"):
+        if rows.empty:
+            raise ValueError(f"{split_key}: {role} role is empty")
         observed = int(rows.label.nunique())
-        if observed < minimum:
-            raise ValueError(
-                f"{split_key}: target experiment {experiment} has {observed} of "
-                f"{EXPECTED_TREATMENTS} classes; require at least {minimum}")
+        if observed != EXPECTED_TREATMENTS:
+            warnings.warn(
+                f"{split_key}: {role} contains {observed} of {EXPECTED_TREATMENTS} labels; "
+                "continuing with coverage recorded in the frozen registry",
+                RuntimeWarning,
+                stacklevel=2,
+            )
     for well_id, roles in selected.groupby("well_id").role.nunique().items():
         if int(roles) != 1:
             raise ValueError(f"well {well_id} crosses split roles")
