@@ -77,7 +77,8 @@ def _load_spec(result_root, run_id):
 
 
 def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
-                  canary=False, include_target=True, train_augmentation=None):
+                  canary=False, include_target=True, train_augmentation=None,
+                  normalization_mode="frozen_global"):
     sites = pd.read_parquet(registry["site_manifest"])
     assignment = deterministic_split(
         sites, split_spec["source_experiments"], split_spec["target_experiments"],
@@ -102,18 +103,18 @@ def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
     datasets = {
         "train": Native6SiteDataset(
             roles["train"], raw_root, image_size, normalization["mean"], normalization["std"],
-            train=bool(train_augmentation)),
+            train=bool(train_augmentation), normalization_mode=normalization_mode),
         "train_eval": Native6SiteDataset(
             roles["train"], raw_root, image_size, normalization["mean"], normalization["std"],
-            train=False),
+            train=False, normalization_mode=normalization_mode),
         "iid_validation": Native6SiteDataset(
             roles["iid_validation"], raw_root, image_size, normalization["mean"],
-            normalization["std"], train=False),
+            normalization["std"], train=False, normalization_mode=normalization_mode),
     }
     if include_target:
         datasets["target"] = Native6SiteDataset(
             roles["target"], raw_root, image_size, normalization["mean"], normalization["std"],
-            train=False)
+            train=False, normalization_mode=normalization_mode)
     generator = torch.Generator().manual_seed(20260814)
     loaders = {
         name: DataLoader(

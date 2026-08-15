@@ -485,6 +485,16 @@ def certify(args):
         "checkpoint_sha256": _sha256(Path(args.init_checkpoint).expanduser().resolve())
         if args.init_checkpoint else None,
     }
+    if args.init_checkpoint:
+        init_payload = torch.load(
+            Path(args.init_checkpoint).expanduser().resolve(), map_location="cpu",
+            weights_only=False)
+        init_config = init_payload.get("config") or {}
+        initialization.update({
+            "checkpoint_model": init_config.get("model"),
+            "pretraining_normalization_mode": init_config.get("normalization_mode"),
+            "pretraining_epoch": init_payload.get("epoch"),
+        })
     config = {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
         "train_threshold": float(args.train_threshold), "train_unit": args.train_unit,
@@ -493,6 +503,7 @@ def certify(args):
         "confirmation_evaluations": int(args.confirmation_evaluations),
         "batch_size": int(args.batch_size), "num_workers": int(args.num_workers),
         "image_size": int(args.image_size), "seed": int(args.seed), "recipes": recipes,
+        "normalization_mode": args.normalization_mode,
         "initialization": initialization,
         "registry": str(registry_path),
         "site_manifest": registry["site_manifest"], "raw_root": registry["raw_root"],
@@ -558,6 +569,7 @@ def certify(args):
             f"{args.plateau_min_epochs}; hard safety ceiling {args.plateau_max_epochs}"
         ),
         "plateau_config": plateau_config,
+        "normalization_mode": args.normalization_mode,
         "initialization": initialization,
     }
     _write_status(
@@ -566,7 +578,8 @@ def certify(args):
 
     assignment, validation_loaders = _make_loaders(
         result_root, registry, split_spec, args.batch_size, args.num_workers,
-        args.image_size, canary=False, include_target=False, train_augmentation=True)
+        args.image_size, canary=False, include_target=False, train_augmentation=True,
+        normalization_mode=args.normalization_mode)
     if "target" in validation_loaders:
         raise RuntimeError("target loader must not exist during recipe certification")
     del validation_loaders
@@ -586,7 +599,8 @@ def certify(args):
         _attempt_assignment, loaders = _make_loaders(
             result_root, registry, split_spec, args.batch_size, args.num_workers,
             args.image_size, canary=False, include_target=False,
-            train_augmentation=recipe["augmentation"])
+            train_augmentation=recipe["augmentation"],
+            normalization_mode=args.normalization_mode)
         model, model_audit = build_study_model(
             args.model, EXPECTED_TREATMENTS, args.image_size)
         init_audit = ({"kind": "random", "seed": int(args.seed)}
@@ -595,7 +609,10 @@ def certify(args):
         model_audit = {**model_audit, "initialization": init_audit}
         model = model.to(device)
         optimizer = _build_optimizer(model, recipe)
-        recipe_fingerprint = _fingerprint({"recipe": recipe, "initialization": initialization})
+        recipe_fingerprint = _fingerprint({
+            "recipe": recipe, "initialization": initialization,
+            "normalization_mode": args.normalization_mode,
+        })
         resume_path = attempt_dir / "resume.pt"
         resume = _resume_state(
             resume_path, recipe_fingerprint, model, optimizer, device)
@@ -719,6 +736,7 @@ def certify(args):
                         "recipe": recipe, "selected_checkpoint": candidate,
                         "selected_epoch": candidate["epoch"],
                         "initialization": init_audit,
+                        "normalization_mode": args.normalization_mode,
                     })
                 iid_score = float(candidate["selection_iid_top1"])
                 meaningful_improvement = bool(
@@ -789,6 +807,7 @@ def certify(args):
             "split_id": args.split_id, "split_hash": split_digest,
             "recipe": recipe, "terminal_epoch": terminal_epoch,
             "initialization": init_audit,
+            "normalization_mode": args.normalization_mode,
         })
         resumed_elapsed = elapsed_seconds_extension + time.time() - started
         summary = {
@@ -866,6 +885,9 @@ def main():
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--num-workers", type=int, default=6)
     parser.add_argument("--image-size", type=int, default=224)
+    parser.add_argument(
+        "--normalization-mode", choices=("frozen_global", "per_image"),
+        default="frozen_global")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--recipes-json")
     parser.add_argument("--max-epochs", type=int)

@@ -68,7 +68,8 @@ def main():
     assignment, loaders = _make_loaders(
         Path(args.output_dir), registry, split, args.batch_size, args.workers,
         int(selection["image_size"]),
-        canary=False, include_target=True, train_augmentation=False)
+        canary=False, include_target=True, train_augmentation=False,
+        normalization_mode=selection.get("normalization_mode", "frozen_global"))
     if _split_hash(assignment) != selection["split_hash"]:
         raise RuntimeError("evaluation split differs from the source-only training split")
     device = torch.device("cuda")
@@ -90,6 +91,7 @@ def main():
         "schema_version": 1, "state": "complete", "model": selection["model"],
         "split_id": split_id, "split_hash": selection["split_hash"],
         "initialization": selection.get("initialization"),
+        "normalization_mode": selection.get("normalization_mode", "frozen_global"),
         "selected_attempt": selected_attempt, "checkpoint": str(checkpoint_path),
         "metrics": metrics,
         "target_used_for_checkpoint_selection": False,

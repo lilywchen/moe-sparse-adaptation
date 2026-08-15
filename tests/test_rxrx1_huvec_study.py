@@ -19,13 +19,14 @@ from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.evaluate_rxrx1_huvec_mae import _ridge_fit, _ridge_scores, _score_matrix
 from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
-from scripts.run_rxrx1_huvec_study import _well_metrics
+from scripts.run_rxrx1_huvec_study import _make_loaders, _well_metrics
 from scripts.pretrain_rxrx1_huvec_mae import (
     _semantic_config,
     load_sealed_partition,
     partition_mae_wells,
 )
 from scripts.sweep_rxrx1_huvec_study import planned_runs
+from scripts.validate_rxrx1_huvec_raw_root import main as validate_raw_root
 
 
 def _site_frame():
@@ -90,6 +91,50 @@ def test_custom_split_allows_small_audited_target_missingness_only():
             sparse_target, range(16), [16], "sparse_but_nonempty_target")
     assert sparse_split[sparse_split.role == "target"].label.nunique() == (
         EXPECTED_TREATMENTS - 60)
+
+
+def test_supervised_loader_applies_one_explicit_normalization_to_every_role(tmp_path):
+    frame = _site_frame()
+    manifest = tmp_path / "sites.parquet"
+    frame.to_parquet(manifest, index=False)
+    registry = {
+        "site_manifest": str(manifest), "raw_root": str(tmp_path / "images"),
+    }
+    split = {
+        "split_id": "normalization_audit",
+        "source_experiments": list(range(16)),
+        "target_experiments": list(range(16, 24)),
+        "normalization": {"mean": [0.0] * 6, "std": [1.0] * 6},
+    }
+    _, loaders = _make_loaders(
+        tmp_path, registry, split, batch_size=4, workers=0, image_size=32,
+        normalization_mode="per_image")
+    assert set(loaders) == {"train", "train_eval", "iid_validation", "target"}
+    assert all(loader.dataset.normalization_mode == "per_image"
+               for loader in loaders.values())
+
+
+def test_raw_root_validator_checks_all_six_channels_and_writes_audit(tmp_path, monkeypatch):
+    manifest = tmp_path / "sites.parquet"
+    raw_root = tmp_path / "raw"
+    image_dir = raw_root / "images" / "HUVEC-01"
+    image_dir.mkdir(parents=True)
+    pd.DataFrame([{
+        "global_index": 0, "relative_path": "images/HUVEC-01/site.png",
+        "experiment": 1, "well_id": "well-1", "site": 1,
+    }]).to_parquet(manifest, index=False)
+    for channel in range(1, 7):
+        (image_dir / f"site_w{channel}.png").touch()
+    marker = tmp_path / "COMPLETE.json"
+    monkeypatch.setattr("sys.argv", [
+        "validate_rxrx1_huvec_raw_root.py", "--site-manifest", str(manifest),
+        "--raw-root", str(raw_root), "--marker", str(marker),
+    ])
+    validate_raw_root()
+    audit = json.loads(marker.read_text())
+    assert audit["n_sites"] == 1
+    assert audit["referenced_channels_checked"] == 6
+    assert audit["experiment_folders"] == ["HUVEC-01"]
 
 
 def test_six_channel_models_and_parameter_match_are_shape_correct():
