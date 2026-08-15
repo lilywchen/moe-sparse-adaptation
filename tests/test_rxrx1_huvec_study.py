@@ -15,6 +15,7 @@ from scripts.certify_rxrx1_huvec_recipe import (
     format_status,
 )
 from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
+from scripts.evaluate_rxrx1_huvec_mae import _ridge_fit, _ridge_scores, _score_matrix
 from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
@@ -154,6 +155,17 @@ def test_mae_source_scaling_uses_a_nested_centrality_order(tmp_path):
     assert set(four.experiment.unique()) < set(eight.experiment.unique())
     assert audit4["nested_source_experiment_order"] == audit8[
         "nested_source_experiment_order"]
+
+
+def test_mae_ridge_probe_and_rank_metrics_are_label_aligned():
+    features = torch.eye(4).repeat(3, 1).numpy()
+    labels = torch.arange(4).repeat(3).numpy()
+    weights = _ridge_fit(features, labels, classes=4, penalty=0.1)
+    metrics, prediction, ranks = _score_matrix(_ridge_scores(features, weights), labels)
+    assert metrics["top1"] == 1.0
+    assert metrics["mean_reciprocal_rank"] == 1.0
+    assert (prediction == labels).all()
+    assert (ranks == 1).all()
 
 
 def test_top1_moe_router_receives_task_gradient():

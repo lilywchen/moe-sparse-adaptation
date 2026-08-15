@@ -25,6 +25,11 @@ per-image normalization, and removal of geometric augmentation for both Micro an
 75%-mask, 16-source, frozen-global, geometry-augmented runs are the common reference. This gives
 14 total pretraining runs without spending compute on duplicate seeds.
 
+After pretraining, each best encoder is frozen. Source-train perturbation prototypes and a ridge
+linear probe are evaluated on source-IID and target wells; ridge strength is selected on source-IID
+only. A separate source-experiment probe measures how much batch identity remains decodable. The
+final CPU job aggregates all 14 runs into CSV, two figures, and an HTML report.
+
 `last.pt` contains model, optimizer, RNG, loader-generator, history, and plateau state. It resumes
 automatically. `best_encoder.pt`, periodic encoder snapshots, `curves.jsonl`, `STATUS.json`, and
 `RESULT.json` are written under the persistent result root.
