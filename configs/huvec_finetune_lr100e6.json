@@ -1,0 +1,7 @@
+[
+  {
+    "name": "adamw_lr100e6", "optimizer": "adamw", "lr": 0.0001,
+    "weight_decay": 0.05, "max_epochs": 80, "warmup_epochs": 5,
+    "min_lr_ratio": 0.02, "augmentation": true
+  }
+]

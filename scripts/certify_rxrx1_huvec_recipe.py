@@ -140,6 +140,42 @@ def _fingerprint(payload):
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def load_pretrained_encoder(model, checkpoint_path, expected_model):
+    """Load an MAE encoder while deliberately retaining a fresh classifier head."""
+    checkpoint_path = Path(checkpoint_path).expanduser().resolve()
+    checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
+    config = checkpoint.get("config") or {}
+    if config.get("model") != expected_model:
+        raise ValueError(
+            f"pretrained checkpoint model {config.get('model')!r} != {expected_model!r}")
+    state = dict(checkpoint["encoder"])
+    removed = sorted(key for key in state if key in {"fc.weight", "fc.bias"})
+    for key in removed:
+        state.pop(key)
+    incompatible = model.load_state_dict(state, strict=False)
+    missing = sorted(incompatible.missing_keys)
+    unexpected = sorted(incompatible.unexpected_keys)
+    if missing != ["fc.bias", "fc.weight"] or unexpected:
+        raise RuntimeError(
+            f"MAE encoder mismatch: missing={missing}, unexpected={unexpected}")
+    return {
+        "kind": "mae", "checkpoint": str(checkpoint_path),
+        "checkpoint_sha256": _sha256(checkpoint_path),
+        "pretraining_config": config,
+        "pretraining_epoch": checkpoint.get("epoch"),
+        "classifier_head_loaded": False,
+        "loaded_backbone_keys": len(state),
+    }
+
+
 def _metric(metrics, unit):
     return float(metrics["site_top1"] if unit == "site" else metrics["top1"])
 
@@ -353,6 +389,7 @@ def _record_terminal_error(args, state, error):
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = json.loads(path.read_text()) if path.is_file() else {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
+        "image_size": int(args.image_size),
         "run_name": args.run_name,
     }
     payload.update({
@@ -419,10 +456,15 @@ def _save_resume(path, fingerprint, model, optimizer, epoch, initial_loss,
 
 def certify(args):
     result_root = Path(args.result_root).expanduser().resolve()
-    registry_path = result_root / "study_registry.json"
+    registry_path = (Path(args.registry).expanduser().resolve()
+                     if args.registry else result_root / "study_registry.json")
     if not registry_path.is_file():
         raise FileNotFoundError(f"missing frozen study registry: {registry_path}")
     registry = json.loads(registry_path.read_text())
+    if args.site_manifest:
+        registry["site_manifest"] = str(Path(args.site_manifest).expanduser().resolve())
+    if args.raw_root:
+        registry["raw_root"] = str(Path(args.raw_root).expanduser().resolve())
     split_spec = _source_split(registry, args.split_id)
     recipes = _load_recipes(args.recipes_json, args.model, args.max_epochs)
     sha, dirty = _git_info()
@@ -436,6 +478,13 @@ def certify(args):
     exhausted_path = output_dir / "EXHAUSTED.json"
     plateau_result_path = output_dir / "PLATEAU_RESULT.json"
     minimum_iid = (2.0 / EXPECTED_TREATMENTS if args.min_iid is None else float(args.min_iid))
+    initialization = {
+        "kind": "mae" if args.init_checkpoint else "random",
+        "checkpoint": str(Path(args.init_checkpoint).expanduser().resolve())
+        if args.init_checkpoint else None,
+        "checkpoint_sha256": _sha256(Path(args.init_checkpoint).expanduser().resolve())
+        if args.init_checkpoint else None,
+    }
     config = {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
         "train_threshold": float(args.train_threshold), "train_unit": args.train_unit,
@@ -444,6 +493,9 @@ def certify(args):
         "confirmation_evaluations": int(args.confirmation_evaluations),
         "batch_size": int(args.batch_size), "num_workers": int(args.num_workers),
         "image_size": int(args.image_size), "seed": int(args.seed), "recipes": recipes,
+        "initialization": initialization,
+        "registry": str(registry_path),
+        "site_manifest": registry["site_manifest"], "raw_root": registry["raw_root"],
         "target_policy": "excluded from loading, evaluation, stopping, and selection",
     }
     config["fingerprint"] = _fingerprint(config)
@@ -495,6 +547,7 @@ def certify(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     common = {
         "schema_version": 1, "model": args.model, "split_id": args.split_id,
+        "image_size": int(args.image_size),
         "run_name": args.run_name, "n_attempts": len(recipes),
         "train_threshold": float(args.train_threshold), "train_unit": args.train_unit,
         "iid_unit": args.iid_unit, "minimum_iid": minimum_iid,
@@ -505,6 +558,7 @@ def certify(args):
             f"{args.plateau_min_epochs}; hard safety ceiling {args.plateau_max_epochs}"
         ),
         "plateau_config": plateau_config,
+        "initialization": initialization,
     }
     _write_status(
         status_path, common, state="initializing", epoch=0,
@@ -535,9 +589,13 @@ def certify(args):
             train_augmentation=recipe["augmentation"])
         model, model_audit = build_study_model(
             args.model, EXPECTED_TREATMENTS, args.image_size)
+        init_audit = ({"kind": "random", "seed": int(args.seed)}
+                      if not args.init_checkpoint else load_pretrained_encoder(
+                          model, args.init_checkpoint, args.model))
+        model_audit = {**model_audit, "initialization": init_audit}
         model = model.to(device)
         optimizer = _build_optimizer(model, recipe)
-        recipe_fingerprint = _fingerprint(recipe)
+        recipe_fingerprint = _fingerprint({"recipe": recipe, "initialization": initialization})
         resume_path = attempt_dir / "resume.pt"
         resume = _resume_state(
             resume_path, recipe_fingerprint, model, optimizer, device)
@@ -660,6 +718,7 @@ def certify(args):
                         "split_id": args.split_id, "split_hash": split_digest,
                         "recipe": recipe, "selected_checkpoint": candidate,
                         "selected_epoch": candidate["epoch"],
+                        "initialization": init_audit,
                     })
                 iid_score = float(candidate["selection_iid_top1"])
                 meaningful_improvement = bool(
@@ -729,6 +788,7 @@ def certify(args):
             "model_kind": args.model, "model_audit": model_audit,
             "split_id": args.split_id, "split_hash": split_digest,
             "recipe": recipe, "terminal_epoch": terminal_epoch,
+            "initialization": init_audit,
         })
         resumed_elapsed = elapsed_seconds_extension + time.time() - started
         summary = {
@@ -784,6 +844,10 @@ def certify(args):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--result-root", required=True)
+    parser.add_argument("--registry")
+    parser.add_argument("--site-manifest")
+    parser.add_argument("--raw-root")
+    parser.add_argument("--init-checkpoint")
     parser.add_argument("--run-name", default="production_v1")
     parser.add_argument(
         "--model", choices=("resnet18", "vit_tiny", "vit_micro"),

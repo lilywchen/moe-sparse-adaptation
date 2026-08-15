@@ -1,0 +1,7 @@
+[
+  {
+    "name": "adamw_lr250e6", "optimizer": "adamw", "lr": 0.00025,
+    "weight_decay": 0.05, "max_epochs": 80, "warmup_epochs": 5,
+    "min_lr_ratio": 0.02, "augmentation": true
+  }
+]

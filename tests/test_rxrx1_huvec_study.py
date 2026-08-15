@@ -13,6 +13,7 @@ from scripts.certify_rxrx1_huvec_recipe import (
     choose_source_iid_checkpoint,
     default_recipes,
     format_status,
+    load_pretrained_encoder,
 )
 from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.evaluate_rxrx1_huvec_mae import _ridge_fit, _ridge_scores, _score_matrix
@@ -111,6 +112,24 @@ def test_mae_uses_visible_tokens_and_reconstructs_six_channels():
     reconstruction, auxiliary = mae(torch.randn(2, 6, 32, 32))
     assert reconstruction.ndim == 0 and torch.isfinite(reconstruction)
     assert auxiliary.ndim == 0 and torch.isfinite(auxiliary)
+
+
+def test_mae_initialization_loads_backbone_but_not_classifier(tmp_path):
+    source, _ = build_study_model("vit_micro", num_classes=17, image_size=32)
+    target, _ = build_study_model("vit_micro", num_classes=17, image_size=32)
+    source.fc.weight.data.fill_(123.0); source.fc.bias.data.fill_(456.0)
+    original_target_weight = target.fc.weight.detach().clone()
+    checkpoint = tmp_path / "encoder.pt"
+    torch.save({
+        "encoder": source.state_dict(),
+        "config": {"model": "vit_micro"},
+        "epoch": 12,
+    }, checkpoint)
+    audit = load_pretrained_encoder(target, checkpoint, "vit_micro")
+    assert audit["classifier_head_loaded"] is False
+    assert torch.equal(target.patch_embed.weight, source.patch_embed.weight)
+    assert torch.equal(target.fc.weight, original_target_weight)
+    assert not torch.equal(target.fc.weight, source.fc.weight)
 
 
 def test_mae_partition_is_deterministic_and_keeps_sites_with_their_well():

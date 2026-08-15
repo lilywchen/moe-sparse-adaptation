@@ -1,0 +1,7 @@
+[
+  {
+    "name": "adamw_standard", "optimizer": "adamw", "lr": 0.00075,
+    "weight_decay": 0.05, "max_epochs": 80, "warmup_epochs": 5,
+    "min_lr_ratio": 0.02, "augmentation": true
+  }
+]
