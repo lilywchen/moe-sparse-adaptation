@@ -151,11 +151,27 @@ def _ridge_scores(features, weights):
 
 def evaluate(args):
     started = time.time()
-    checkpoint_path = Path(args.checkpoint).expanduser().resolve()
     output = Path(args.output_dir).expanduser().resolve(); output.mkdir(parents=True, exist_ok=True)
-    checkpoint = _torch_load(checkpoint_path)
-    config = checkpoint["config"]; pretrain_audit = checkpoint["audit"]
     registry = json.loads(Path(args.registry).read_text())
+    if args.random_init:
+        split_specs = {row["split_id"]: row for row in registry["main_training_splits"]}
+        if args.split_id not in split_specs:
+            raise KeyError(f"unknown frozen split {args.split_id!r}")
+        torch.manual_seed(int(args.seed)); np.random.seed(int(args.seed))
+        checkpoint_path = None
+        config = {
+            "model": args.model, "image_size": int(args.image_size),
+            "split_id": args.split_id, "seed": int(args.seed),
+            "pretraining": "none_random_initialization",
+        }
+        pretrain_audit = {
+            "normalization": split_specs[args.split_id]["normalization"],
+            "target_images_used_for_initialization": False,
+        }
+    else:
+        checkpoint_path = Path(args.checkpoint).expanduser().resolve()
+        checkpoint = _torch_load(checkpoint_path)
+        config = checkpoint["config"]; pretrain_audit = checkpoint["audit"]
     split_specs = {row["split_id"]: row for row in registry["main_training_splits"]}
     split_spec = split_specs[config["split_id"]]
     sites = pd.read_parquet(args.site_manifest)
@@ -170,7 +186,8 @@ def evaluate(args):
     device = torch.device("cuda")
     encoder, model_audit = build_study_model(
         config["model"], EXPECTED_TREATMENTS, config["image_size"])
-    encoder.load_state_dict(checkpoint["encoder"], strict=True)
+    if not args.random_init:
+        encoder.load_state_dict(checkpoint["encoder"], strict=True)
     encoder.to(device).eval()
     for parameter in encoder.parameters():
         parameter.requires_grad_(False)
@@ -230,8 +247,10 @@ def evaluate(args):
     prediction_frame.to_parquet(output / "well_predictions.parquet", index=False)
     result = {
         "schema_version": 1, "state": "complete", "model": config["model"],
+        "initialization": "random" if args.random_init else "mae",
         "pretraining_run": config, "pretraining_audit": pretrain_audit,
-        "checkpoint": str(checkpoint_path), "checkpoint_sha256": _sha256(checkpoint_path),
+        "checkpoint": str(checkpoint_path) if checkpoint_path else None,
+        "checkpoint_sha256": _sha256(checkpoint_path) if checkpoint_path else None,
         "model_audit": model_audit,
         "prototype_retrieval": prototype_rows,
         "prototype_train_wells_per_class_range": prototype_count_range,
@@ -259,7 +278,13 @@ def main():
     parser.add_argument("--registry", required=True)
     parser.add_argument("--site-manifest", required=True)
     parser.add_argument("--raw-root", required=True)
-    parser.add_argument("--checkpoint", required=True)
+    checkpoint = parser.add_mutually_exclusive_group(required=True)
+    checkpoint.add_argument("--checkpoint")
+    checkpoint.add_argument("--random-init", action="store_true")
+    parser.add_argument("--model", choices=("vit_tiny", "vit_micro"), default="vit_tiny")
+    parser.add_argument("--split-id", default="primary_fold0")
+    parser.add_argument("--image-size", type=int, default=224)
+    parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--workers", type=int, default=8)
