@@ -10,14 +10,25 @@ from pathlib import Path
 
 import pandas as pd
 
-from moe_shift.data.rxrx1_huvec import _native_channel_paths
-
 
 EXPECTED_CELL_EXPERIMENTS = {"HEPG2": 11, "HUVEC": 24, "RPE": 11, "U2OS": 5}
 EXPECTED_SITES = 125_510
 EXPECTED_WELLS = 62_755
 EXPECTED_TREATMENT_SITES = 112_824
 EXPECTED_TREATMENTS = 1_108
+
+
+def _native_channel_paths(raw_root, composite_relative_path):
+    """Expand one site path into the six official RxRx1 channel PNGs.
+
+    Keep this small metadata utility independent of the PyTorch data stack so
+    manifests can also be audited on CPU-only transfer and login nodes.
+    """
+    relative = Path(str(composite_relative_path))
+    return tuple(
+        Path(raw_root) / relative.parent / f"{relative.stem}_w{channel}.png"
+        for channel in range(1, 7)
+    )
 
 
 def _sha256(path):
@@ -66,14 +77,16 @@ def build(metadata_csv, raw_root, output_root, verify_paths=True):
         raise ValueError("a well contains more than two microscope sites")
 
     frame.insert(0, "global_index", range(len(frame)))
+    frame["experiment_name"] = frame.experiment.astype(str)
     frame["relative_path"] = (
-        "images/" + frame.experiment.astype(str) + "/Plate"
+        "images/" + frame.experiment_name + "/Plate"
         + frame.plate.astype(str) + "/" + frame.well.astype(str)
         + "_s" + frame.site.astype(str) + ".png"
     )
-    experiment_order = sorted(frame.experiment.unique())
+    experiment_order = sorted(frame.experiment_name.unique())
     experiment_map = {experiment: index for index, experiment in enumerate(experiment_order)}
-    frame["experiment_index"] = frame.experiment.map(experiment_map).astype("int64")
+    frame["experiment"] = frame.experiment_name.map(experiment_map).astype("int64")
+    frame["label"] = frame.sirna_id.astype("int64")
 
     if verify_paths:
         missing = []
@@ -93,7 +106,7 @@ def build(metadata_csv, raw_root, output_root, verify_paths=True):
     inventory_path = output_root / "experiment_inventory.csv"
     frame.to_parquet(all_path, index=False)
     frame.loc[treatment].to_parquet(treatment_path, index=False)
-    inventory = (frame.groupby(["cell_type", "experiment", "experiment_index", "dataset"])
+    inventory = (frame.groupby(["cell_type", "experiment_name", "experiment", "dataset"])
                  .agg(n_sites=("site_id", "size"), n_wells=("well_id", "nunique"),
                       n_treatment_sites=("well_type", lambda values: int((values == "treatment").sum())),
                       n_treatment_labels=("sirna_id", lambda values: int(
