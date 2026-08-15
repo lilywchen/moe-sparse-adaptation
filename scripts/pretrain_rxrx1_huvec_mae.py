@@ -153,15 +153,44 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
     if len(matches) != 1:
         raise ValueError(f"split {split_id!r} occurs {len(matches)} times in frozen registry")
     split_spec = matches[0]
-    sites = pd.read_parquet(site_manifest_path)
-    assignment = deterministic_split(
-        sites, split_spec["source_experiments"], split_spec["target_experiments"],
-        split_spec["split_id"],
-    )
-    source_train = assignment[assignment.role == "train"].copy()
-    source_iid = assignment[assignment.role == "iid_validation"]
-    target = assignment[assignment.role == "target"]
     all_source_experiments = set(map(int, split_spec["source_experiments"]))
+    target_experiments = set(map(int, split_spec["target_experiments"]))
+    sites = pd.read_parquet(site_manifest_path)
+    assignment_path = split_spec.get("assignment")
+    if assignment_path:
+        assignment_path = Path(assignment_path).expanduser().resolve()
+        expected_sha = split_spec.get("assignment_sha256")
+        if expected_sha and _sha256(assignment_path) != expected_sha:
+            raise ValueError(f"frozen assignment checksum changed: {assignment_path}")
+        assignment = pd.read_parquet(assignment_path)
+        if set(assignment.role.unique()) != {"train", "iid_validation", "target"}:
+            raise ValueError("frozen assignment has unexpected or missing roles")
+        observed_source = set(map(
+            int, assignment.loc[assignment.role != "target", "experiment"].unique()))
+        observed_target = set(map(
+            int, assignment.loc[assignment.role == "target", "experiment"].unique()))
+        if observed_source != all_source_experiments or observed_target != target_experiments:
+            raise ValueError("frozen assignment experiment roles changed")
+        source_iid = assignment[assignment.role == "iid_validation"].copy()
+        iid_wells = set(map(str, source_iid.well_id))
+        source_train = sites[
+            sites.experiment.isin(all_source_experiments)
+            & ~sites.well_id.astype(str).isin(iid_wells)
+        ].copy()
+        target = sites[sites.experiment.isin(target_experiments)].copy()
+        partition_policy = (
+            "all supplied source-experiment sites except frozen supervised IID wells; "
+            "all target experiments excluded"
+        )
+    else:
+        assignment = deterministic_split(
+            sites, split_spec["source_experiments"], split_spec["target_experiments"],
+            split_spec["split_id"],
+        )
+        source_train = assignment[assignment.role == "train"].copy()
+        source_iid = assignment[assignment.role == "iid_validation"]
+        target = assignment[assignment.role == "target"]
+        partition_policy = "frozen supervised train role only"
     requested = int(source_experiment_count)
     if requested < 1 or requested > len(all_source_experiments):
         raise ValueError(
@@ -190,7 +219,6 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
     expected_experiments = selected_source_experiments
     if observed_experiments != expected_experiments:
         raise ValueError("MAE partition does not cover exactly the frozen source experiments")
-    target_experiments = set(map(int, split_spec["target_experiments"]))
     if observed_experiments & target_experiments:
         raise ValueError("target experiment leaked into MAE partition")
 
@@ -212,6 +240,10 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
         "target_experiments": sorted(target_experiments),
         "source_iid_sites_excluded": len(source_iid),
         "target_sites_excluded": len(target),
+        "pretraining_site_population": len(sites),
+        "partition_policy": partition_policy,
+        "physical_target_exclusion_required": bool(
+            split_spec.get("physical_target_exclusion", True)),
         "validation_fraction": float(validation_fraction),
         "partition_seed": int(seed), "role_counts": role_counts,
         "assignment_sha256": _frame_hash(
@@ -232,8 +264,9 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
     return registry, split_spec, partitioned, audit
 
 
-def audit_raw_paths(partitioned, raw_root, all_source_folders=None, target_folders=None):
-    """Verify every loaded channel and physically exclude all target experiment folders."""
+def audit_raw_paths(partitioned, raw_root, all_source_folders=None, target_folders=None,
+                    enforce_physical_target_exclusion=True):
+    """Verify loaded channels and optionally require target folders to be absent on disk."""
     raw_root = Path(raw_root).expanduser().resolve()
     expected_source_folders = set()
     missing = []
@@ -252,23 +285,24 @@ def audit_raw_paths(partitioned, raw_root, all_source_folders=None, target_folde
     if missing:
         raise FileNotFoundError(f"missing sealed MAE channels; first paths: {missing}")
     image_root = raw_root / "images"
-    available = {path.name for path in image_root.glob("HUVEC-*") if path.is_dir()}
+    available = {path.name for path in image_root.iterdir() if path.is_dir()}
     allowed = set(all_source_folders or expected_source_folders)
     targets = set(target_folders or ())
     unexpected = available - allowed
     missing_folders = expected_source_folders - available
     target_present = available & targets
-    if unexpected:
+    if enforce_physical_target_exclusion and unexpected:
         raise ValueError(f"raw root contains non-source HUVEC folders: {sorted(unexpected)}")
     if missing_folders:
         raise FileNotFoundError(f"raw root lacks source HUVEC folders: {sorted(missing_folders)}")
-    if target_present:
+    if enforce_physical_target_exclusion and target_present:
         raise ValueError(f"raw root physically contains target folders: {sorted(target_present)}")
     return {
         "raw_root": str(raw_root), "source_folders": sorted(expected_source_folders),
-        "available_huvec_folders": sorted(available),
+        "available_experiment_folders": sorted(available),
         "audited_sites": len(partitioned), "audited_channel_files": len(partitioned) * 6,
-        "target_folders_physically_present": [],
+        "physical_target_exclusion_required": bool(enforce_physical_target_exclusion),
+        "target_folders_physically_present": sorted(target_present),
     }
 
 
@@ -403,7 +437,9 @@ def pretrain(args):
     path_audit = audit_raw_paths(
         partitioned, args.raw_root,
         all_source_folders=split_audit["all_source_folders"],
-        target_folders=split_audit["target_folders"])
+        target_folders=split_audit["target_folders"],
+        enforce_physical_target_exclusion=split_audit[
+            "physical_target_exclusion_required"])
     audit = {**split_audit, "raw_paths": path_audit}
     normalization = split_spec["normalization"]
 

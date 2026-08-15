@@ -287,7 +287,7 @@ class Native6SiteDataset(Dataset):
             mean = x.mean(dim=(1, 2), keepdim=True)
             std = x.std(dim=(1, 2), keepdim=True).clamp_min(1e-6)
             x = (x - mean) / std
-        return {
+        sample = {
             "image": x,
             "label": int(row.label),
             "experiment": int(row.experiment),
@@ -295,3 +295,6 @@ class Native6SiteDataset(Dataset):
             "site": int(row.site),
             "global_index": int(row.global_index),
         }
+        if "cell_type" in self.frame.columns:
+            sample["cell_type"] = str(row.cell_type)
+        return sample

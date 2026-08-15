@@ -62,6 +62,14 @@ def _split_hash(frame):
     return hashlib.sha256(columns.to_csv(index=False).encode()).hexdigest()
 
 
+def _file_sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def _load_spec(result_root, run_id):
     root = Path(result_root)
     manifest = json.loads((root / "wave_manifest.json").read_text())
@@ -80,9 +88,31 @@ def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
                   canary=False, include_target=True, train_augmentation=None,
                   normalization_mode="frozen_global"):
     sites = pd.read_parquet(registry["site_manifest"])
-    assignment = deterministic_split(
-        sites, split_spec["source_experiments"], split_spec["target_experiments"],
-        split_spec["split_id"])
+    assignment_path = split_spec.get("assignment")
+    if assignment_path:
+        assignment_path = Path(assignment_path).expanduser().resolve()
+        expected_sha = split_spec.get("assignment_sha256")
+        if expected_sha and _file_sha256(assignment_path) != expected_sha:
+            raise ValueError(f"frozen assignment checksum changed: {assignment_path}")
+        assignment = pd.read_parquet(assignment_path)
+        if set(map(int, assignment.global_index)) != set(map(int, sites.global_index)):
+            raise ValueError("frozen assignment does not cover exactly the site manifest")
+        if set(assignment.role.unique()) != {"train", "iid_validation", "target"}:
+            raise ValueError("frozen assignment has unexpected or missing roles")
+        source = set(map(int, split_spec["source_experiments"]))
+        target = set(map(int, split_spec["target_experiments"]))
+        observed_source = set(map(
+            int, assignment.loc[assignment.role != "target", "experiment"].unique()))
+        observed_target = set(map(
+            int, assignment.loc[assignment.role == "target", "experiment"].unique()))
+        if observed_source != source:
+            raise ValueError("frozen assignment source experiments changed")
+        if observed_target != target:
+            raise ValueError("frozen assignment target experiments changed")
+    else:
+        assignment = deterministic_split(
+            sites, split_spec["source_experiments"], split_spec["target_experiments"],
+            split_spec["split_id"])
     roles = {role: assignment[assignment.role == role].copy()
              for role in ("train", "iid_validation", "target")}
     train_wells = set(roles["train"].well_id)
@@ -127,10 +157,12 @@ def _make_loaders(root, registry, split_spec, batch_size, workers, image_size,
     return assignment, loaders
 
 
-def _well_metrics(logits, labels, experiments, well_ids):
+def _well_metrics(logits, labels, experiments, well_ids, cell_types=None):
     grouped = defaultdict(list)
     for index, well_id in enumerate(well_ids):
         grouped[str(well_id)].append(index)
+    if cell_types is not None and len(cell_types) != len(well_ids):
+        raise ValueError("cell-type metadata does not align to site images")
     rows, averaged, truth = [], [], []
     for well_id, indices in grouped.items():
         unique_labels = set(map(int, labels[indices].tolist()))
@@ -139,6 +171,12 @@ def _well_metrics(logits, labels, experiments, well_ids):
             raise ValueError(f"inconsistent site metadata within well {well_id}")
         mean_logits = logits[indices].mean(0)
         label = unique_labels.pop(); experiment = unique_experiments.pop()
+        cell_type = None
+        if cell_types is not None:
+            unique_cells = {str(cell_types[index]) for index in indices}
+            if len(unique_cells) != 1:
+                raise ValueError(f"inconsistent cell type within well {well_id}")
+            cell_type = unique_cells.pop()
         order = torch.argsort(mean_logits, descending=True)
         rank = int((order == label).nonzero(as_tuple=False)[0, 0]) + 1
         rows.append({
@@ -148,6 +186,8 @@ def _well_metrics(logits, labels, experiments, well_ids):
             "correct_top1": bool(rank == 1), "correct_top5": bool(rank <= 5),
             "n_sites": len(indices),
         })
+        if cell_type is not None:
+            rows[-1]["cell_type"] = cell_type
         averaged.append(mean_logits); truth.append(label)
     prediction_frame = pd.DataFrame(rows)
     averaged = torch.stack(averaged); truth = torch.tensor(truth, dtype=torch.long)
@@ -174,13 +214,24 @@ def _well_metrics(logits, labels, experiments, well_ids):
         "site_mean_rank": float(site_rank.float().mean()),
         "per_experiment": per_experiment,
     }
+    if "cell_type" in prediction_frame:
+        metrics["per_cell_type"] = {
+            str(cell): {
+                "n_wells": len(group),
+                "top1": float(group.correct_top1.mean()),
+                "top5": float(group.correct_top5.mean()),
+                "mean_rank": float(group.true_class_rank.mean()),
+            }
+            for cell, group in prediction_frame.groupby("cell_type", sort=True)
+        }
     return metrics, prediction_frame
 
 
 @torch.no_grad()
 def evaluate(model, loader, device, capture_routing=False):
     model.eval()
-    all_logits, all_labels, all_experiments, all_wells = [], [], [], []
+    all_logits, all_labels, all_experiments, all_wells, all_cells = [], [], [], [], []
+    has_cell_type = None
     routing = defaultdict(lambda: defaultdict(lambda: None))
     for batch in loader:
         images = batch["image"].to(device, non_blocking=True)
@@ -189,6 +240,13 @@ def evaluate(model, loader, device, capture_routing=False):
         all_labels.append(torch.as_tensor(batch["label"]).long())
         all_experiments.append(torch.as_tensor(batch["experiment"]).long())
         all_wells.extend(list(batch["well_id"]))
+        batch_has_cell_type = "cell_type" in batch
+        if has_cell_type is None:
+            has_cell_type = batch_has_cell_type
+        elif has_cell_type != batch_has_cell_type:
+            raise ValueError("cell-type metadata is inconsistent across loader batches")
+        if batch_has_cell_type:
+            all_cells.extend(list(batch["cell_type"]))
         if capture_routing and getattr(model, "moe_blocks", ()):
             batch_experiments = torch.as_tensor(batch["experiment"]).long().numpy()
             for block_index, block in zip(model.moe_block_indices, model.moe_blocks):
@@ -204,7 +262,9 @@ def evaluate(model, loader, device, capture_routing=False):
     logits = torch.cat(all_logits)
     labels = torch.cat(all_labels)
     experiments = torch.cat(all_experiments)
-    metrics, predictions = _well_metrics(logits, labels, experiments, all_wells)
+    metrics, predictions = _well_metrics(
+        logits, labels, experiments, all_wells,
+        cell_types=(all_cells if has_cell_type else None))
     routing_summary = {}
     for block, rows in routing.items():
         routing_summary[str(block)] = {}
