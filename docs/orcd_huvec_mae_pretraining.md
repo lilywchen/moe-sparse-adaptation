@@ -20,6 +20,11 @@ blocks. A fixed validation masking seed makes reconstruction curves comparable a
 The best encoder is selected only by held-out reconstruction loss. Training stops after at least
 30 epochs when validation has not improved by 0.001 for 15 epochs, or at the 200-epoch safety cap.
 
+The one-factor grid adds 50% and 90% masking, nested 4- and 8-source-experiment subsets,
+per-image normalization, and removal of geometric augmentation for both Micro and Tiny. The
+75%-mask, 16-source, frozen-global, geometry-augmented runs are the common reference. This gives
+14 total pretraining runs without spending compute on duplicate seeds.
+
 `last.pt` contains model, optimizer, RNG, loader-generator, history, and plateau state. It resumes
 automatically. `best_encoder.pt`, periodic encoder snapshots, `curves.jsonl`, `STATUS.json`, and
 `RESULT.json` are written under the persistent result root.

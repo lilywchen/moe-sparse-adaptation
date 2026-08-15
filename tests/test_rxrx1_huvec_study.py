@@ -18,7 +18,7 @@ from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
-from scripts.pretrain_rxrx1_huvec_mae import partition_mae_wells
+from scripts.pretrain_rxrx1_huvec_mae import load_sealed_partition, partition_mae_wells
 from scripts.sweep_rxrx1_huvec_study import planned_runs
 
 
@@ -131,6 +131,29 @@ def test_mae_partition_is_deterministic_and_keeps_sites_with_their_well():
     assert validation.groupby("experiment").well_id.nunique().to_dict() == {
         11: 2, 12: 2, 13: 2,
     }
+
+
+def test_mae_source_scaling_uses_a_nested_centrality_order(tmp_path):
+    frame = _site_frame()
+    manifest = tmp_path / "sites.parquet"
+    registry = tmp_path / "registry.json"
+    frame.to_parquet(manifest, index=False)
+    registry.write_text(json.dumps({
+        "centrality": {str(value): float(value) for value in range(24)},
+        "main_training_splits": [{
+            "split_id": "fold0", "source_experiments": list(range(16)),
+            "target_experiments": list(range(16, 24)),
+            "normalization": {"mean": [0.0] * 6, "std": [1.0] * 6},
+        }],
+    }))
+    _, _, four, audit4 = load_sealed_partition(
+        registry, manifest, "fold0", source_experiment_count=4)
+    _, _, eight, audit8 = load_sealed_partition(
+        registry, manifest, "fold0", source_experiment_count=8)
+    assert set(four.experiment.unique()) == {0, 1, 2, 3}
+    assert set(four.experiment.unique()) < set(eight.experiment.unique())
+    assert audit4["nested_source_experiment_order"] == audit8[
+        "nested_source_experiment_order"]
 
 
 def test_top1_moe_router_receives_task_gradient():

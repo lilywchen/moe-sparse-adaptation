@@ -250,13 +250,17 @@ def normalization_from_qc(site_frame, qc_frame):
 class Native6SiteDataset(Dataset):
     """Native six-channel site images with split-specific global normalization."""
 
-    def __init__(self, frame, raw_root, img_size, mean, std, train=False):
+    def __init__(self, frame, raw_root, img_size, mean, std, train=False,
+                 normalization_mode="frozen_global"):
         self.frame = frame.reset_index(drop=True)
         self.raw_root = Path(raw_root)
         self.img_size = int(img_size)
         self.mean = torch.tensor(mean, dtype=torch.float32).view(6, 1, 1)
         self.std = torch.tensor(std, dtype=torch.float32).view(6, 1, 1)
         self.train = bool(train)
+        self.normalization_mode = str(normalization_mode)
+        if self.normalization_mode not in ("frozen_global", "per_image"):
+            raise ValueError("normalization_mode must be frozen_global|per_image")
 
     def __len__(self):
         return len(self.frame)
@@ -277,7 +281,12 @@ class Native6SiteDataset(Dataset):
             if bool(torch.rand(()) < 0.5):
                 x = TF.hflip(x)
         x = TF.resize(x, [self.img_size, self.img_size], antialias=True)
-        x = (x - self.mean) / self.std
+        if self.normalization_mode == "frozen_global":
+            x = (x - self.mean) / self.std
+        else:
+            mean = x.mean(dim=(1, 2), keepdim=True)
+            std = x.std(dim=(1, 2), keepdim=True).clamp_min(1e-6)
+            x = (x - mean) / std
         return {
             "image": x,
             "label": int(row.label),

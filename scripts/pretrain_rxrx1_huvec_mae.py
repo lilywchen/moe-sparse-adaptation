@@ -137,7 +137,8 @@ def partition_mae_wells(train_sites, validation_fraction=0.10, seed=0):
 
 
 def load_sealed_partition(registry_path, site_manifest_path, split_id,
-                          validation_fraction=0.10, seed=0):
+                          validation_fraction=0.10, seed=0,
+                          source_experiment_count=16):
     registry_path = Path(registry_path).expanduser().resolve()
     site_manifest_path = Path(site_manifest_path).expanduser().resolve()
     registry = json.loads(registry_path.read_text())
@@ -154,8 +155,25 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
     source_train = assignment[assignment.role == "train"].copy()
     source_iid = assignment[assignment.role == "iid_validation"]
     target = assignment[assignment.role == "target"]
+    all_source_experiments = set(map(int, split_spec["source_experiments"]))
+    requested = int(source_experiment_count)
+    if requested < 1 or requested > len(all_source_experiments):
+        raise ValueError(
+            f"source_experiment_count must be in [1, {len(all_source_experiments)}]")
+    centrality = registry.get("centrality") or {}
+    missing_centrality = [value for value in all_source_experiments
+                          if str(value) not in centrality]
+    if requested != len(all_source_experiments) and missing_centrality:
+        raise ValueError(
+            f"frozen registry lacks centrality for source experiments {missing_centrality}")
+    nested_order = sorted(
+        all_source_experiments,
+        key=lambda value: (float(centrality.get(str(value), 0.0)), value))
+    selected_source_experiments = set(nested_order[:requested])
+    selected_train = source_train[
+        source_train.experiment.isin(selected_source_experiments)].copy()
     partitioned = partition_mae_wells(
-        source_train, validation_fraction=validation_fraction, seed=seed)
+        selected_train, validation_fraction=validation_fraction, seed=seed)
 
     loaded_indices = set(map(int, partitioned.global_index))
     if loaded_indices & set(map(int, source_iid.global_index)):
@@ -163,7 +181,7 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
     if loaded_indices & set(map(int, target.global_index)):
         raise ValueError("target site leaked into MAE partition")
     observed_experiments = set(map(int, partitioned.experiment.unique()))
-    expected_experiments = set(map(int, split_spec["source_experiments"]))
+    expected_experiments = selected_source_experiments
     if observed_experiments != expected_experiments:
         raise ValueError("MAE partition does not cover exactly the frozen source experiments")
     target_experiments = set(map(int, split_spec["target_experiments"]))
@@ -182,6 +200,9 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
         "site_manifest_sha256": _sha256(site_manifest_path),
         "split_id": split_id,
         "source_experiments": sorted(expected_experiments),
+        "frozen_source_experiments": sorted(all_source_experiments),
+        "nested_source_experiment_order": nested_order,
+        "source_experiment_count": requested,
         "target_experiments": sorted(target_experiments),
         "source_iid_sites_excluded": len(source_iid),
         "target_sites_excluded": len(target),
@@ -192,10 +213,20 @@ def load_sealed_partition(registry_path, site_manifest_path, split_id,
         "mae_partition_sha256": _frame_hash(
             partitioned, ("global_index", "well_id", "experiment", "mae_role")),
     }
+    experiment_folders = {
+        int(experiment): sorted({Path(str(value)).parts[1] for value in rows.relative_path})
+        for experiment, rows in sites.groupby("experiment", sort=True)
+    }
+    audit["all_source_folders"] = sorted({
+        folder for experiment in all_source_experiments
+        for folder in experiment_folders[int(experiment)]})
+    audit["target_folders"] = sorted({
+        folder for experiment in target_experiments
+        for folder in experiment_folders[int(experiment)]})
     return registry, split_spec, partitioned, audit
 
 
-def audit_raw_paths(partitioned, raw_root):
+def audit_raw_paths(partitioned, raw_root, all_source_folders=None, target_folders=None):
     """Verify every loaded channel and physically exclude all target experiment folders."""
     raw_root = Path(raw_root).expanduser().resolve()
     expected_source_folders = set()
@@ -216,12 +247,17 @@ def audit_raw_paths(partitioned, raw_root):
         raise FileNotFoundError(f"missing sealed MAE channels; first paths: {missing}")
     image_root = raw_root / "images"
     available = {path.name for path in image_root.glob("HUVEC-*") if path.is_dir()}
-    unexpected = available - expected_source_folders
+    allowed = set(all_source_folders or expected_source_folders)
+    targets = set(target_folders or ())
+    unexpected = available - allowed
     missing_folders = expected_source_folders - available
+    target_present = available & targets
     if unexpected:
         raise ValueError(f"raw root contains non-source HUVEC folders: {sorted(unexpected)}")
     if missing_folders:
         raise FileNotFoundError(f"raw root lacks source HUVEC folders: {sorted(missing_folders)}")
+    if target_present:
+        raise ValueError(f"raw root physically contains target folders: {sorted(target_present)}")
     return {
         "raw_root": str(raw_root), "source_folders": sorted(expected_source_folders),
         "available_huvec_folders": sorted(available),
@@ -231,7 +267,8 @@ def audit_raw_paths(partitioned, raw_root):
 
 
 def _make_loaders(partitioned, raw_root, normalization, image_size, batch_size,
-                  workers, seed):
+                  workers, seed, train_augmentation=True,
+                  normalization_mode="frozen_global"):
     frames = {
         role: partitioned[partitioned.mae_role == role].copy()
         for role in ("mae_train", "mae_validation")
@@ -239,10 +276,12 @@ def _make_loaders(partitioned, raw_root, normalization, image_size, batch_size,
     datasets = {
         "train": Native6SiteDataset(
             frames["mae_train"], raw_root, image_size,
-            normalization["mean"], normalization["std"], train=True),
+            normalization["mean"], normalization["std"],
+            train=bool(train_augmentation), normalization_mode=normalization_mode),
         "validation": Native6SiteDataset(
             frames["mae_validation"], raw_root, image_size,
-            normalization["mean"], normalization["std"], train=False),
+            normalization["mean"], normalization["std"], train=False,
+            normalization_mode=normalization_mode),
     }
     generator = torch.Generator().manual_seed(int(seed))
     common = {
@@ -353,8 +392,12 @@ def pretrain(args):
 
     registry, split_spec, partitioned, split_audit = load_sealed_partition(
         args.registry, args.site_manifest, args.split_id,
-        validation_fraction=args.validation_fraction, seed=args.seed)
-    path_audit = audit_raw_paths(partitioned, args.raw_root)
+        validation_fraction=args.validation_fraction, seed=args.seed,
+        source_experiment_count=args.source_experiment_count)
+    path_audit = audit_raw_paths(
+        partitioned, args.raw_root,
+        all_source_folders=split_audit["all_source_folders"],
+        target_folders=split_audit["target_folders"])
     audit = {**split_audit, "raw_paths": path_audit}
     normalization = split_spec["normalization"]
 
@@ -364,7 +407,9 @@ def pretrain(args):
     amp_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     loaders, generator = _make_loaders(
         partitioned, args.raw_root, normalization, args.image_size,
-        args.batch_size, args.workers, args.seed)
+        args.batch_size, args.workers, args.seed,
+        train_augmentation=args.train_augmentation,
+        normalization_mode=args.normalization_mode)
     encoder, model_audit = build_study_model(
         args.model, num_classes=EXPECTED_TREATMENTS, image_size=args.image_size)
     for parameter in encoder.fc.parameters():
@@ -387,6 +432,9 @@ def pretrain(args):
         "min_delta": args.min_delta, "seed": args.seed,
         "max_train_steps": args.max_train_steps,
         "split_id": args.split_id, "validation_fraction": args.validation_fraction,
+        "source_experiment_count": args.source_experiment_count,
+        "normalization_mode": args.normalization_mode,
+        "train_augmentation": args.train_augmentation,
         "git_commit": git_commit, "git_dirty": git_dirty,
     }
     audit.update({
@@ -566,6 +614,12 @@ def main():
     parser.add_argument("--patience", type=int, default=15)
     parser.add_argument("--min-delta", type=float, default=1e-3)
     parser.add_argument("--validation-fraction", type=float, default=0.10)
+    parser.add_argument("--source-experiment-count", type=int, default=16)
+    parser.add_argument(
+        "--normalization-mode", choices=("frozen_global", "per_image"),
+        default="frozen_global")
+    parser.add_argument(
+        "--train-augmentation", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--encoder-checkpoint-every", type=int, default=10)
     parser.add_argument("--log-every-steps", type=int, default=25)

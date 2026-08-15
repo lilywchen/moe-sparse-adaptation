@@ -3,6 +3,8 @@ set -euo pipefail
 
 MODEL=${1:?usage: run_huvec_mae.sh vit_tiny|vit_micro smoke|full}
 MODE=${2:?usage: run_huvec_mae.sh vit_tiny|vit_micro smoke|full}
+shift 2
+VARIANT_ARGS=("$@")
 REPO=${REPO:-$HOME/orcd/scratch/moe-batch-effect/worktrees/huvec-mae}
 ENV_DIR=${ENV_DIR:-$HOME/orcd/scratch/moe-batch-effect/envs/huvec-mae-py311}
 RESULT_ROOT=${RESULT_ROOT:-$HOME/orcd/pool/moe-batch-effect/huvec_mae_pretrain_20260814}
@@ -29,11 +31,19 @@ export PYTHONUNBUFFERED=1
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-8}
 
 if [[ "$MODE" == smoke ]]; then
-  OUTPUT=$RESULT_ROOT/smoke/$MODEL
+  if [[ -n ${RUN_NAME:-} ]]; then
+    OUTPUT=$RESULT_ROOT/grid_smoke/$RUN_NAME
+  else
+    OUTPUT=$RESULT_ROOT/smoke/$MODEL
+  fi
   EXTRA=(--batch-size 64 --workers 4 --max-epochs 1 --min-epochs 1 \
     --warmup-epochs 0 --patience 1 --max-train-steps 4 --encoder-checkpoint-every 1)
 else
-  OUTPUT=$RESULT_ROOT/runs/$MODEL
+  if [[ -n ${RUN_NAME:-} ]]; then
+    OUTPUT=$RESULT_ROOT/grid/$RUN_NAME
+  else
+    OUTPUT=$RESULT_ROOT/runs/$MODEL
+  fi
   EXTRA=(--batch-size 256 --workers 8 --max-epochs 200 --min-epochs 30 \
     --warmup-epochs 10 --patience 15 --min-delta 0.001 --encoder-checkpoint-every 10)
 fi
@@ -47,7 +57,8 @@ set +e
   --split-id primary_fold0 \
   --model "$MODEL" \
   --mask-ratio 0.75 \
-  "${EXTRA[@]}"
+  "${EXTRA[@]}" \
+  "${VARIANT_ARGS[@]}"
 RC=$?
 set -e
 
