@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--site-manifest", required=True)
     parser.add_argument("--raw-root", required=True)
     parser.add_argument("--marker", required=True)
+    parser.add_argument("--allow-extra-folders", action="store_true")
     args = parser.parse_args()
 
     manifest = Path(args.site_manifest).expanduser().resolve()
@@ -42,10 +43,12 @@ def main():
     folders = sorted({Path(str(value)).parts[1] for value in sites.relative_path})
     available = sorted(path.name for path in (raw_root / "images").glob("HUVEC-*")
                        if path.is_dir())
-    if set(available) != set(folders):
+    missing_folders = set(folders) - set(available)
+    unexpected_folders = set(available) - set(folders)
+    if missing_folders or (unexpected_folders and not args.allow_extra_folders):
         raise ValueError(
-            f"HUVEC folder mismatch: missing={sorted(set(folders) - set(available))}, "
-            f"unexpected={sorted(set(available) - set(folders))}")
+            f"HUVEC folder mismatch: missing={sorted(missing_folders)}, "
+            f"unexpected={sorted(unexpected_folders)}")
 
     missing_paths = []
     referenced_channels = 0
@@ -73,6 +76,7 @@ def main():
         "n_wells": int(sites.well_id.nunique()),
         "n_experiments": int(sites.experiment.nunique()),
         "experiment_folders": folders,
+        "extra_folders_allowed": bool(args.allow_extra_folders),
         "referenced_channels_checked": int(referenced_channels),
     }
     marker.parent.mkdir(parents=True, exist_ok=True)
