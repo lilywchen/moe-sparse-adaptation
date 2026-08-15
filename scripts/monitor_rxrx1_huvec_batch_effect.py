@@ -33,8 +33,7 @@ def snapshot(root):
                 f"{state:11s} gpu-job={spec['run_id']} epoch={payload.get('epoch', 0)} "
                 f"train={latest.get('train_augmented_site_top1', float('nan')):.4f} "
                 f"IID={payload.get('best_source_iid_site_top1', float('nan')):.4f}")
-    lines = [datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        f"complete={states.get('complete', 0)}/36 training={states.get('training', 0)} "
+    lines = [f"complete={states.get('complete', 0)}/36 training={states.get('training', 0)} "
         f"pending={states.get('pending', 0)} failed={states.get('failed', 0)} "
         f"interrupted={states.get('interrupted', 0)}"]
     lines.extend(active or ["No active run status has been written yet."])
@@ -54,6 +53,7 @@ def main():
         value = snapshot(args.result_root)
         digest = hashlib.sha256(value.encode()).hexdigest()
         if digest != previous:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), flush=True)
             print(value, flush=True); previous = digest
         if not args.watch or "FINAL REPORT:" in value:
             return
