@@ -18,6 +18,7 @@ from scripts.evaluate_rxrx1_huvec_sites import _agreement_summary, _site_metrics
 from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
+from scripts.pretrain_rxrx1_huvec_mae import partition_mae_wells
 from scripts.sweep_rxrx1_huvec_study import planned_runs
 
 
@@ -109,6 +110,27 @@ def test_mae_uses_visible_tokens_and_reconstructs_six_channels():
     reconstruction, auxiliary = mae(torch.randn(2, 6, 32, 32))
     assert reconstruction.ndim == 0 and torch.isfinite(reconstruction)
     assert auxiliary.ndim == 0 and torch.isfinite(auxiliary)
+
+
+def test_mae_partition_is_deterministic_and_keeps_sites_with_their_well():
+    rows = []
+    for experiment in (11, 12, 13):
+        for well in range(20):
+            for site in (1, 2):
+                rows.append({
+                    "global_index": len(rows), "experiment": experiment,
+                    "well_id": f"{experiment}|P1|W{well:02d}", "site": site,
+                })
+    frame = pd.DataFrame(rows)
+    first = partition_mae_wells(frame, validation_fraction=0.10, seed=7)
+    second = partition_mae_wells(frame, validation_fraction=0.10, seed=7)
+    assert first[["global_index", "mae_role"]].equals(
+        second[["global_index", "mae_role"]])
+    assert first.groupby("well_id").mae_role.nunique().max() == 1
+    validation = first[first.mae_role == "mae_validation"]
+    assert validation.groupby("experiment").well_id.nunique().to_dict() == {
+        11: 2, 12: 2, 13: 2,
+    }
 
 
 def test_top1_moe_router_receives_task_gradient():
