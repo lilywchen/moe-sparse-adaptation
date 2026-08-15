@@ -3,9 +3,9 @@ set -euo pipefail
 
 case ${SLURM_ARRAY_TASK_ID:?SLURM_ARRAY_TASK_ID is required} in
   0) RUN_NAME=random_standard; RECIPE=huvec_finetune_standard.json; USE_MAE=0 ;;
-  1) RUN_NAME=mae_standard;    RECIPE=huvec_finetune_standard.json; USE_MAE=1 ;;
-  2) RUN_NAME=mae_lr250e6;    RECIPE=huvec_finetune_lr250e6.json; USE_MAE=1 ;;
-  3) RUN_NAME=mae_lr100e6;    RECIPE=huvec_finetune_lr100e6.json; USE_MAE=1 ;;
+  1) RUN_NAME=mae_standard;    RECIPE=huvec_finetune_standard.json; INIT_RUN=runs/vit_tiny ;;
+  2) RUN_NAME=mae_per_image_standard; RECIPE=huvec_finetune_standard.json; INIT_RUN=grid/tiny_per_image ;;
+  3) RUN_NAME=mae_per_image_lr250e6; RECIPE=huvec_finetune_lr250e6.json; INIT_RUN=grid/tiny_per_image ;;
   *) echo "unexpected fine-tuning index: $SLURM_ARRAY_TASK_ID" >&2; exit 2 ;;
 esac
 
@@ -17,10 +17,10 @@ export PYTHONUNBUFFERED=1
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK:-8}
 
 INIT_ARGS=()
-if [[ $USE_MAE -eq 1 ]]; then
-  test -f "$RESULT_ROOT/runs/vit_tiny/RESULT.json"
-  test -f "$RESULT_ROOT/runs/vit_tiny/best_encoder.pt"
-  INIT_ARGS=(--init-checkpoint "$RESULT_ROOT/runs/vit_tiny/best_encoder.pt")
+if [[ -n ${INIT_RUN:-} ]]; then
+  test -f "$RESULT_ROOT/$INIT_RUN/RESULT.json"
+  test -f "$RESULT_ROOT/$INIT_RUN/best_encoder.pt"
+  INIT_ARGS=(--init-checkpoint "$RESULT_ROOT/$INIT_RUN/best_encoder.pt")
 fi
 
 exec "${ENV_DIR:?ENV_DIR is required}/bin/python" \

@@ -10,7 +10,10 @@ from pathlib import Path
 import pandas as pd
 
 
-RUNS = ("random_standard", "mae_standard", "mae_lr250e6", "mae_lr100e6")
+RUNS = (
+    "random_standard", "mae_standard", "mae_per_image_standard",
+    "mae_per_image_lr250e6",
+)
 
 
 def main():
@@ -62,16 +65,21 @@ def main():
     fig.tight_layout(); fig.savefig(figures / "target_accuracy.png", dpi=180); plt.close(fig)
 
     best = frame.iloc[0]
-    standard = frame[frame.run.isin(("random_standard", "mae_standard"))].set_index("run")
-    delta = (standard.loc["mae_standard", "target_site_top1"]
-             - standard.loc["random_standard", "target_site_top1"])
+    standard = frame[frame.run.isin((
+        "random_standard", "mae_standard", "mae_per_image_standard",
+    ))].set_index("run")
+    canonical_delta = (standard.loc["mae_standard", "target_site_top1"]
+                       - standard.loc["random_standard", "target_site_top1"])
+    per_image_delta = (standard.loc["mae_per_image_standard", "target_site_top1"]
+                       - standard.loc["random_standard", "target_site_top1"])
     report = f"""<!doctype html><html><head><meta charset='utf-8'><title>ViT-Tiny fine-tuning</title>
 <style>body{{font-family:system-ui;margin:2rem;max-width:1300px}}table{{border-collapse:collapse}}
 th,td{{padding:.4rem;border:1px solid #ddd}}th{{background:#f2f2f2}}img{{max-width:100%}}</style>
 </head><body><h1>Matched ViT-Tiny fine-tuning</h1>
 <p>All checkpoints were selected using source-IID accuracy. Target batches were loaded only
-after selection. The direct same-recipe MAE-minus-random target-site difference is
-<strong>{delta:+.4f}</strong>.</p>
+after selection. The direct canonical-MAE-minus-random target-site difference is
+<strong>{canonical_delta:+.4f}</strong>; the per-image-MAE-minus-random difference is
+<strong>{per_image_delta:+.4f}</strong>.</p>
 <p>Best arm: <code>{html.escape(str(best.run))}</code> at {best.target_site_top1:.4f}.</p>
 <img src='figures/target_accuracy.png' alt='Target accuracy'>
 {frame.to_html(index=False, float_format=lambda value: f'{value:.5f}')}</body></html>"""

@@ -4,8 +4,8 @@ set -euo pipefail
 case ${SLURM_ARRAY_TASK_ID:?SLURM_ARRAY_TASK_ID is required} in
   0) RUN_NAME=random_standard ;;
   1) RUN_NAME=mae_standard ;;
-  2) RUN_NAME=mae_lr250e6 ;;
-  3) RUN_NAME=mae_lr100e6 ;;
+  2) RUN_NAME=mae_per_image_standard ;;
+  3) RUN_NAME=mae_per_image_lr250e6 ;;
   *) echo "unexpected fine-tuning evaluation index: $SLURM_ARRAY_TASK_ID" >&2; exit 2 ;;
 esac
 
