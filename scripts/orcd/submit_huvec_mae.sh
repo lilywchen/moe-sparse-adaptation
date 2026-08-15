@@ -18,7 +18,7 @@ SETUP_JOB=$(sbatch --parsable \
 
 SMOKE_JOB=$(sbatch --parsable \
   --account=mit_general --partition=mit_normal_gpu --job-name=huvec_mae_smoke \
-  --time=01:00:00 --cpus-per-task=8 --mem=64G --gres=gpu:h100:1 \
+  --time=01:00:00 --cpus-per-task=8 --mem=64G --gres=gpu:h200:1 \
   --array=0-1%2 --dependency="afterok:$TRANSFER_JOB:$SETUP_JOB" \
   --signal=B:USR1@180 --requeue \
   --output="$LOG_ROOT/smoke-%A_%a.log" --export="$EXPORTS" \
@@ -26,7 +26,7 @@ SMOKE_JOB=$(sbatch --parsable \
 
 FULL_JOB=$(sbatch --parsable \
   --account=mit_general --partition=mit_normal_gpu --job-name=huvec_mae_full \
-  --time=06:00:00 --cpus-per-task=8 --mem=64G --gres=gpu:h100:1 \
+  --time=06:00:00 --cpus-per-task=8 --mem=64G --gres=gpu:h200:1 \
   --array=0-1%2 --dependency="afterok:$SMOKE_JOB" \
   --signal=B:USR1@180 --requeue \
   --output="$LOG_ROOT/full-%A_%a.log" --export="$EXPORTS" \
