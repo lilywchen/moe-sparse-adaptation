@@ -108,6 +108,12 @@ def _stable_token(*values):
     return hashlib.sha256("|".join(map(str, values)).encode()).hexdigest()
 
 
+def _semantic_config(config):
+    """Return fields that must match to resume, excluding code provenance metadata."""
+    return {key: value for key, value in config.items()
+            if key not in {"git_commit", "git_dirty"}}
+
+
 def partition_mae_wells(train_sites, validation_fraction=0.10, seed=0):
     """Deterministically reserve wells within every source experiment for MAE validation."""
     fraction = float(validation_fraction)
@@ -443,7 +449,14 @@ def pretrain(args):
         "classifier_head_frozen": True, "validation_mask_seed": VALIDATION_MASK_SEED,
         "normalization": normalization,
     })
-    _atomic_json(output / "FROZEN_RUN.json", {"config": config, "audit": audit})
+    frozen_run_path = output / "FROZEN_RUN.json"
+    frozen_payload = {"config": config, "audit": audit}
+    if frozen_run_path.is_file():
+        existing_frozen = json.loads(frozen_run_path.read_text())
+        if _semantic_config(existing_frozen["config"]) != _semantic_config(config):
+            raise ValueError("current arguments differ from the existing frozen MAE run")
+    else:
+        _atomic_json(frozen_run_path, frozen_payload)
 
     # Inspect a deterministic validation item directly.  Avoid starting persistent DataLoader
     # workers before a resume checkpoint restores its generator state.
@@ -464,10 +477,11 @@ def pretrain(args):
     elapsed_before = 0.0
     if args.resume and last_path.is_file():
         state = _torch_load(last_path)
-        if state["config"] != config:
-            raise ValueError("resume checkpoint configuration differs from frozen run")
+        if _semantic_config(state["config"]) != _semantic_config(config):
+            raise ValueError("resume checkpoint training configuration differs from frozen run")
         if state["audit"]["mae_partition_sha256"] != audit["mae_partition_sha256"]:
             raise ValueError("resume checkpoint MAE partition differs from current manifest")
+        audit["resumed_from_git_commit"] = state["config"].get("git_commit")
         mae.load_state_dict(state["model"], strict=True)
         optimizer.load_state_dict(state["optimizer"]); _optimizer_to(optimizer, device)
         _restore_rng(state["rng"], generator)

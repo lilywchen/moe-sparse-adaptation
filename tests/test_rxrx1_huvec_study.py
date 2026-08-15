@@ -20,7 +20,11 @@ from scripts.evaluate_rxrx1_huvec_mae import _ridge_fit, _ridge_scores, _score_m
 from scripts.launch_rxrx1_huvec_recipe_pair import _status_signature, pair_plan
 from scripts.prepare_rxrx1_huvec_study import _split_arrays
 from scripts.run_rxrx1_huvec_study import _well_metrics
-from scripts.pretrain_rxrx1_huvec_mae import load_sealed_partition, partition_mae_wells
+from scripts.pretrain_rxrx1_huvec_mae import (
+    _semantic_config,
+    load_sealed_partition,
+    partition_mae_wells,
+)
 from scripts.sweep_rxrx1_huvec_study import planned_runs
 
 
@@ -130,6 +134,15 @@ def test_mae_initialization_loads_backbone_but_not_classifier(tmp_path):
     assert torch.equal(target.patch_embed.weight, source.patch_embed.weight)
     assert torch.equal(target.fc.weight, original_target_weight)
     assert not torch.equal(target.fc.weight, source.fc.weight)
+
+
+def test_mae_resume_semantics_ignore_only_code_provenance():
+    old = {"model": "vit_tiny", "max_epochs": 200,
+           "git_commit": "old", "git_dirty": False}
+    new_commit = {**old, "git_commit": "new", "git_dirty": True}
+    changed_training = {**new_commit, "max_epochs": 201}
+    assert _semantic_config(old) == _semantic_config(new_commit)
+    assert _semantic_config(old) != _semantic_config(changed_training)
 
 
 def test_mae_partition_is_deterministic_and_keeps_sites_with_their_well():
