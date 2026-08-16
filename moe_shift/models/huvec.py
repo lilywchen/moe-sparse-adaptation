@@ -8,6 +8,7 @@ from torch import nn
 
 from .resnet import resnet18
 from .vit import Block, Mlp, PatchMoE, ViT
+from moe_shift.capacity.ffn import SharedResidualMoEFFN
 
 
 def parameter_count(model):
@@ -18,14 +19,21 @@ class StudyViT(ViT):
     """DeiT-Tiny-sized six-channel ViT with optional late sparse FFNs."""
 
     def __init__(self, num_classes=1108, image_size=224, experts=1, top_k=1,
-                 moe_layers=0, matched_hidden=None, dim=192, depth=12, heads=3):
+                 moe_layers=0, matched_hidden=None, dim=192, depth=12, heads=3,
+                 residual_moe=None):
         super().__init__(
             num_classes=num_classes, img=image_size, patch=16, dim=int(dim),
             depth=int(depth), heads=int(heads),
             mlp_ratio=4.0, drop=0.0, instance_norm=False, input_channels=6,
         )
         self.moe_block_indices = []
-        if matched_hidden is not None and int(moe_layers) > 0:
+        if residual_moe is not None and int(moe_layers) > 0:
+            config = dict(residual_moe)
+            for index in range(len(self.blocks) - int(moe_layers), len(self.blocks)):
+                self.blocks[index].mlp = SharedResidualMoEFFN(
+                    self.blocks[index].mlp, **config)
+                self.moe_block_indices.append(index)
+        elif matched_hidden is not None and int(moe_layers) > 0:
             for index in range(len(self.blocks) - int(moe_layers), len(self.blocks)):
                 self.blocks[index].mlp = Mlp(self.dim, int(matched_hidden), 0.0)
         elif int(experts) > 1 and int(moe_layers) > 0:
@@ -44,10 +52,13 @@ class StudyViT(ViT):
     def routing_aux_loss(self, balance_weight=0.01, zloss_weight=1e-4):
         if not self.moe_blocks:
             return self.fc.weight.new_zeros(())
-        return torch.stack([
-            block.aux_loss(float(zloss_weight), float(balance_weight))
-            for block in self.moe_blocks
-        ]).mean()
+        losses = []
+        for block in self.moe_blocks:
+            if isinstance(block, SharedResidualMoEFFN):
+                losses.append(block.aux_loss(float(balance_weight), float(zloss_weight)))
+            else:
+                losses.append(block.aux_loss(float(zloss_weight), float(balance_weight)))
+        return torch.stack(losses).mean()
 
 
 def _nearest_matched_hidden(num_classes=1108, image_size=224, experts=4, moe_layers=2):
@@ -98,6 +109,25 @@ def build_study_model(kind, num_classes=1108, image_size=224):
         return model, {
             "kind": kind, "total_params": parameter_count(model),
             "matched_hidden": hidden, **audit,
+        }
+    residual_kinds = {
+        "vit_tiny_residual_token": dict(routing_unit="token", balance="global"),
+        "vit_tiny_residual_image": dict(routing_unit="image", balance="global"),
+        "vit_tiny_residual_within": dict(
+            routing_unit="token", balance="within_environment"),
+        "vit_tiny_residual_frozen": dict(
+            routing_unit="token", balance="global", router_frozen=True),
+    }
+    if kind in residual_kinds:
+        config = dict(
+            n_experts=3, top_k=1, geometry="cosine", temperature=0.7,
+            routing_estimator="full_st", **residual_kinds[kind])
+        model = StudyViT(
+            num_classes, image_size, moe_layers=2, residual_moe=config)
+        return model, {
+            "kind": kind, "total_params": parameter_count(model),
+            "moe_layers": 2, "shared_dense_path": True,
+            "residual_experts": 3, "top_k": 1, **config,
         }
     raise ValueError(f"unknown HUVEC study model: {kind!r}")
 

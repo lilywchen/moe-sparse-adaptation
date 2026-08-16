@@ -160,13 +160,21 @@ def routing_summary(model, experiments):
         return rows
     experiments = np.asarray(experiments, dtype=np.int64)
     for block_index, block in zip(model.moe_block_indices, model.moe_blocks):
-        assignment = block.last["idx"][:, 0].detach().cpu().numpy()
+        if block.last is None:
+            continue
+        assignment = block.last.get("assign")
+        if assignment is None and "idx" in block.last:
+            assignment = block.last["idx"][:, 0]
+        if assignment is None:
+            continue
+        assignment = assignment.detach().cpu().numpy()
         if len(assignment) % len(experiments):
             raise ValueError("routing assignments do not align with site images")
         assignment = assignment.reshape(len(experiments), -1)
         block_rows = rows.setdefault(str(block_index), {})
         for values, experiment in zip(assignment, experiments):
-            counts = np.bincount(values, minlength=block.N).astype(np.int64)
+            count = int(getattr(block, "n_experts", getattr(block, "N", 1)))
+            counts = np.bincount(values, minlength=count).astype(np.int64)
             key = str(int(experiment))
             block_rows[key] = counts if key not in block_rows else block_rows[key] + counts
     return rows
@@ -181,6 +189,13 @@ def merge_routing(total, batch):
                 else destination[experiment] + counts)
 
 
+def set_moe_environment(model, experiments, device):
+    env = torch.as_tensor(experiments, device=device, dtype=torch.long)
+    for block in getattr(model, "moe_blocks", ()):
+        if hasattr(block, "set_env"):
+            block.set_env(env)
+
+
 @torch.inference_mode()
 def evaluate_detailed(model, loader, device, role):
     model.eval()
@@ -189,6 +204,7 @@ def evaluate_detailed(model, loader, device, role):
     routing = {}
     for batch in loader:
         images = batch["image"].to(device, non_blocking=True)
+        set_moe_environment(model, batch["experiment"], device)
         feature = model.forward_features(images)
         output = model.fc(feature)
         logits.append(output.float().cpu()); features.append(feature.float().cpu())
@@ -242,6 +258,7 @@ def simple_iid_metrics(model, loader, device):
     well_logits = defaultdict(list); well_labels = {}
     with torch.inference_mode():
         for batch in loader:
+            set_moe_environment(model, batch["experiment"], device)
             logits = model(batch["image"].to(device, non_blocking=True)).float().cpu()
             labels = torch.as_tensor(batch["label"]).long()
             correct += int((logits.argmax(1) == labels).sum()); count += len(labels)
@@ -355,19 +372,26 @@ def train(result_root, run_id):
         for batch_index, batch in enumerate(loaders["train"]):
             images = batch["image"].to(device, non_blocking=True)
             labels = batch["label"].to(device, non_blocking=True)
+            set_moe_environment(model, batch["experiment"], device)
             logits = model(images); classification = F.cross_entropy(logits, labels)
             if epoch == 0 and batch_index == 0 and getattr(model, "moe_blocks", ()):
                 router_parameters = []
                 for block in model.moe_blocks:
-                    router_parameters += list(block.proj.parameters())
-                    router_parameters += [block.codebook, block.log_temp]
-                gradients = torch.autograd.grad(
+                    if hasattr(block, "router"):
+                        router_parameters += [p for p in block.router.parameters()
+                                              if p.requires_grad]
+                    else:
+                        router_parameters += list(block.proj.parameters())
+                        router_parameters += [block.codebook, block.log_temp]
+                gradients = (torch.autograd.grad(
                     classification, router_parameters, retain_graph=True, allow_unused=True)
-                initial_router_gradient = float(torch.stack([
-                    value.float().square().sum() for value in gradients if value is not None
-                ]).sum().sqrt())
-                if not math.isfinite(initial_router_gradient) or initial_router_gradient <= 0:
-                    raise RuntimeError("MoE router receives no classification-loss gradient")
+                    if router_parameters else [])
+                terms = [value.float().square().sum() for value in gradients
+                         if value is not None]
+                initial_router_gradient = float(
+                    torch.stack(terms).sum().sqrt()) if terms else 0.0
+                if not math.isfinite(initial_router_gradient):
+                    raise RuntimeError("non-finite initial router gradient")
             auxiliary = (model.routing_aux_loss() if getattr(model, "moe_blocks", ())
                          else classification.new_zeros(()))
             loss = classification + auxiliary
@@ -455,8 +479,7 @@ def train(result_root, run_id):
         role_metrics, site_frame, well_frame, feature_frame, route = evaluate_detailed(
             model, loader, device, role)
         metrics[role] = role_metrics; site_rows.append(site_frame); well_rows.append(well_frame)
-        if role != "train":
-            embedding_rows.append(feature_frame)
+        embedding_rows.append(feature_frame)
         routing[role] = route
     site_predictions = pd.concat(site_rows, ignore_index=True)
     well_predictions = pd.concat(well_rows, ignore_index=True)
@@ -466,6 +489,19 @@ def train(result_root, run_id):
     atomic_parquet(run_dir / "site_predictions.parquet", site_predictions)
     atomic_parquet(run_dir / "well_predictions.parquet", well_predictions)
     atomic_parquet(run_dir / "well_embeddings.parquet", embeddings)
+
+    shared_only_metrics = None
+    residual_blocks = [block for block in getattr(model, "moe_blocks", ())
+                       if hasattr(block, "shared_only")]
+    if residual_blocks:
+        for block in residual_blocks:
+            block.shared_only = True
+        shared_only_metrics = {
+            role: simple_iid_metrics(model, loader, device)
+            for role, loader in role_loaders.items()
+        }
+        for block in residual_blocks:
+            block.shared_only = False
 
     result = {
         **frozen, "state": "complete", "stop_reason": stop_reason,
@@ -477,7 +513,8 @@ def train(result_root, run_id):
             metrics["iid_validation"]["site"]["top1"] - metrics["target"]["site"]["top1"]),
         "well_iid_to_target_gap": (
             metrics["iid_validation"]["well"]["top1"] - metrics["target"]["well"]["top1"]),
-        "routing": routing, "initial_batch_loss": initial_loss,
+        "routing": routing, "shared_only_metrics": shared_only_metrics,
+        "initial_batch_loss": initial_loss,
         "initial_router_task_gradient": initial_router_gradient,
         "elapsed_seconds": elapsed_before + time.time() - started,
         "hostname": socket.gethostname(), "torch_version": torch.__version__,
