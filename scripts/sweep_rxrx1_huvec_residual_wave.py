@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 """Three-container, six-GPU launcher for the HUVEC residual wave."""
 from __future__ import annotations
-import argparse, json
+import argparse, json, sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 from scripts.aggregate_rxrx1_huvec_residual_wave import aggregate, collect
 from scripts.prepare_rxrx1_huvec_residual_wave import DEFAULT_ANCHOR, DEFAULT_RESULT, prepare
 from scripts.analyze_rxrx1_huvec_task_shift import analyze

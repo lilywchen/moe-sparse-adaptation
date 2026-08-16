@@ -6,8 +6,12 @@ import argparse
 import copy
 import json
 import subprocess
+import sys
 import time
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from scripts.prepare_rxrx1_huvec_batch_effect import atomic_json
 
