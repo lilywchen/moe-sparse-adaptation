@@ -9,7 +9,7 @@ ENV=${ENV:-/orcd/scratch/orcd/002/l1ly/moe-batch-effect/envs/huvec-mae-py311}
 COMMIT=$(git -C "$CODE" rev-parse HEAD)
 mkdir -p "$RESULT/logs"
 
-COMMON="source $ENV/bin/activate; CODE=$CODE EXPECTED_COMMIT=$COMMIT RAW_ROOT=$FULL/rxrx1 RESULT_ROOT=$RESULT"
+COMMON="export PATH=$ENV/bin:\$PATH; CODE=$CODE EXPECTED_COMMIT=$COMMIT RAW_ROOT=$FULL/rxrx1 RESULT_ROOT=$RESULT"
 OFFICIAL=$(sbatch --parsable -J rx1_dense_official -p mit_normal_gpu -A mit_general \
   --gres=gpu:h200:8 --cpus-per-task=64 --mem=0 -t 06:00:00 \
   --dependency="afterok:$STAGE_JOB" --signal=B:USR1@180 \
