@@ -9,7 +9,7 @@ set -euo pipefail
 : "${MODEL:?set MODEL}"
 : "${NPROC:?set NPROC to the GPUs used by this process}"
 
-EXPECTED_COMMIT=${EXPECTED_COMMIT:-c9e6188}
+: "${EXPECTED_COMMIT:?set EXPECTED_COMMIT to the frozen launch commit}"
 IMAGE_SIZE=${IMAGE_SIZE:-512}
 PER_GPU_BATCH=${PER_GPU_BATCH:-16}
 WORKERS=${WORKERS:-8}
@@ -19,10 +19,10 @@ SPLIT=${SPLIT:-official}
 
 cd "$CODE"
 ACTUAL_COMMIT=$(git rev-parse HEAD)
-case "$ACTUAL_COMMIT" in
-  "$EXPECTED_COMMIT"*) ;;
-  *) echo "commit mismatch: expected $EXPECTED_COMMIT, got $ACTUAL_COMMIT" >&2; exit 3 ;;
-esac
+test "$ACTUAL_COMMIT" = "$EXPECTED_COMMIT" || {
+  echo "commit mismatch: expected $EXPECTED_COMMIT, got $ACTUAL_COMMIT" >&2
+  exit 3
+}
 test -f "$MANIFEST"
 test -d "$RAW_ROOT/images"
 mkdir -p "$RESULT_ROOT/logs"

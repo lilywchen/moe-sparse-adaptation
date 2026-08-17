@@ -6,9 +6,10 @@ CODE=${CODE:-/orcd/scratch/orcd/002/l1ly/moe-batch-effect/src/moe-sparse-adaptat
 FULL=${FULL:-/orcd/scratch/orcd/002/l1ly/moe-batch-effect/rxrx1-full}
 RESULT=${RESULT:-/orcd/pool/004/l1ly/moe-batch-effect/rxrx1_calibration_20260817}
 ENV=${ENV:-/orcd/scratch/orcd/002/l1ly/moe-batch-effect/envs/huvec-mae-py311}
+COMMIT=$(git -C "$CODE" rev-parse HEAD)
 mkdir -p "$RESULT/logs"
 
-COMMON="source $ENV/bin/activate; CODE=$CODE RAW_ROOT=$FULL/rxrx1 RESULT_ROOT=$RESULT"
+COMMON="source $ENV/bin/activate; CODE=$CODE EXPECTED_COMMIT=$COMMIT RAW_ROOT=$FULL/rxrx1 RESULT_ROOT=$RESULT"
 OFFICIAL=$(sbatch --parsable -J rx1_dense_official -p mit_normal_gpu -A mit_general \
   --gres=gpu:h200:8 --cpus-per-task=64 --mem=0 -t 06:00:00 \
   --dependency="afterok:$STAGE_JOB" --signal=B:USR1@180 \
