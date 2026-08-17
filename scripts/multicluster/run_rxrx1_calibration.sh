@@ -9,6 +9,9 @@ set -euo pipefail
 : "${MODEL:?set MODEL}"
 : "${NPROC:?set NPROC to the GPUs used by this process}"
 
+PYTHON=${PYTHON:-$(command -v python)}
+test -x "$PYTHON"
+
 : "${EXPECTED_COMMIT:?set EXPECTED_COMMIT to the frozen launch commit}"
 IMAGE_SIZE=${IMAGE_SIZE:-512}
 PER_GPU_BATCH=${PER_GPU_BATCH:-16}
@@ -32,7 +35,8 @@ nvidia-smi --query-gpu=index,name,memory.total --format=csv,noheader
 
 # EXTRA_ARGS is controlled by the checked-in scheduler launchers below.
 # shellcheck disable=SC2086
-torchrun --standalone --nproc_per_node="$NPROC" scripts/train_rxrx1_calibration.py \
+"$PYTHON" -m torch.distributed.run --standalone --nproc_per_node="$NPROC" \
+  scripts/train_rxrx1_calibration.py \
   --manifest "$MANIFEST" --raw-root "$RAW_ROOT" \
   --result-root "$RESULT_ROOT" --run-name "$RUN_NAME" --split "$SPLIT" \
   --model "$MODEL" --image-size "$IMAGE_SIZE" --epochs "$EPOCHS" \
