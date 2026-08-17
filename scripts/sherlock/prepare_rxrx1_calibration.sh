@@ -5,7 +5,9 @@ set -euo pipefail
 : "${DATA_ROOT:?set DATA_ROOT}"
 : "${ENV:?set ENV}"
 
-module load py-pytorch/2.4.1_py312
+module load py-pytorch/2.4.1_py312 py-torchvision/0.19.1_py312 \
+  py-timm/1.0.12_py312 py-pandas/2.2.1_py312 \
+  py-pyarrow/18.1.0_py312 py-scikit-learn/1.5.1_py312
 PYTHON="$ENV/bin/python"
 test -x "$PYTHON"
 test -f "$DATA_ROOT/EXTRACTION_COMPLETE.json"
@@ -22,4 +24,3 @@ test -f "$DATA_ROOT/rxrx1/metadata.csv"
 test -s "$DATA_ROOT/manifests/full_manifest.summary.json"
 test -s "$DATA_ROOT/huvec_crossfits/huvec_crossfit_registry.json"
 printf '[ready] frozen manifest and HUVEC cross-fits\n'
-

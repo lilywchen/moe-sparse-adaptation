@@ -6,7 +6,9 @@ set -euo pipefail
 : "${ENV:?set ENV}"
 : "${LANE:?set LANE}"
 
-module load py-pytorch/2.4.1_py312
+module load py-pytorch/2.4.1_py312 py-torchvision/0.19.1_py312 \
+  py-timm/1.0.12_py312 py-pandas/2.2.1_py312 \
+  py-pyarrow/18.1.0_py312 py-scikit-learn/1.5.1_py312
 export PYTHON="$ENV/bin/python"
 test -x "$PYTHON"
 
@@ -46,4 +48,3 @@ esac
 
 export RAW_ROOT="$DATA_ROOT/rxrx1"
 bash "$CODE/scripts/multicluster/run_rxrx1_calibration.sh"
-
