@@ -22,6 +22,7 @@ import torch.nn as nn
 
 from .surgery import convert_blocks, set_shared_only, set_top_k
 from .naming import explicit_block_indices
+from .batch_corrector import BatchFeatureCorrector
 
 
 def _git_sha(path):
@@ -75,6 +76,9 @@ class CCASModel(nn.Module):
                  backbone_source="timm", hub_repo_dir=None, checkpoint_path=None,
                  hub_model="cell_dino_cp_vits8", input_channels=5,
                  feature_pool="cls",
+                 batch_corrector_mode="none", batch_corrector_experts=4,
+                 batch_corrector_rank=16, batch_corrector_hidden=128,
+                 batch_corrector_temperature=1.0,
                  expected_hub_repo_commit=None, freeze_backbone=False,
                  unfreeze_last_n_blocks=0, **_ignore):
         super().__init__()
@@ -139,6 +143,10 @@ class CCASModel(nn.Module):
         # official checkpoint namespace. convert_block only needs mutable references.
         self.blocks = _actual_blocks(self.backbone)
         self.variant = variant
+        self.batch_corrector = BatchFeatureCorrector(
+            self.dim, mode=batch_corrector_mode, n_experts=batch_corrector_experts,
+            rank=batch_corrector_rank, hidden=batch_corrector_hidden,
+            temperature=batch_corrector_temperature)
         # The classifier must exist before capacity accounting so ``total_params`` really means
         # the complete trainable model rather than backbone-only parameters.
         self.fc = nn.Linear(self.dim, num_classes)
@@ -203,6 +211,10 @@ class CCASModel(nn.Module):
             if callable(setter):
                 setter(group)
 
+    def set_batch_environment(self, environment):
+        """Declare raw experiment ids for an AdaBN/Harmony feature-correction forward pass."""
+        self.batch_corrector.set_environment(environment)
+
     def set_shared_only(self, shared_only=True):
         """Route every oracle block through its shared path alone (held-out-group readout)."""
         return set_shared_only(self, shared_only)
@@ -223,7 +235,8 @@ class CCASModel(nn.Module):
             return None
         return torch.stack(terms).mean()
 
-    def forward_features(self, x):
+    def forward_features_uncorrected(self, x):
+        """Backbone representation before any target-batch adaptation."""
         if self.backbone_source == "channel_adaptive_dino":
             # The official Bag-of-Channels route lives in get_intermediate_layers(): it reshapes
             # BxCxHxW to (B*C)x1xHxW, applies the shared encoder, then restores/concatenates C.
@@ -255,17 +268,22 @@ class CCASModel(nn.Module):
             raise TypeError("cls_patch_mean pooling requires dictionary backbone features")
         return self.backbone.forward_head(f, pre_logits=True)
 
+    def forward_features(self, x):
+        return self.batch_corrector(self.forward_features_uncorrected(x))
+
     def forward(self, x):
         return self.fc(self.forward_features(x))
 
     def aux_loss(self, balance_w, zloss_w=0.0):
+        corrector_aux = self.batch_corrector.aux_loss(balance_w, zloss_w)
         if not self._moe_blocks:
-            return torch.zeros((), device=self.fc.weight.device)
+            return corrector_aux
         # Average across converted layers so a multi-layer model does not silently receive a
         # proportionally stronger regularizer than its single-layer comparator.
-        return torch.stack([
+        block_aux = torch.stack([
             block.aux_loss(balance_w, zloss_w) for block in self._moe_blocks
         ]).mean()
+        return block_aux + corrector_aux
 
     @property
     def moe_block(self):
@@ -308,6 +326,12 @@ def build_ccas(cfg):
                      hub_model=m.get("hub_model", "cell_dino_cp_vits8"),
                      input_channels=m.get("input_channels", 5),
                      feature_pool=m.get("feature_pool", "cls"),
+                     batch_corrector_mode=m.get("batch_corrector", {}).get("mode", "none"),
+                     batch_corrector_experts=m.get("batch_corrector", {}).get("n_experts", 4),
+                     batch_corrector_rank=m.get("batch_corrector", {}).get("rank", 16),
+                     batch_corrector_hidden=m.get("batch_corrector", {}).get("hidden", 128),
+                     batch_corrector_temperature=m.get("batch_corrector", {}).get(
+                         "temperature", 1.0),
                      expected_hub_repo_commit=m.get("expected_hub_repo_commit"),
                      freeze_backbone=m.get("freeze_backbone", False),
                      unfreeze_last_n_blocks=m.get("unfreeze_last_n_blocks", 0))

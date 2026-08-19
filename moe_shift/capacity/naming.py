@@ -41,6 +41,13 @@ def run_id_from(cfg) -> str:
     else:
         location = m["placement"]
     parts = [cfg["dataset"], v]
+    corrector = m.get("batch_corrector", {})
+    corrector_mode = str(corrector.get("mode", "none"))
+    if corrector_mode != "none":
+        fragment = f"bc-{corrector_mode}"
+        if corrector_mode in ("lowrank", "moe_batch", "moe_dual"):
+            fragment += f"-E{int(corrector.get('n_experts', 1))}r{int(corrector.get('rank', 16))}"
+        parts.append(fragment)
     if v in ("moe", "moe_frozen", "shared_moe"):
         # Prefix the estimator to the historical identity. This prevents result-file collisions
         # while leaving the established dataset/variant/campaign substrings usable as anchor keys.

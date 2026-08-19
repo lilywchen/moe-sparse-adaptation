@@ -427,6 +427,13 @@ def batch_group_ids(batch, group_source):
     raise ValueError(f"unknown group_source: {group_source!r}")
 
 
+def set_batch_environment(model, batch, device):
+    """Forward raw acquisition ids to a context-aware corrector, when one is configured."""
+    setter = getattr(model, "set_batch_environment", None)
+    if callable(setter) and len(batch) > 3:
+        setter(batch[3].to(device))
+
+
 @torch.no_grad()
 def evaluate(model, loader, device, group_source=None):
     """-> (acc, worst_env_acc, per_env_acc, per_env_n), bucketed by RAW environment id.
@@ -447,6 +454,7 @@ def evaluate(model, loader, device, group_source=None):
         # collapsed per_env to a single '-1' bucket and made worst_env_* equal to overall accuracy.
         # The 3-tuple fallback is for the injected-nuisance loaders, where site IS the environment.
         s = batch[3] if len(batch) > 3 else batch[2]
+        set_batch_environment(model, batch, device)
         group = batch_group_ids(batch, group_source)
         if group is not None:
             model.set_group(group.to(device))
@@ -462,6 +470,69 @@ def evaluate(model, loader, device, group_source=None):
     per_env = {k: per_env_ok[k] / max(per_env_tot[k], 1) for k in per_env_ok}
     worst = min(per_env.values()) if per_env else float("nan")
     return acc, worst, per_env, dict(per_env_tot)
+
+
+@torch.no_grad()
+def evaluate_support_query_context(model, loader, device, context_sizes, repeats=8, seed=0):
+    """Repeated strict support/query audit for target-batch information budgets.
+
+    Backbone features are extracted once.  For every experiment and repeat, an unlabelled support
+    set estimates correction moments and is then REMOVED from scoring.  This avoids the usual
+    AdaBN self-normalisation loophole where each query contributes to its own target statistics.
+    """
+    model.eval()
+    groups = {}
+    for batch in loader:
+        raw = model.forward_features_uncorrected(batch[0].to(device)).float().cpu()
+        labels = batch[1].long().cpu()
+        environments = batch[3].long().cpu()
+        for value in torch.unique(environments):
+            mask = environments == value
+            entry = groups.setdefault(int(value), {"features": [], "labels": []})
+            entry["features"].append(raw[mask]); entry["labels"].append(labels[mask])
+    groups = {key: {name: torch.cat(chunks) for name, chunks in value.items()}
+              for key, value in groups.items()}
+    output = {}
+    for context_size in context_sizes:
+        if int(context_size) < 2:
+            raise ValueError("context sizes must be >= 2")
+        repeat_accuracy, repeat_worst = [], []
+        per_environment = {environment: [] for environment in groups}
+        for repeat in range(int(repeats)):
+            total_ok = total_n = 0
+            for environment, values in groups.items():
+                features, labels = values["features"], values["labels"]
+                support_n = min(int(context_size), len(features) - 1)
+                generator = torch.Generator().manual_seed(
+                    int(seed) * 1000003 + int(context_size) * 1009 + repeat * 97 + environment)
+                order = torch.randperm(len(features), generator=generator)
+                support_index, query_index = order[:support_n], order[support_n:]
+                support = features[support_index].to(device)
+                query = features[query_index].to(device)
+                mean = support.mean(dim=0)
+                std = ((support - mean).square().mean(dim=0) +
+                       model.batch_corrector.eps).sqrt()
+                corrected = model.batch_corrector.forward_with_statistics(query, mean, std)
+                predicted = model.fc(corrected).argmax(dim=1).cpu()
+                correct = int((predicted == labels[query_index]).sum())
+                count = int(len(query_index))
+                accuracy = correct / max(count, 1)
+                per_environment[environment].append(accuracy)
+                total_ok += correct; total_n += count
+            repeat_accuracy.append(total_ok / max(total_n, 1))
+            repeat_worst.append(min(values[repeat] for values in per_environment.values()))
+        output[str(int(context_size))] = {
+            "acc_mean": float(np.mean(repeat_accuracy)),
+            "acc_sd": float(np.std(repeat_accuracy, ddof=1)) if repeats > 1 else 0.0,
+            "acc_quantiles": np.quantile(repeat_accuracy, [0.05, 0.5, 0.95]).tolist(),
+            "worst_env_mean": float(np.mean(repeat_worst)),
+            "worst_env_sd": float(np.std(repeat_worst, ddof=1)) if repeats > 1 else 0.0,
+            "per_env_mean": {str(key): float(np.mean(values))
+                             for key, values in per_environment.items()},
+            "support_draws": int(repeats), "support_n": int(context_size),
+            "query_excludes_support": True, "uses_labels_for_support": False,
+        }
+    return output
 
 
 @torch.no_grad()
@@ -542,6 +613,12 @@ def main():
     args = ap.parse_args()
 
     cfg = apply_overrides(load_config(args.config), args.override)
+    corrector_cfg = cfg["model"].get("batch_corrector", {})
+    corrector_mode = str(corrector_cfg.get("mode", "none"))
+    if corrector_mode != "none" and not bool(cfg["train"].get("experiment_batching", False)):
+        raise ValueError(
+            "batch corrector arms require train.experiment_batching=true so context moments "
+            "come from one declared acquisition experiment")
     milestones, checkpoint_epochs = milestone_epochs(cfg)
     pressure = cfg["model"].get("pressure", "canonical")
     if pressure not in ("canonical", "route", "output"):
@@ -732,7 +809,16 @@ def main():
         raise ValueError(
             "cross-experiment contrastive loss requires train.cross_experiment_pairs=true")
     protocol["cross_experiment_pairs"] = paired_batches
+    protocol["paired_experiment_batches"] = bool(
+        cfg["train"].get("paired_experiment_batches", False))
     protocol["cross_experiment_contrastive_w"] = consistency_w
+    protocol["batch_corrector"] = dict(corrector_cfg or {"mode": "none"})
+    protocol["experiment_homogeneous_batches"] = bool(
+        cfg["train"].get("experiment_batching", False))
+    protocol["target_context_budget"] = (
+        int(cfg["train"]["batch_size"]) if corrector_mode != "none" else 0)
+    protocol["uses_target_labels_for_correction"] = False
+    protocol["transductive_target_context"] = corrector_mode != "none"
 
     if objective not in OBJECTIVES:
         raise ValueError(f"train.objective must be one of {OBJECTIVES}, got {objective!r}")
@@ -784,6 +870,7 @@ def main():
         for batch in train_loader:
             x, y, s = batch[0].to(device), batch[1].to(device), batch[2].to(device)
             model.set_env(s)                       # used ONLY by within-environment balancing
+            set_batch_environment(model, batch, device)
             group = batch_group_ids(batch, group_source)
             if group is not None:
                 model.set_group(group.to(device))
@@ -934,6 +1021,17 @@ def main():
     acc_val, worst_val, per_env_val, per_env_n_val = evaluate(
         model, sel_loader, device, group_source=group_source)
 
+    # Information-budget curve: repeated, disjoint support/query draws on OOD validation.  This
+    # is stricter than ordinary AdaBN because scored queries do not normalize themselves.
+    context_curve_val = None
+    context_sizes = sorted({int(value) for value in
+                            cfg.get("analysis", {}).get("context_sizes", [])})
+    if corrector_mode != "none" and context_sizes:
+        context_curve_val = evaluate_support_query_context(
+            model, val_loader, device, context_sizes,
+            repeats=int(cfg.get("analysis", {}).get("context_repeats", 8)),
+            seed=int(cfg["seed"]))
+
     if stage >= 3:
         acc_ood, worst_ood, per_env_ood, per_env_n_ood = evaluate(
             model, test_heldout, device, group_source=group_source)
@@ -1019,6 +1117,9 @@ def main():
         "cross_experiment_contrastive_w": consistency_w,
         "cross_experiment_pairs": paired_batches,
         "n_experts": cfg["model"]["n_experts"], "top_k": cfg["model"]["top_k"],
+        "batch_corrector": cfg["model"].get("batch_corrector", {"mode": "none"}),
+        "batch_corrector_diagnostics": dict(getattr(model.batch_corrector, "last", {})),
+        "context_curve_val": context_curve_val,
         # ---- outcomes ----
         # Stage <3: acc_heldout is null BY DESIGN (the OOD test split is not touched).
         # `acc_selection` is the number every Stage-1/2 decision is allowed to use.

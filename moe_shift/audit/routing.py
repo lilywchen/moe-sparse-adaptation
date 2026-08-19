@@ -18,7 +18,10 @@ def capture(model, loader, device, block=None):
     if block is None:
         raise ValueError("routing capture requires at least one MoE block")
     experts, sites, labels = [], [], []
-    for x, y, site, *_ in loader:
+    for batch in loader:
+        x, y, site = batch[0], batch[1], batch[2]
+        if len(batch) > 3 and hasattr(model, "set_batch_environment"):
+            model.set_batch_environment(batch[3].to(device))
         model(x.to(device))
         assignment = block.top1().numpy()
         site = np.asarray(site)
@@ -47,7 +50,10 @@ def capture_spatial(model, loader, device):
     to each of its tokens (token order is image-major, matching SpatialMoEBlock.forward)."""
     model.eval()
     experts, sites, labels = [], [], []
-    for x, y, site, *_ in loader:
+    for batch in loader:
+        x, y, site = batch[0], batch[1], batch[2]
+        if len(batch) > 3 and hasattr(model, "set_batch_environment"):
+            model.set_batch_environment(batch[3].to(device))
         model(x.to(device))
         tpi = model.moe_block.tokens_per_image
         experts.append(model.moe_block.top1().numpy())          # [B*tpi]

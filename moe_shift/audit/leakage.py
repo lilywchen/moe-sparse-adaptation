@@ -16,7 +16,10 @@ from sklearn.model_selection import train_test_split
 def features_and_site(model, loader, device):
     model.eval()
     feats, sites = [], []
-    for x, _y, site, *_ in loader:
+    for batch in loader:
+        x, site = batch[0], batch[2]
+        if len(batch) > 3 and hasattr(model, "set_batch_environment"):
+            model.set_batch_environment(batch[3].to(device))
         f = model.forward_features(x.to(device))
         feats.append(f.float().cpu().numpy())
         sites.append(np.asarray(site))
@@ -28,7 +31,10 @@ def features_site_label(model, loader, device):
     """One pass -> (features, site, label) so both probes share the SAME frozen features."""
     model.eval()
     feats, sites, labels = [], [], []
-    for x, y, site, *_ in loader:
+    for batch in loader:
+        x, y, site = batch[0], batch[1], batch[2]
+        if len(batch) > 3 and hasattr(model, "set_batch_environment"):
+            model.set_batch_environment(batch[3].to(device))
         f = model.forward_features(x.to(device))
         feats.append(f.float().cpu().numpy())
         sites.append(np.asarray(site))

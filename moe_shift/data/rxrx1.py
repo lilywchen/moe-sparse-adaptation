@@ -292,6 +292,116 @@ class CrossExperimentBatchSampler(Sampler):
             yield [batch[index] for index in order]
 
 
+class ExperimentBatchSampler(Sampler):
+    """Yield minibatches containing exactly one acquisition experiment.
+
+    This is the data contract needed by AdaBN-style target-batch adaptation.  A random
+    minibatch mixes experiments and makes its moments scientifically uninterpretable; grouping
+    by experiment lets a method consume a declared number of unlabeled target images.  The
+    sampler shuffles both experiments and observations during training, while evaluation is
+    deterministic.  Remainders are retained for evaluation and optionally dropped for training.
+    """
+
+    def __init__(self, experiments, batch_size, shuffle=False, drop_last=False, generator=None):
+        self.experiments = torch.as_tensor(experiments, dtype=torch.long).flatten()
+        self.batch_size = int(batch_size)
+        self.shuffle = bool(shuffle)
+        self.drop_last = bool(drop_last)
+        self.generator = generator
+        if self.batch_size < 2:
+            raise ValueError("experiment batches require batch_size >= 2")
+        self.groups = {}
+        for index, experiment in enumerate(self.experiments.tolist()):
+            self.groups.setdefault(int(experiment), []).append(index)
+        if not self.groups:
+            raise ValueError("experiment sampler received no observations")
+
+    def __len__(self):
+        if self.drop_last:
+            return sum(len(indices) // self.batch_size for indices in self.groups.values())
+        return sum((len(indices) + self.batch_size - 1) // self.batch_size
+                   for indices in self.groups.values())
+
+    def __iter__(self):
+        experiments = list(self.groups)
+        if self.shuffle:
+            order = torch.randperm(len(experiments), generator=self.generator).tolist()
+            experiments = [experiments[index] for index in order]
+        batches = []
+        for experiment in experiments:
+            indices = self.groups[experiment]
+            if self.shuffle:
+                order = torch.randperm(len(indices), generator=self.generator).tolist()
+                indices = [indices[index] for index in order]
+            for start in range(0, len(indices), self.batch_size):
+                batch = indices[start:start + self.batch_size]
+                if len(batch) == self.batch_size or not self.drop_last:
+                    batches.append(batch)
+        if self.shuffle:
+            order = torch.randperm(len(batches), generator=self.generator).tolist()
+            batches = [batches[index] for index in order]
+        yield from batches
+
+
+class PairedExperimentBatchSampler(Sampler):
+    """Composition-matched experiment pairs for batch-transport learning.
+
+    Each minibatch selects one cell type, two experiments, and ``batch_size/2`` perturbations
+    present in both experiments, then emits one observation per perturbation from each experiment.
+    The two halves therefore have identical biological composition: their distributional
+    difference identifies acquisition shift rather than a phenotype-mixture change.
+    """
+
+    def __init__(self, labels, experiments, cell_types, batch_size, generator=None):
+        self.labels = torch.as_tensor(labels, dtype=torch.long).flatten()
+        self.experiments = torch.as_tensor(experiments, dtype=torch.long).flatten()
+        self.cell_types = torch.as_tensor(cell_types, dtype=torch.long).flatten()
+        self.batch_size = int(batch_size)
+        self.generator = generator
+        if self.batch_size < 4 or self.batch_size % 2:
+            raise ValueError("paired experiment batches require an even batch size >= 4")
+        self.n_labels = self.batch_size // 2
+        groups = {}
+        for index, (label, experiment, cell_type) in enumerate(zip(
+                self.labels.tolist(), self.experiments.tolist(), self.cell_types.tolist())):
+            groups.setdefault(int(cell_type), {}).setdefault(int(experiment), {}).setdefault(
+                int(label), []).append(index)
+        self.groups = groups
+        self.valid_pairs = {}
+        for cell_type, by_experiment in groups.items():
+            experiments_here = sorted(by_experiment)
+            pairs = []
+            for left_index, left in enumerate(experiments_here):
+                for right in experiments_here[left_index + 1:]:
+                    common = sorted(set(by_experiment[left]) & set(by_experiment[right]))
+                    if len(common) >= self.n_labels:
+                        pairs.append((left, right, common))
+            if pairs:
+                self.valid_pairs[cell_type] = pairs
+        self.cells = sorted(self.valid_pairs)
+        if not self.cells:
+            raise ValueError("no cell type has a valid composition-matched experiment pair")
+
+    def __len__(self):
+        return len(self.labels) // self.batch_size
+
+    def _choice(self, values):
+        return values[int(torch.randint(len(values), (1,), generator=self.generator).item())]
+
+    def __iter__(self):
+        for _ in range(len(self)):
+            cell_type = self._choice(self.cells)
+            left, right, common = self._choice(self.valid_pairs[cell_type])
+            chosen = torch.randperm(len(common), generator=self.generator)[:self.n_labels].tolist()
+            batch = []
+            for label_index in chosen:
+                label = common[label_index]
+                batch.append(self._choice(self.groups[cell_type][left][label]))
+                batch.append(self._choice(self.groups[cell_type][right][label]))
+            order = torch.randperm(len(batch), generator=self.generator).tolist()
+            yield [batch[index] for index in order]
+
+
 def _cell_type_column(ds):
     """Index of the ``cell_type`` metadata column, or None if this build lacks it.
 
@@ -355,10 +465,22 @@ def make_rxrx1_loaders(cfg):
     data_seed = int(cfg["train"].get("data_seed", cfg.get("seed", 0)))
     train_generator = torch.Generator().manual_seed(data_seed)
     worker_generator = torch.Generator().manual_seed(data_seed + 1)
-    mk = lambda d, sh: DataLoader(
-        d, batch_size=bs, shuffle=sh, num_workers=nw, pin_memory=True, drop_last=sh,
-        persistent_workers=(nw > 0), generator=(train_generator if sh else None),
-    )
+    experiment_batching = bool(cfg["train"].get("experiment_batching", False))
+
+    def mk(d, sh, raw_experiments=None):
+        if experiment_batching:
+            if raw_experiments is None:
+                raise ValueError("experiment batching requires raw experiment metadata")
+            sampler = ExperimentBatchSampler(
+                raw_experiments, bs, shuffle=sh, drop_last=sh,
+                generator=(train_generator if sh else None))
+            return DataLoader(
+                d, batch_sampler=sampler, num_workers=nw, pin_memory=True,
+                persistent_workers=(nw > 0), generator=worker_generator)
+        return DataLoader(
+            d, batch_size=bs, shuffle=sh, num_workers=nw, pin_memory=True, drop_last=sh,
+            persistent_workers=(nw > 0), generator=(train_generator if sh else None),
+        )
     view = (lambda subset, transform: _RawSiteView(
         subset, exp_col, remap, raw_root, transform, cell_col=cell_col)) if raw_root else (
         lambda subset, transform: _SiteView(subset, exp_col, remap, cell_col=cell_col))
@@ -384,7 +506,24 @@ def make_rxrx1_loaders(cfg):
         train_view = Subset(train_view, keep)
         print(f"[rxrx1] train restricted to {len(wanted)} environment(s): "
               f"{len(keep)} of {len(raw_train)} images")
-    if bool(cfg["train"].get("cross_experiment_pairs", False)):
+    paired_experiment_batches = bool(cfg["train"].get("paired_experiment_batches", False))
+    if paired_experiment_batches:
+        cell_col = ds.metadata_fields.index("cell_type")
+        global_indices = torch.as_tensor(train_sub.indices, dtype=torch.long)
+        labels = ds.y_array[global_indices]
+        metadata = ds.metadata_array[global_indices]
+        sampler = PairedExperimentBatchSampler(
+            labels, metadata[:, exp_col], metadata[:, cell_col], bs,
+            generator=train_generator)
+        train_loader = DataLoader(
+            train_view, batch_sampler=sampler, num_workers=nw, pin_memory=True,
+            persistent_workers=(nw > 0), generator=worker_generator)
+        print("[rxrx1] composition-matched paired-experiment batches: identical perturbations "
+              "from two experiments within one cell type")
+    elif bool(cfg["train"].get("cross_experiment_pairs", False)):
+        if experiment_batching:
+            raise ValueError(
+                "cross_experiment_pairs and experiment_batching are mutually exclusive")
         try:
             cell_col = ds.metadata_fields.index("cell_type")
         except ValueError as error:
@@ -401,12 +540,17 @@ def make_rxrx1_loaders(cfg):
         print("[rxrx1] class-paired training batches: same perturbation/cell type, "
               "different experiments")
     else:
-        train_loader = mk(train_view, True)
+        raw_train = train_sub.metadata_array[:, exp_col].tolist()
+        if isinstance(train_view, Subset):
+            raw_train = [raw_train[index] for index in train_view.indices]
+        train_loader = mk(train_view, True, raw_train)
+    if experiment_batching:
+        print(f"[rxrx1] experiment-homogeneous batches: context budget <= {bs} unlabeled images")
     return (
         train_loader,                                      # train  (seen experiments)
-        mk(within, False),                                 # test_within  (seen, held-out images)
-        mk(view(ood_sub, tf_ev), False),                   # test_heldout (OOD experiments)
-        mk(within, False),                                 # audit: seen experiments, label⟂batch already
+        mk(within, False, within_sub.metadata_array[:, exp_col].tolist()),
+        mk(view(ood_sub, tf_ev), False, ood_sub.metadata_array[:, exp_col].tolist()),
+        mk(within, False, within_sub.metadata_array[:, exp_col].tolist()),
     )
 
 
@@ -445,5 +589,10 @@ def make_rxrx1_val_loader(cfg):
     print(f"[rxrx1] |ood_val|={len(val_sub)} (model/hparam selection; test untouched)")
     view = (_RawSiteView(val_sub, exp_col, remap, raw_root, transform, cell_col=cell_col)
             if raw_root else _SiteView(val_sub, exp_col, remap, cell_col=cell_col))
-    return DataLoader(view, batch_size=bs, shuffle=False,
-                      num_workers=nw, pin_memory=True, persistent_workers=(nw > 0))
+    if bool(cfg["train"].get("experiment_batching", False)):
+        sampler = ExperimentBatchSampler(
+            val_sub.metadata_array[:, exp_col].tolist(), bs, shuffle=False, drop_last=False)
+        return DataLoader(view, batch_sampler=sampler, num_workers=nw, pin_memory=True,
+                          persistent_workers=(nw > 0))
+    return DataLoader(view, batch_size=bs, shuffle=False, num_workers=nw,
+                      pin_memory=True, persistent_workers=(nw > 0))

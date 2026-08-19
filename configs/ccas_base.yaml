@@ -28,6 +28,9 @@ model:
   sym_break_moe: 0.0                      # router breaks MoE symmetry; keep exact preservation
   feature_stat_mix_prob: 0.0              # standard MixStyle; training only
   feature_stat_mix_alpha: 0.1
+  # Optional transductive feature corrector. Any non-none mode requires
+  # train.experiment_batching=true and consumes at most one batch of unlabelled target images.
+  batch_corrector: {mode: none, n_experts: 4, rank: 16, hidden: 128, temperature: 1.0}
 train:
   epochs: 30
   batch_size: 64
@@ -39,6 +42,8 @@ train:
   llrd: 0.7
   rand_resized_crop: true
   cross_experiment_pairs: false
+  paired_experiment_batches: false
+  experiment_batching: false
 losses:
   balance_w: 1.0e-2
   zloss_w: 1.0e-3
